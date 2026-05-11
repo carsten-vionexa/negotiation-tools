@@ -29,6 +29,50 @@ docker compose up --build
 - Backend Healthcheck: http://localhost:8000/api/health
 - Backend Docs: http://localhost:8000/docs
 
+## Lokale Datenbankmigrationen
+
+Die PostgreSQL-Datenbank laeuft per Docker Compose mit persistentem Volume `postgres_data`.
+Auf dem Host wird standardmaessig Port `5433` genutzt, damit lokale Postgres-Installationen auf
+`5432` nicht kollidieren.
+
+Nur die Datenbank starten:
+
+```bash
+docker compose up -d db
+```
+
+Backend-Abhaengigkeiten installieren:
+
+```bash
+cd backend
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+```
+
+Migrationen gegen die lokale Compose-DB ausfuehren:
+
+```bash
+cd backend
+ALEMBIC_DATABASE_URL=postgresql+psycopg://negotiation:negotiation_dev_password@localhost:5433/negotiation_tools \
+  .venv/bin/alembic upgrade head
+```
+
+Drift-Check fuer SQLAlchemy-Models vs. Datenbank:
+
+```bash
+cd backend
+ALEMBIC_DATABASE_URL=postgresql+psycopg://negotiation:negotiation_dev_password@localhost:5433/negotiation_tools \
+  .venv/bin/alembic check
+```
+
+Neue Migration aus den SQLAlchemy-Models erzeugen:
+
+```bash
+cd backend
+ALEMBIC_DATABASE_URL=postgresql+psycopg://negotiation:negotiation_dev_password@localhost:5433/negotiation_tools \
+  .venv/bin/alembic revision --autogenerate -m "describe change"
+```
+
 ## Struktur
 
 ```text

@@ -1,0 +1,25 @@
+Wir entwickeln für Business-Trainings im Bereich internationale Verhandlungsführung ein Negotiation Tool für die Trainees. Dies soll der Verhandlungsvorbereitung und Auswertung dienen. Es kann später auch von verschiedenen Unternehmen für konkrete Verhandlungsvorbereitung genutzt werden. Rheinwerk Robotik ist ein Beispiel.
+
+Ausgangsdaten:
+
+- Firmenprofil Rheinwerk Robotiks
+- DISC Profil Markus Schulz
+- Einkaufshistory
+- Anfragenkatalog
+
+Was soll basierend auf den Ausgangsdaten getan werden:
+
+- Branchenprofil erstellen (ist schon erledigt)
+- Analyse Einkaufshistory - Anfragenkatalog - Branchenprofil:
+	- Extraktion möglicher Lieferanten
+	- Erstellen eines Firmenprofils dieser Lieferanten
+	- Entwicklung von ZOPA, WAP, BATNA
+- Erstellung eines interkulturellen Trainings (z.B. Hofstede Kulturelle Dimensionen etc.) - Do's and Dont's
+
+
+Ziele des Tools:
+- Vorbereitung auf die Verhandlung
+- Entwickeln einer Verhandlungsstrategie und von Argumenten für die Verhandlung
+- Beachtung Interkultureller Verhandlungsstile
+- Training mit einer KI: der Verhandlungspartner wird basierend auf Firmenprofil des Lieferanten, dem Land etc. von einer KI simuliert, der Verhandlungsverlauf wird aufgezeichnet und später durch eine KI und/oder dem Trainer ausgewertet.
+- das KI Training kann mit steigenden Schwierigkeitsleveln durchgeführt werden.

@@ -4,7 +4,7 @@
 
 Das Backend nutzt PostgreSQL mit pgvector, SQLAlchemy-Models und Alembic-Migrationen. Das aktuelle Datenmodell bildet eine bewusst MVP-reduzierte, aber fachlich geschaerfte Grundlage fuer ein KI-gestuetztes Verhandlungs-Cockpit ab: Unternehmen, Nutzerprofile, Wissensdokumente, Anfragepositionen, Lieferantenprofile, Einkaufshistorien und Verhandlungsprojekte koennen bereits strukturiert gespeichert werden.
 
-Die vorhandenen JSONB-Felder dienen als flexible Erweiterungspunkte, ohne das relationale Kernmodell jetzt schon fachlich zu ueberdehnen. Die Knowledge Base ist nun dreistufig vorbereitet: Dokumente, zitierbare Textstellen und daraus abgeleitete Aussagen. Das Import-Datenmodell ist zweistufig vorbereitet: Importvorgaenge und einzelne Quelldatenzeilen. Detailmodelle fuer Strategien, Simulationen und Trainerfeedback sind weiterhin bewusst nicht implementiert.
+Die vorhandenen JSONB-Felder dienen als flexible Erweiterungspunkte, ohne das relationale Kernmodell jetzt schon fachlich zu ueberdehnen. Die Knowledge Base ist nun dreistufig vorbereitet: Dokumente, zitierbare Textstellen und daraus abgeleitete Aussagen. Das Import-Datenmodell ist zweistufig vorbereitet: Importvorgaenge und einzelne Quelldatenzeilen. Das Strategiemodell ist relational vorbereitet: Strategien, ZOPA-Elemente, BATNA-Optionen, Konzessionen und Argumentationslinien koennen strukturiert gespeichert werden. Detailmodelle fuer Simulationen und Trainerfeedback sind weiterhin bewusst nicht implementiert.
 
 ## Vorhandene Kernmodelle
 
@@ -19,6 +19,11 @@ Die vorhandenen JSONB-Felder dienen als flexible Erweiterungspunkte, ohne das re
 - `ProcurementHistoryItem`: Historische Einkaufspositionen als Datenbasis fuer spaetere Analysen.
 - `ImportJob`: Nachvollziehbarer Importvorgang fuer Datei, Quelltyp, Zielobjekt, Status und Mapping.
 - `ImportRow`: Einzelne Quelldatenzeile mit Rohdaten, gemappten Daten, Validierungsstatus und optionalem Zielobjektbezug.
+- `Strategy`: Strukturierte Verhandlungsstrategie mit Projekt-, Unternehmens-, Status-, Versions- und Zielinformationen.
+- `ZopaItem`: Einzelne Verhandlungsdimension oder Einigungszone einer Strategie.
+- `BatnaOption`: Konkrete Alternative zur Verhandlung mit Machbarkeit, Kosten, Risiken und Bewertung.
+- `ConcessionItem`: Moegliches Zugestaendnis mit Bedingung, Gegenleistung, Reihenfolge und Risiko.
+- `ArgumentationLine`: Argumentationslinie mit Claim, Evidenz, erwarteter Gegenposition und Reaktionsstrategie.
 
 ## Fachliche Schaerfung der Kernmodelle
 
@@ -33,6 +38,11 @@ Die bestehenden Kernmodelle wurden additiv erweitert. Es wurden keine bestehende
 - `ImportRow`: `import_job_id`, `company_id`, optionaler `project_id`, `row_number`, optionaler Sheet-Name, `raw_data_json`, `mapped_data_json`, `validation_status`, optionale Fehler- und Warnhinweise, flexible Zielreferenz ueber `target_entity` und `target_record_id` sowie `metadata_json`.
 - `SupplierProfile`: `region`, `industry`, `supplier_type`, `power_level`, `risk_level`, `cultural_context`, `interests_json`, `likely_tactics_json`, `constraints_json`, `is_ai_generated`, `confidence_level`.
 - `NegotiationProject`: `project_type`, `category`, `article_or_service`, `quantity`, `target_region`, `desired_delivery_time`, `internal_price_expectation`, `currency`, `current_supplier`, `priority`, `business_pressure`, `technical_dependency_level`, `supplier_power_level`, `risk_level`.
+- `Strategy`: `company_id`, `negotiation_project_id`, `title`, `status`, `version`, `is_active`, Ziel-, ZOPA-, BATNA-, Konzessions-, Argumentations-, Risiko- und Notizfelder sowie `metadata_json`.
+- `ZopaItem`: `strategy_id`, Dimension, Ziel-/Walk-away-Werte beider Seiten, moegliche Einigungsrange, Waehrung, Einheit, Prioritaet, Confidence, Informationsart, Quelle und `metadata_json`.
+- `BatnaOption`: `strategy_id`, Titel, Typ, Beschreibung, Machbarkeit, Kosten, Lead Time, Risiko, Impact, notwendige Aktionen, Praeferenz, Ranking, Confidence und `metadata_json`.
+- `ConcessionItem`: `strategy_id`, Titel, Typ, Beschreibung, Wert fuer beide Seiten, Kosten, Bedingung, Gegenleistung, Reihenfolge, Final-Offer-Markierung, Risiko und `metadata_json`.
+- `ArgumentationLine`: `strategy_id`, Titel, Argumenttyp, Claim, Evidenz, Quelle, erwartetes Gegenargument, Reaktionsstrategie, Prioritaet, Confidence, Informationsart und `metadata_json`.
 
 `KnowledgeDocument` kann optional einem `NegotiationProject` zugeordnet werden. Die Beziehung ist nullable und nutzt `ondelete="SET NULL"`, damit Dokumente beim Entfernen eines Projekts nicht geloescht werden.
 
@@ -122,18 +132,31 @@ Typische Werte fuer `target_entity`:
 
 Fuer diese Stufe bleiben alle diese Werte freie Strings. Upload, Dateiablage, Excel-/CSV-Parsing, Mapping-UI, automatische Validierung und automatische Datensatz-Erzeugung sind weiterhin spaetere Arbeitspakete.
 
+## Strategiemodell
+
+Das Strategiemodell besteht aus `Strategy`, `ZopaItem`, `BatnaOption`, `ConcessionItem` und `ArgumentationLine`.
+
+`Strategy` ist das zentrale Objekt fuer die strukturierte Verhandlungsvorbereitung. Eine Strategie gehoert zu genau einem `NegotiationProject` und einer `Company`. Ein `NegotiationProject` kann mehrere Strategien haben, etwa fuer Versionen oder Varianten. Eine aktive Strategie kann ueber `status` und `is_active` markiert werden; es gibt bewusst keine harte 1:1-Einschraenkung.
+
+Die Kindobjekte haengen an `strategy_id` und werden mit der Strategie geloescht. Strategien werden mit dem zugehoerigen `NegotiationProject` geloescht. Die bestehenden JSONB-Felder in `NegotiationProject`, insbesondere `strategy_data`, bleiben erhalten und dienen weiter als flexible Erweiterungs- oder Scratchpad-Felder.
+
+`ZopaItem` modelliert einzelne Verhandlungsdimensionen wie Preis, Lieferzeit, Zahlungsziel, SLA, Laufzeit oder andere qualitative und quantitative Einigungsbereiche. Werte bleiben in dieser Stufe bewusst Strings, weil nicht jede ZOPA-Dimension numerisch oder direkt berechenbar ist.
+
+`BatnaOption` beschreibt konkrete Alternativen mit Machbarkeit, Kosten, Lead Time, Risiko, Impact und Bewertung. `ConcessionItem` beschreibt Zugestaendnisse als Tauschobjekte mit Bedingung und Gegenleistung, nicht als reines Nachgeben. `ArgumentationLine` trennt Claim, Evidenz, Quelle, erwartete Gegenposition und Reaktionsstrategie.
+
+Relationale Tabellen werden fuer die stabilen fachlichen Bausteine genutzt: Strategie, ZOPA-Dimensionen, BATNA-Optionen, Konzessionsobjekte, Argumentationslinien sowie zentrale Status-, Prioritaets-, Ranking- und Confidence-Felder. JSONB bleibt fuer flexible Zusatzdaten, Rohannahmen, spaetere KI-Outputs und noch nicht standardisierte Bewertungsdetails erhalten.
+
+Fachliche Werte bleiben freie Strings. Es werden weiterhin keine harten technischen Enums fuer Status, Typen, Prioritaeten, Confidence-Werte oder Informationsarten eingefuehrt.
+
+Nicht Teil dieses Schritts sind KI-Strategie-Generierung, automatische ZOPA-Berechnung, Simulationstabellen, Simulation, Auswertung oder eine neue Service-Schicht.
+
 ## Bewusste MVP-Reduktion
 
-Das Modell ist weiterhin absichtlich fokussiert gehalten. Es soll eine stabile technische Grundlage bereitstellen, bevor Importpipelines, produktive RAG-Strukturen oder Simulationsdaten festgelegt werden. Upload, Dateiablage, Parsing, Mapping-UI, automatische Validierung, automatische Zielobjekt-Erzeugung, Chunking-Service, Embedding-Erzeugung und RAG sind weiterhin spaetere Arbeitspakete.
+Das Modell ist weiterhin absichtlich fokussiert gehalten. Es soll eine stabile technische Grundlage bereitstellen, bevor Importpipelines, produktive RAG-Strukturen, Simulationsdaten oder Auswertungslogik festgelegt werden. Upload, Dateiablage, Parsing, Mapping-UI, automatische Validierung, automatische Zielobjekt-Erzeugung, Chunking-Service, Embedding-Erzeugung, RAG, KI-Strategie-Generierung, Simulation und Auswertung sind weiterhin spaetere Arbeitspakete.
 
 ## Noch nicht implementierte Fachobjekte
 
 - `tenants`
-- `strategies`
-- `zopa_items`
-- `batna_options`
-- `concession_items`
-- `argumentation_lines`
 - `cultural_briefings`
 - `simulation_scenarios`
 - `simulation_messages`

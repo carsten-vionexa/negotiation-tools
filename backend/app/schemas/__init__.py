@@ -1,4 +1,11 @@
+from app.schemas.argumentation_line import (
+    ArgumentationLineBase,
+    ArgumentationLineCreate,
+    ArgumentationLineRead,
+)
+from app.schemas.batna_option import BatnaOptionBase, BatnaOptionCreate, BatnaOptionRead
 from app.schemas.company import CompanyBase, CompanyCreate, CompanyRead
+from app.schemas.concession_item import ConcessionItemBase, ConcessionItemCreate, ConcessionItemRead
 from app.schemas.document_chunk import DocumentChunkBase, DocumentChunkCreate, DocumentChunkRead
 from app.schemas.import_job import ImportJobBase, ImportJobCreate, ImportJobRead
 from app.schemas.import_row import ImportRowBase, ImportRowCreate, ImportRowRead
@@ -19,13 +26,24 @@ from app.schemas.procurement_history_item import (
     ProcurementHistoryItemRead,
 )
 from app.schemas.request_item import RequestItemBase, RequestItemCreate, RequestItemRead
+from app.schemas.strategy import StrategyBase, StrategyCreate, StrategyRead
 from app.schemas.supplier_profile import SupplierProfileBase, SupplierProfileCreate, SupplierProfileRead
 from app.schemas.user_profile import UserProfileBase, UserProfileCreate, UserProfileRead
+from app.schemas.zopa_item import ZopaItemBase, ZopaItemCreate, ZopaItemRead
 
 __all__ = [
+    "ArgumentationLineBase",
+    "ArgumentationLineCreate",
+    "ArgumentationLineRead",
+    "BatnaOptionBase",
+    "BatnaOptionCreate",
+    "BatnaOptionRead",
     "CompanyBase",
     "CompanyCreate",
     "CompanyRead",
+    "ConcessionItemBase",
+    "ConcessionItemCreate",
+    "ConcessionItemRead",
     "DocumentChunkBase",
     "DocumentChunkCreate",
     "DocumentChunkRead",
@@ -50,10 +68,16 @@ __all__ = [
     "RequestItemBase",
     "RequestItemCreate",
     "RequestItemRead",
+    "StrategyBase",
+    "StrategyCreate",
+    "StrategyRead",
     "SupplierProfileBase",
     "SupplierProfileCreate",
     "SupplierProfileRead",
     "UserProfileBase",
     "UserProfileCreate",
     "UserProfileRead",
+    "ZopaItemBase",
+    "ZopaItemCreate",
+    "ZopaItemRead",
 ]

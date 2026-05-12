@@ -31,3 +31,4 @@ class Company(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     request_items = relationship("RequestItem", back_populates="company", cascade="all, delete-orphan")
     supplier_profiles = relationship("SupplierProfile", back_populates="company", cascade="all, delete-orphan")
     negotiation_projects = relationship("NegotiationProject", back_populates="company", cascade="all, delete-orphan")
+    strategies = relationship("Strategy", back_populates="company", cascade="all, delete-orphan")

@@ -20,11 +20,15 @@
 - Import-Datenmodell um ImportJob und ImportRow erweitert
 - Pydantic-Schemas fuer ImportJob und ImportRow ergaenzt
 - additive Alembic-Migration fuer ImportJob und ImportRow erstellt
+- Strategie-Datenmodell um Strategy, ZopaItem, BatnaOption, ConcessionItem und ArgumentationLine erweitert
+- Pydantic-Schemas fuer die Strategieobjekte ergaenzt
+- additive Alembic-Migration fuer das Strategie-Datenmodell erstellt
 
 ## Naechste Schritte
 
-1. Upload- und Dateiablage-Logik spaeter konzipieren.
-2. Parser/Mapping-Service spaeter planen.
-3. Automatische Validierung spaeter planen.
-4. Automatische Erzeugung von Zielobjekten spaeter planen.
-5. Chunking-Service, Embedding-Erzeugung und RAG spaeter planen.
+1. Simulation- und Auswertungsmodell fachlich schneiden und additiv vorbereiten.
+2. API-Fehlerbehandlung und Foreign-Key-Validierung fuer Create-/Update-Endpunkte verbessern.
+3. Upload- und Dateiablage-Logik spaeter konzipieren.
+4. Parser/Mapping-Service spaeter planen.
+5. Automatische Validierung und Zielobjekt-Erzeugung spaeter planen.
+6. Chunking-Service, Embedding-Erzeugung und RAG spaeter planen.

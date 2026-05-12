@@ -29,8 +29,9 @@
 - API-Fehlerbehandlung und Foreign-Key-Validierung fuer bestehende Create-Endpunkte verbessert
 - Upload- und Dateiablage-Konzept dokumentiert
 - Parser- und Mapping-Konzept fuer Excel/CSV dokumentiert
+- Validierungs- und Importfehler-Konzept dokumentiert
 
 ## Naechste Schritte
 
-1. Automatische Validierung und Zielobjekt-Erzeugung spaeter planen.
+1. Automatische Zielobjekt-Erzeugung aus Imports planen.
 2. Chunking-Service, Embedding-Erzeugung und RAG spaeter planen.

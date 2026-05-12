@@ -41,3 +41,4 @@ class SupplierProfile(UUIDPrimaryKeyMixin, TimestampMixin, Base):
 
     company = relationship("Company", back_populates="supplier_profiles")
     negotiation_projects = relationship("NegotiationProject", back_populates="supplier")
+    simulation_scenarios = relationship("SimulationScenario", back_populates="supplier_profile")

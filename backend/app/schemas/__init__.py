@@ -26,8 +26,12 @@ from app.schemas.procurement_history_item import (
     ProcurementHistoryItemRead,
 )
 from app.schemas.request_item import RequestItemBase, RequestItemCreate, RequestItemRead
+from app.schemas.simulation_message import SimulationMessageBase, SimulationMessageCreate, SimulationMessageRead
+from app.schemas.simulation_result import SimulationResultBase, SimulationResultCreate, SimulationResultRead
+from app.schemas.simulation_scenario import SimulationScenarioBase, SimulationScenarioCreate, SimulationScenarioRead
 from app.schemas.strategy import StrategyBase, StrategyCreate, StrategyRead
 from app.schemas.supplier_profile import SupplierProfileBase, SupplierProfileCreate, SupplierProfileRead
+from app.schemas.trainer_comment import TrainerCommentBase, TrainerCommentCreate, TrainerCommentRead
 from app.schemas.user_profile import UserProfileBase, UserProfileCreate, UserProfileRead
 from app.schemas.zopa_item import ZopaItemBase, ZopaItemCreate, ZopaItemRead
 
@@ -68,12 +72,24 @@ __all__ = [
     "RequestItemBase",
     "RequestItemCreate",
     "RequestItemRead",
+    "SimulationMessageBase",
+    "SimulationMessageCreate",
+    "SimulationMessageRead",
+    "SimulationResultBase",
+    "SimulationResultCreate",
+    "SimulationResultRead",
+    "SimulationScenarioBase",
+    "SimulationScenarioCreate",
+    "SimulationScenarioRead",
     "StrategyBase",
     "StrategyCreate",
     "StrategyRead",
     "SupplierProfileBase",
     "SupplierProfileCreate",
     "SupplierProfileRead",
+    "TrainerCommentBase",
+    "TrainerCommentCreate",
+    "TrainerCommentRead",
     "UserProfileBase",
     "UserProfileCreate",
     "UserProfileRead",

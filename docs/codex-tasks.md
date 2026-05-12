@@ -23,12 +23,14 @@
 - Strategie-Datenmodell um Strategy, ZopaItem, BatnaOption, ConcessionItem und ArgumentationLine erweitert
 - Pydantic-Schemas fuer die Strategieobjekte ergaenzt
 - additive Alembic-Migration fuer das Strategie-Datenmodell erstellt
+- Simulation- und Auswertungsmodell um SimulationScenario, SimulationMessage, SimulationResult und TrainerComment erweitert
+- Pydantic-Schemas fuer die Simulations- und Auswertungsobjekte ergaenzt
+- additive Alembic-Migration fuer das Simulation- und Auswertungsmodell erstellt
 
 ## Naechste Schritte
 
-1. Simulation- und Auswertungsmodell fachlich schneiden und additiv vorbereiten.
-2. API-Fehlerbehandlung und Foreign-Key-Validierung fuer Create-/Update-Endpunkte verbessern.
-3. Upload- und Dateiablage-Logik spaeter konzipieren.
-4. Parser/Mapping-Service spaeter planen.
-5. Automatische Validierung und Zielobjekt-Erzeugung spaeter planen.
-6. Chunking-Service, Embedding-Erzeugung und RAG spaeter planen.
+1. API-Fehlerbehandlung und Foreign-Key-Validierung verbessern.
+2. Upload- und Dateiablage-Logik spaeter konzipieren.
+3. Parser/Mapping-Service spaeter planen.
+4. Automatische Validierung und Zielobjekt-Erzeugung spaeter planen.
+5. Chunking-Service, Embedding-Erzeugung und RAG spaeter planen.

@@ -4,7 +4,7 @@
 
 Das Backend nutzt PostgreSQL mit pgvector, SQLAlchemy-Models und Alembic-Migrationen. Das aktuelle Datenmodell bildet eine bewusst MVP-reduzierte, aber fachlich geschaerfte Grundlage fuer ein KI-gestuetztes Verhandlungs-Cockpit ab: Unternehmen, Nutzerprofile, Wissensdokumente, Anfragepositionen, Lieferantenprofile, Einkaufshistorien und Verhandlungsprojekte koennen bereits strukturiert gespeichert werden.
 
-Die vorhandenen JSONB-Felder dienen als flexible Erweiterungspunkte, ohne das relationale Kernmodell jetzt schon fachlich zu ueberdehnen. Die Knowledge Base ist nun dreistufig vorbereitet: Dokumente, zitierbare Textstellen und daraus abgeleitete Aussagen. Das Import-Datenmodell ist zweistufig vorbereitet: Importvorgaenge und einzelne Quelldatenzeilen. Das Strategiemodell ist relational vorbereitet: Strategien, ZOPA-Elemente, BATNA-Optionen, Konzessionen und Argumentationslinien koennen strukturiert gespeichert werden. Detailmodelle fuer Simulationen und Trainerfeedback sind weiterhin bewusst nicht implementiert.
+Die vorhandenen JSONB-Felder dienen als flexible Erweiterungspunkte, ohne das relationale Kernmodell jetzt schon fachlich zu ueberdehnen. Die Knowledge Base ist nun dreistufig vorbereitet: Dokumente, zitierbare Textstellen und daraus abgeleitete Aussagen. Das Import-Datenmodell ist zweistufig vorbereitet: Importvorgaenge und einzelne Quelldatenzeilen. Das Strategiemodell ist relational vorbereitet: Strategien, ZOPA-Elemente, BATNA-Optionen, Konzessionen und Argumentationslinien koennen strukturiert gespeichert werden. Das Simulations- und Auswertungsmodell ist als persistente Struktur fuer Szenarien, Dialogverlauf, Ergebnisse und menschliches Trainerfeedback vorbereitet.
 
 ## Vorhandene Kernmodelle
 
@@ -24,6 +24,10 @@ Die vorhandenen JSONB-Felder dienen als flexible Erweiterungspunkte, ohne das re
 - `BatnaOption`: Konkrete Alternative zur Verhandlung mit Machbarkeit, Kosten, Risiken und Bewertung.
 - `ConcessionItem`: Moegliches Zugestaendnis mit Bedingung, Gegenleistung, Reihenfolge und Risiko.
 - `ArgumentationLine`: Argumentationslinie mit Claim, Evidenz, erwarteter Gegenposition und Reaktionsstrategie.
+- `SimulationScenario`: Konfiguration eines konkreten Trainings- oder Simulationsdurchlaufs.
+- `SimulationMessage`: Einzelne Nachricht im Dialogverlauf eines Simulationsszenarios.
+- `SimulationResult`: Zusammenfassende Auswertung oder Ergebnisnotiz eines Simulationsdurchlaufs.
+- `TrainerComment`: Menschliches Trainerfeedback zu Szenario, Ergebnis oder einzelner Nachricht.
 
 ## Fachliche Schaerfung der Kernmodelle
 
@@ -43,6 +47,10 @@ Die bestehenden Kernmodelle wurden additiv erweitert. Es wurden keine bestehende
 - `BatnaOption`: `strategy_id`, Titel, Typ, Beschreibung, Machbarkeit, Kosten, Lead Time, Risiko, Impact, notwendige Aktionen, Praeferenz, Ranking, Confidence und `metadata_json`.
 - `ConcessionItem`: `strategy_id`, Titel, Typ, Beschreibung, Wert fuer beide Seiten, Kosten, Bedingung, Gegenleistung, Reihenfolge, Final-Offer-Markierung, Risiko und `metadata_json`.
 - `ArgumentationLine`: `strategy_id`, Titel, Argumenttyp, Claim, Evidenz, Quelle, erwartetes Gegenargument, Reaktionsstrategie, Prioritaet, Confidence, Informationsart und `metadata_json`.
+- `SimulationScenario`: `company_id`, `negotiation_project_id`, optionale Strategie-, Lieferanten- und Nutzerreferenzen, Titel, Status, Szenario- und Rolleninformationen, Kontext, Ziel, Briefing, Erfolgskriterien, Zeitlimit, Sprache, Start-/Abschlusszeitpunkte und `metadata_json`.
+- `SimulationMessage`: `simulation_scenario_id`, optionale Nutzerreferenz, Sequenznummer, Senderinformationen, Nachrichtentext, Nachrichtentyp, Phase sowie JSONB-Speicherorte fuer spaetere Taktik- und Analyseinformationen.
+- `SimulationResult`: `simulation_scenario_id`, optionale Nutzerreferenz, Status, Zusammenfassung, Outcome, Zielerreichung, vereinbarte Konditionen, Lernpunkte, naechste Schritte, optionale Score-Felder sowie `feedback_json` und `metadata_json`.
+- `TrainerComment`: `simulation_scenario_id`, optionale Ergebnis-, Nachrichten- und Trainerreferenzen, Kommentartyp, Kommentartext, Kompetenzbezug, Schweregrad, Sichtbarkeit fuer Trainees und `metadata_json`.
 
 `KnowledgeDocument` kann optional einem `NegotiationProject` zugeordnet werden. Die Beziehung ist nullable und nutzt `ondelete="SET NULL"`, damit Dokumente beim Entfernen eines Projekts nicht geloescht werden.
 
@@ -148,17 +156,31 @@ Relationale Tabellen werden fuer die stabilen fachlichen Bausteine genutzt: Stra
 
 Fachliche Werte bleiben freie Strings. Es werden weiterhin keine harten technischen Enums fuer Status, Typen, Prioritaeten, Confidence-Werte oder Informationsarten eingefuehrt.
 
-Nicht Teil dieses Schritts sind KI-Strategie-Generierung, automatische ZOPA-Berechnung, Simulationstabellen, Simulation, Auswertung oder eine neue Service-Schicht.
+Nicht Teil dieses Schritts sind KI-Strategie-Generierung, automatische ZOPA-Berechnung, Simulation, Auswertung oder eine neue Service-Schicht.
+
+## Simulations- und Auswertungsmodell
+
+Das Simulations- und Auswertungsmodell besteht aus `SimulationScenario`, `SimulationMessage`, `SimulationResult` und `TrainerComment`.
+
+`SimulationScenario` ist der fachliche Anker fuer einen konkreten Trainings- oder Simulationsdurchlauf. Ein Szenario gehoert zu einer `Company` und einem `NegotiationProject`. Optional kann es auf eine vorbereitete `Strategy`, ein `SupplierProfile` und ein `UserProfile` verweisen. Dadurch kann ein spaeterer Trainingslauf mit Projektkontext, Strategievorbereitung, Lieferantenannahmen und Nutzerbezug gespeichert werden, ohne schon eine Simulations-Engine festzulegen.
+
+`SimulationMessage` speichert einzelne Nachrichten im Verlauf eines Szenarios. Die Reihenfolge wird ueber `sequence_number` gehalten. Senderrolle, Name, Nachrichtentyp und Phase bleiben freie Strings. `detected_tactics_json` und `analysis_json` sind nur Speicherorte fuer spaetere Auswertungen; in dieser Stufe wird daraus keine Analyse erzeugt.
+
+`SimulationResult` speichert eine zusammenfassende Ergebnis- oder Auswertungsstruktur zu einem Szenario. Es gibt bewusst keine harte technische 1:1-Einschraenkung zwischen Szenario und Ergebnis, damit spaeter Wiederholungen, alternative Auswertungslaeufe oder Trainer-/KI-Vergleiche moeglich bleiben. Score-Felder sind optional und werden nicht automatisch berechnet.
+
+`TrainerComment` speichert menschliches Trainerfeedback. Ein Kommentar gehoert immer zu einem Szenario und kann optional auf ein Ergebnis, eine einzelne Nachricht und ein Trainer-`UserProfile` verweisen. Damit kann Feedback sowohl allgemein zum Durchlauf als auch konkret zu einem Moment im Dialog oder zu einer Ergebnisbewertung abgelegt werden.
+
+Relationale Felder werden fuer stabile Beziehungen, Szenario-Konfiguration, Nachrichtenreihenfolge, Ergebnisstatus, Outcome, Score-Felder und Feedback-Zuordnung genutzt. JSONB bleibt fuer spaetere Taktik-Erkennung, detaillierte Rubrics, Rohdaten, flexible Zusatzinformationen und noch nicht standardisierte Bewertungsdetails reserviert.
+
+Fachliche Werte bleiben freie Strings. Es werden weiterhin keine harten technischen Enums fuer Status, Szenariotypen, Rollen, Senderarten, Outcomes, Kommentararten, Kompetenzen oder Severity-Werte eingefuehrt.
+
+Nicht Teil dieses Modells sind KI-Simulation, Echtzeit-Dialoglogik, Chat-/Streaming-/Voice-Logik, automatische Bewertung, Trainer-UI, komplexe Lernhistorie oder eine neue Service-Schicht. Die Tabellen bilden nur die additive, migrationsfaehige Persistenzgrundlage.
 
 ## Bewusste MVP-Reduktion
 
-Das Modell ist weiterhin absichtlich fokussiert gehalten. Es soll eine stabile technische Grundlage bereitstellen, bevor Importpipelines, produktive RAG-Strukturen, Simulationsdaten oder Auswertungslogik festgelegt werden. Upload, Dateiablage, Parsing, Mapping-UI, automatische Validierung, automatische Zielobjekt-Erzeugung, Chunking-Service, Embedding-Erzeugung, RAG, KI-Strategie-Generierung, Simulation und Auswertung sind weiterhin spaetere Arbeitspakete.
+Das Modell ist weiterhin absichtlich fokussiert gehalten. Es soll eine stabile technische Grundlage bereitstellen, bevor Importpipelines, produktive RAG-Strukturen, Simulationslogik oder Auswertungslogik festgelegt werden. Upload, Dateiablage, Parsing, Mapping-UI, automatische Validierung, automatische Zielobjekt-Erzeugung, Chunking-Service, Embedding-Erzeugung, RAG, KI-Strategie-Generierung, KI-Simulation, Echtzeit-Dialoglogik, automatische Bewertung und Trainer-UI sind weiterhin spaetere Arbeitspakete.
 
 ## Noch nicht implementierte Fachobjekte
 
 - `tenants`
 - `cultural_briefings`
-- `simulation_scenarios`
-- `simulation_messages`
-- `simulation_results`
-- `trainer_comments`

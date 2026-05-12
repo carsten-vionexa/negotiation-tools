@@ -50,3 +50,4 @@ class Strategy(UUIDPrimaryKeyMixin, TimestampMixin, Base):
         back_populates="strategy",
         cascade="all, delete-orphan",
     )
+    simulation_scenarios = relationship("SimulationScenario", back_populates="strategy")

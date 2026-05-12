@@ -66,3 +66,8 @@ class NegotiationProject(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     import_jobs = relationship("ImportJob", back_populates="project")
     import_rows = relationship("ImportRow", back_populates="project")
     strategies = relationship("Strategy", back_populates="negotiation_project", cascade="all, delete-orphan")
+    simulation_scenarios = relationship(
+        "SimulationScenario",
+        back_populates="negotiation_project",
+        cascade="all, delete-orphan",
+    )

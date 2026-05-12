@@ -27,3 +27,7 @@ class UserProfile(UUIDPrimaryKeyMixin, TimestampMixin, Base):
 
     company = relationship("Company", back_populates="user_profiles")
     negotiation_projects = relationship("NegotiationProject", back_populates="owner")
+    simulation_scenarios = relationship("SimulationScenario", back_populates="user_profile")
+    simulation_messages = relationship("SimulationMessage", back_populates="user_profile")
+    simulation_results = relationship("SimulationResult", back_populates="user_profile")
+    trainer_comments = relationship("TrainerComment", back_populates="trainer_user_profile")

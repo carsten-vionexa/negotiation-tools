@@ -1,5 +1,7 @@
 from app.models.company import Company
 from app.models.document_chunk import DocumentChunk
+from app.models.import_job import ImportJob
+from app.models.import_row import ImportRow
 from app.models.knowledge_claim import KnowledgeClaim
 from app.models.knowledge_document import KnowledgeDocument
 from app.models.negotiation_project import NegotiationProject
@@ -11,6 +13,8 @@ from app.models.user_profile import UserProfile
 __all__ = [
     "Company",
     "DocumentChunk",
+    "ImportJob",
+    "ImportRow",
     "KnowledgeClaim",
     "KnowledgeDocument",
     "NegotiationProject",

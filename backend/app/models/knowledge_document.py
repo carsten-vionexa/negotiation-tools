@@ -48,3 +48,4 @@ class KnowledgeDocument(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     project = relationship("NegotiationProject", back_populates="knowledge_documents")
     chunks = relationship("DocumentChunk", back_populates="document", cascade="all, delete-orphan")
     claims = relationship("KnowledgeClaim", back_populates="document", cascade="all, delete-orphan")
+    import_jobs = relationship("ImportJob", back_populates="knowledge_document")

@@ -21,6 +21,8 @@ class Company(UUIDPrimaryKeyMixin, TimestampMixin, Base):
 
     user_profiles = relationship("UserProfile", back_populates="company", cascade="all, delete-orphan")
     knowledge_documents = relationship("KnowledgeDocument", back_populates="company", cascade="all, delete-orphan")
+    import_jobs = relationship("ImportJob", back_populates="company", cascade="all, delete-orphan")
+    import_rows = relationship("ImportRow", back_populates="company", cascade="all, delete-orphan")
     procurement_history_items = relationship(
         "ProcurementHistoryItem",
         back_populates="company",

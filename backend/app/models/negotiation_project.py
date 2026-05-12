@@ -63,3 +63,5 @@ class NegotiationProject(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     request_item = relationship("RequestItem", back_populates="negotiation_projects")
     supplier = relationship("SupplierProfile", back_populates="negotiation_projects")
     knowledge_documents = relationship("KnowledgeDocument", back_populates="project")
+    import_jobs = relationship("ImportJob", back_populates="project")
+    import_rows = relationship("ImportRow", back_populates="project")

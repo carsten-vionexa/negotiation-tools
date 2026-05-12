@@ -21,6 +21,7 @@ class ProcurementHistoryItem(UUIDPrimaryKeyMixin, TimestampMixin, Base):
         index=True,
     )
     supplier_name: Mapped[str | None] = mapped_column(String(255), index=True)
+    supplier_country: Mapped[str | None] = mapped_column(String(100))
     item_name: Mapped[str] = mapped_column(String(255), nullable=False)
     category: Mapped[str | None] = mapped_column(String(150), index=True)
     sku: Mapped[str | None] = mapped_column(String(100), index=True)
@@ -28,6 +29,10 @@ class ProcurementHistoryItem(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     unit: Mapped[str | None] = mapped_column(String(50))
     unit_price: Mapped[Decimal | None] = mapped_column(Numeric(14, 4))
     currency: Mapped[str | None] = mapped_column(String(3))
+    lead_time_weeks: Mapped[Decimal | None] = mapped_column(Numeric(6, 2))
+    quality_rating: Mapped[str | None] = mapped_column(String(100))
+    price_assessment: Mapped[str | None] = mapped_column(String(100))
+    improvement_potential: Mapped[str | None] = mapped_column(Text)
     purchased_at: Mapped[date | None] = mapped_column(Date)
     source_document: Mapped[str | None] = mapped_column(String(255))
     notes: Mapped[str | None] = mapped_column(Text)

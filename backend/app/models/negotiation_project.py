@@ -1,7 +1,9 @@
 from typing import Any
 from uuid import UUID
 
-from sqlalchemy import ForeignKey, String, Text
+from decimal import Decimal
+
+from sqlalchemy import ForeignKey, Numeric, String, Text
 from sqlalchemy.dialects.postgresql import JSONB, UUID as PG_UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -36,6 +38,20 @@ class NegotiationProject(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     status: Mapped[str] = mapped_column(String(50), default="draft", nullable=False, index=True)
     negotiation_type: Mapped[str | None] = mapped_column(String(100))
+    project_type: Mapped[str | None] = mapped_column(String(100))
+    category: Mapped[str | None] = mapped_column(String(150))
+    article_or_service: Mapped[str | None] = mapped_column(String(255))
+    quantity: Mapped[Decimal | None] = mapped_column(Numeric(14, 3))
+    target_region: Mapped[str | None] = mapped_column(String(150))
+    desired_delivery_time: Mapped[str | None] = mapped_column(String(150))
+    internal_price_expectation: Mapped[Decimal | None] = mapped_column(Numeric(14, 4))
+    currency: Mapped[str | None] = mapped_column(String(3))
+    current_supplier: Mapped[str | None] = mapped_column(String(255))
+    priority: Mapped[str | None] = mapped_column(String(50))
+    business_pressure: Mapped[str | None] = mapped_column(Text)
+    technical_dependency_level: Mapped[str | None] = mapped_column(String(100))
+    supplier_power_level: Mapped[str | None] = mapped_column(String(100))
+    risk_level: Mapped[str | None] = mapped_column(String(100))
     objective: Mapped[str | None] = mapped_column(Text)
     context: Mapped[str | None] = mapped_column(Text)
     strategy_data: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict, nullable=False)
@@ -46,3 +62,4 @@ class NegotiationProject(UUIDPrimaryKeyMixin, TimestampMixin, Base):
     owner = relationship("UserProfile", back_populates="negotiation_projects")
     request_item = relationship("RequestItem", back_populates="negotiation_projects")
     supplier = relationship("SupplierProfile", back_populates="negotiation_projects")
+    knowledge_documents = relationship("KnowledgeDocument", back_populates="project")

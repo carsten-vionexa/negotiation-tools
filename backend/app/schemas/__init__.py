@@ -9,6 +9,11 @@ from app.schemas.negotiation_project import (
     NegotiationProjectCreate,
     NegotiationProjectRead,
 )
+from app.schemas.procurement_history_item import (
+    ProcurementHistoryItemBase,
+    ProcurementHistoryItemCreate,
+    ProcurementHistoryItemRead,
+)
 from app.schemas.request_item import RequestItemBase, RequestItemCreate, RequestItemRead
 from app.schemas.supplier_profile import SupplierProfileBase, SupplierProfileCreate, SupplierProfileRead
 from app.schemas.user_profile import UserProfileBase, UserProfileCreate, UserProfileRead
@@ -23,6 +28,9 @@ __all__ = [
     "NegotiationProjectBase",
     "NegotiationProjectCreate",
     "NegotiationProjectRead",
+    "ProcurementHistoryItemBase",
+    "ProcurementHistoryItemCreate",
+    "ProcurementHistoryItemRead",
     "RequestItemBase",
     "RequestItemCreate",
     "RequestItemRead",

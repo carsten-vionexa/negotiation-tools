@@ -1,17 +1,20 @@
 # Codex Tasks
 
-## Setup erledigt
+## Bereits erledigt
 
-- Docker Compose fuer Frontend, Backend und PostgreSQL/pgvector
-- FastAPI-Grundstruktur mit Healthcheck
-- Next.js-Grundstruktur mit Tailwind CSS
-- Env-Beispiel und Gitignore
-- Erste Architekturdokumentation
+- Docker Compose fuer frontend/backend/db
+- FastAPI-Grundstruktur
+- Healthcheck
+- SQLAlchemy-Models
+- Alembic-Grundstruktur
+- initiale Migration
+- Backend get_db Dependency
+- erste Pydantic-Schemas
+- erste CRUD-Router
 
 ## Naechste Schritte
 
-1. SQLAlchemy-Modelle und Alembic initialisieren.
-2. Upload- und Dokument-Metadatenmodell bauen.
-3. Parser fuer Markdown, PDF und Excel anbinden.
-4. Erste Knowledge-Base-Ansicht im Frontend erstellen.
-5. RAG-Chunking und Quellenmodell implementieren.
+1. Datenmodell fachlich bewerten.
+2. document_chunks und knowledge_claims konzipieren.
+3. Upload- und Importlogik konzipieren.
+4. Danach erst Parser, RAG und KI-Analyse planen und umsetzen.

@@ -26,11 +26,11 @@
 - Simulation- und Auswertungsmodell um SimulationScenario, SimulationMessage, SimulationResult und TrainerComment erweitert
 - Pydantic-Schemas fuer die Simulations- und Auswertungsobjekte ergaenzt
 - additive Alembic-Migration fuer das Simulation- und Auswertungsmodell erstellt
+- API-Fehlerbehandlung und Foreign-Key-Validierung fuer bestehende Create-Endpunkte verbessert
 
 ## Naechste Schritte
 
-1. API-Fehlerbehandlung und Foreign-Key-Validierung verbessern.
-2. Upload- und Dateiablage-Logik spaeter konzipieren.
-3. Parser/Mapping-Service spaeter planen.
-4. Automatische Validierung und Zielobjekt-Erzeugung spaeter planen.
-5. Chunking-Service, Embedding-Erzeugung und RAG spaeter planen.
+1. Upload- und Dateiablage-Logik spaeter konzipieren.
+2. Parser/Mapping-Service spaeter planen.
+3. Automatische Validierung und Zielobjekt-Erzeugung spaeter planen.
+4. Chunking-Service, Embedding-Erzeugung und RAG spaeter planen.

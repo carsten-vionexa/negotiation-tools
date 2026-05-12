@@ -5,6 +5,8 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_db
+from app.api.validation import ensure_exists
+from app.models.company import Company
 from app.models.request_item import RequestItem
 from app.schemas.request_item import RequestItemCreate, RequestItemRead
 
@@ -26,6 +28,8 @@ def get_request_item(request_item_id: UUID, db: Session = Depends(get_db)) -> Re
 
 @router.post("", response_model=RequestItemRead, status_code=status.HTTP_201_CREATED)
 def create_request_item(payload: RequestItemCreate, db: Session = Depends(get_db)) -> RequestItem:
+    ensure_exists(db, Company, payload.company_id, "Company")
+
     request_item = RequestItem(**payload.model_dump())
     db.add(request_item)
     db.commit()

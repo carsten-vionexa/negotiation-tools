@@ -5,6 +5,8 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_db
+from app.api.validation import ensure_exists
+from app.models.company import Company
 from app.models.supplier_profile import SupplierProfile
 from app.schemas.supplier_profile import SupplierProfileCreate, SupplierProfileRead
 
@@ -26,6 +28,8 @@ def get_supplier_profile(supplier_profile_id: UUID, db: Session = Depends(get_db
 
 @router.post("", response_model=SupplierProfileRead, status_code=status.HTTP_201_CREATED)
 def create_supplier_profile(payload: SupplierProfileCreate, db: Session = Depends(get_db)) -> SupplierProfile:
+    ensure_exists(db, Company, payload.company_id, "Company")
+
     supplier_profile = SupplierProfile(**payload.model_dump())
     db.add(supplier_profile)
     db.commit()

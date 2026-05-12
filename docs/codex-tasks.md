@@ -28,9 +28,9 @@
 - additive Alembic-Migration fuer das Simulation- und Auswertungsmodell erstellt
 - API-Fehlerbehandlung und Foreign-Key-Validierung fuer bestehende Create-Endpunkte verbessert
 - Upload- und Dateiablage-Konzept dokumentiert
+- Parser- und Mapping-Konzept fuer Excel/CSV dokumentiert
 
 ## Naechste Schritte
 
-1. Parser/Mapping-Service spaeter planen.
-2. Automatische Validierung und Zielobjekt-Erzeugung spaeter planen.
-3. Chunking-Service, Embedding-Erzeugung und RAG spaeter planen.
+1. Automatische Validierung und Zielobjekt-Erzeugung spaeter planen.
+2. Chunking-Service, Embedding-Erzeugung und RAG spaeter planen.

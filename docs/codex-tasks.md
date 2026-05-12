@@ -30,8 +30,8 @@
 - Upload- und Dateiablage-Konzept dokumentiert
 - Parser- und Mapping-Konzept fuer Excel/CSV dokumentiert
 - Validierungs- und Importfehler-Konzept dokumentiert
+- Zielobjekt-Erzeugungs-Konzept fuer Imports dokumentiert
 
 ## Naechste Schritte
 
-1. Automatische Zielobjekt-Erzeugung aus Imports planen.
-2. Chunking-Service, Embedding-Erzeugung und RAG spaeter planen.
+1. Chunking-Service, Embedding-Erzeugung und RAG spaeter planen.

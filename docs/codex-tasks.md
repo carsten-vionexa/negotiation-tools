@@ -14,9 +14,12 @@
 - bestehende Kernmodelle fachlich geschaerft
 - Pydantic-Schemas fuer die erweiterten Kernmodelle aktualisiert
 - additive Alembic-Migration fuer die fachlichen Kernmodell-Erweiterungen erstellt
+- Knowledge-Base-Datenmodell um DocumentChunk und KnowledgeClaim erweitert
+- Pydantic-Schemas fuer DocumentChunk und KnowledgeClaim ergaenzt
+- additive Alembic-Migration fuer DocumentChunk und KnowledgeClaim erstellt
 
 ## Naechste Schritte
 
-1. document_chunks und knowledge_claims konzipieren.
-2. Upload- und Importlogik konzipieren.
-3. Danach erst Parser, RAG und KI-Analyse planen und umsetzen.
+1. Upload- und Importlogik konzipieren.
+2. Parser/Chunking-Service spaeter planen.
+3. Embedding-Erzeugung/RAG spaeter planen.

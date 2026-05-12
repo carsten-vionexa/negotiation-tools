@@ -1,4 +1,6 @@
 from app.schemas.company import CompanyBase, CompanyCreate, CompanyRead
+from app.schemas.document_chunk import DocumentChunkBase, DocumentChunkCreate, DocumentChunkRead
+from app.schemas.knowledge_claim import KnowledgeClaimBase, KnowledgeClaimCreate, KnowledgeClaimRead
 from app.schemas.knowledge_document import (
     KnowledgeDocumentBase,
     KnowledgeDocumentCreate,
@@ -22,6 +24,12 @@ __all__ = [
     "CompanyBase",
     "CompanyCreate",
     "CompanyRead",
+    "DocumentChunkBase",
+    "DocumentChunkCreate",
+    "DocumentChunkRead",
+    "KnowledgeClaimBase",
+    "KnowledgeClaimCreate",
+    "KnowledgeClaimRead",
     "KnowledgeDocumentBase",
     "KnowledgeDocumentCreate",
     "KnowledgeDocumentRead",

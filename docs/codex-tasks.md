@@ -27,10 +27,10 @@
 - Pydantic-Schemas fuer die Simulations- und Auswertungsobjekte ergaenzt
 - additive Alembic-Migration fuer das Simulation- und Auswertungsmodell erstellt
 - API-Fehlerbehandlung und Foreign-Key-Validierung fuer bestehende Create-Endpunkte verbessert
+- Upload- und Dateiablage-Konzept dokumentiert
 
 ## Naechste Schritte
 
-1. Upload- und Dateiablage-Logik spaeter konzipieren.
-2. Parser/Mapping-Service spaeter planen.
-3. Automatische Validierung und Zielobjekt-Erzeugung spaeter planen.
-4. Chunking-Service, Embedding-Erzeugung und RAG spaeter planen.
+1. Parser/Mapping-Service spaeter planen.
+2. Automatische Validierung und Zielobjekt-Erzeugung spaeter planen.
+3. Chunking-Service, Embedding-Erzeugung und RAG spaeter planen.

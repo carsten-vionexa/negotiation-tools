@@ -14,8 +14,10 @@ from app.api.routes import (
     negotiation_projects,
     procurement_history_items,
     request_items,
+    simulation_scenarios,
     strategies,
     supplier_profiles,
+    trainer_comments,
     user_profiles,
     zopa_items,
 )
@@ -54,6 +56,16 @@ api_router.include_router(
     tags=["negotiation projects"],
 )
 api_router.include_router(strategies.router, prefix="/strategies", tags=["strategies"])
+api_router.include_router(
+    simulation_scenarios.router,
+    prefix="/simulation-scenarios",
+    tags=["simulation scenarios"],
+)
+api_router.include_router(
+    trainer_comments.router,
+    prefix="/trainer-comments",
+    tags=["trainer comments"],
+)
 api_router.include_router(zopa_items.router, prefix="/zopa-items", tags=["zopa items"])
 api_router.include_router(batna_options.router, prefix="/batna-options", tags=["batna options"])
 api_router.include_router(

@@ -289,6 +289,22 @@ Umgesetzte Filter:
 
 Bewusst ohne Schemaaenderung umgesetzt wurden die API-Filter `option_type` und `concession_order`: `option_type` wird auf das vorhandene Modellfeld `batna_type` gemappt, `concession_order` auf `sequence_order`.
 
+### 5.3 Phase B5 Simulation- und Review-API-Status
+
+Ergaenzte Endpunkte:
+
+- `GET /api/simulation-scenarios`, `POST /api/simulation-scenarios`, `GET /api/simulation-scenarios/{id}`, `PATCH /api/simulation-scenarios/{id}`
+- `GET /api/trainer-comments`, `POST /api/trainer-comments`, `GET /api/trainer-comments/{id}`, `PATCH /api/trainer-comments/{id}`
+
+Umgesetzte Filter:
+
+- `SimulationScenario`: `company_id`, `negotiation_project_id`, `strategy_id`, `supplier_profile_id`, `user_profile_id`, `status`, `scenario_type`, `difficulty_level`, `language`
+- `TrainerComment`: `simulation_scenario_id`, `simulation_result_id`, `simulation_message_id`, `trainer_user_profile_id`, `comment_type`, `severity`, `is_visible_to_trainee`
+
+Create- und PATCH-Endpunkte validieren die vorhandenen Foreign Keys und die fachlichen Zugehoerigkeiten: Szenarien bleiben an Company und NegotiationProject gebunden; optionale Strategy-, SupplierProfile- und UserProfile-Referenzen muessen zum gleichen Kontext passen. TrainerComments haengen im MVP weiterhin immer an einem `SimulationScenario`. Optionale Bezuege auf `SimulationResult`, `SimulationMessage` und Trainer-`UserProfile` werden gegen dieses Szenario beziehungsweise dessen Company geprueft.
+
+Produktentscheidung fuer den MVP: Es wird kein allgemeinerer Trainerreview-Anker eingefuehrt. Trainerfeedback nutzt weiterhin `SimulationScenario` als fachlichen Vorbereitungs- und Review-Anker, auch wenn keine produktive Simulation stattfindet. Ein direkterer oder allgemeinerer Review-Bezug zu Projekt, Strategie, Analyse oder Briefing bleibt eine spaetere Produktentscheidung.
+
 ## 6. Querschnittliche Frontend-Luecken
 
 1. App-Shell und Navigation: Es fehlt eine fachliche Navigation fuer Dashboard, Companies, Profile, Datenbasis, Projekte, Analyse, Strategie, Briefing, Simulation und Reviews.

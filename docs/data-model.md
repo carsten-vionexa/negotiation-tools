@@ -35,10 +35,10 @@ Die bestehenden Kernmodelle wurden additiv erweitert. Es wurden keine bestehende
 
 - `ProcurementHistoryItem`: `supplier_country`, `lead_time_weeks`, `quality_rating`, `price_assessment`, `improvement_potential`.
 - `RequestItem`: `article_name`, `article_description`, `target_delivery_time`, `rough_price_expectation`, `target_region`, `status`, `comment`.
-- `KnowledgeDocument`: `project_id`, `source_name`, `source_author`, `source_date`, `reliability_level`, `confidentiality_level`, `description`. Das bestehende `embedding`-Feld bleibt erhalten, wird aber perspektivisch nicht als primaere RAG-Basis betrachtet.
+- `KnowledgeDocument`: `project_id`, Datei-Metadaten (`original_filename`, `storage_key`, `mime_type`, `file_size_bytes`, `checksum`, optional `uploaded_at`), `source_name`, `source_author`, `source_date`, `reliability_level`, `confidentiality_level`, `description`. Das bestehende `embedding`-Feld bleibt erhalten, wird aber perspektivisch nicht als primaere RAG-Basis betrachtet.
 - `DocumentChunk`: `knowledge_document_id`, `company_id`, optionaler `project_id`, `chunk_index`, `content`, optionale Positions- und Quellenangaben, `metadata_json` und ein optionales `embedding` auf Chunk-Ebene.
 - `KnowledgeClaim`: `company_id`, optionale Projekt- und Lieferantenreferenzen, Dokument- und optionale Chunk-Referenz, `claim_type`, `claim_category`, `claim_text`, `evidence_text`, `source_reference`, `confidence_level`, `information_kind`, `is_ai_generated` und `metadata_json`.
-- `ImportJob`: `company_id`, optionale Projekt- und Dokumentreferenzen, `filename`, `source_type`, `target_entity`, `status`, Zeilenzaehler, `mapping_json`, `validation_summary_json`, optionale Fehlerzusammenfassung sowie Start- und Abschlusszeitpunkt.
+- `ImportJob`: `company_id`, optionale Projekt- und Dokumentreferenzen, `filename`, Datei-Metadaten (`original_filename`, `storage_key`, `mime_type`, `file_size_bytes`, `checksum`), `source_type`, `target_entity`, `status`, Zeilenzaehler, `mapping_json`, `validation_summary_json`, optionale Fehlerzusammenfassung sowie Start- und Abschlusszeitpunkt.
 - `ImportRow`: `import_job_id`, `company_id`, optionaler `project_id`, `row_number`, optionaler Sheet-Name, `raw_data_json`, `mapped_data_json`, `validation_status`, optionale Fehler- und Warnhinweise, flexible Zielreferenz ueber `target_entity` und `target_record_id` sowie `metadata_json`.
 - `SupplierProfile`: `region`, `industry`, `supplier_type`, `power_level`, `risk_level`, `cultural_context`, `interests_json`, `likely_tactics_json`, `constraints_json`, `is_ai_generated`, `confidence_level`.
 - `NegotiationProject`: `project_type`, `category`, `article_or_service`, `quantity`, `target_region`, `desired_delivery_time`, `internal_price_expectation`, `currency`, `current_supplier`, `priority`, `business_pressure`, `technical_dependency_level`, `supplier_power_level`, `risk_level`.
@@ -54,11 +54,28 @@ Die bestehenden Kernmodelle wurden additiv erweitert. Es wurden keine bestehende
 
 `KnowledgeDocument` kann optional einem `NegotiationProject` zugeordnet werden. Die Beziehung ist nullable und nutzt `ondelete="SET NULL"`, damit Dokumente beim Entfernen eines Projekts nicht geloescht werden.
 
+## Datei-Metadaten fuer Uploads
+
+`KnowledgeDocument` und `ImportJob` sind additiv fuer spaetere Upload- und Storage-Logik vorbereitet. Die neuen Felder sind nullable und ergaenzen die bestehenden Anzeige- und Businessfelder, ohne bestehende Create-Flows oder Daten zu brechen.
+
+Folgende Datei-Metadaten werden relational gespeichert:
+
+- `original_filename`: Der vom Nutzer gelieferte Dateiname als nachvollziehbares Metadatum. Bestehende Felder wie `filename` bleiben erhalten und koennen weiter als Anzeige- oder fachliches Businessfeld genutzt werden.
+- `storage_key`: Technische Referenz auf eine spaetere Dateiablage. Der Wert ist bewusst neutral benannt und legt weder lokale Pfade noch S3, MinIO oder eine andere Storage-Architektur fest.
+- `mime_type`: Technischer Content-Type fuer spaetere Validierung, Filterung und Anzeige. Bei `KnowledgeDocument` existierte dieses Feld bereits und bleibt erhalten.
+- `file_size_bytes`: Dateigroesse als numerischer Wert fuer Groessenlimits, Validierung und Betriebsdiagnose.
+- `checksum`: Pruefsumme fuer Integritaetspruefung, Dubletten-Erkennung und nachvollziehbare Wiederverarbeitung.
+- `uploaded_at`: Nur bei `KnowledgeDocument` als optionaler fachlicher Upload-Zeitpunkt. `created_at` bleibt der technische Erstellzeitpunkt des Datensatzes.
+
+Diese Felder sind relationale Spalten, weil sie stabile, haeufig benoetigte technische Datei-Metadaten sind und spaeter fuer Validierung, Suche, Dublettenpruefung, Auditing oder Betriebsdiagnose direkt adressierbar sein sollen. Flexible oder noch nicht standardisierte Informationen bleiben in `metadata_json`, etwa Parser-spezifische Hinweise, erkannte Dateieigenschaften, Upload-Client-Details, Validierungsdetails, Content-Inspection-Ergebnisse oder spaetere KI-/Pipeline-Zwischenergebnisse.
+
+Diese Erweiterung implementiert noch keine Upload-API, keine Dateiablage, keinen Storage-Service, kein S3 oder MinIO, kein Parsing, kein Chunking, keine Embeddings und keine RAG-Logik. `storage_key` ist nur ein vorbereiteter technischer Bezugspunkt.
+
 ## Knowledge-Base-Struktur
 
 Die Knowledge Base besteht kuenftig aus drei fachlichen Ebenen:
 
-1. `KnowledgeDocument`: Originalquelle, Datei, Dokumentmetadaten, Quelleninformationen, Projektbezug, Reliability/Confidentiality und optionaler Volltext.
+1. `KnowledgeDocument`: Originalquelle, Datei-Metadaten, Dokumentmetadaten, Quelleninformationen, Projektbezug, Reliability/Confidentiality und optionaler Volltext.
 2. `DocumentChunk`: Primaere zitierbare und semantisch durchsuchbare Einheit. Embeddings liegen perspektivisch primaer auf Chunk-Ebene.
 3. `KnowledgeClaim`: Aussageebene, die Claim, Evidenz, Quelle, Confidence und Informationsart voneinander trennt.
 
@@ -101,6 +118,8 @@ Moegliche Werte fuer `confidence_level`:
 Das Importmodell besteht aus `ImportJob` und `ImportRow`.
 
 `ImportJob` beschreibt einen vollstaendigen Importvorgang fuer eine Datei, einen Datentyp, ein Zielobjekt, den Status und das verwendete Mapping. Die Zaehlfelder halten fest, wie viele Zeilen insgesamt, verarbeitet, gueltig oder fehlerhaft sind. `mapping_json` und `validation_summary_json` bleiben flexible JSONB-Strukturen fuer spaetere Mapping- und Validierungsschritte.
+
+Die Datei-Metadaten auf `ImportJob` spiegeln die Upload-Vorbereitung fuer strukturierte Quelldateien: `filename` bleibt als Anzeige- oder Businessfeld erhalten, waehrend `original_filename`, `storage_key`, `mime_type`, `file_size_bytes` und `checksum` die technische Dateiherkunft und Integritaet nachvollziehbar machen.
 
 `ImportRow` beschreibt eine einzelne Quelldatenzeile aus Excel, CSV oder manueller Erfassung. Gespeichert werden Rohdaten, gemappte Daten, Validierungsstatus, Fehler, Warnungen und ein optionaler Bezug auf ein spaeter erzeugtes oder zugeordnetes Zielobjekt.
 

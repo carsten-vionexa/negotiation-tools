@@ -10,6 +10,11 @@ class ImportJobBase(BaseModel):
     project_id: UUID | None = None
     knowledge_document_id: UUID | None = None
     filename: str
+    original_filename: str | None = None
+    storage_key: str | None = None
+    mime_type: str | None = None
+    file_size_bytes: int | None = None
+    checksum: str | None = None
     source_type: str
     target_entity: str
     status: str = "pending"

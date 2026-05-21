@@ -9,10 +9,15 @@ class KnowledgeDocumentBase(BaseModel):
     company_id: UUID
     project_id: UUID | None = None
     filename: str
+    original_filename: str | None = None
     title: str | None = None
     document_type: str | None = None
     mime_type: str | None = None
     storage_path: str
+    storage_key: str | None = None
+    file_size_bytes: int | None = None
+    checksum: str | None = None
+    uploaded_at: datetime | None = None
     source: str | None = None
     source_name: str | None = None
     author: str | None = None

@@ -25,7 +25,7 @@ Nicht Teil dieses Schritts sind:
 - keine automatische Importverarbeitung
 - keine Background Jobs
 - kein produktiver Object Storage
-- keine Datenbankmigration, solange kein zwingender Bedarf besteht
+- keine echte Storage- oder Upload-Implementierung trotz vorbereiteter Datei-Metadaten-Spalten
 
 ## Upload-Arten
 
@@ -99,16 +99,16 @@ Grundregeln:
 
 Ein Knowledge-Upload erzeugt perspektivisch ein `KnowledgeDocument` und speichert die Datei getrennt davon im Storage.
 
-Relevante Metadaten fuer `KnowledgeDocument`:
+Relational vorbereitete Metadaten fuer `KnowledgeDocument`:
 
 - `company_id`
 - optional `project_id`
-- Original-Dateiname, aktuell naheliegend ueber `filename`, spaeter ggf. explizit `original_filename`
-- `storage_path` oder spaeter `storage_key`
+- Original-Dateiname ueber `original_filename`; `filename` kann weiter als Anzeige- oder Businessfeld genutzt werden
+- technische Storage-Referenz ueber `storage_key`; das bestehende `storage_path` bleibt aus Kompatibilitaetsgruenden erhalten
 - `mime_type`
-- Dateigroesse, spaeter ggf. `file_size_bytes`
-- Pruefsumme, spaeter ggf. `checksum`
-- Upload-Zeitpunkt, aktuell naheliegend ueber `created_at`
+- Dateigroesse ueber `file_size_bytes`
+- Pruefsumme ueber `checksum`
+- optionaler Upload-Zeitpunkt ueber `uploaded_at`; `created_at` bleibt der technische Datensatz-Zeitpunkt
 - `source_name`
 - `source_author`
 - `source_date`
@@ -116,7 +116,7 @@ Relevante Metadaten fuer `KnowledgeDocument`:
 - `confidentiality_level`
 - `description`
 
-Nicht alle genannten Datei-Metadaten muessen sofort als eigene Spalten existieren. Fehlende Felder wie `original_filename`, `file_size_bytes` oder `checksum` koennen spaeter additiv ergaenzt werden, wenn die echte Upload-API umgesetzt wird. Bis dahin kann die Dokumentation als Zielbild dienen.
+Die relationalen Datei-Metadaten sind nur eine Persistenzvorbereitung. Die echte Upload-API entscheidet spaeter, wann und wie diese Felder befuellt werden.
 
 `KnowledgeDocument.content_text`, `DocumentChunk`, `KnowledgeClaim` und Embeddings werden durch den Upload nicht befuellt. Diese Daten entstehen erst in spaeteren Verarbeitungsschritten.
 
@@ -129,6 +129,9 @@ Konzeptioneller Startzustand:
 - `company_id` wird validiert.
 - Optionales `project_id` wird validiert und muss zur `company_id` gehoeren.
 - `filename` speichert den Original-Dateinamen oder eine fachlich sinnvolle Anzeigeform.
+- `original_filename` speichert den vom Nutzer gelieferten Dateinamen.
+- `storage_key` speichert spaeter die technische Storage-Referenz.
+- `mime_type`, `file_size_bytes` und `checksum` speichern stabile technische Datei-Metadaten.
 - `source_type` ist `excel` oder `csv`.
 - `target_entity` beschreibt das spaetere Zielobjekt, zum Beispiel `procurement_history_item` oder `request_item`.
 - `status` startet mit `pending`.

@@ -1,9 +1,9 @@
-from datetime import date
+from datetime import date, datetime
 from typing import Any
 from uuid import UUID
 
 from pgvector.sqlalchemy import Vector
-from sqlalchemy import Date, ForeignKey, Integer, String, Text
+from sqlalchemy import BigInteger, Date, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.postgresql import JSONB, UUID as PG_UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -26,10 +26,15 @@ class KnowledgeDocument(UUIDPrimaryKeyMixin, TimestampMixin, Base):
         index=True,
     )
     filename: Mapped[str] = mapped_column(String(255), nullable=False)
+    original_filename: Mapped[str | None] = mapped_column(String(255))
     title: Mapped[str | None] = mapped_column(String(255))
     document_type: Mapped[str | None] = mapped_column(String(100), index=True)
     mime_type: Mapped[str | None] = mapped_column(String(150))
     storage_path: Mapped[str] = mapped_column(String(500), nullable=False)
+    storage_key: Mapped[str | None] = mapped_column(String(500))
+    file_size_bytes: Mapped[int | None] = mapped_column(BigInteger)
+    checksum: Mapped[str | None] = mapped_column(String(128))
+    uploaded_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     source: Mapped[str | None] = mapped_column(String(255))
     source_name: Mapped[str | None] = mapped_column(String(255))
     author: Mapped[str | None] = mapped_column(String(255))

@@ -28,6 +28,10 @@
 - additive Alembic-Migration fuer das Simulation- und Auswertungsmodell erstellt
 - API-Fehlerbehandlung und Foreign-Key-Validierung fuer bestehende Create-Endpunkte verbessert
 - Upload- und Dateiablage-Konzept dokumentiert
+- Datei-Metadaten fuer KnowledgeDocument und ImportJob additiv ergaenzt
+- Pydantic-Schemas fuer Upload-Datei-Metadaten aktualisiert
+- additive Alembic-Migration fuer Upload-Datei-Metadaten erstellt
+- relationale Datei-Metadaten vs. flexible JSONB-Informationen dokumentiert
 - Parser- und Mapping-Konzept fuer Excel/CSV dokumentiert
 - Validierungs- und Importfehler-Konzept dokumentiert
 - Zielobjekt-Erzeugungs-Konzept fuer Imports dokumentiert

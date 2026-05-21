@@ -22,6 +22,19 @@ class TrainerCommentCreate(TrainerCommentBase):
     pass
 
 
+class TrainerCommentUpdate(BaseModel):
+    simulation_scenario_id: UUID | None = None
+    simulation_result_id: UUID | None = None
+    simulation_message_id: UUID | None = None
+    trainer_user_profile_id: UUID | None = None
+    comment_type: str | None = None
+    comment_text: str | None = None
+    related_competency: str | None = None
+    severity: str | None = None
+    is_visible_to_trainee: bool | None = None
+    metadata_json: dict[str, Any] | None = None
+
+
 class TrainerCommentRead(TrainerCommentBase):
     model_config = ConfigDict(from_attributes=True)
 

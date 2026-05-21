@@ -75,14 +75,14 @@ Das Datenmodell ist fuer den MVP breit vorbereitet. Besonders wichtig sind:
 
 Das Frontend ist eine Next-App mit `app/page.tsx`, `app/layout.tsx`, globalem CSS, `frontend/lib/utils.ts`, lucide-react und shadcn-nahem Setup (`components.json`). Aktuell gibt es:
 
-- eine statische Startseite / Landing-artige Cockpit-Seite,
-- einen Link zu den API-Docs,
-- keine fachlichen App-Routes fuer die MVP-Screens,
-- keine Navigation,
-- keine Layout-Shell fuer Trainer-/Trainee-Flows,
-- keine API-Client-Struktur,
-- keine Datenlade-, Formular- oder Detailansichten,
-- keine Komponenten fuer Tabellen, Status, Notizen, Unterlisten oder Review.
+- eine App-Shell mit Hauptnavigation fuer die MVP-Screen-Gruppen,
+- App-Router-Routen und Platzhalterseiten fuer Dashboard, Firmen, Rollenprofile, Projekte, Datenbasis, Analyse, Strategie, Briefing, Simulation und Trainerreview,
+- Detailrouten als Grundlage fuer `/companies/[id]` und `/projects/[id]`,
+- eine zentrale API-Client-Grundlage mit `NEXT_PUBLIC_API_URL`, GET/POST/PATCH-Helfern, JSON-Parsing und einheitlicher Fehlerklasse,
+- einfache wiederverwendbare Muster fuer Loading-, Error- und Empty-State sowie PageHeader,
+- noch keine fachlichen Listen, Detailansichten, Formulare, Knowledge-Base-UI, Analyse-Logik, Strategie-Builder, Simulation, Chat, Voice, Upload-/Import-UI oder Trainerreview-Fachlogik.
+
+Stand nach Phase B6 / Issue #24: Die Frontend-Grundlage ist vorbereitet, damit Folgeissues echte Fachscreens auf bestehenden Routen ergaenzen koennen. Fachliche API-Clients wurden bewusst noch nicht vollstaendig ausgebaut; als Strukturbeispiel existiert nur eine schlanke Company-Lesefunktion.
 
 ## 4. Screen-by-Screen-Gap-Analyse
 

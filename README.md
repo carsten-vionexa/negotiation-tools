@@ -29,6 +29,9 @@ docker compose up --build
 - Backend Healthcheck: http://localhost:8000/api/health
 - Backend Docs: http://localhost:8000/docs
 
+Das Frontend verwendet `NEXT_PUBLIC_API_URL` als Base URL fuer API-Aufrufe. Lokal ist in `.env.example`
+`http://localhost:8000` voreingestellt.
+
 ## Lokale Datenbankmigrationen
 
 Die PostgreSQL-Datenbank laeuft per Docker Compose mit persistentem Volume `postgres_data`.

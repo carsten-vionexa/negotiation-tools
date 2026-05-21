@@ -77,7 +77,7 @@ KI, RAG, Embeddings, Prompting und Simulation-Engine werden in diesem Dokument n
 - Keine ausgereifte Trainer-Dashboard-Logik.
 - Keine produktive Rechteverwaltung.
 - Keine automatische KI-Freigabekette.
-- Trainerreview kann im MVP als fokussierter Kommentar- und Freigabeprozess starten.
+- Trainerreview kann im MVP als fokussierter Kommentarbereich mit einfacher Sichtbarkeitsmarkierung starten.
 
 ### Admin / Mandantenverwalter als spaetere Ausbaustufe
 
@@ -141,8 +141,8 @@ Diese Erweiterungen gehoeren zum MVP, aber nicht als eigene Screens:
 |---|---|---|
 | Import- und Upload-Uebersicht | Trainer, spaeter Admin | Kein produktiver MVP-Screen. Upload- und Importstatus duerfen als Datenlage in Knowledge Base oder Company-Kontext referenziert werden, aber nicht als eigene Pflichtoberflaeche. |
 | Simulation durchfuehren | Trainee | Kein produktiver MVP-Screen und keine produktive Engine. Die fachliche Durchfuehrung bleibt Zielbild nach der Konfiguration. |
-| Auswertung und Lerntransfer | Trainee, Trainer | Kein vollwertiger eigener MVP-Screen. Lernpunkte koennen im Trainerreview oder als einfache Notiz vorkommen. |
-| Lernhistorie / Fortschritt | Trainee, Trainer | Kein MVP. Fortschritt ueber mehrere Durchlaeufe, Zertifikate, Benchmarks und Historienlogik bleiben spaeter. |
+| Auswertung und Lerntransfer | Trainee, Trainer | Kein vollwertiger eigener MVP-Screen. Lernpunkte koennen reduziert im Trainerreview vorkommen. |
+| Lernhistorie / Fortschritt | Trainee, Trainer | Spaetere Ausbaustufe, kein MVP. Fortschritt ueber mehrere Durchlaeufe, Zertifikate, Benchmarks und Historienlogik bleiben spaeter. |
 | Admin / Rechteverwaltung | Admin | Kein MVP. Mandanten-, Nutzer-, Rechte- und Auditfunktionen bleiben spaetere Ausbaustufe. |
 | Relationship Memory als eigenes Modul | Trainer, Trainee | Kein MVP. Beziehungskontext erscheint nur als einfache Lieferantenbeziehungsnotiz innerhalb bestehender Screens. |
 
@@ -152,7 +152,7 @@ Diese Erweiterungen gehoeren zum MVP, aber nicht als eigene Screens:
 - Simulation durchfuehren als produktive Engine oder Chat-/Voice-Erlebnis.
 - Laufender Chat, Voice-Modus, Streaming-Logik, automatische Taktikerkennung und automatische Auswertung.
 - Auswertung und Lerntransfer als vollwertiger eigener Screen.
-- Lernhistorie, Fortschrittslogik, Zertifikate oder Benchmarks.
+- Lernhistorie, Fortschrittslogik, Zertifikate, Kompetenztrend-Analyse oder Benchmarks.
 - Admin-, Rollen- und Rechteverwaltung.
 - Relationship Memory als eigenes Modul.
 - Vollautomatische ZOPA-Berechnung, verbindliche KI-Strategie-Generierung, automatische BATNA-Bewertung, vollautomatische Angebotsanalyse, eigenes RFQ-Modul oder automatische Angebotsbewertung.
@@ -550,15 +550,62 @@ Qualitaetsregel: Hypothesen duerfen nicht als Fakten dargestellt werden. Jede re
 
 **MVP-Status:** MVP-Core.
 
-**Zweck des Screens:** Menschliches Trainerfeedback zu Projekt, Analyse, Strategie, Briefing, Simulationskonfiguration oder spaeteren Ergebnissen erfassen und sichtbar machen.
+**Zweck des Screens:** Trainerreview sichert im MVP den didaktischen Mehrwert des Tools. Der Screen erlaubt menschliche Einordnung, Feedback, Korrektur und Lernfokus zu Projekt, Analyse, Strategie, Kultur- und Rollenbriefing oder Simulationskonfiguration, ohne automatische Auswertung oder produktive Simulationsdurchfuehrung vorauszusetzen.
 
-**Hauptnutzer:** Trainer.
+**Rolle im Workflow:** Trainerreview ist der menschliche Reflexions- und Qualitaetspunkt am Ende oder zwischen den Vorbereitungsschritten. Der Trainer kann fachlich korrigieren, strategische Hinweise geben, kommunikative oder taktische Muster benennen, interkulturelle Vorsichtshinweise einordnen und naechste Lernschritte festhalten. Fuer Trainees wird aus Vorbereitung und Feedback ein konkreter Lernauftrag statt nur eine Dokumentensammlung.
 
-**Zentrale Nutzeraktionen:** Kommentar schreiben, Kompetenzbezug oder fachlichen Bezug setzen, Sichtbarkeit fuer Trainee steuern, Lernpunkt oder Korrekturhinweis festhalten.
+**Primaere Nutzer:** Trainer.
 
-**Wichtigste Ausgaben / Anzeigen:** Bestehende Kommentare, sichtbare und interne Feedbackanteile, fachlicher Kontext des Kommentars, einfache Lernpunkte.
+**Sekundaere Nutzer:** Trainees sehen nur Kommentare oder Lernpunkte, die fachlich als trainee-sichtbar markiert sind. Trainerinterne Notizen bleiben aus Trainee-Sicht ausgeblendet oder werden nicht als Trainee-Inhalt verstanden.
 
-**MVP-Abgrenzung:** Kein komplexer Review-Workflow, keine Rollenrechte-Engine, keine automatische Feedbackfreigabe und kein vollwertiger Lerntransfer-Screen.
+**Mindestens sichtbar im MVP:**
+
+- Bezug zum Verhandlungsprojekt.
+- Optionaler Bezug zu Strategie, Analyse, Briefing oder Simulationskonfiguration.
+- Kommentartext.
+- Kommentartyp, zum Beispiel fachlich, strategisch, kommunikativ, taktisch, interkulturell oder Lerntransfer.
+- Kompetenzbezug als einfache Kategorie.
+- Severity / Prioritaet als einfache Einordnung.
+- Sichtbarkeit als trainerintern oder trainee-sichtbar.
+- Lernauftrag oder naechster Fokus.
+- Einfache Lernpunkte.
+- Erstellungsdatum oder Aenderungsstand als fachliche Orientierung, falls bereits vorhanden.
+
+**Im MVP editierbar:** Trainerseitig sollen Kommentartext, Kommentartyp, Kompetenzbezug, Severity / Prioritaet, Sichtbarkeit, Lernauftrag und einfache Lernpunkte bearbeitbar sein. Der Bezug zum Projekt und optional zu Analyse, Strategie, Briefing oder Simulationskonfiguration dient der Einordnung und sollte fachlich nachvollziehbar sein.
+
+**Sichtbarkeit im MVP:** Sichtbarkeit bedeutet im MVP eine fachliche Markierung, keine ausgereifte Rechteverwaltung. Die Markierung hilft zu unterscheiden, ob ein Kommentar nur der trainerinternen Vorbereitung dient oder ob er als Feedback, Lernpunkt oder naechster Fokus fuer den Trainee sichtbar sein soll. Daraus entsteht im MVP keine Rollenrechte-Engine, kein komplexer Freigabeprozess und keine automatische Feedbackveroeffentlichung.
+
+**Moegliche Kommentartypen:**
+
+- Fachliche Korrektur.
+- Strategiehinweis.
+- Kommunikationsfeedback.
+- Taktikfeedback.
+- Interkultureller Hinweis.
+- Reflexionsfrage.
+- Lernauftrag.
+- Trainerinterne Notiz.
+
+**Moegliche Kompetenzkategorien:**
+
+- Zielklarheit.
+- Interessen klaeren.
+- Fragetechnik.
+- Argumentation.
+- Konzessionsmanagement.
+- Druckmanagement.
+- Beziehungsmanagement.
+- Interkulturelle Sensibilitaet.
+- Abschlussorientierung.
+- Selbstreflexion.
+
+**Einfache Lernpunkte:** Lernpunkte sind im MVP kurze, trainergefuehrte Hinweise auf den naechsten Fokus. Sie koennen aus einem Kommentar entstehen oder direkt im Trainerreview dokumentiert werden, etwa "naechstes Mal Interessenfragen vor Preisargumenten stellen" oder "Konzession nur gegen Gegenleistung anbieten". Sie ersetzen keinen vollwertigen Lerntransfer-Screen, keine Kompetenzmatrix und keine automatische Lernpfadlogik.
+
+**Optional oder spaeter:** Ausgereifter Review-Workflow, Versionierung von Feedback, automatische Feedbackvorschlaege, Kompetenzmatrix, Lernhistorie, Zertifikate, Benchmarking, automatische KI-Bewertung, automatische Score-Berechnung und formale Freigabestrecken bleiben spaeter.
+
+**MVP-Abgrenzung:** Kein komplexer Review-Workflow, keine Rollenrechte-Engine, keine automatische Feedbackfreigabe, keine automatische Score-Berechnung, keine vollstaendige Kompetenzmatrix, kein Zertifikat, keine Benchmarking-Logik, keine automatische KI-Bewertung als Pflicht und kein vollwertiger Lerntransfer-Screen.
+
+**Offene Produktentscheidungen:** Welche Kommentartypen wirklich fuer den MVP reichen, welche Kompetenzkategorien didaktisch tragfaehig sind, welche Kommentare trainerintern bleiben, ob Feedback versioniert werden soll oder einfache Bearbeitung reicht und wie stark Lernpunkte strukturiert werden sollen.
 
 ### Zielbild A. Import- und Upload-Uebersicht
 
@@ -572,29 +619,69 @@ Qualitaetsregel: Hypothesen duerfen nicht als Fakten dargestellt werden. Jede re
 
 **Status:** Zielbild, nicht MVP-Core.
 
-**Einordnung:** Die gefuehrte Simulation bleibt ein spaeterer produktiver Screen nach der Konfiguration. Im MVP wird fachlich vorbereitet, was eine Simulation braucht; die Durchfuehrung selbst ist keine Pflicht.
+**Zweck im Zielbild:** Dieser spaetere Screen fuehrt eine Verhandlungssimulation durch, in der der Trainee mit einer KI-Gegenrolle oder einem Trainingsszenario interagiert. Er waere der Ort fuer den laufenden Dialog, Gespraechsphasen und spaetere Ergebnisgrundlagen.
 
-**MVP-Abgrenzung:** Kein produktiver KI-Dialog, keine Chat- oder Voice-Engine, keine automatische Taktikerkennung und kein RAG-Kontext als Pflicht.
+**Einordnung im MVP:** Der MVP bereitet Simulationen fachlich vor, fuehrt sie aber nicht produktiv durch. Simulation konfigurieren beschreibt Szenario, Rolle, Schwierigkeit, Sprache, Briefing und Erfolgskriterien. Simulation durchfuehren bleibt nur konzeptionell beschrieben und ist kein MVP-Core.
+
+**Moegliche spaetere Inhalte:**
+
+- Laufender Dialog.
+- Rollenbriefing.
+- Sichtbare Gespraechsphase.
+- Zugriff auf Strategie oder Kurznotizen.
+- Abschlussstatus.
+- Spaetere Dialogspeicherung.
+- Spaetere Auswertungsgrundlage.
+
+**MVP-Abgrenzung:** Keine produktive KI-Verhandlungsengine, kein Chat als Pflicht, kein Voice-Modus, kein Streaming, keine automatische Taktikerkennung, keine automatische Gespraechsauswertung und keine RAG-Anbindung als Pflicht.
 
 ### Zielbild C. Auswertung und Lerntransfer
 
 **Status:** Zielbild, nicht MVP-Core.
 
-**Einordnung:** Ergebnis, Feedback, Lernpunkte und naechste Schritte sind fachlich wichtig, erscheinen im MVP aber reduziert im Trainerreview oder als einfache Notiz. Ein vollwertiger eigener Screen bleibt spaeter.
+**Zweck im Zielbild:** Dieser spaetere Screen buendelt Ergebnis, Feedback, Zielerreichung, Lernpunkte und naechste Entwicklungsschritte nach Simulationen oder realen Verhandlungsvorbereitungen. Er macht aus Durchfuehrung und Review eine strukturierte Reflexion.
 
-**MVP-Abgrenzung:** Keine automatische Bewertung, keine Score-Pflicht, keine vollwertige Lerntransfer-Arbeitsstrecke.
+**Einordnung im MVP:** Auswertung und Lerntransfer bleiben wichtig, werden im MVP aber nur reduziert ueber Trainerreview und einfache Lernpunkte abgedeckt. Ein eigener vollwertiger Auswertungs- und Lerntransfer-Screen ist keine MVP-Pflicht.
+
+**Moegliche spaetere Inhalte:**
+
+- Ergebniszusammenfassung.
+- Zielerreichung.
+- Vereinbarte Konditionen.
+- Relevante Gespraechsmomente.
+- Lernpunkte.
+- Trainerfeedback.
+- Selbstreflexion.
+- Naechste Uebung.
+- Transferaufgabe.
+- Optionale Scores.
+
+**MVP-Abgrenzung:** Keine automatische Bewertung, keine Score-Pflicht, keine automatische Kompetenzanalyse, keine Taktikerkennung, keine vollwertige Lerntransfer-Arbeitsstrecke und keine Zertifikatslogik.
 
 ### Zielbild D. Lernhistorie / Fortschritt
 
-**Status:** Zielbild, nicht MVP-Core.
+**Status:** Spaetere Ausbaustufe, nicht MVP-Core.
 
-**Einordnung:** Fortschritt ueber mehrere Projekte und Simulationen hinweg ist eine spaetere Ausbaustufe.
+**Zweck im Zielbild:** Lernhistorie / Fortschritt zeigt langfristige Entwicklung ueber mehrere Projekte, Simulationen, Reviews und Lernpunkte hinweg. Der Screen waere erst sinnvoll, wenn genuegend Wiederholung, Feedback und Auswertungsdaten vorhanden sind.
 
-**MVP-Abgrenzung:** Keine Lernhistorie, keine Zertifikatslogik, keine Benchmark-Datenbank und keine Team-Auswertungen.
+**Einordnung im MVP:** Im MVP ist dieser Screen nicht erforderlich, weil noch keine ausreichende Historie aus mehreren produktiven Simulationen, Auswertungen und Reviews vorausgesetzt werden soll. Lernhistorie wird erst sinnvoll, wenn produktive Simulation, Auswertung und mehrere Reviews vorhanden sind.
+
+**Moegliche spaetere Inhalte:**
+
+- Fruehere Simulationen.
+- Fruehere Trainerkommentare.
+- Wiederkehrende Lernmuster.
+- Kompetenzentwicklung.
+- Offene Entwicklungsfelder.
+- Abgeschlossene Lernauftraege.
+- Fortschritt ueber Zeit.
+- Optionale Zertifikats- oder Nachweislogik.
+
+**MVP-Abgrenzung:** Keine Lernhistorie, keine Kompetenztrend-Analyse, keine Benchmark-Datenbank, keine Team-Auswertungen, keine Zertifikate und keine automatisierte Lernpfad-Logik.
 
 ## 5. Trainer-Workflow im MVP
 
-Der Trainer-Workflow ist im MVP der stabilste Startpunkt, weil Datenbasis, Szenarioqualitaet und didaktische Freigabe kontrolliert werden muessen.
+Der Trainer-Workflow ist im MVP der stabilste Startpunkt, weil Datenbasis, Szenarioqualitaet und didaktische Einordnung kontrolliert werden muessen.
 
 | Schritt | Beschreibung | MVP-Screen |
 |---|---|---|
@@ -606,7 +693,7 @@ Der Trainer-Workflow ist im MVP der stabilste Startpunkt, weil Datenbasis, Szena
 | Analyse und Strategie pruefen | Fakten, Annahmen, Hypothesen, ZOPA, BATNA und Argumentation fachlich pruefen | Analyseansicht, Strategie-Builder |
 | Briefing vorbereiten | Lieferantenrolle, Beziehungskontext und kulturelle Arbeitshypothesen klaeren | Kultur- und Rollenbriefing |
 | Simulation vorbereiten | Szenario, Rolle, Schwierigkeit und Erfolgskriterien setzen | Simulation konfigurieren |
-| Feedback geben | Trainerkommentar und einfache Lernpunkte dokumentieren | Trainerreview / Trainerkommentar |
+| Feedback geben | Trainerkommentar, Sichtbarkeitsmarkierung, Lernauftrag und einfache Lernpunkte dokumentieren | Trainerreview / Trainerkommentar |
 
 Import/Upload, produktive Simulationsdurchfuehrung, vollwertiger Lerntransfer und Lernhistorie sind in diesem Workflow bewusst nicht als MVP-Pflichtschritte enthalten.
 
@@ -651,11 +738,11 @@ Diese Tabelle dient nur der fachlichen Orientierung. Sie legt keine neuen Datenm
 | Strategie-Builder | Strategietitel, Projektbezug, Zielbild, Muss-/Soll-/Nice-to-have-Ziele, ZOPA-Dimensionen, WAP, BATNA-Optionen und BATNA-Staerke, Konzessionen als Tauschobjekte, Argumentation, Gegenargumente, Reaktionsoptionen, offene Fragen, Hypothesenimplikationen, strategierelevante Stakeholder- und Lieferantenbeziehungsnotizen, Eskalationsnotiz, reduzierte Angebots-/RFQ-Notizen | MVP-Core |
 | Kultur- und Rollenbriefing | Projektbezug, Lieferant oder Gegenrolle, Rollenbeschreibung, erwartete Interessen und Constraints, taktische Muster, Beziehungskontext, kulturelle Arbeitshypothesen, Do's / Don'ts, Kommunikationsrisiken, Entscheidungslogik, offene Unsicherheiten, Pruefhinweise | MVP-Core |
 | Simulation konfigurieren | Szenariotitel, Projektbezug, zugeordnete Strategie, Trainee oder Rolle, Lieferant oder Gegenrolle, Rollenbeschreibung, Gespraechsphase, Schwierigkeit, Sprache, Ziel, Erfolgskriterien, Zeitrahmen, Trainee-Briefing, interne Trainerhinweise, erwartete Einwaende oder taktische Muster, Startbereitschaft | MVP-Core |
-| Trainerreview / Trainerkommentar | Trainerfeedback, Sichtbarkeit, Lernpunkt, fachlicher Bezug | MVP-Core |
+| Trainerreview / Trainerkommentar | Projektbezug, optionaler Bezug zu Analyse, Strategie, Briefing oder Simulationskonfiguration, Kommentartext, Kommentartyp, Kompetenzbezug, Severity / Prioritaet, Sichtbarkeit als trainerintern oder trainee-sichtbar, Lernauftrag, einfache Lernpunkte, Erstellungsdatum oder Aenderungsstand falls vorhanden | MVP-Core |
 | Import- und Upload-Uebersicht | Upload- und Importstatus, Validierung, Mapping | Zielbild, nicht MVP |
-| Simulation durchfuehren | Laufender Dialog, Phasen, Nachrichten, Abschluss | Zielbild, nicht MVP |
-| Auswertung und Lerntransfer | Ergebnis, Scores, Lerntransfer, naechste Schritte | Zielbild, nicht MVP |
-| Lernhistorie / Fortschritt | Entwicklung ueber mehrere Projekte oder Simulationen | Zielbild, nicht MVP |
+| Simulation durchfuehren | Laufender Dialog, Rollenbriefing, Gespraechsphase, Strategie- oder Kurznotizen, Abschlussstatus, Dialogspeicherung, Auswertungsgrundlage | Zielbild, nicht MVP |
+| Auswertung und Lerntransfer | Ergebniszusammenfassung, Zielerreichung, Konditionen, relevante Gespraechsmomente, Lernpunkte, Trainerfeedback, Selbstreflexion, naechste Uebung, Transferaufgabe, optionale Scores | Zielbild, nicht MVP |
+| Lernhistorie / Fortschritt | Fruehere Simulationen und Trainerkommentare, wiederkehrende Lernmuster, Kompetenzentwicklung, Entwicklungsfelder, abgeschlossene Lernauftraege, Fortschritt ueber Zeit, optionale Nachweislogik | Spaetere Ausbaustufe, nicht MVP |
 
 ## 9. KI-, RAG- und Automatisierungsgrenzen
 
@@ -682,6 +769,7 @@ Dieses Konzept erstellt keine Prompts und keine Implementierung. Es markiert nur
 - Kultur- und Rollenbriefing.
 - Simulation konfigurieren.
 - Trainerreview / Trainerkommentar.
+- Trainerreview mit Kommentartext, Projekt- oder Vorbereitungskontext, Kommentartyp, Kompetenzbezug, Severity / Prioritaet, fachlicher Sichtbarkeitsmarkierung, Lernauftrag und einfachen Lernpunkten.
 - Einfache Lieferantenbeziehungsnotiz innerhalb bestehender Screens.
 - Einfache Stakeholdernotiz innerhalb bestehender Screens.
 - Einfache Hypothesenliste innerhalb bestehender Screens.
@@ -699,7 +787,7 @@ Dieses Konzept erstellt keine Prompts und keine Implementierung. Es markiert nur
 - Simulation durchfuehren als produktive Engine.
 - Laufender Chat, Voice-Modus, Streaming-Logik, automatische Taktikerkennung und automatische Auswertung.
 - Auswertung und Lerntransfer als vollwertiger eigener Screen.
-- Lernhistorie, Fortschritt, Zertifikate und Benchmarks.
+- Lernhistorie, Fortschritt, Kompetenztrend-Analyse, Zertifikate, Benchmark-Datenbank und automatisierte Lernpfad-Logik.
 - Team-/Admin-Dashboards.
 - Rechte- und Rollensystem.
 - CRM-Anbindung.
@@ -724,6 +812,11 @@ Dieses Konzept erstellt keine Prompts und keine Implementierung. Es markiert nur
 - Keine produktive Chat-, Voice- oder Streaming-Logik.
 - Keine automatische Taktikerkennung.
 - Keine Rechteverwaltung.
+- Keine komplexen Review-Workflows.
+- Keine automatische Feedbackfreigabe.
+- Keine automatische Score-Berechnung.
+- Keine Zertifikatslogik.
+- Keine Benchmarking-Logik.
 
 ## 11. Nachgelagerte Detail-Cluster
 
@@ -754,4 +847,8 @@ Moegliche Cluster sind:
 - Wie klar muessen kulturelle Hinweise als Hypothesen markiert werden und welche Inhalte bleiben trainerintern?
 - Welche Szenariotypen, Schwierigkeitsgrade und Gespraechsphasen reichen fuer die MVP-Simulationsvorbereitung?
 - Wann wird aus der Simulationskonfiguration ein produktiver Simulationsscreen?
+- Welche Kommentartypen reichen im Trainerreview wirklich fuer den MVP?
+- Welche Kompetenzkategorien sind didaktisch tragfaehig?
+- Welche Trainerkommentare bleiben intern und welche Lernpunkte werden trainee-sichtbar?
+- Reicht einfache Bearbeitung von Feedback oder wird spaeter Versionierung gebraucht?
 - Welche Funktionen gehoeren erst in Zielbild-Screens statt in den MVP-Core?

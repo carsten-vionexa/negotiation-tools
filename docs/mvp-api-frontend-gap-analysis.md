@@ -238,15 +238,36 @@ Bewertung: Trainerreview kann im MVP auch ohne produktive Simulation sinnvoll se
 
 ## 5. Querschnittliche API-Luecken
 
-Stand nach Phase B2 / Issue #20: Die erste Backend-Readiness fuer Stammdaten und Projekte ist umgesetzt. Fuer `Company`, `UserProfile`, `SupplierProfile`, `RequestItem` und `NegotiationProject` gibt es nun fachliche Listenfilter und `PATCH`-Endpunkte. Create- und Patch-Flows validieren relevante Foreign Keys konsistent; bei `NegotiationProject` wird zusaetzlich die Company-Zugehoerigkeit von Owner, Anfrageposition und Lieferantenprofil geprueft. Es wurden keine neuen fachlichen Modelle, Tabellen, Migrationen oder Frontend-Aenderungen eingefuehrt.
+Stand nach Phase B3 / Issue #21: Die lesende Backend-Readiness fuer Knowledge-Base-, Import- und Einkaufsdaten ist umgesetzt. Fuer `DocumentChunk`, `KnowledgeClaim`, `ProcurementHistoryItem`, `ImportJob` und `ImportRow` gibt es nun `GET`-Listen- und Detailendpunkte mit MVP-relevanten Filtern. `KnowledgeDocument` wurde um Listenfilter fuer Company, Projekt, Dokumenttyp, Parsing-Status und Quelle erweitert. Es wurden keine Upload-, Importverarbeitungs-, OCR-, RAG-, KI-, Frontend-, Modell- oder Migrationsaenderungen eingefuehrt.
 
-1. Filterfaehige Listenendpunkte: Fuer die Stammdaten- und Projektbasis sind erste Filter vorhanden. Weitere Filter bleiben fuer Knowledge Base, Strategy, SimulationScenario, TrainerComment und spaetere Sichtbarkeitslogik offen.
+1. Filterfaehige Listenendpunkte: Fuer die Stammdaten-, Projekt- und Knowledge-Base-Lesebasis sind erste Filter vorhanden. Weitere Filter bleiben fuer Strategy, SimulationScenario, TrainerComment und spaetere Sichtbarkeitslogik offen.
 2. Update-Endpunkte: Fuer Company, UserProfile, SupplierProfile, RequestItem und NegotiationProject sind `PATCH`-Endpunkte vorhanden. Updates fuer Knowledge-Base-, Strategy-, Simulation- und Review-Objekte bleiben Folgearbeit.
-3. Fehlende Router fuer bereits modellierte Objekte: Besonders wichtig sind Strategy-Objekte, SimulationScenario und TrainerComment. Fuer Knowledge Base sind Claims, Chunks, ProcurementHistoryItems und Importstatus relevant.
+3. Fehlende Router fuer bereits modellierte Objekte: Besonders wichtig sind Strategy-Objekte, SimulationScenario und TrainerComment. Fuer Knowledge Base sind Claims, Chunks, ProcurementHistoryItems und Importstatus nun lesend verfuegbar; fachliche Schreib- und Review-Flows bleiben Folgearbeit.
 4. Detail-/Summary-Antworten: Viele Screens brauchen zusammengesetzte Daten, etwa Projekt mit Company/Owner/Supplier/RequestItem, Strategie mit Unterlisten, Company mit Datenlage oder Dashboard-Summary.
 5. JSONB-Konventionen: Analyse-, Stakeholder-, Relationship-, Hypothesen- und reduzierte Angebotsvergleichsnotizen sollten fuer den MVP als klare Dokumentationskonventionen gefuehrt werden, bevor neue Tabellen entstehen.
 6. Sichtbarkeit: Trainerinterne vs. trainee-sichtbare Inhalte sind fachlich markiert, aber noch keine Rechteverwaltung. API-Filter duerfen das als fachlichen Parameter behandeln, nicht als vollstaendige Auth-Loesung.
 7. Validierung gleicher Company: Create/Update-Endpunkte fuer verknuepfte Objekte sollten wie `NegotiationProject` sicherstellen, dass referenzierte Objekte zur gleichen Company gehoeren.
+
+### 5.1 Phase B3 Read-API-Status
+
+Ergaenzte read-only Endpunkte:
+
+- `GET /api/document-chunks`, `GET /api/document-chunks/{id}`
+- `GET /api/knowledge-claims`, `GET /api/knowledge-claims/{id}`
+- `GET /api/procurement-history-items`, `GET /api/procurement-history-items/{id}`
+- `GET /api/import-jobs`, `GET /api/import-jobs/{id}`
+- `GET /api/import-rows`, `GET /api/import-rows/{id}`
+
+Umgesetzte Filter:
+
+- `DocumentChunk`: `knowledge_document_id`, `company_id`, `negotiation_project_id`
+- `KnowledgeClaim`: `company_id`, `negotiation_project_id`, `supplier_profile_id`, `knowledge_document_id`, `document_chunk_id`, `claim_type`, `information_kind`, `confidence_level`, `is_ai_generated`
+- `ProcurementHistoryItem`: `company_id`, `category`, `item_name`, `country`, `supplier_name`, `purchased_from`, `purchased_to`
+- `ImportJob`: `company_id`, `negotiation_project_id`, `status`, `source_type`, `target_entity`
+- `ImportRow`: `import_job_id`, `company_id`, `negotiation_project_id`, `status`, `target_entity`, `row_number`
+- `KnowledgeDocument`: `company_id`, `negotiation_project_id`, `document_type`, `status`, `source_type`
+
+Bewusst nicht umgesetzt wurden Filter fuer Felder, die im aktuellen Modell nicht existieren: `DocumentChunk.chunk_type`, `DocumentChunk.status`, `KnowledgeClaim.status`, `KnowledgeClaim.target_entity`, `ProcurementHistoryItem.supplier_profile_id`, `ProcurementHistoryItem.article_name`, `ImportJob.created_by_user_profile_id`. Bei `ImportRow.status` wird der API-Filter bewusst auf das vorhandene Feld `validation_status` gemappt; bei projektbezogenen Filtern wird `negotiation_project_id` auf das interne Feld `project_id` gemappt.
 
 ## 6. Querschnittliche Frontend-Luecken
 
@@ -266,7 +287,7 @@ Die Reihenfolge sollte Backend-Readiness und Frontend-Nutzbarkeit so staffeln, d
    Begruendung: Company, UserProfile, SupplierProfile, RequestItem und NegotiationProject sind die Grundlage fast aller Screens. Prioritaet haben Filter, Update-Endpunkte und Detail-Kompositionen.
 
 2. Backend API Readiness fuer Knowledge-Base-Lesezugriffe  
-   Begruendung: Company, Analyse und Strategie brauchen Claims, Chunks, ProcurementHistoryItems, ImportJobs und ImportRows zumindest lesend und filterbar. Upload/Import selbst bleibt ausgeschlossen.
+   Status: umgesetzt in Phase B3 / Issue #21. Upload/Import selbst bleibt ausgeschlossen.
 
 3. Backend API Readiness fuer Strategieobjekte  
    Begruendung: Der Strategie-Builder ist ein zentraler MVP-Screen und die Modelle/Schemas sind vorhanden, aber Router fehlen vollstaendig.

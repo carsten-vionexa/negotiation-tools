@@ -41,15 +41,17 @@
 - Procurement-Erweiterungen aus dem Kick-off dokumentiert: procurement-process-concept.md
 - Technische Architekturuebersicht ergaenzt: technical-architecture.md
 - Roadmap-Uebersicht ergaenzt: roadmap.md
+- Phase A1 abgeschlossen: MVP-Screen-Scope fachlich in `screen-by-screen-concept.md` finalisiert
+- Phase B1 begonnen: API- und Frontend-Gap-Analyse fuer die 10 MVP-Core-Screens erstellt
 
 ## Naechste Schritte
 
-1. `screen-by-screen-concept.md` gegen `workflow-v2.md` und `procurement-process-concept.md` pruefen.
-2. MVP-Screens priorisieren.
-3. Entscheiden, welche Kick-off-Erweiterungen in den MVP gehoeren:
-   - einfache Stakeholdernotizen
-   - einfache Hypothesenliste
-   - einfache Lieferantenbeziehungsnotiz
-   - RFQ / Angebotsvergleich nur konzeptionell oder als einfacher Screen
-4. Danach konkrete Frontend- und API-Arbeitspakete ableiten.
-5. Chunking-Service, Embedding-Erzeugung und RAG spaeter planen.
+1. Backend API Readiness fuer Stammdaten und Projekte planen.
+2. Backend API Readiness fuer Knowledge-Base-Lesezugriffe planen.
+3. Backend API Readiness fuer Strategieobjekte planen.
+4. Backend API Readiness fuer SimulationScenario und TrainerComment planen.
+5. Frontend-Grundlayout, Navigation und API-Client planen.
+6. Frontend-Flows fuer Company, UserProfile, SupplierProfile, RequestItem und Projects planen.
+7. Frontend-Flows fuer Knowledge Base, Analyse, Strategie-Builder, Simulation konfigurieren und Trainerreview ableiten.
+8. Dashboard zunaechst als einfache Komposition oder spaeter als Summary-API entscheiden.
+9. Chunking-Service, Embedding-Erzeugung, RAG, Upload/Import, OCR, Voice und produktive Simulation spaeter planen.

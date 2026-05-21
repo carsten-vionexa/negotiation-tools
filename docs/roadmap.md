@@ -20,6 +20,8 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Upload-/Import-Konzepte
 - Datei-Metadaten fuer spaetere Uploads
 - Screen-by-Screen-Konzept
+- Phase A1 MVP-Screen-Scope fachlich abgeschlossen
+- API- und Frontend-Gap-Analyse fuer die 10 MVP-Core-Screens begonnen
 - Trainer-Demo-Storyboard
 - Workflow v2 und Procurement-Erweiterungen
 
@@ -33,6 +35,8 @@ Abgeschlossen beziehungsweise vorbereitet:
 ## 4. Phase A: Produkt- und MVP-Scope
 
 Ziel: Den erweiterten Workflow v2 in einen klaren MVP ueberfuehren.
+
+Status: Abgeschlossen. Der MVP-Core-Scope ist in `docs/screen-by-screen-concept.md` fachlich finalisiert.
 
 Aufgaben:
 
@@ -50,14 +54,20 @@ Aufgaben:
 
 Ziel: Erste nutzbare End-to-End-Strecke auf Basis vorhandener Modelle.
 
+Status: Begonnen. Die initiale API- und Frontend-Gap-Analyse liegt in `docs/mvp-api-frontend-gap-analysis.md`.
+
 Moegliche Schritte:
 
-1. API-Luecken fuer priorisierte MVP-Screens identifizieren.
-2. Frontend-Grundstruktur planen.
-3. Dashboard / Projektuebersicht erstellen.
-4. Company-, UserProfile- und NegotiationProject-Flows anbinden.
-5. Strategie-Builder als erste strukturierte Arbeitsansicht vorbereiten.
-6. Trainerreview sichtbar machen.
+1. Backend API Readiness fuer Stammdaten und Projekte.
+2. Backend API Readiness fuer Knowledge-Base-Lesezugriffe.
+3. Backend API Readiness fuer Strategieobjekte.
+4. Backend API Readiness fuer SimulationScenario und TrainerComment.
+5. Frontend-Grundlayout, Navigation und API-Client.
+6. Frontend-Flows fuer Company, UserProfile, SupplierProfile, RequestItem und Projects.
+7. Frontend-Flow fuer Knowledge Base und Analyseansicht.
+8. Frontend-Flow fuer Strategie-Builder.
+9. Frontend-Flow fuer Simulation konfigurieren und Trainerreview.
+10. Dashboard-Summary oder einfache Dashboard-Komposition.
 
 ## 6. Phase C: Upload und Import
 

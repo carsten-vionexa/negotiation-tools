@@ -2,13 +2,13 @@
 
 ## 1. Ziel und Einordnung
 
-Dieses Dokument uebersetzt den bisherigen fachlichen Workflow des Negotiation Tools in konkrete Screens. Es beschreibt, welche Rollen welche Schritte durchlaufen, welche Informationen sichtbar oder bearbeitbar sind und welche Backend-Objekte je Screen relevant werden.
+Dieses Dokument uebersetzt den bisherigen fachlichen Workflow des Negotiation Tools in konkrete Screens. Es beschreibt, welche Rollen welche Schritte durchlaufen und welche Informationen je Screen sichtbar oder bearbeitbar sind.
 
-Das Konzept ist keine Frontend-Implementierung. Es definiert keine React-Komponenten, keine UI-Layouts, keine CSS-Regeln, keine API-Endpunkte, keine Datenbankmigrationen und keine Services. Die Screens sind fachliche Produktmodule, die spaeter UX, API-Planung und technische Umsetzung strukturieren sollen.
+Das Konzept ist keine Frontend-Implementierung. Es definiert keine React-Komponenten, keine UI-Layouts, keine CSS-Regeln, keine API-Endpunkte, keine Datenbankmigrationen und keine Services. Die Screens sind fachliche Produktmodule, die spaeter UX- und Umsetzungsplanung strukturieren sollen.
 
 Der Bezugspunkt ist das bestehende Datenmodell mit `Company`, `UserProfile`, `KnowledgeDocument`, `DocumentChunk`, `KnowledgeClaim`, `RequestItem`, `SupplierProfile`, `ProcurementHistoryItem`, `NegotiationProject`, `ImportJob`, `ImportRow`, `Strategy`, `ZopaItem`, `BatnaOption`, `ConcessionItem`, `ArgumentationLine`, `SimulationScenario`, `SimulationMessage`, `SimulationResult` und `TrainerComment`.
 
-Das Tool wird als workflowbasiertes Verhandlungs-Cockpit verstanden. Der Trainee soll durch Analyse, Strategie, Briefing, Simulation und Lerntransfer gefuehrt werden. Der Trainer soll Vorbereitung, Szenarien, Simulationen und Feedback steuern koennen. Freies, unstrukturiertes Prompting ist nicht der Zielmodus des MVP.
+Das Tool wird als workflowbasiertes Verhandlungs-Cockpit verstanden. Der Trainee soll im MVP durch Projektverstaendnis, Analyse, Strategie, Briefing und Trainerfeedback gefuehrt werden. Der Trainer soll Vorbereitung, Szenarien, Simulationskonfiguration und Feedback steuern koennen. Freies, unstrukturiertes Prompting ist nicht der Zielmodus des MVP.
 
 KI, RAG, Embeddings, Prompting und Simulation-Engine werden in diesem Dokument nur als spaetere Anschlussstellen markiert. Upload- und Import-Screens werden fachlich beschrieben, ohne Entscheidungen aus Issue #11 zu Datei-Metadaten, Upload-API oder Storage-Feldern vorzuziehen.
 
@@ -20,16 +20,16 @@ KI, RAG, Embeddings, Prompting und Simulation-Engine werden in diesem Dokument n
 
 - Ein konkretes Verhandlungsprojekt verstehen.
 - Relevante Analyse- und Kontextinformationen strukturiert aufnehmen.
-- Eine Verhandlungsstrategie vorbereiten und ueben.
-- Aus Simulation und Trainerfeedback konkrete Lernpunkte ableiten.
+- Eine Verhandlungsstrategie vorbereiten.
+- Aus Trainerfeedback konkrete Lernpunkte ableiten.
 
 **Typische Aktionen**
 
 - Eigenes Rollen- oder Trainee-Profil ansehen und ergaenzen.
 - Projektbriefing, Lieferantenannahmen und Datenbasis lesen.
 - Analyseergebnisse, ZOPA, BATNA, Konzessionen und Argumentationslinien durcharbeiten.
-- Simulation starten oder fortsetzen.
-- Auswertung, Lernpunkte und Trainerkommentare lesen.
+- Simulationsbriefing und Konfiguration verstehen.
+- Lernpunkte und Trainerkommentare lesen.
 
 **Benoetigte Informationen**
 
@@ -37,14 +37,14 @@ KI, RAG, Embeddings, Prompting und Simulation-Engine werden in diesem Dokument n
 - Ziel der Verhandlung, Artikel oder Service, Mengen, Zielregion, Preis- und Lieferannahmen.
 - Lieferantenprofil, Machtverhaeltnis, Risiken, kultureller Kontext.
 - Evidenzen aus Knowledge Base, Einkaufshistorie und Anfragepositionen.
-- Feedback zu Verhalten, Taktik, Argumentation und Lerntransfer.
+- Feedback zu Vorbereitung, Taktik, Argumentation und Lernpunkten.
 
 **Moegliche Einschraenkungen im MVP**
 
 - Keine freie KI-Chat-Oberflaeche ohne Workflow-Kontext.
 - Eingeschraenkter Zugriff auf vertrauliche Daten oder interne Trainernotizen.
 - Strategiebausteine koennen im MVP teilweise trainerseitig vorbereitet oder freigegeben werden.
-- Simulation und Auswertung koennen zunaechst konzeptionelle Zielscreen-Funktion haben, bevor eine produktive Engine existiert.
+- Simulation durchfuehren, Auswertung und Lernhistorie bleiben Zielbild-Screens und sind keine MVP-Pflicht.
 
 ### Trainer / Coach
 
@@ -52,8 +52,8 @@ KI, RAG, Embeddings, Prompting und Simulation-Engine werden in diesem Dokument n
 
 - Firmen-, Rollen- und Projektdaten fachlich vorbereiten.
 - Die Datenbasis fuer Trainings- und Verhandlungsszenarien pruefen.
-- Analyse, Strategie und Simulation so steuern, dass Trainees gefuehrt lernen.
-- Menschliches Feedback und Lerntransfer dokumentieren.
+- Analyse, Strategie und Simulationskonfiguration so steuern, dass Trainees gefuehrt lernen.
+- Menschliches Feedback und einfache Lernpunkte dokumentieren.
 
 **Typische Aktionen**
 
@@ -61,7 +61,7 @@ KI, RAG, Embeddings, Prompting und Simulation-Engine werden in diesem Dokument n
 - Knowledge Base und Importstatus fachlich bewerten.
 - Verhandlungsprojekt oder Szenario auswaehlen, anlegen oder anpassen.
 - Strategiebausteine pruefen, ergaenzen oder freigeben.
-- Simulation konfigurieren, beobachten oder nachbereiten.
+- Simulation konfigurieren.
 - Trainerkommentare und Lernpunkte dokumentieren.
 
 **Benoetigte Informationen**
@@ -70,7 +70,7 @@ KI, RAG, Embeddings, Prompting und Simulation-Engine werden in diesem Dokument n
 - Trainee-Profil, Rolle, Erfahrungsstand, Lernziel.
 - Projektziele, Lieferantenprofil, Anfragepositionen und Einkaufshistorie.
 - Status der Datenbasis, Importstatus, Wissensclaims und Quellenqualitaet.
-- Simulationsergebnisse, Nachrichtenverlauf, Scores und Lerntransfer.
+- Simulationsbriefing, Trainerkommentare und einfache Lernpunkte.
 
 **Moegliche Einschraenkungen im MVP**
 
@@ -107,338 +107,272 @@ KI, RAG, Embeddings, Prompting und Simulation-Engine werden in diesem Dokument n
 - Rechte- und Rollensystem bleibt spaetere Ausbaustufe.
 - Datenbereinigung und Audit-Funktionen werden nur konzeptionell vorbereitet.
 
-## 3. MVP-Screen-Landkarte
+## 3. Phase-A1-Scope nach Issue #14
 
-| Nr. | Screen | Primaere Rolle | Zweck | Hauptobjekte | MVP-Relevanz | Spaetere Ausbaustufe |
-|---:|---|---|---|---|---|---|
-| 1 | Dashboard | Trainer, Trainee | Einstieg in offene Projekte, Trainingsschritte und naechste Aktionen | `Company`, `UserProfile`, `NegotiationProject`, `SimulationScenario`, `SimulationResult` | Hoch | Ja, fuer Team-/Admin-Dashboards |
-| 2 | Firmenprofil / Company-Uebersicht | Trainer | Unternehmenskontext und Mandantenbasis sichtbar machen | `Company`, `KnowledgeDocument`, `ProcurementHistoryItem`, `NegotiationProject` | Hoch | Ja |
-| 3 | Trainee- bzw. Rollenprofil | Trainee, Trainer | Rolle, Lernziel und Verhandlungsprofil klaeren | `UserProfile`, `Company`, `SimulationResult`, `TrainerComment` | Hoch | Ja |
-| 4 | Knowledge Base / Datenbasis | Trainer | Quellen, Claims und Datenlage pruefen | `KnowledgeDocument`, `DocumentChunk`, `KnowledgeClaim`, `ProcurementHistoryItem`, `RequestItem` | Hoch | Ja |
-| 5 | Import- und Upload-Uebersicht | Trainer | Import- und Uploadstatus fachlich ueberblicken | `ImportJob`, `ImportRow`, `KnowledgeDocument` | Mittel | Ja |
-| 6 | Verhandlungsprojekt anlegen / bearbeiten | Trainer, spaeter Trainee | Konkreten Verhandlungsfall definieren | `NegotiationProject`, `RequestItem`, `SupplierProfile`, `UserProfile`, `Company` | Hoch | Nein |
-| 7 | Analyseansicht | Trainee, Trainer | Projekt, Datenlage, Risiken und Chancen verstehen | `NegotiationProject`, `SupplierProfile`, `KnowledgeClaim`, `ProcurementHistoryItem`, `RequestItem` | Hoch | Ja |
-| 8 | Strategie-Builder | Trainee, Trainer | Zielbild, ZOPA, BATNA, Konzessionen und Argumentation strukturieren | `Strategy`, `ZopaItem`, `BatnaOption`, `ConcessionItem`, `ArgumentationLine` | Hoch | Ja |
-| 9 | Kultur- und Rollenbriefing | Trainee, Trainer | Lieferantenrolle, kulturelle Hinweise und Verhaltensannahmen vorbereiten | `SupplierProfile`, `KnowledgeClaim`, `NegotiationProject`, `SimulationScenario` | Mittel | Ja |
-| 10 | Simulation konfigurieren | Trainer | Trainingsszenario, Rolle, Schwierigkeit und Erfolgskriterien setzen | `SimulationScenario`, `Strategy`, `SupplierProfile`, `UserProfile` | Mittel | Ja |
-| 11 | Simulation durchfuehren | Trainee | Gefuehrte Verhandlungssimulation absolvieren | `SimulationScenario`, `SimulationMessage`, `Strategy`, `SupplierProfile` | Konzeptioneller Zielscreen | Ja |
-| 12 | Auswertung und Lerntransfer | Trainee, Trainer | Ergebnis, Feedback und naechste Lernschritte sichtbar machen | `SimulationResult`, `SimulationMessage`, `TrainerComment`, `Strategy` | Konzeptioneller Zielscreen | Ja |
-| 13 | Trainerreview / Trainerkommentar | Trainer | Menschliches Feedback ergaenzen und freigeben | `TrainerComment`, `SimulationResult`, `SimulationMessage`, `SimulationScenario` | Hoch | Ja |
-| 14 | Lernhistorie / Fortschritt | Trainee, Trainer | Entwicklung ueber Simulationen und Projekte hinweg nachvollziehen | `SimulationResult`, `TrainerComment`, `UserProfile`, `NegotiationProject` | Mittel | Ja |
+Issue #14 finalisiert den MVP-Screen-Scope fachlich. Der MVP besteht aus zehn Core-Screens. Weitere fachliche Faehigkeiten duerfen im MVP nur als reduzierte Erweiterungen innerhalb dieser Screens erscheinen. Sie werden nicht als eigene produktive Module oder eigenstaendige Pflichtscreens verstanden.
+
+### 3.1 MVP-Core-Screens
+
+| Nr. | Screen | Primaere Rolle | MVP-Zweck | MVP-Status |
+|---:|---|---|---|---|
+| 1 | Dashboard | Trainer, Trainee | Einstieg in offene Projekte, Trainingsschritte, Reviews und naechste Aktionen | MVP-Core |
+| 2 | Firmenprofil / Company-Uebersicht | Trainer | Unternehmenskontext, Mandantenbezug und grobe Datenlage sichtbar machen | MVP-Core |
+| 3 | Trainee- / Rollenprofil | Trainee, Trainer | Rolle, Lernziel und Trainingskontext klaeren | MVP-Core |
+| 4 | Knowledge Base / Datenbasis | Trainer | Quellen, Claims, Einkaufshistorie und Anfragepositionen fachlich pruefen | MVP-Core |
+| 5 | Verhandlungsprojekt anlegen / bearbeiten | Trainer, spaeter Trainee | Konkreten Verhandlungsfall mit Ziel, Lieferant, Rahmenbedingungen und Status definieren | MVP-Core |
+| 6 | Analyseansicht | Trainee, Trainer | Projekt, Datenlage, Risiken, Chancen, Annahmen und Hypothesen verstehen | MVP-Core |
+| 7 | Strategie-Builder | Trainee, Trainer | Zielbild, ZOPA, BATNA, Konzessionen, Argumentation und reduzierte Vergleichslogik strukturieren | MVP-Core |
+| 8 | Kultur- und Rollenbriefing | Trainee, Trainer | Lieferantenrolle, Gespraechsdynamik und kulturelle Arbeitshypothesen vorbereiten | MVP-Core |
+| 9 | Simulation konfigurieren | Trainer | Trainingsszenario, Rolle, Schwierigkeit, Erfolgskriterien und Briefing fachlich vorbereiten | MVP-Core |
+| 10 | Trainerreview / Trainerkommentar | Trainer | Menschliches Feedback erfassen, einordnen und fuer Trainees sichtbar machen | MVP-Core |
+
+### 3.2 MVP-Erweiterungen innerhalb bestehender Screens
+
+Diese Erweiterungen gehoeren zum MVP, aber nicht als eigene Screens:
+
+- **Einfache Lieferantenbeziehungsnotiz:** Als Notiz im Verhandlungsprojekt, in der Analyseansicht oder im Kultur- und Rollenbriefing. Sie beschreibt Beziehungslage, Vorgeschichte, Vertrauen, Abhaengigkeiten oder offene Spannungen knapp und fachlich.
+- **Einfache Stakeholdernotiz:** Als Notiz im Verhandlungsprojekt oder in der Analyseansicht. Sie haelt relevante interne oder externe Stakeholder, Interessen, Einfluss und offene Rueckfragen fest.
+- **Einfache Hypothesenliste:** Als klar markierter Bereich in Analyseansicht, Strategie-Builder oder Kultur- und Rollenbriefing. Hypothesen muessen von Fakten und belastbaren Quellen getrennt bleiben.
+- **Reduzierter RFQ-/Angebotsvergleich:** Im MVP nur als einfache Notiz- oder Vergleichslogik innerhalb von Verhandlungsprojekt, Analyseansicht oder Strategie-Builder. Es gibt kein eigenstaendiges RFQ-Modul und keine vollautomatische Angebotsanalyse.
+
+### 3.3 Zielbild-Screens und spaetere Screens
+
+| Zielbild-Screen | Primaere Rolle | Einordnung |
+|---|---|---|
+| Import- und Upload-Uebersicht | Trainer, spaeter Admin | Kein produktiver MVP-Screen. Upload- und Importstatus duerfen als Datenlage in Knowledge Base oder Company-Kontext referenziert werden, aber nicht als eigene Pflichtoberflaeche. |
+| Simulation durchfuehren | Trainee | Kein produktiver MVP-Screen und keine produktive Engine. Die fachliche Durchfuehrung bleibt Zielbild nach der Konfiguration. |
+| Auswertung und Lerntransfer | Trainee, Trainer | Kein vollwertiger eigener MVP-Screen. Lernpunkte koennen im Trainerreview oder als einfache Notiz vorkommen. |
+| Lernhistorie / Fortschritt | Trainee, Trainer | Kein MVP. Fortschritt ueber mehrere Durchlaeufe, Zertifikate, Benchmarks und Historienlogik bleiben spaeter. |
+| Admin / Rechteverwaltung | Admin | Kein MVP. Mandanten-, Nutzer-, Rechte- und Auditfunktionen bleiben spaetere Ausbaustufe. |
+| Relationship Memory als eigenes Modul | Trainer, Trainee | Kein MVP. Beziehungskontext erscheint nur als einfache Lieferantenbeziehungsnotiz innerhalb bestehender Screens. |
+
+### 3.4 Ausdruecklich nicht Teil des MVP
+
+- Import- und Upload-Uebersicht als produktiver Screen.
+- Simulation durchfuehren als produktive Engine oder Chat-/Voice-Erlebnis.
+- Auswertung und Lerntransfer als vollwertiger eigener Screen.
+- Lernhistorie, Fortschrittslogik, Zertifikate oder Benchmarks.
+- Admin-, Rollen- und Rechteverwaltung.
+- Relationship Memory als eigenes Modul.
+- Vollautomatische Angebotsanalyse, eigenes RFQ-Modul oder automatische Angebotsbewertung.
+- OCR, RAG, Embeddings, produktive Upload-Verarbeitung oder automatisierte Claim-Extraktion.
+- Neue Datenmodelle, API-Endpunkte, Frontend-Komponenten oder technische Implementierungsdetails.
+
+Die Folgeissues #15, #16, #17 und #18 sollten auf Basis dieser Abgrenzung als nachgelagerte Detail-Cluster behandelt werden. Sie konkretisieren einzelne fachliche Bereiche erst nach der hier festgelegten MVP-Screen-Grenze.
 
 ## 4. Screen-by-Screen-Beschreibung
 
 ### 1. Dashboard
 
+**MVP-Status:** MVP-Core.
+
 **Zweck des Screens:** Einstiegspunkt fuer aktuelle Verhandlungsprojekte, Trainingsaufgaben, offene Reviews und naechste Schritte im gefuehrten Workflow.
 
 **Hauptnutzer:** Trainer und Trainee.
 
-**Zentrale Nutzeraktionen:** Offenes Projekt oeffnen, naechsten Workflow-Schritt starten, offene Trainerreviews sehen, zuletzt bearbeitete Simulation fortsetzen, Lernfortschritt aufrufen.
+**Zentrale Nutzeraktionen:** Offenes Projekt oeffnen, naechsten Workflow-Schritt starten, offene Trainerreviews sehen, konfiguriertes Szenario finden, Trainerkommentar aufrufen.
 
-**Wichtigste Eingaben:** Auswahl von Company, Projekt, Trainee oder Simulation; optional Statusfilter.
+**Wichtigste Ausgaben / Anzeigen:** Aktive Projekte, naechste fachliche Schritte, offene Trainerkommentare, Status von Analyse, Strategie, Briefing und Simulationskonfiguration.
 
-**Wichtigste Ausgaben / Anzeigen:** Aktive Projekte, faellige Trainerkommentare, gestartete Simulationen, letzte Ergebnisse, naechster empfohlener Schritt.
-
-**Relevante Backend-Objekte:** `Company`, `UserProfile`, `NegotiationProject`, `SimulationScenario`, `SimulationResult`, `TrainerComment`.
-
-**KI-/RAG-Anschlussstellen:** Spaeter koennen priorisierte naechste Schritte, Risiko-Hinweise oder Lernempfehlungen vorgeschlagen werden. Im MVP reicht eine regelbasierte Statussicht.
-
-**MVP-Abgrenzung:** Kein Team-Dashboard, keine Admin-Auswertung, keine komplexen Kennzahlen.
-
-**Offene Fragen:** Soll der Dashboard-Einstieg trainerzentriert oder traineezentriert priorisiert werden? Welche Statuswerte reichen fuer den ersten MVP?
+**MVP-Abgrenzung:** Kein Team-Dashboard, keine Admin-Auswertung, keine Lernhistorie, keine komplexen Kennzahlen und kein produktiver Simulationsstart als Pflicht.
 
 ### 2. Firmenprofil / Company-Uebersicht
 
+**MVP-Status:** MVP-Core.
+
 **Zweck des Screens:** Unternehmenskontext, Mandantenzugehoerigkeit und grobe Datenlage als Ausgangspunkt fuer Verhandlungsprojekte sichtbar machen.
-
-**Hauptnutzer:** Trainer, spaeter Admin.
-
-**Zentrale Nutzeraktionen:** Firmenprofil ansehen oder bearbeiten, relevante Projekte und Datenquellen pruefen, Datenbasis je Company ueberblicken.
-
-**Wichtigste Eingaben:** Firmenname, Branche, Region, interne Notizen, ggf. Auswahl vorhandener Projekte oder Datenquellen.
-
-**Wichtigste Ausgaben / Anzeigen:** Company-Stammdaten, Anzahl und Status von Knowledge-Dokumenten, Importjobs, Projekten, Anfragepositionen und historischen Einkaufspositionen.
-
-**Relevante Backend-Objekte:** `Company`, `KnowledgeDocument`, `ImportJob`, `ProcurementHistoryItem`, `RequestItem`, `NegotiationProject`.
-
-**KI-/RAG-Anschlussstellen:** Spaeter koennen aus Firmen- und Datenbasis ein Kontextprofil, Datenluecken und RAG-Abdeckungsgrad abgeleitet werden.
-
-**MVP-Abgrenzung:** Keine Mandantenadministration, keine Rechteverwaltung, keine Datei-Metadatenentscheidung aus Issue #11.
-
-**Offene Fragen:** Welche Company-Felder sind fuer Trainer im MVP editierbar? Welche Datenqualitaetsindikatoren sollen sichtbar sein?
-
-### 3. Trainee- bzw. Rollenprofil
-
-**Zweck des Screens:** Verhandlungsrolle, Lernziel und Erfahrungsprofil eines Trainees oder einer Trainingsrolle erfassen.
-
-**Hauptnutzer:** Trainee und Trainer.
-
-**Zentrale Nutzeraktionen:** Eigenes Profil ansehen, Rolle oder Lernziel ergaenzen, Trainer kann Profil fuer ein Szenario pruefen oder anpassen.
-
-**Wichtigste Eingaben:** Rolle, Funktion, Erfahrungsstand, Trainingsfokus, bevorzugte Sprache, optionale Lernziele oder Kompetenzfelder.
-
-**Wichtigste Ausgaben / Anzeigen:** Profilzusammenfassung, zugeordnete Projekte, relevante Simulationsergebnisse, sichtbare Trainerkommentare.
-
-**Relevante Backend-Objekte:** `UserProfile`, `Company`, `NegotiationProject`, `SimulationResult`, `TrainerComment`.
-
-**KI-/RAG-Anschlussstellen:** Spaeter koennen Lernpfade und Feedbackgewichtung anhand des Profils personalisiert werden.
-
-**MVP-Abgrenzung:** Keine komplexe Kompetenzmatrix, keine Zertifikatslogik, keine vollstaendige Nutzerverwaltung.
-
-**Offene Fragen:** Ist `UserProfile` im MVP echte Person, Rolle oder beides? Welche Profilinformationen darf der Trainee selbst bearbeiten?
-
-### 4. Knowledge Base / Datenbasis
-
-**Zweck des Screens:** Vorhandene Quellen, extrahierte Aussagen und strukturierte Daten als Grundlage fuer Analyse und Strategie pruefen.
 
 **Hauptnutzer:** Trainer.
 
-**Zentrale Nutzeraktionen:** Dokumente und Claims ansehen, Quellenqualitaet pruefen, Datenluecken erkennen, projektbezogene und firmenweite Datenbasis unterscheiden.
+**Zentrale Nutzeraktionen:** Firmenprofil ansehen oder fachlich ergaenzen, relevante Projekte und Datenquellen pruefen, Datenbasis je Company ueberblicken.
 
-**Wichtigste Eingaben:** Filter nach Company, Projekt, Quelle, Vertraulichkeit, Reliability, Claim-Typ oder Informationsart.
+**Wichtigste Ausgaben / Anzeigen:** Company-Stammdaten, grobe Quellenlage, zugeordnete Projekte, Anfragepositionen, Einkaufshistorie und offene Datenluecken.
 
-**Wichtigste Ausgaben / Anzeigen:** Knowledge-Dokumente, zitierbare Chunks, Knowledge Claims, Einkaufshistorie, Anfragepositionen und Datenqualitaets-Hinweise.
+**MVP-Abgrenzung:** Keine Mandantenadministration, keine Rechteverwaltung, keine Upload-Verwaltung als eigener Arbeitsbereich.
 
-**Relevante Backend-Objekte:** `KnowledgeDocument`, `DocumentChunk`, `KnowledgeClaim`, `ProcurementHistoryItem`, `RequestItem`, `ImportJob`, `ImportRow`.
+### 3. Trainee- / Rollenprofil
 
-**KI-/RAG-Anschlussstellen:** Spaeterer Einstieg fuer Chunking, Embeddings, Claim-Extraktion, Retrieval und Quellenbelege.
+**MVP-Status:** MVP-Core.
 
-**MVP-Abgrenzung:** Keine produktive RAG-Suche, keine Embedding-Erzeugung, keine automatische Claim-Extraktion, keine echte Upload-UI als Pflicht.
+**Zweck des Screens:** Verhandlungsrolle, Lernziel und Trainingskontext eines Trainees oder einer Trainingsrolle erfassen.
 
-**Offene Fragen:** Soll der Trainee bestimmte Quellen direkt sehen duerfen? Wie werden vertrauliche interne Quellen markiert?
+**Hauptnutzer:** Trainee und Trainer.
 
-### 5. Import- und Upload-Uebersicht
+**Zentrale Nutzeraktionen:** Profil ansehen, Rolle oder Lernziel ergaenzen, Trainer kann Profil fuer ein Projekt oder Szenario pruefen.
 
-**Zweck des Screens:** Fachlicher Ueberblick ueber Uploads, Importvorgaenge, Mapping-/Validierungsstatus und daraus entstandene oder geplante Zielobjekte.
+**Wichtigste Ausgaben / Anzeigen:** Profilzusammenfassung, Rolle, Erfahrungsstand, Trainingsfokus, Sprache und sichtbare Trainerhinweise.
 
-**Hauptnutzer:** Trainer, spaeter Admin.
+**MVP-Abgrenzung:** Keine Lernhistorie, keine Zertifikatslogik, keine komplexe Kompetenzmatrix und keine vollstaendige Nutzerverwaltung.
 
-**Zentrale Nutzeraktionen:** Importjobs ansehen, Status und Fehlerzusammenfassung pruefen, Importzeilen stichprobenartig kontrollieren, Datenbasis-Fortschritt einschaetzen.
+### 4. Knowledge Base / Datenbasis
 
-**Wichtigste Eingaben:** Filter nach Company, Projekt, Quelltyp, Zielobjekt, Status oder Zeitraum.
+**MVP-Status:** MVP-Core.
 
-**Wichtigste Ausgaben / Anzeigen:** ImportJob-Status, Zeilenzaehler, Validierungsergebnis, Fehler- und Warnhinweise, Bezug zu `KnowledgeDocument`.
+**Zweck des Screens:** Vorhandene Quellen, Aussagen und strukturierte Daten als Grundlage fuer Analyse und Strategie pruefen.
 
-**Relevante Backend-Objekte:** `ImportJob`, `ImportRow`, `KnowledgeDocument`, spaeter erzeugte `ProcurementHistoryItem` und `RequestItem`.
+**Hauptnutzer:** Trainer.
 
-**KI-/RAG-Anschlussstellen:** Spaeter optional KI-Hinweise zu Mappingvorschlaegen oder Datenqualitaet. Nicht Teil des MVP.
+**Zentrale Nutzeraktionen:** Quellen und Claims ansehen, Quellenqualitaet pruefen, Datenluecken erkennen, projektbezogene und firmenweite Datenbasis unterscheiden.
 
-**MVP-Abgrenzung:** Upload- und Import-Screens duerfen fachlich beschrieben werden, aber keine Upload-API, keine Parser-/Mapping-UI und keine Datei-Metadatenentscheidung aus Issue #11 vorziehen.
+**Wichtigste Ausgaben / Anzeigen:** Knowledge-Dokumente, Claims, Einkaufshistorie, Anfragepositionen, Quellenhinweise und Datenqualitaets-Hinweise.
 
-**Offene Fragen:** Muss dieser Screen im MVP aktiv bedienbar sein oder reicht eine Status-/Konzeptansicht? Wer darf fehlerhafte Importzeilen korrigieren?
+**MVP-Abgrenzung:** Keine produktive RAG-Suche, keine Embedding-Erzeugung, keine automatische Claim-Extraktion, keine OCR-Funktion und keine Import-/Upload-Uebersicht als eigenstaendiger MVP-Screen.
 
-### 6. Verhandlungsprojekt anlegen / bearbeiten
+### 5. Verhandlungsprojekt anlegen / bearbeiten
 
-**Zweck des Screens:** Einen konkreten Verhandlungsfall definieren, der Analyse, Strategie, Briefing und Simulation zusammenhaelt.
+**MVP-Status:** MVP-Core.
+
+**Zweck des Screens:** Einen konkreten Verhandlungsfall definieren, der Analyse, Strategie, Briefing, Simulationskonfiguration und Trainerreview zusammenhaelt.
 
 **Hauptnutzer:** Trainer, spaeter ggf. Trainee im Self-Service-Modus.
 
-**Zentrale Nutzeraktionen:** Projekt anlegen, Anfrageposition und Lieferant zuordnen, Verhandlungsziel und Rahmenbedingungen definieren, Prioritaet und Risiken erfassen.
+**Zentrale Nutzeraktionen:** Projekt anlegen oder bearbeiten, Anfrageposition und Lieferant zuordnen, Verhandlungsziel und Rahmenbedingungen erfassen, Prioritaeten und Risiken beschreiben.
 
-**Wichtigste Eingaben:** Projektname, Kategorie, Artikel oder Service, Menge, Zielregion, gewuenschte Lieferzeit, interne Preisannahme, Waehrung, aktueller Lieferant, Prioritaet, Business Pressure, technische Abhaengigkeit, Supplier Power und Risiko.
+**Wichtigste Ausgaben / Anzeigen:** Projektbriefing, zugeordnete Anfrageposition, Lieferantenprofil, Datenlage, Status im Workflow, einfache Lieferantenbeziehungsnotiz und einfache Stakeholdernotiz.
 
-**Wichtigste Ausgaben / Anzeigen:** Projektbriefing, zugeordnete Anfrageposition, Lieferantenprofil, Datenlage und Status im Workflow.
+**MVP-Erweiterungen:** Lieferantenbeziehungsnotiz und Stakeholdernotiz sind einfache fachliche Notizen innerhalb des Projekts. Sie sind kein Relationship-Memory-Modul und kein Stakeholder-Management-Modul.
 
-**Relevante Backend-Objekte:** `NegotiationProject`, `Company`, `UserProfile`, `RequestItem`, `SupplierProfile`, `KnowledgeDocument`.
+**MVP-Abgrenzung:** Keine automatische Projektanlage aus Importdaten als Pflicht, keine CRM-Anbindung, keine komplexe Projektfreigabe und kein eigenes RFQ-Modul.
 
-**KI-/RAG-Anschlussstellen:** Spaeter koennen Projektdaten gegen Knowledge Base und Einkaufshistorie plausibilisiert und mit ersten Analysehinweisen angereichert werden.
+### 6. Analyseansicht
 
-**MVP-Abgrenzung:** Keine automatische Projektanlage aus Importdaten als Pflicht, keine CRM-Anbindung, keine komplexe Projektfreigabe.
-
-**Offene Fragen:** Darf der Trainee Projekte selbst anlegen oder nur vom Trainer zugewiesen bekommen? Welche Pflichtfelder braucht der erste MVP?
-
-### 7. Analyseansicht
+**MVP-Status:** MVP-Core.
 
 **Zweck des Screens:** Projektkontext, Datenbasis, Lieferantenannahmen, Risiken, Chancen und offene Informationsluecken strukturiert sichtbar machen.
 
 **Hauptnutzer:** Trainee und Trainer.
 
-**Zentrale Nutzeraktionen:** Analyse lesen, Quellen und Claims nachvollziehen, Risiken markieren, offene Fragen sammeln, Trainerfreigabe oder Anpassung vorbereiten.
+**Zentrale Nutzeraktionen:** Analyse lesen, Quellen und Claims nachvollziehen, Risiken markieren, offene Fragen sammeln, Hypothesen von Fakten trennen.
 
-**Wichtigste Eingaben:** Auswahl eines Projekts, optional Filter nach Analysebereich, Informationsart, Confidence oder Quelle.
+**Wichtigste Ausgaben / Anzeigen:** Zusammenfassung des Verhandlungsfalls, relevante Claims, Einkaufshistorie, Anfragepositionen, Lieferantenprofil, Risiko- und Machtannahmen, offene Datenluecken, einfache Hypothesenliste, einfache Stakeholdernotiz.
 
-**Wichtigste Ausgaben / Anzeigen:** Zusammenfassung des Verhandlungsfalls, relevante Knowledge Claims, Einkaufshistorie, Anfragepositionen, Lieferantenprofil, Risiko- und Machtannahmen, offene Datenluecken.
+**MVP-Erweiterungen:** Die Hypothesenliste wird ausdruecklich als Hypothese markiert und von Fakten, Quellen und Empfehlungen getrennt. Eine einfache Angebots- oder RFQ-Vergleichssicht darf nur reduzierte Vergleichsnotizen, Eckwerte oder manuell gepflegte Gegenueberstellungen enthalten.
 
-**Relevante Backend-Objekte:** `NegotiationProject`, `SupplierProfile`, `KnowledgeClaim`, `KnowledgeDocument`, `DocumentChunk`, `ProcurementHistoryItem`, `RequestItem`.
+**MVP-Abgrenzung:** Keine produktive automatische Analysepflicht, keine vollautomatische Angebotsanalyse, keine OCR-/RAG-Pflicht und keine automatische Bewertung von Lieferantenangeboten.
 
-**KI-/RAG-Anschlussstellen:** Spaeter Retrieval aus `KnowledgeDocument`, `DocumentChunk`, `KnowledgeClaim`, `ProcurementHistoryItem` und `RequestItem`; KI-gestuetzte Zusammenfassungen und Hypothesen mit Quellenbezug.
+### 7. Strategie-Builder
 
-**MVP-Abgrenzung:** Keine produktive automatische Analysepflicht. Im MVP koennen Analysen manuell, regelbasiert oder vorbereitend dargestellt werden.
+**MVP-Status:** MVP-Core.
 
-**Offene Fragen:** Muss der Trainer KI-Analysen freigeben, bevor Trainees sie sehen? Wie werden Hypothesen von Fakten getrennt?
-
-### 8. Strategie-Builder
-
-**Zweck des Screens:** Die Verhandlungsstrategie in handhabbare Bausteine uebersetzen: Ziele, ZOPA, BATNA, Konzessionen, Argumentationslinien und Risiken.
+**Zweck des Screens:** Die Verhandlungsstrategie in handhabbare Bausteine uebersetzen: Ziele, ZOPA, BATNA, Konzessionen, Argumentationslinien, Risiken und reduzierte Vergleichsnotizen.
 
 **Hauptnutzer:** Trainee und Trainer.
 
-**Zentrale Nutzeraktionen:** Strategie anlegen oder bearbeiten, ZOPA-Dimensionen pflegen, BATNA-Optionen bewerten, Konzessionen ordnen, Argumentationslinien aus Evidenz ableiten, Strategieversion aktiv setzen.
+**Zentrale Nutzeraktionen:** Strategie anlegen oder bearbeiten, ZOPA-Dimensionen pflegen, BATNA-Optionen bewerten, Konzessionen ordnen, Argumentationslinien ableiten, Annahmen und Hypothesen markieren.
 
-**Wichtigste Eingaben:** Strategietitel, Zielbeschreibung, Zielwerte, Walk-away-Grenzen, Alternativen, Konzessionsbedingungen, Gegenleistungen, Argumente, Evidenz, erwartete Gegenargumente und Reaktionsstrategie.
+**Wichtigste Ausgaben / Anzeigen:** Aktive Strategie, strukturierte ZOPA, BATNA-Liste, Konzessionsplan, Argumentationslinien, Risiko- und Notizfelder, reduzierte Angebots- oder RFQ-Vergleichsnotizen.
 
-**Wichtigste Ausgaben / Anzeigen:** Aktive Strategie, strukturierte ZOPA, BATNA-Liste, Konzessionsplan, Argumentationslinien, Risiko- und Notizfelder.
+**MVP-Erweiterungen:** RFQ-/Angebotsvergleich ist nur als einfache Notiz- oder Vergleichslogik innerhalb des Strategie-Builders vorgesehen. Er bleibt fachlich manuell nachvollziehbar und wird nicht zu einem eigenen Modul ausgebaut.
 
-**Relevante Backend-Objekte:** `Strategy`, `ZopaItem`, `BatnaOption`, `ConcessionItem`, `ArgumentationLine`, `NegotiationProject`, `SupplierProfile`, `KnowledgeClaim`.
+**MVP-Abgrenzung:** Keine automatische ZOPA-Berechnung, keine verbindliche KI-Strategie-Generierung, keine vollautomatische Angebotsanalyse und keine eigene RFQ-Arbeitsstrecke.
 
-**KI-/RAG-Anschlussstellen:** Spaeter KI-gestuetzte Vorschlaege fuer ZOPA, BATNA, Konzessionen und Argumentationslinien auf Basis von Projekt, Lieferant, Claims und Einkaufshistorie.
+### 8. Kultur- und Rollenbriefing
 
-**MVP-Abgrenzung:** Strategie kann manuell oder trainergefuehrt gepflegt werden. Keine automatische ZOPA-Berechnung, keine verbindliche KI-Strategie-Generierung.
-
-**Offene Fragen:** Welche Strategiebausteine darf der Trainee selbst veraendern? Braucht jede Strategie eine Trainerfreigabe?
-
-### 9. Kultur- und Rollenbriefing
+**MVP-Status:** MVP-Core.
 
 **Zweck des Screens:** Trainee und Trainer auf Lieferantenrolle, Gespraechsdynamik, kulturelle Arbeitshypothesen und erwartete Taktiken vorbereiten.
 
 **Hauptnutzer:** Trainee und Trainer.
 
-**Zentrale Nutzeraktionen:** Lieferantenannahmen lesen, kulturelle Hinweise pruefen, Rollenbriefing fuer Simulation vorbereiten, Unsicherheiten markieren.
+**Zentrale Nutzeraktionen:** Lieferantenannahmen lesen, kulturelle Hinweise pruefen, Rollenbriefing fuer eine spaetere Simulation vorbereiten, Unsicherheiten markieren.
 
-**Wichtigste Eingaben:** Auswahl von Projekt, Lieferant, Zielregion, Szenariotyp und ggf. Rollenannahmen.
+**Wichtigste Ausgaben / Anzeigen:** Lieferantenprofil, Beziehungskontext, kultureller Kontext, Interessen, wahrscheinliche Taktiken, Constraints, Rollenbriefing, einfache Hypothesenliste.
 
-**Wichtigste Ausgaben / Anzeigen:** Lieferantenprofil, kultureller Kontext, Interessen, wahrscheinliche Taktiken, Constraints, Briefing fuer die Simulation.
+**MVP-Erweiterungen:** Lieferantenbeziehungsnotiz und Hypothesenliste koennen hier fachlich sichtbar werden, bleiben aber einfache Notizen und keine eigenstaendigen Module.
 
-**Relevante Backend-Objekte:** `SupplierProfile`, `KnowledgeClaim`, `NegotiationProject`, `SimulationScenario`.
+**MVP-Abgrenzung:** Kein stereotypes oder automatisiertes Kultururteil als harte Wahrheit. Keine Simulation-Engine und kein automatisches Rollenverhalten im MVP.
 
-**KI-/RAG-Anschlussstellen:** Spaeter kontextbezogene kulturelle Arbeitshypothesen und Rollenbriefings mit Quellenhinweisen. Ergebnisse muessen klar als Hypothesen markiert werden.
+### 9. Simulation konfigurieren
 
-**MVP-Abgrenzung:** Kein stereotypes oder automatisiertes Kultururteil als harte Wahrheit. Im MVP koennen Trainernotizen und strukturierte Lieferantenannahmen reichen.
+**MVP-Status:** MVP-Core.
 
-**Offene Fragen:** Welche kulturellen Hinweise sind didaktisch sinnvoll und rechtlich unkritisch? Wie wird Bias vermieden?
-
-### 10. Simulation konfigurieren
-
-**Zweck des Screens:** Einen Trainingsdurchlauf fachlich vorbereiten: Rolle, Szenario, Schwierigkeitsgrad, Ziele, Erfolgskriterien und Sprache.
+**Zweck des Screens:** Einen Trainingsdurchlauf fachlich vorbereiten: Rolle, Szenario, Schwierigkeitsgrad, Ziele, Erfolgskriterien, Sprache und Briefing.
 
 **Hauptnutzer:** Trainer.
 
-**Zentrale Nutzeraktionen:** Szenario anlegen, Strategie und Lieferant zuordnen, Rollenbeschreibung festlegen, Erfolgskriterien und Zeitlimit definieren, Trainee zuweisen.
+**Zentrale Nutzeraktionen:** Szenario fachlich anlegen, Strategie und Lieferant zuordnen, Rollenbeschreibung festlegen, Erfolgskriterien und Zeitrahmen definieren, Trainee zuweisen.
 
-**Wichtigste Eingaben:** Szenariotitel, Szenariotyp, Rolleninformationen, Kontext, Ziel, Briefing, Erfolgskriterien, Sprache, Zeitlimit, zugeordnete Strategie und Trainee.
+**Wichtigste Ausgaben / Anzeigen:** Simulationsbriefing, Startbereitschaft als fachlicher Status, zugeordnete Strategie, Rollen- und Lieferantenannahmen.
 
-**Wichtigste Ausgaben / Anzeigen:** Simulationsbriefing, Startbereitschaft, zugeordnete Strategie, Rollen- und Lieferantenannahmen.
+**MVP-Abgrenzung:** Dieser Screen konfiguriert nur. Er beinhaltet keine produktive Simulation-Engine, keinen laufenden Dialog, keinen Voice-Modus, keine Streaming-Logik und keine automatische Auswertung.
 
-**Relevante Backend-Objekte:** `SimulationScenario`, `NegotiationProject`, `Strategy`, `SupplierProfile`, `UserProfile`.
+### 10. Trainerreview / Trainerkommentar
 
-**KI-/RAG-Anschlussstellen:** Spaeter Rollen- und Szenario-Prompting, Engine-Konfiguration und Retrieval-Kontext fuer die Simulation.
+**MVP-Status:** MVP-Core.
 
-**MVP-Abgrenzung:** Keine Simulation-Engine, kein Voice, keine Streaming-Logik. Der Screen kann zunaechst als Konfigurations- und Zielbild beschrieben werden.
-
-**Offene Fragen:** Welche Szenariotypen werden zuerst gebraucht? Muss der Trainer Simulationen live beobachten koennen?
-
-### 11. Simulation durchfuehren
-
-**Zweck des Screens:** Gefuehrte Verhandlungssimulation durchlaufen, bei der der Trainee im Projektkontext uebt und nicht frei ohne Struktur promptet.
-
-**Hauptnutzer:** Trainee.
-
-**Zentrale Nutzeraktionen:** Simulation starten, Nachrichten austauschen, Phasen durchlaufen, bei Bedarf Briefing oder Strategie einsehen, Simulation abschliessen.
-
-**Wichtigste Eingaben:** Trainee-Antworten, optionale Phasenentscheidungen, Abschluss oder Pausenstatus.
-
-**Wichtigste Ausgaben / Anzeigen:** Rollenbriefing, laufender Dialog, Phasenstatus, ggf. kurze kontextuelle Hinweise, Abschlussstatus.
-
-**Relevante Backend-Objekte:** `SimulationScenario`, `SimulationMessage`, `Strategy`, `SupplierProfile`, `NegotiationProject`, `UserProfile`.
-
-**KI-/RAG-Anschlussstellen:** Spaeter Simulation-Engine mit rollen- und szenariobasiertem Prompting, optional RAG-Kontext aus Projekt, Strategie und Knowledge Base.
-
-**MVP-Abgrenzung:** Kein produktiver KI-Dialog, kein Voice-Modus, keine automatische Taktikerkennung als Pflicht. Simulation ist im MVP mindestens als konzeptioneller Zielscreen zu fuehren.
-
-**Offene Fragen:** Startet die erste Simulation textbasiert? Welche Gespraechsphasen sollen fest gefuehrt werden?
-
-### 12. Auswertung und Lerntransfer
-
-**Zweck des Screens:** Ergebnis eines Simulationsdurchlaufs, Zielerreichung, Lernpunkte und naechste Schritte nachvollziehbar machen.
-
-**Hauptnutzer:** Trainee und Trainer.
-
-**Zentrale Nutzeraktionen:** Auswertung lesen, Lernpunkte bestaetigen, naechste Schritte festhalten, Trainerfeedback einsehen, Wiederholung planen.
-
-**Wichtigste Eingaben:** Manuelle Lernnotizen, Trainerergaenzungen, ggf. Bewertung oder Abschlussstatus.
-
-**Wichtigste Ausgaben / Anzeigen:** Zusammenfassung, Outcome, Zielerreichung, vereinbarte Konditionen, Lernpunkte, naechste Schritte, optionale Scores und sichtbare Trainerkommentare.
-
-**Relevante Backend-Objekte:** `SimulationResult`, `SimulationScenario`, `SimulationMessage`, `TrainerComment`, `Strategy`.
-
-**KI-/RAG-Anschlussstellen:** Spaeter Gespraechsanalyse, Kompetenzfeedback, Taktikerkennung, Score-Vorschlaege und Lerntransfer-Empfehlungen.
-
-**MVP-Abgrenzung:** Keine automatische Bewertungspflicht. Scores bleiben optional und didaktisch zu klaeren.
-
-**Offene Fragen:** Welche Scores sind wirklich hilfreich? Soll der Trainee eigene Reflexionen speichern koennen?
-
-### 13. Trainerreview / Trainerkommentar
-
-**Zweck des Screens:** Menschliches Trainerfeedback zu Szenario, Ergebnis oder einzelner Nachricht erfassen und steuern, was fuer Trainees sichtbar ist.
+**Zweck des Screens:** Menschliches Trainerfeedback zu Projekt, Analyse, Strategie, Briefing, Simulationskonfiguration oder spaeteren Ergebnissen erfassen und sichtbar machen.
 
 **Hauptnutzer:** Trainer.
 
-**Zentrale Nutzeraktionen:** Kommentar schreiben, Kompetenzbezug setzen, Severity markieren, Sichtbarkeit fuer Trainee steuern, Kommentar mit Ergebnis oder Nachricht verknuepfen.
+**Zentrale Nutzeraktionen:** Kommentar schreiben, Kompetenzbezug oder fachlichen Bezug setzen, Sichtbarkeit fuer Trainee steuern, Lernpunkt oder Korrekturhinweis festhalten.
 
-**Wichtigste Eingaben:** Kommentartext, Kommentartyp, Kompetenzbezug, Severity, Sichtbarkeit, Bezug auf Szenario, Ergebnis oder Nachricht.
+**Wichtigste Ausgaben / Anzeigen:** Bestehende Kommentare, sichtbare und interne Feedbackanteile, fachlicher Kontext des Kommentars, einfache Lernpunkte.
 
-**Wichtigste Ausgaben / Anzeigen:** Bestehende Kommentare, Kontext der Simulation, sichtbare und interne Feedbackanteile.
+**MVP-Abgrenzung:** Kein komplexer Review-Workflow, keine Rollenrechte-Engine, keine automatische Feedbackfreigabe und kein vollwertiger Lerntransfer-Screen.
 
-**Relevante Backend-Objekte:** `TrainerComment`, `SimulationScenario`, `SimulationResult`, `SimulationMessage`, `UserProfile`.
+### Zielbild A. Import- und Upload-Uebersicht
 
-**KI-/RAG-Anschlussstellen:** Spaeter kann KI Feedbackvorschlaege vorbereiten; der Trainer bleibt fuer didaktisch relevantes Feedback und Freigabe zentral.
+**Status:** Zielbild, nicht MVP-Core.
 
-**MVP-Abgrenzung:** Kein komplexer Review-Workflow, keine Rollenrechte-Engine, keine automatische Feedbackfreigabe.
+**Einordnung:** Uploads, Importvorgaenge, Mapping, Validierung und Importfehler koennen fachlich beschrieben und in der Datenbasis referenziert werden. Ein produktiver Import-/Upload-Screen ist nicht Teil des MVP-Screen-Scopes aus Issue #14.
 
-**Offene Fragen:** Welche Kommentare sind intern, welche trainee-sichtbar? Muss Feedback versioniert werden?
+**MVP-Abgrenzung:** Keine Upload-API, keine Parser-/Mapping-Oberflaeche, keine OCR-Strecke und keine Entscheidung ueber produktive Upload-Flows in diesem Dokument.
 
-### 14. Lernhistorie / Fortschritt
+### Zielbild B. Simulation durchfuehren
 
-**Zweck des Screens:** Lernentwicklung ueber mehrere Projekte und Simulationen hinweg sichtbar machen.
+**Status:** Zielbild, nicht MVP-Core.
 
-**Hauptnutzer:** Trainee und Trainer.
+**Einordnung:** Die gefuehrte Simulation bleibt ein spaeterer produktiver Screen nach der Konfiguration. Im MVP wird fachlich vorbereitet, was eine Simulation braucht; die Durchfuehrung selbst ist keine Pflicht.
 
-**Zentrale Nutzeraktionen:** Vergangene Simulationen ansehen, Lernpunkte vergleichen, Fortschritt diskutieren, naechste Trainingsziele ableiten.
+**MVP-Abgrenzung:** Kein produktiver KI-Dialog, keine Chat- oder Voice-Engine, keine automatische Taktikerkennung und kein RAG-Kontext als Pflicht.
 
-**Wichtigste Eingaben:** Filter nach Zeitraum, Projekt, Kompetenzfeld oder Trainee.
+### Zielbild C. Auswertung und Lerntransfer
 
-**Wichtigste Ausgaben / Anzeigen:** Simulationsergebnisse, Trainerkommentare, Lernpunkte, naechste Schritte, grobe Entwicklung ueber Zeit.
+**Status:** Zielbild, nicht MVP-Core.
 
-**Relevante Backend-Objekte:** `UserProfile`, `SimulationResult`, `TrainerComment`, `SimulationScenario`, `NegotiationProject`.
+**Einordnung:** Ergebnis, Feedback, Lernpunkte und naechste Schritte sind fachlich wichtig, erscheinen im MVP aber reduziert im Trainerreview oder als einfache Notiz. Ein vollwertiger eigener Screen bleibt spaeter.
 
-**KI-/RAG-Anschlussstellen:** Spaeter Lernpfad-Vorschlaege, Kompetenztrend-Analyse und Benchmarking.
+**MVP-Abgrenzung:** Keine automatische Bewertung, keine Score-Pflicht, keine vollwertige Lerntransfer-Arbeitsstrecke.
 
-**MVP-Abgrenzung:** Keine Zertifikatslogik, keine Benchmark-Datenbank, keine komplexen Team-Auswertungen.
+### Zielbild D. Lernhistorie / Fortschritt
 
-**Offene Fragen:** Welche Fortschrittsindikatoren sind didaktisch tragfaehig? Soll Fortschritt privat, trainerseitig oder teamweit sichtbar sein?
+**Status:** Zielbild, nicht MVP-Core.
 
-## 5. Trainer-Workflow
+**Einordnung:** Fortschritt ueber mehrere Projekte und Simulationen hinweg ist eine spaetere Ausbaustufe.
+
+**MVP-Abgrenzung:** Keine Lernhistorie, keine Zertifikatslogik, keine Benchmark-Datenbank und keine Team-Auswertungen.
+
+## 5. Trainer-Workflow im MVP
 
 Der Trainer-Workflow ist im MVP der stabilste Startpunkt, weil Datenbasis, Szenarioqualitaet und didaktische Freigabe kontrolliert werden muessen.
 
-| Schritt | Beschreibung | Zwingende Screens im MVP | Optional im MVP |
-|---|---|---|---|
-| Mandant/Firma vorbereiten | Company-Kontext pruefen und vorhandene Datenbasis einschaetzen | Firmenprofil / Company-Uebersicht | Dashboard |
-| Trainee oder Rolle anlegen | Rolle, Lernziel und Trainingskontext erfassen | Trainee- bzw. Rollenprofil | Lernhistorie / Fortschritt |
-| Datenbasis pruefen | Knowledge-Dokumente, Claims, Einkaufshistorie und Importstatus bewerten | Knowledge Base / Datenbasis | Import- und Upload-Uebersicht |
-| Projekt oder Szenario auswaehlen | Konkreten Verhandlungsfall definieren oder vorhandenen Fall oeffnen | Verhandlungsprojekt anlegen / bearbeiten | Dashboard |
-| Analyse und Strategie pruefen | Analyse, ZOPA, BATNA, Konzessionen und Argumentationslinien fachlich pruefen | Analyseansicht, Strategie-Builder | Kultur- und Rollenbriefing |
-| Simulation konfigurieren oder beobachten | Szenario, Rolle, Schwierigkeit und Erfolgskriterien setzen | Simulation konfigurieren | Simulation durchfuehren |
-| Feedback ergaenzen | Ergebnis, Nachrichten oder Gesamtdurchlauf kommentieren | Trainerreview / Trainerkommentar | Auswertung und Lerntransfer |
-| Lerntransfer dokumentieren | Lernpunkte und naechste Trainingsschritte festhalten | Auswertung und Lerntransfer | Lernhistorie / Fortschritt |
+| Schritt | Beschreibung | MVP-Screen |
+|---|---|---|
+| Einstieg und Priorisierung | Offene Projekte, Rollen und Reviews finden | Dashboard |
+| Mandant/Firma vorbereiten | Company-Kontext pruefen und Datenlage einschaetzen | Firmenprofil / Company-Uebersicht |
+| Trainee oder Rolle klaeren | Rolle, Lernziel und Trainingskontext erfassen | Trainee- / Rollenprofil |
+| Datenbasis pruefen | Quellen, Claims, Einkaufshistorie und Anfragepositionen bewerten | Knowledge Base / Datenbasis |
+| Projekt definieren | Konkreten Verhandlungsfall und einfache Kontextnotizen erfassen | Verhandlungsprojekt anlegen / bearbeiten |
+| Analyse und Strategie pruefen | Fakten, Annahmen, Hypothesen, ZOPA, BATNA und Argumentation fachlich pruefen | Analyseansicht, Strategie-Builder |
+| Briefing vorbereiten | Lieferantenrolle, Beziehungskontext und kulturelle Arbeitshypothesen klaeren | Kultur- und Rollenbriefing |
+| Simulation vorbereiten | Szenario, Rolle, Schwierigkeit und Erfolgskriterien setzen | Simulation konfigurieren |
+| Feedback geben | Trainerkommentar und einfache Lernpunkte dokumentieren | Trainerreview / Trainerkommentar |
 
-Der Trainer braucht fuer einen sinnvollen MVP zwingend Zugriff auf Firmenprofil, Rollenprofil, Datenbasis, Projekt, Analyse, Strategie und Trainerkommentar. Simulation, Auswertung und Lernhistorie koennen zunaechst als fachliche Zielscreen-Kette vorbereitet werden, solange die produktive Simulation-Engine noch nicht existiert.
+Import/Upload, produktive Simulationsdurchfuehrung, vollwertiger Lerntransfer und Lernhistorie sind in diesem Workflow bewusst nicht als MVP-Pflichtschritte enthalten.
 
-## 6. Trainee-Workflow
+## 6. Trainee-Workflow im MVP
 
-Der Trainee-Workflow soll gefuehrt sein. Der Trainee startet nicht mit einem freien Chat, sondern bewegt sich schrittweise durch Projektverstaendnis, Analyse, Strategie, Briefing, Simulation und Lerntransfer.
+Der Trainee-Workflow soll gefuehrt sein. Der Trainee startet nicht mit einem freien Chat, sondern bewegt sich schrittweise durch Projektverstaendnis, Analyse, Strategie, Briefing und Trainerfeedback.
 
-1. **Eigenes Profil sehen oder bearbeiten:** Der Trainee sieht Rolle, Lernziel und relevante Trainingsannahmen im Trainee- bzw. Rollenprofil.
-2. **Verhandlungsprojekt verstehen:** Der Trainee oeffnet das zugewiesene Projekt und liest Ziel, Rahmenbedingungen, Lieferant, Anfrageposition und Prioritaeten.
-3. **Analyse lesen:** Die Analyseansicht zeigt relevante Daten, Risiken, Chancen, Claims und offene Informationsluecken.
-4. **Strategie vorbereiten:** Im Strategie-Builder arbeitet der Trainee mit ZOPA, BATNA, Konzessionen und Argumentationslinien. Je nach MVP-Entscheidung kann der Trainer Inhalte vorbereiten oder freigeben.
-5. **Kulturbriefing nutzen:** Das Kultur- und Rollenbriefing liefert Lieferantenannahmen, Gespraechsdynamik und vorsichtig formulierte kulturelle Arbeitshypothesen.
-6. **Simulation starten:** Der Trainee startet eine konfigurierte Simulation und wird durch Phasen oder Aufgaben gefuehrt.
-7. **Feedback und Lernpunkte erhalten:** Nach Abschluss liest der Trainee Auswertung, Lernpunkte und naechste Schritte.
-8. **Trainerkommentar lesen:** Sichtbare Trainerkommentare werden im Kontext von Auswertung, Nachricht oder Gesamtszenario angezeigt.
+1. **Eigenes Profil sehen oder bearbeiten:** Der Trainee sieht Rolle, Lernziel und relevante Trainingsannahmen im Trainee- / Rollenprofil.
+2. **Verhandlungsprojekt verstehen:** Der Trainee oeffnet das zugewiesene Projekt und liest Ziel, Rahmenbedingungen, Lieferant, Anfrageposition, Prioritaeten und einfache Kontextnotizen.
+3. **Analyse lesen:** Die Analyseansicht zeigt relevante Daten, Risiken, Chancen, Claims, offene Informationsluecken und klar markierte Hypothesen.
+4. **Strategie vorbereiten:** Im Strategie-Builder arbeitet der Trainee mit ZOPA, BATNA, Konzessionen, Argumentationslinien und ggf. reduzierten Angebotsvergleichsnotizen.
+5. **Kultur- und Rollenbriefing nutzen:** Das Briefing liefert Lieferantenannahmen, Beziehungskontext, Gespraechsdynamik und vorsichtig formulierte kulturelle Arbeitshypothesen.
+6. **Konfiguriertes Szenario verstehen:** Der Trainee sieht, was fuer die Simulation fachlich vorbereitet wurde, ohne dass eine produktive Simulation-Engine Teil des MVP sein muss.
+7. **Trainerkommentar lesen:** Sichtbare Trainerkommentare und einfache Lernpunkte werden im Kontext des Projekts oder der Vorbereitung angezeigt.
 
-Wichtig ist, dass jede Station eine klare naechste Aktion vorgibt. Der Trainee soll verstehen, was jetzt zu tun ist, welche Daten belastbar sind und welche Annahmen nur Hypothesen darstellen.
+Wichtig ist, dass jede Station eine klare naechste Aktion vorgibt. Der Trainee soll verstehen, was belastbar ist, was Annahme bleibt und welche Hypothesen noch geprueft werden muessen.
 
 ## 7. Admin-Workflow als spaetere Ausbaustufe
 
@@ -447,102 +381,113 @@ Der Admin-Workflow ist kein MVP-Pflichtbestandteil. Er wird nur als spaetere Aus
 - **Mandanten verwalten:** Companies anlegen, deaktivieren, zusammenfuehren oder organisatorisch strukturieren.
 - **Nutzer verwalten:** Nutzer einladen, aktivieren, deaktivieren und Companies zuordnen.
 - **Rechte/Rollen verwalten:** Sichtbarkeiten fuer Trainer, Trainees, Admins und spaetere Teamrollen steuern.
-- **Datenbereinigung / Upload-Verwaltung:** Uploads, ImportJobs, verwaiste Dokumente, fehlerhafte Imports und Datenqualitaet verwalten.
+- **Datenbereinigung / Upload-Verwaltung:** Uploads, Importvorgaenge, verwaiste Dokumente, fehlerhafte Imports und Datenqualitaet verwalten.
 - **Audit-/Compliance-Themen:** Zugriff, Datenveraenderungen, Vertraulichkeitsstufen und Loeschkonzepte nachvollziehbar machen.
 
-Diese Funktionen sollten erst konkretisiert werden, wenn MVP-Workflow, Upload-API, Rechtebedarf und Datenklassifikation klarer sind.
+Diese Funktionen sollten erst konkretisiert werden, wenn MVP-Workflow, Upload-Bedarf, Rechtebedarf und Datenklassifikation klarer sind.
 
-## 8. Backend-Objekt-Mapping je Screen
+## 8. Fachliches Objekt-Mapping je Screen
 
-| Screen | Liest | Erzeugt/veraendert | Spaetere Services | Bemerkung |
-|---|---|---|---|---|
-| Dashboard | `Company`, `UserProfile`, `NegotiationProject`, `SimulationScenario`, `SimulationResult`, `TrainerComment` | Keine oder nur Status-/Auswahlkontext | Workflow-Service, Lernempfehlungen | Im MVP regelbasierte Uebersicht ausreichend |
-| Firmenprofil / Company-Uebersicht | `Company`, `KnowledgeDocument`, `ImportJob`, `ProcurementHistoryItem`, `RequestItem`, `NegotiationProject` | `Company` | Datenqualitaets-Service, Admin-Service | Keine Mandantenverwaltung im MVP |
-| Trainee- bzw. Rollenprofil | `UserProfile`, `Company`, `SimulationResult`, `TrainerComment` | `UserProfile` | Lernprofil-Service | `UserProfile` kann Person oder Trainingsrolle abbilden |
-| Knowledge Base / Datenbasis | `KnowledgeDocument`, `DocumentChunk`, `KnowledgeClaim`, `ProcurementHistoryItem`, `RequestItem`, `ImportJob`, `ImportRow` | Optional `KnowledgeDocument` oder manuelle Claim-Pflege spaeter | Chunking, Embeddings, RAG, Claim-Extraktion | Keine produktive RAG-Funktion im MVP |
-| Import- und Upload-Uebersicht | `ImportJob`, `ImportRow`, `KnowledgeDocument` | Spaeter `ImportJob`, `ImportRow`; ggf. Zielobjekte durch Importverarbeitung | Upload-Service, Parser-Service, Mapping-Service, Validierungsengine, Zielobjekt-Erzeugung | Issue #11 bleibt offen; keine Datei-Metadaten vorziehen |
-| Verhandlungsprojekt anlegen / bearbeiten | `Company`, `UserProfile`, `RequestItem`, `SupplierProfile`, `KnowledgeDocument` | `NegotiationProject`, ggf. Zuordnung zu `RequestItem` und `SupplierProfile` | Projektanlage-Service, Plausibilitaetspruefung | Kernscreen fuer MVP |
-| Analyseansicht | `NegotiationProject`, `SupplierProfile`, `KnowledgeClaim`, `KnowledgeDocument`, `DocumentChunk`, `ProcurementHistoryItem`, `RequestItem` | Optional Analyse-Notizen in bestehenden JSONB-Feldern spaeter | Analyse-Service, RAG, Claim-Ranking | Fakten, Annahmen und Hypothesen trennen |
-| Strategie-Builder | `NegotiationProject`, `SupplierProfile`, `KnowledgeClaim`, `ProcurementHistoryItem`, `RequestItem` | `Strategy`, `ZopaItem`, `BatnaOption`, `ConcessionItem`, `ArgumentationLine` | KI-Strategie-Service, RAG | Im MVP manuell oder trainergefuehrt |
-| Kultur- und Rollenbriefing | `SupplierProfile`, `KnowledgeClaim`, `NegotiationProject`, `Strategy` | `SimulationScenario`-Briefing oder spaeter eigene Briefing-Struktur | Kulturbriefing-Service, RAG | Kulturelle Hinweise als Hypothesen markieren |
-| Simulation konfigurieren | `NegotiationProject`, `Strategy`, `SupplierProfile`, `UserProfile` | `SimulationScenario` | Simulation-Config-Service, Prompt-Orchestrierung | Keine Engine-Implementierung in diesem Issue |
-| Simulation durchfuehren | `SimulationScenario`, `Strategy`, `SupplierProfile`, `NegotiationProject` | `SimulationMessage`, Status auf `SimulationScenario` | Simulation-Engine, Chat/Voice, RAG-Kontext | Konzeptioneller Zielscreen im MVP |
-| Auswertung und Lerntransfer | `SimulationScenario`, `SimulationMessage`, `Strategy`, `TrainerComment` | `SimulationResult`, ggf. Lernnotizen in `metadata_json` | Auswertungs-Service, Kompetenzfeedback, Taktikerkennung | Scores optional und didaktisch zu klaeren |
-| Trainerreview / Trainerkommentar | `SimulationScenario`, `SimulationResult`, `SimulationMessage`, `UserProfile` | `TrainerComment` | Feedback-Assistenz, Review-Service | Menschliches Feedback bleibt zentral |
-| Lernhistorie / Fortschritt | `UserProfile`, `SimulationResult`, `TrainerComment`, `SimulationScenario`, `NegotiationProject` | Optional Fortschrittsnotizen spaeter | Lernpfad-Service, Benchmarking | Keine Zertifikatslogik im MVP |
+Diese Tabelle dient nur der fachlichen Orientierung. Sie legt keine neuen Datenmodelle, API-Endpunkte oder technische Umsetzung fest.
 
-## 9. KI- und RAG-Anschlussstellen
+| Screen | Fachlich relevante Informationen | MVP-Einordnung |
+|---|---|---|
+| Dashboard | Company, Rolle, Projekt, Review-Status, naechster Schritt | MVP-Core |
+| Firmenprofil / Company-Uebersicht | Unternehmenskontext, Datenlage, Projekte, Einkaufshistorie, Anfragepositionen | MVP-Core |
+| Trainee- / Rollenprofil | Rolle, Lernziel, Erfahrungsstand, Trainingsfokus | MVP-Core |
+| Knowledge Base / Datenbasis | Quellen, Claims, Einkaufshistorie, Anfragepositionen, Datenqualitaet | MVP-Core |
+| Verhandlungsprojekt anlegen / bearbeiten | Projektbriefing, Lieferant, Anfrageposition, Ziel, Risiken, Lieferantenbeziehungsnotiz, Stakeholdernotiz | MVP-Core |
+| Analyseansicht | Fakten, Annahmen, Hypothesen, Risiken, Chancen, Datenluecken, reduzierte Vergleichsnotizen | MVP-Core |
+| Strategie-Builder | Ziele, ZOPA, BATNA, Konzessionen, Argumentation, reduzierte Angebots-/RFQ-Notizen | MVP-Core |
+| Kultur- und Rollenbriefing | Lieferantenrolle, Beziehungskontext, kulturelle Arbeitshypothesen, erwartete Taktiken | MVP-Core |
+| Simulation konfigurieren | Szenario, Rolle, Schwierigkeit, Erfolgskriterien, Briefing | MVP-Core |
+| Trainerreview / Trainerkommentar | Trainerfeedback, Sichtbarkeit, Lernpunkt, fachlicher Bezug | MVP-Core |
+| Import- und Upload-Uebersicht | Upload- und Importstatus, Validierung, Mapping | Zielbild, nicht MVP |
+| Simulation durchfuehren | Laufender Dialog, Phasen, Nachrichten, Abschluss | Zielbild, nicht MVP |
+| Auswertung und Lerntransfer | Ergebnis, Scores, Lerntransfer, naechste Schritte | Zielbild, nicht MVP |
+| Lernhistorie / Fortschritt | Entwicklung ueber mehrere Projekte oder Simulationen | Zielbild, nicht MVP |
 
-Dieses Konzept erstellt keine Prompts und keine Implementierung. Es markiert nur fachliche Andockpunkte.
+## 9. KI-, RAG- und Automatisierungsgrenzen
 
-- **Knowledge Base / Datenbasis:** Spaeter Chunking, Embedding-Erzeugung, Claim-Extraktion und Quellenqualitaetsbewertung fuer `KnowledgeDocument`, `DocumentChunk` und `KnowledgeClaim`.
-- **Analyseansicht:** Retrieval aus `KnowledgeDocument`, `DocumentChunk`, `KnowledgeClaim`, `ProcurementHistoryItem` und `RequestItem`; Zusammenfassungen mit klarer Trennung von Fakt, Annahme, Hypothese und Empfehlung.
-- **Strategie-Builder:** KI-gestuetzte Vorschlaege fuer ZOPA, BATNA, Konzessionen und Argumentationslinien. Vorschlaege sollten editierbar und quellenbasiert sein.
-- **Kultur- und Rollenbriefing:** Kontextbezogene kulturelle Arbeitshypothesen, Rollenannahmen und moegliche Taktiken. Diese Hinweise duerfen nicht als deterministische Aussagen erscheinen.
-- **Simulation konfigurieren:** Ableitung von Rollenbriefing, Schwierigkeit, Erfolgskriterien und Kontextpaket fuer eine spaetere Simulation-Engine.
-- **Simulation durchfuehren:** Rollen- und Szenario-Prompting, phasenbasierter Dialog, optional RAG-Kontext und spaeter Voice-Simulation.
-- **Auswertung und Lerntransfer:** Gespraechsanalyse, Kompetenzfeedback, Taktikerkennung, Score-Vorschlaege und naechste Lernschritte.
-- **Trainerreview:** KI kann Entwuerfe oder Auffaelligkeiten liefern; menschlicher Trainer entscheidet ueber Feedbackqualitaet und Sichtbarkeit.
-- **Lernhistorie:** Spaeter personalisierte Lernpfade, Kompetenztrend-Analyse und Benchmarking.
+Dieses Konzept erstellt keine Prompts und keine Implementierung. Es markiert nur fachliche Andockpunkte fuer spaeter.
+
+- **Knowledge Base / Datenbasis:** Spaeter koennen Chunking, Embeddings, Claim-Extraktion, OCR oder Quellenqualitaetsbewertung ergaenzt werden. Sie sind nicht Teil des MVP-Screen-Scopes.
+- **Analyseansicht:** Spaeter koennen KI-gestuetzte Zusammenfassungen, Hypothesen oder Empfehlungen entstehen. Im MVP muss die Trennung von Fakt, Annahme, Hypothese und Empfehlung fachlich sichtbar sein.
+- **Strategie-Builder:** Spaeter koennen Vorschlaege fuer ZOPA, BATNA, Konzessionen und Argumentationslinien entstehen. Im MVP bleibt Strategie manuell oder trainergefuehrt.
+- **Kultur- und Rollenbriefing:** Spaetere Hinweise muessen als Arbeitshypothesen formuliert werden und duerfen nicht als deterministische Aussagen erscheinen.
+- **Simulation konfigurieren:** Spaeterer Andockpunkt fuer eine Simulation-Engine; im MVP nur fachliche Vorbereitung.
+- **Simulation durchfuehren, Auswertung und Lernhistorie:** Zielbild nach dem MVP, nicht Pflicht in Phase A1.
 
 ## 10. MVP-Abgrenzung
 
 ### MVP-relevant
 
-- Gefuehrter Workflow statt freier Chatbot.
+- Dashboard.
 - Firmenprofil / Company-Uebersicht.
-- Trainee- bzw. Rollenprofil.
-- Datenbasis-Uebersicht.
-- Verhandlungsprojekt.
+- Trainee- / Rollenprofil.
+- Knowledge Base / Datenbasis.
+- Verhandlungsprojekt anlegen / bearbeiten.
 - Analyseansicht.
 - Strategie-Builder.
-- Simulation und Auswertung als konzeptioneller Zielscreen.
-- Trainerkommentar.
+- Kultur- und Rollenbriefing.
+- Simulation konfigurieren.
+- Trainerreview / Trainerkommentar.
+- Einfache Lieferantenbeziehungsnotiz innerhalb bestehender Screens.
+- Einfache Stakeholdernotiz innerhalb bestehender Screens.
+- Einfache Hypothesenliste innerhalb bestehender Screens.
+- Reduzierter RFQ-/Angebotsvergleich als Notiz- oder Vergleichslogik innerhalb bestehender Screens.
 - Klare Trennung von Fakten, Annahmen, Hypothesen und Empfehlungen.
 
-### Spaeter
+### Spaeter oder Zielbild
 
-- Echte Upload-UI.
-- Echte Parser-/Mapping-UI.
-- Datei-Metadatenentscheidung und ggf. additive Migration aus Issue #11.
-- Produktives RAG.
-- Chunking-Service und Embedding-Erzeugung.
-- KI-Prompts im Detail.
-- Simulation-Engine.
-- Voice-Simulation.
+- Import- und Upload-Uebersicht als produktiver Screen.
+- Produktive Upload-, Import-, Parser-, Mapping- oder OCR-Strecken.
+- Produktives RAG, Chunking, Embeddings und automatische Claim-Extraktion.
+- Simulation durchfuehren als produktive Engine.
+- Auswertung und Lerntransfer als vollwertiger eigener Screen.
+- Lernhistorie, Fortschritt, Zertifikate und Benchmarks.
 - Team-/Admin-Dashboards.
 - Rechte- und Rollensystem.
 - CRM-Anbindung.
-- Zertifikatslogik.
-- Benchmark-Datenbank.
+- Relationship Memory als eigenes Modul.
+- Vollautomatische Angebotsanalyse oder eigenes RFQ-Modul.
 
 ### Nicht-Ziele dieses Dokuments
 
 - Keine React-/Frontend-Komponenten.
 - Keine API-Endpunkte.
 - Keine Datenbankmigration.
+- Keine neuen Datenmodelle.
 - Keine Upload-API.
 - Keine Parser-/Mapping-Logik.
 - Keine Validierungsengine.
 - Keine RAG-Implementierung.
 - Keine Embedding-Erzeugung.
+- Keine OCR-Implementierung.
 - Keine KI-Prompts im Detail.
 - Keine Simulation-Engine.
 - Keine Rechteverwaltung.
 
-## 11. Offene Produktentscheidungen
+## 11. Nachgelagerte Detail-Cluster
+
+Die Folgeissues #15, #16, #17 und #18 sollten nach Issue #14 auf dieser Scope-Grenze aufbauen. Sie koennen einzelne Bereiche fachlich vertiefen, ohne den MVP-Core-Screen-Scope wieder zu erweitern.
+
+Moegliche Cluster sind:
+
+- Detailklaerung der MVP-Core-Screens und ihrer Pflichtinformationen.
+- Fachliche Ausarbeitung der Notiz- und Hypothesenlogik innerhalb bestehender Screens.
+- Eingrenzung von Strategie, Briefing und Simulationskonfiguration.
+- Spaetere Zielbildklaerung fuer Simulation, Auswertung, Lernhistorie, Upload/Import und Automatisierung.
+
+## 12. Offene Produktentscheidungen
 
 - Soll der MVP zuerst trainergefuehrt oder trainee-self-service sein?
-- Muss der Trainer jede KI-Analyse freigeben, bevor ein Trainee sie sieht?
-- Welche Screens brauchen editierbare KI-Vorschlaege?
 - Welche Daten sieht ein Trainee nicht?
 - Welche Trainernotizen bleiben intern?
-- Wird Simulation zunaechst Chat-only oder spaeter Voice?
-- Welche Auswertungsscores sind didaktisch sinnvoll?
-- Wie stark soll RAG im MVP sichtbar sein?
 - Welche Strategiebausteine sind Pflicht, welche optional?
-- Soll `UserProfile` im MVP primaer echte Nutzer oder Trainingsrollen modellieren?
+- Welche Pflichtinformationen braucht ein Verhandlungsprojekt im MVP?
 - Welche Datenqualitaetsindikatoren braucht die Knowledge Base?
-- Ab wann braucht das Produkt ein echtes Rechte- und Rollensystem?
-- Wie wird sichergestellt, dass kulturelle Hinweise als Arbeitshypothesen und nicht als stereotype Zuschreibungen genutzt werden?
-- Welche Upload- und Datei-Metadaten werden erst im Rahmen von Issue #11 bzw. der spaeteren Upload-API entschieden?
+- Wie werden Hypothesen, Fakten, Annahmen und Empfehlungen visuell und sprachlich getrennt?
+- Welche minimale Angebots- oder RFQ-Vergleichslogik reicht im MVP als Notiz- oder Vergleichsansicht?
+- Welche kulturellen Hinweise sind didaktisch sinnvoll und rechtlich unkritisch?
+- Welche Funktionen gehoeren erst in Zielbild-Screens statt in den MVP-Core?

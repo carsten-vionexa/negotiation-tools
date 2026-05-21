@@ -31,7 +31,21 @@
 - Parser- und Mapping-Konzept fuer Excel/CSV dokumentiert
 - Validierungs- und Importfehler-Konzept dokumentiert
 - Zielobjekt-Erzeugungs-Konzept fuer Imports dokumentiert
+- Datei-Metadaten fuer spaetere Uploads additiv ergaenzt und Issue #11 abgeschlossen
+- Zentrale Projektdokumentation ergaenzt: project-overview.md
+- Aktualisiertes fachliches Hauptkonzept ergaenzt: workflow-v2.md
+- Procurement-Erweiterungen aus dem Kick-off dokumentiert: procurement-process-concept.md
+- Technische Architekturuebersicht ergaenzt: technical-architecture.md
+- Roadmap-Uebersicht ergaenzt: roadmap.md
 
 ## Naechste Schritte
 
-1. Chunking-Service, Embedding-Erzeugung und RAG spaeter planen.
+1. `screen-by-screen-concept.md` gegen `workflow-v2.md` und `procurement-process-concept.md` pruefen.
+2. MVP-Screens priorisieren.
+3. Entscheiden, welche Kick-off-Erweiterungen in den MVP gehoeren:
+   - einfache Stakeholdernotizen
+   - einfache Hypothesenliste
+   - einfache Lieferantenbeziehungsnotiz
+   - RFQ / Angebotsvergleich nur konzeptionell oder als einfacher Screen
+4. Danach konkrete Frontend- und API-Arbeitspakete ableiten.
+5. Chunking-Service, Embedding-Erzeugung und RAG spaeter planen.

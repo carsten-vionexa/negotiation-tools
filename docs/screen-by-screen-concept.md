@@ -115,10 +115,10 @@ Issue #14 finalisiert den MVP-Screen-Scope fachlich. Der MVP besteht aus zehn Co
 
 | Nr. | Screen | Primaere Rolle | MVP-Zweck | MVP-Status |
 |---:|---|---|---|---|
-| 1 | Dashboard | Trainer, Trainee | Einstieg in offene Projekte, Trainingsschritte, Reviews und naechste Aktionen | MVP-Core |
-| 2 | Firmenprofil / Company-Uebersicht | Trainer | Unternehmenskontext, Mandantenbezug und grobe Datenlage sichtbar machen | MVP-Core |
-| 3 | Trainee- / Rollenprofil | Trainee, Trainer | Rolle, Lernziel und Trainingskontext klaeren | MVP-Core |
-| 4 | Knowledge Base / Datenbasis | Trainer | Quellen, Claims, Einkaufshistorie und Anfragepositionen fachlich pruefen | MVP-Core |
+| 1 | Dashboard | Trainer, Trainee eingeschraenkt oder spaeter | Schlanker Einstieg in aktive Projekte, Projektstatus, naechste Workflow-Schritte und offene Trainerreviews | MVP-Core |
+| 2 | Firmenprofil / Company-Uebersicht | Trainer | Unternehmens- und Mandantenkontext fuer Verhandlungsprojekte bereitstellen | MVP-Core |
+| 3 | Trainee- / Rollenprofil | Trainer, Trainee | Reale Person oder Trainingsrolle, Lernziel und Trainingskontext fuer Vorbereitung, Simulation und Feedback klaeren | MVP-Core |
+| 4 | Knowledge Base / Datenbasis | Trainer | Vorhandene Quellen und strukturierte Datenlage als fachliche Grundlage sichtbar machen | MVP-Core |
 | 5 | Verhandlungsprojekt anlegen / bearbeiten | Trainer, spaeter Trainee | Konkreten Verhandlungsfall mit Ziel, Lieferant, Rahmenbedingungen und Status definieren | MVP-Core |
 | 6 | Analyseansicht | Trainee, Trainer | Projekt, Datenlage, Risiken, Chancen, Annahmen und Hypothesen verstehen | MVP-Core |
 | 7 | Strategie-Builder | Trainee, Trainer | Zielbild, ZOPA, BATNA, Konzessionen, Argumentation und reduzierte Vergleichslogik strukturieren | MVP-Core |
@@ -166,57 +166,120 @@ Die Folgeissues #15, #16, #17 und #18 sollten auf Basis dieser Abgrenzung als na
 
 **MVP-Status:** MVP-Core.
 
-**Zweck des Screens:** Einstiegspunkt fuer aktuelle Verhandlungsprojekte, Trainingsaufgaben, offene Reviews und naechste Schritte im gefuehrten Workflow.
+**Zweck des Screens:** Schlanker Einstieg in aktive Verhandlungsprojekte und deren naechste fachliche Schritte. Der Dashboard-Screen soll im MVP helfen, schnell zu erkennen, welche Projekte laufen, wo sie im Workflow stehen und welche Traineraktion als naechstes ansteht.
 
-**Hauptnutzer:** Trainer und Trainee.
+**Rolle im Workflow:** Der Screen ist der Startpunkt fuer den trainergefuehrten MVP-Workflow. Von hier aus springt der Trainer in Company-Kontext, Trainee- oder Rollenprofil, Datenbasis, Projektbearbeitung, Analyse, Strategie, Simulationskonfiguration oder Trainerreview. Fuer Trainees kann der Dashboard-Zugang spaeter oder eingeschraenkt genutzt werden, etwa fuer zugewiesene Projekte und freigegebene naechste Schritte.
 
-**Zentrale Nutzeraktionen:** Offenes Projekt oeffnen, naechsten Workflow-Schritt starten, offene Trainerreviews sehen, konfiguriertes Szenario finden, Trainerkommentar aufrufen.
+**Primaere Nutzer:** Zunaechst Trainer. Trainee-Nutzung ist im MVP optional, eingeschraenkt oder spaeter zu konkretisieren.
 
-**Wichtigste Ausgaben / Anzeigen:** Aktive Projekte, naechste fachliche Schritte, offene Trainerkommentare, Status von Analyse, Strategie, Briefing und Simulationskonfiguration.
+**Mindestens sichtbar im MVP:**
 
-**MVP-Abgrenzung:** Kein Team-Dashboard, keine Admin-Auswertung, keine Lernhistorie, keine komplexen Kennzahlen und kein produktiver Simulationsstart als Pflicht.
+- Aktive Verhandlungsprojekte.
+- Zugeordnete Company.
+- Zugeordneter Trainee oder zugeordnete Trainingsrolle.
+- Projektstatus im fachlichen Workflow.
+- Naechster empfohlener Workflow-Schritt.
+- Offene Trainerreviews oder offene Trainerkommentare.
+
+**Im MVP editierbar:** Der Dashboard-Screen selbst ist primaer Navigation und Uebersicht. Direkt editierbar sollten hoechstens einfache Status- oder Review-Orientierungen sein, sofern diese fachlich bereits in den zugehoerigen Projekt- oder Review-Screens gepflegt werden. Die eigentliche Bearbeitung findet in den jeweiligen Fachscreens statt.
+
+**Optional oder spaeter:** Trainee-Dashboard, persoenliche Lernuebersicht, Teamuebersicht, uebergreifende Priorisierung, Benachrichtigungen und tiefergehende Statuslogik.
+
+**MVP-Abgrenzung:** Kein Team-Dashboard, keine Admin-KPIs, keine komplexen Analytics, keine Lernhistorie, keine automatisierte KI-Priorisierung als Pflicht und kein produktiver Simulationsstart als Pflicht.
+
+**Offene Produktentscheidungen:** Welche Dashboard-Informationen ein Trainee sehen darf, ob der naechste Schritt rein statusbasiert oder trainergesetzt ist und welche Statuswerte fuer den MVP ausreichen.
 
 ### 2. Firmenprofil / Company-Uebersicht
 
 **MVP-Status:** MVP-Core.
 
-**Zweck des Screens:** Unternehmenskontext, Mandantenzugehoerigkeit und grobe Datenlage als Ausgangspunkt fuer Verhandlungsprojekte sichtbar machen.
+**Zweck des Screens:** Unternehmens- und Mandantenkontext fuer Verhandlungsprojekte bereitstellen. Der Screen klaert, aus welchem Firmenkontext ein Projekt kommt, welche Verhandlungssituationen typisch sind und welche Datenbasis fuer diesen Kontext bereits vorhanden ist.
 
-**Hauptnutzer:** Trainer.
+**Rolle im Workflow:** Der Screen liegt vor Projektdefinition, Analyse und Strategie. Er gibt dem Trainer den fachlichen Rahmen, aus dem Verhandlungsprojekte, Datenlage, Risiken und Trainingsszenarien abgeleitet werden.
 
-**Zentrale Nutzeraktionen:** Firmenprofil ansehen oder fachlich ergaenzen, relevante Projekte und Datenquellen pruefen, Datenbasis je Company ueberblicken.
+**Primaere Nutzer:** Trainer.
 
-**Wichtigste Ausgaben / Anzeigen:** Company-Stammdaten, grobe Quellenlage, zugeordnete Projekte, Anfragepositionen, Einkaufshistorie und offene Datenluecken.
+**Mindestens sichtbar im MVP:**
 
-**MVP-Abgrenzung:** Keine Mandantenadministration, keine Rechteverwaltung, keine Upload-Verwaltung als eigener Arbeitsbereich.
+- Firmenname.
+- Branche.
+- Rolle des Unternehmens in Verhandlungen, zum Beispiel einkaufende Organisation, Mandant oder Trainingsfall.
+- Relevante Maerkte oder Regionen.
+- Strategischer Druck, etwa Kosten-, Liefer-, Risiko- oder Transformationsdruck.
+- Kritische Warengruppen.
+- Typische Verhandlungssituationen.
+- Relevante Datenquellen.
+- Verknuepfte Verhandlungsprojekte.
+
+**Im MVP editierbar:** Firmenname, Branche, Maerkte oder Regionen, strategischer Druck, kritische Warengruppen, typische Verhandlungssituationen und fachliche Hinweise zu relevanten Datenquellen. Verknuepfte Projekte werden fachlich sichtbar, sollten aber ueber Projektanlage oder Projektbearbeitung gepflegt werden.
+
+**Optional oder spaeter:** Ausgereifte Mandantenstruktur, Organisationshierarchien, Ansprechpartnerlisten, CRM-/ERP-Synchronisation, Compliance- oder Auditinformationen, automatische Unternehmensanalyse und umfangreiche Datenqualitaetsauswertung je Company.
+
+**MVP-Abgrenzung:** Keine komplexe Mandantenadministration, keine Rechteverwaltung, keine vollstaendige CRM-/ERP-Integration, keine automatische Unternehmensanalyse als Pflicht und keine Upload-Verwaltung als eigener Arbeitsbereich.
+
+**Offene Produktentscheidungen:** Welche Company-Felder fuer alle Trainingsfaelle verpflichtend sind, wie stark Mandant und Company fachlich getrennt werden sollen und welche Datenquellen nur referenziert statt produktiv verarbeitet werden.
 
 ### 3. Trainee- / Rollenprofil
 
 **MVP-Status:** MVP-Core.
 
-**Zweck des Screens:** Verhandlungsrolle, Lernziel und Trainingskontext eines Trainees oder einer Trainingsrolle erfassen.
+**Zweck des Screens:** Personalisierung von Vorbereitung, Simulation und Trainerfeedback. Der Screen beschreibt, wer trainiert wird oder welche Rolle im Trainingsfall eingenommen wird, damit Analyse, Strategie, Briefing und Trainerkommentar didaktisch passend eingeordnet werden koennen.
 
-**Hauptnutzer:** Trainee und Trainer.
+**Rolle im Workflow:** Das Profil beeinflusst Projektbriefing, Simulationskonfiguration und Trainerreview. Es hilft dem Trainer, Aufgaben, Schwierigkeitsgrad, Feedbacktiefe und sichtbare Hinweise passend zum Erfahrungsstand und Trainingsziel zu setzen.
 
-**Zentrale Nutzeraktionen:** Profil ansehen, Rolle oder Lernziel ergaenzen, Trainer kann Profil fuer ein Projekt oder Szenario pruefen.
+**Primaere Nutzer:** Trainer und Trainee.
 
-**Wichtigste Ausgaben / Anzeigen:** Profilzusammenfassung, Rolle, Erfahrungsstand, Trainingsfokus, Sprache und sichtbare Trainerhinweise.
+**Fachliche Entscheidung fuer den MVP:** `UserProfile` kann im MVP sowohl eine reale Person als auch eine Trainingsrolle abbilden. Das Profil muss deshalb nicht zwingend einen produktiven Nutzeraccount repraesentieren. Es kann auch eine Rolle wie "junioriger Einkaeufer", "Lead Buyer Packaging" oder "technischer Verhandler im Trainingsszenario" beschreiben.
 
-**MVP-Abgrenzung:** Keine Lernhistorie, keine Zertifikatslogik, keine komplexe Kompetenzmatrix und keine vollstaendige Nutzerverwaltung.
+**Mindestens sichtbar im MVP:**
+
+- Name oder Rollenname.
+- Funktion.
+- Erfahrungsstand.
+- Verhandlungsrolle.
+- Trainingsziele.
+- Sprache.
+- Optionale Persoenlichkeits- oder DISC-Hinweise.
+- Bekannte Entwicklungsfelder.
+
+**Im MVP editierbar:** Name oder Rollenname, Funktion, Erfahrungsstand, Verhandlungsrolle, Trainingsziele, Sprache und fachliche Entwicklungsfelder. Persoenlichkeits- oder DISC-Hinweise bleiben optional und sollten nur gepflegt werden, wenn sie fuer das Training fachlich sinnvoll und verantwortbar sind.
+
+**Sichtbarkeit im MVP:** Einige Hinweise koennen trainee-sichtbar sein, etwa Rolle, Trainingsziele, Sprache und ausgewaehlte Entwicklungsfelder. Sensible Trainerhinweise, interne Einschaetzungen oder didaktische Notizen koennen trainerintern bleiben. Die konkrete Sichtbarkeitslogik bleibt fachlich zu klaeren und wird in diesem Dokument nicht technisch spezifiziert.
+
+**Optional oder spaeter:** Kompetenzmatrix, Lernhistorie, Zertifikate, Benchmarking, fein granularer Skill-Fortschritt, ausgereifte Nutzerverwaltung und komplexe Rollenrechte.
+
+**MVP-Abgrenzung:** Keine Kompetenzmatrix, keine Zertifikatslogik, keine ausgereifte Nutzerverwaltung, keine komplexen Rollenrechte und keine Pflicht zur Abbildung produktiver Organisationsaccounts.
+
+**Offene Produktentscheidungen:** Welche Profilfelder Trainees selbst bearbeiten duerfen, welche Trainerhinweise intern bleiben, wie reale Personen und reine Trainingsrollen sprachlich unterschieden werden und ob DISC- oder Persoenlichkeitshinweise im MVP ueberhaupt aktiv genutzt werden.
 
 ### 4. Knowledge Base / Datenbasis
 
 **MVP-Status:** MVP-Core.
 
-**Zweck des Screens:** Vorhandene Quellen, Aussagen und strukturierte Daten als Grundlage fuer Analyse und Strategie pruefen.
+**Zweck des Screens:** Vorhandene Quellen und strukturierte Daten als fachliche Grundlage sichtbar machen. Der Screen soll dem Trainer zeigen, welche belastbaren Informationen fuer Company und Projekt bereits vorliegen, welche Aussagen daraus bekannt sind und wo Datenluecken bestehen.
 
-**Hauptnutzer:** Trainer.
+**Rolle im Workflow:** Die Datenbasis stuetzt Analyseansicht, Strategie-Builder, Kultur- und Rollenbriefing sowie Simulationskonfiguration. Sie ist im MVP eine Uebersicht ueber vorhandenes Material und Datenlage, keine produktive Such- oder Import-Engine.
 
-**Zentrale Nutzeraktionen:** Quellen und Claims ansehen, Quellenqualitaet pruefen, Datenluecken erkennen, projektbezogene und firmenweite Datenbasis unterscheiden.
+**Primaere Nutzer:** Trainer.
 
-**Wichtigste Ausgaben / Anzeigen:** Knowledge-Dokumente, Claims, Einkaufshistorie, Anfragepositionen, Quellenhinweise und Datenqualitaets-Hinweise.
+**Mindestens sichtbar im MVP:**
 
-**MVP-Abgrenzung:** Keine produktive RAG-Suche, keine Embedding-Erzeugung, keine automatische Claim-Extraktion, keine OCR-Funktion und keine Import-/Upload-Uebersicht als eigenstaendiger MVP-Screen.
+- Vorhandene Dokumente.
+- Quelle oder Dokumenttyp.
+- Bezug zu Company oder Verhandlungsprojekt.
+- Vorhandene Einkaufshistorie.
+- Vorhandene Anfragepositionen.
+- Vorhandene Knowledge Claims, falls bereits vorhanden.
+- Erkennbare Datenluecken.
+- Einfache Qualitaets- oder Vertrauenshinweise.
+
+**Im MVP editierbar:** Fachliche Hinweise zu Quellen, einfache Qualitaets- oder Vertrauenseinschaetzungen, Markierung erkannter Datenluecken und ggf. manuelle Korrektur oder Einordnung vorhandener Claims, sofern Claims bereits im Datenbestand existieren. Dokument-Upload, Parsing und automatische Extraktion werden hier nicht als Screen-Funktion definiert.
+
+**Optional oder spaeter:** Produktive RAG-Suche, semantische Suche, Embeddings, automatische Claim-Extraktion, OCR, Upload- und Import-Engine, Mapping- und Validierungsoberflaechen, Importjob-Monitoring und umfassende Datenqualitaetsmetriken.
+
+**MVP-Abgrenzung:** Keine produktive RAG-Suche, keine Embedding-Erzeugung, keine automatische Claim-Extraktion als Pflicht, keine OCR-Funktion, keine Upload-/Import-Engine in diesem Screen und keine Import-/Upload-Uebersicht als eigenstaendiger MVP-Screen. Eine Import-/Upload-Uebersicht bleibt Zielbild oder spaetere Ausbaustufe.
+
+**Offene Produktentscheidungen:** Welche einfachen Qualitaets- oder Vertrauenshinweise ausreichen, wie Datenluecken fachlich markiert werden, ob Claims im MVP nur gelesen oder auch manuell gepflegt werden und wie Company-weite von projektbezogenen Quellen unterschieden werden.
 
 ### 5. Verhandlungsprojekt anlegen / bearbeiten
 
@@ -392,10 +455,10 @@ Diese Tabelle dient nur der fachlichen Orientierung. Sie legt keine neuen Datenm
 
 | Screen | Fachlich relevante Informationen | MVP-Einordnung |
 |---|---|---|
-| Dashboard | Company, Rolle, Projekt, Review-Status, naechster Schritt | MVP-Core |
-| Firmenprofil / Company-Uebersicht | Unternehmenskontext, Datenlage, Projekte, Einkaufshistorie, Anfragepositionen | MVP-Core |
-| Trainee- / Rollenprofil | Rolle, Lernziel, Erfahrungsstand, Trainingsfokus | MVP-Core |
-| Knowledge Base / Datenbasis | Quellen, Claims, Einkaufshistorie, Anfragepositionen, Datenqualitaet | MVP-Core |
+| Dashboard | Aktive Projekte, Company, Trainee oder Trainingsrolle, Projektstatus, naechster Workflow-Schritt, offene Trainerreviews | MVP-Core |
+| Firmenprofil / Company-Uebersicht | Firmenname, Branche, Verhandlungsrolle, Maerkte/Regionen, strategischer Druck, Warengruppen, Verhandlungssituationen, Datenquellen, Projekte | MVP-Core |
+| Trainee- / Rollenprofil | Reale Person oder Trainingsrolle, Funktion, Erfahrungsstand, Verhandlungsrolle, Trainingsziele, Sprache, Entwicklungsfelder, sichtbare und trainerinterne Hinweise | MVP-Core |
+| Knowledge Base / Datenbasis | Dokumente, Quelle/Dokumenttyp, Company-/Projektbezug, Einkaufshistorie, Anfragepositionen, Knowledge Claims, Datenluecken, Qualitaets- oder Vertrauenshinweise | MVP-Core |
 | Verhandlungsprojekt anlegen / bearbeiten | Projektbriefing, Lieferant, Anfrageposition, Ziel, Risiken, Lieferantenbeziehungsnotiz, Stakeholdernotiz | MVP-Core |
 | Analyseansicht | Fakten, Annahmen, Hypothesen, Risiken, Chancen, Datenluecken, reduzierte Vergleichsnotizen | MVP-Core |
 | Strategie-Builder | Ziele, ZOPA, BATNA, Konzessionen, Argumentation, reduzierte Angebots-/RFQ-Notizen | MVP-Core |
@@ -482,11 +545,14 @@ Moegliche Cluster sind:
 ## 12. Offene Produktentscheidungen
 
 - Soll der MVP zuerst trainergefuehrt oder trainee-self-service sein?
-- Welche Daten sieht ein Trainee nicht?
+- Welche Dashboard-Informationen sieht ein Trainee im MVP oder erst spaeter?
+- Welche Profil- und Projektdaten sieht ein Trainee nicht?
 - Welche Trainernotizen bleiben intern?
+- Wie werden reale Personen und reine Trainingsrollen im `UserProfile` fachlich unterschieden?
 - Welche Strategiebausteine sind Pflicht, welche optional?
 - Welche Pflichtinformationen braucht ein Verhandlungsprojekt im MVP?
 - Welche Datenqualitaetsindikatoren braucht die Knowledge Base?
+- Welche vorhandenen Claims duerfen im MVP manuell gepflegt werden?
 - Wie werden Hypothesen, Fakten, Annahmen und Empfehlungen visuell und sprachlich getrennt?
 - Welche minimale Angebots- oder RFQ-Vergleichslogik reicht im MVP als Notiz- oder Vergleichsansicht?
 - Welche kulturellen Hinweise sind didaktisch sinnvoll und rechtlich unkritisch?

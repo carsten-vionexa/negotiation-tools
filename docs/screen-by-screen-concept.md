@@ -121,9 +121,9 @@ Issue #14 finalisiert den MVP-Screen-Scope fachlich. Der MVP besteht aus zehn Co
 | 4 | Knowledge Base / Datenbasis | Trainer | Vorhandene Quellen und strukturierte Datenlage als fachliche Grundlage sichtbar machen | MVP-Core |
 | 5 | Verhandlungsprojekt anlegen / bearbeiten | Trainer, spaeter Trainee | Operatives Herzstueck des MVP: konkreten Verhandlungsfall mit Company, Rolle, Lieferant, Bedarf, Ziel, Rahmenbedingungen und Status definieren | MVP-Core |
 | 6 | Analyseansicht | Trainee, Trainer | Projekt-, Firmen-, Lieferanten- und Datenbasis zu einer strukturierten Ausgangslage verdichten und Fakten, Annahmen und Hypothesen trennen | MVP-Core |
-| 7 | Strategie-Builder | Trainee, Trainer | Zielbild, ZOPA, BATNA, Konzessionen, Argumentation und reduzierte Vergleichslogik strukturieren | MVP-Core |
-| 8 | Kultur- und Rollenbriefing | Trainee, Trainer | Lieferantenrolle, Gespraechsdynamik und kulturelle Arbeitshypothesen vorbereiten | MVP-Core |
-| 9 | Simulation konfigurieren | Trainer | Trainingsszenario, Rolle, Schwierigkeit, Erfolgskriterien und Briefing fachlich vorbereiten | MVP-Core |
+| 7 | Strategie-Builder | Trainee, Trainer | Analyse, Projektkontext, Hypothesen und Notizen in eine konkrete Verhandlungsstrategie mit Zielen, ZOPA, WAP, BATNA, Konzessionen und Argumentation uebersetzen | MVP-Core |
+| 8 | Kultur- und Rollenbriefing | Trainee, Trainer | Lieferantenrolle, Gespraechsdynamik, Beziehungskontext, kulturelle Arbeitshypothesen und erwartete Taktiken vorsichtig vorbereiten | MVP-Core |
+| 9 | Simulation konfigurieren | Trainer | Trainingsdurchlauf fachlich vorbereiten, ohne produktive Simulation-Engine vorauszusetzen | MVP-Core |
 | 10 | Trainerreview / Trainerkommentar | Trainer | Menschliches Feedback erfassen, einordnen und fuer Trainees sichtbar machen | MVP-Core |
 
 ### 3.2 MVP-Erweiterungen innerhalb bestehender Screens
@@ -131,7 +131,7 @@ Issue #14 finalisiert den MVP-Screen-Scope fachlich. Der MVP besteht aus zehn Co
 Diese Erweiterungen gehoeren zum MVP, aber nicht als eigene Screens:
 
 - **Einfache Lieferantenbeziehungsnotiz:** Als Notiz im Verhandlungsprojekt, in der Analyseansicht oder im Kultur- und Rollenbriefing. Sie beschreibt Beziehungslage, Vorgeschichte, Vertrauen, Abhaengigkeiten oder offene Spannungen knapp und fachlich. Sie ist kein Relationship-Memory-Modul.
-- **Einfache Stakeholdernotiz:** Als Notiz im Verhandlungsprojekt oder in der Analyseansicht. Sie haelt relevante interne oder externe Stakeholder, Interessen, Einfluss, Quelle, Confidence und offene Rueckfragen fest. Sie ist kein Stakeholder-Management-System.
+- **Einfache Stakeholdernotiz:** Als Notiz im Verhandlungsprojekt, in der Analyseansicht oder als strategierelevanter Hinweis im Strategie-Builder. Sie haelt relevante interne oder externe Stakeholder, Interessen, Einfluss, Quelle, Confidence und offene Rueckfragen fest. Sie ist kein Stakeholder-Management-System.
 - **Einfache Hypothesenliste:** Als klar markierter Bereich in Analyseansicht, Strategie-Builder oder Kultur- und Rollenbriefing. Hypothesen muessen von Fakten und Annahmen getrennt bleiben und sollen Beobachtung, Confidence, Quelle oder Ursprung, Pruefaktion und Strategieimplikation enthalten koennen.
 - **Reduzierter RFQ-/Angebotsvergleich:** Im MVP nur als einfache Notiz- oder Vergleichslogik innerhalb von Verhandlungsprojekt, Analyseansicht oder Strategie-Builder. Es gibt kein eigenstaendiges RFQ-Modul, keine RFQ-Engine, keine vollautomatische Angebotsanalyse und keine neuen Angebotsvergleichsmodelle.
 
@@ -150,11 +150,13 @@ Diese Erweiterungen gehoeren zum MVP, aber nicht als eigene Screens:
 
 - Import- und Upload-Uebersicht als produktiver Screen.
 - Simulation durchfuehren als produktive Engine oder Chat-/Voice-Erlebnis.
+- Laufender Chat, Voice-Modus, Streaming-Logik, automatische Taktikerkennung und automatische Auswertung.
 - Auswertung und Lerntransfer als vollwertiger eigener Screen.
 - Lernhistorie, Fortschrittslogik, Zertifikate oder Benchmarks.
 - Admin-, Rollen- und Rechteverwaltung.
 - Relationship Memory als eigenes Modul.
-- Vollautomatische Angebotsanalyse, eigenes RFQ-Modul oder automatische Angebotsbewertung.
+- Vollautomatische ZOPA-Berechnung, verbindliche KI-Strategie-Generierung, automatische BATNA-Bewertung, vollautomatische Angebotsanalyse, eigenes RFQ-Modul oder automatische Angebotsbewertung.
+- Stereotypes Kultururteil, automatisches Laenderprofil als Wahrheit, automatisches Kultur-Scoring oder `CulturalBriefing` als eigenes neues Datenmodell.
 - SupplierBid-Modell, BidComparison-Modell, StakeholderNote-Modell, Relationship-Memory-Modul, Stakeholder-Graph oder politische Mapping-Engine.
 - OCR, RAG, Embeddings, produktive Upload-Verarbeitung oder automatisierte Claim-Extraktion.
 - Neue Datenmodelle, API-Endpunkte, Frontend-Komponenten oder technische Implementierungsdetails.
@@ -401,47 +403,148 @@ Qualitaetsregel: Hypothesen duerfen nicht als Fakten dargestellt werden. Jede re
 
 **MVP-Status:** MVP-Core.
 
-**Zweck des Screens:** Die Verhandlungsstrategie in handhabbare Bausteine uebersetzen: Ziele, ZOPA, BATNA, Konzessionen, Argumentationslinien, Risiken und reduzierte Vergleichsnotizen.
+**Zweck des Screens:** Der Strategie-Builder uebersetzt Analyse, Projektkontext, Lieferantenannahmen, Stakeholdernotizen, Hypothesen und Datenlage in eine konkrete Verhandlungsstrategie. Er macht aus der strukturierten Ausgangslage handlungsfaehige Ziele, Grenzen, Alternativen, Argumentationslinien und Konzessionslogik.
 
-**Hauptnutzer:** Trainee und Trainer.
+**Rolle im Workflow:** Der Screen folgt auf Verhandlungsprojekt, Datenbasis und Analyseansicht. Er ist die Bruecke zwischen Verstehen und Handeln: Fakten, Annahmen, Hypothesen, offene Fragen, Stakeholderinteressen und Lieferantenbeziehungsnotizen werden hier daraufhin geprueft, welche strategische Konsequenz sie fuer Zielsetzung, Verhandlungsfuehrung, Konzessionen, Argumentation, Eskalation und spaetere Simulationsvorbereitung haben.
 
-**Zentrale Nutzeraktionen:** Strategie anlegen oder bearbeiten, ZOPA-Dimensionen pflegen, BATNA-Optionen bewerten, Konzessionen ordnen, Argumentationslinien ableiten, Annahmen und Hypothesen markieren.
+**Primaere Nutzer:** Trainer und Trainee.
 
-**Wichtigste Ausgaben / Anzeigen:** Aktive Strategie, strukturierte ZOPA, BATNA-Liste, Konzessionsplan, Argumentationslinien, Risiko- und Notizfelder, reduzierte Angebots- oder RFQ-Vergleichsnotizen.
+**Mindestens sichtbar im MVP:**
 
-**MVP-Erweiterungen:** RFQ-/Angebotsvergleich ist nur als einfache Notiz- oder Vergleichslogik innerhalb des Strategie-Builders vorgesehen. Er bleibt fachlich manuell nachvollziehbar und wird nicht zu einem eigenen Modul ausgebaut.
+- Strategietitel.
+- Bezug zum Verhandlungsprojekt.
+- Zielbild.
+- Muss-Ziele.
+- Soll-Ziele.
+- Nice-to-have-Ziele.
+- ZOPA-Dimensionen.
+- WAP / Walk-away-Grenzen.
+- BATNA-Optionen.
+- Bewertung der BATNA-Staerke.
+- Konzessionslogik.
+- Konzessionen nur gegen Gegenleistung.
+- Argumentationslinien.
+- Erwartete Gegenargumente.
+- Reaktionsoptionen.
+- Offene Fragen.
+- Hypothesen mit Strategieimplikation.
+- Einfache Stakeholder- und Lieferantenbeziehungsnotizen, falls strategierelevant.
+- Eskalationspfad als einfache Notiz.
+- Reduzierte RFQ-/Angebotsvergleichsnotizen, falls relevant.
 
-**MVP-Abgrenzung:** Keine automatische ZOPA-Berechnung, keine verbindliche KI-Strategie-Generierung, keine vollautomatische Angebotsanalyse und keine eigene RFQ-Arbeitsstrecke.
+**Uebersetzung von Analyse in Strategie:** Die Analyseansicht liefert Fakten, Annahmen, Hypothesen, Risiken, Chancen, Datenluecken, Stakeholdernotizen, Lieferantenbeziehungsnotizen und reduzierte Angebotsvergleichsnotizen. Der Strategie-Builder uebersetzt diese Elemente in konkrete strategische Entscheidungen:
+
+- Fakten und Datenlage werden zu Zielbild, Muss-/Soll-/Nice-to-have-Zielen, WAP und Argumentationslinien verdichtet.
+- Hypothesen werden nicht als Wahrheit uebernommen, sondern mit Strategieimplikation und Pruefaktion gefuehrt.
+- Stakeholdernotizen zeigen, welche internen Interessen, Freigaben, Blockaden oder Eskalationswege in der Strategie beruecksichtigt werden muessen.
+- Lieferantenbeziehungsnotizen zeigen, ob Beziehungspflege, Eskalation, Vertrauensaufbau, harte Abgrenzung oder vorsichtige Paketbildung strategisch sinnvoll sind.
+- Reduzierte RFQ-/Angebotsvergleichsnotizen koennen Preis-, Lieferzeit-, Risiko-, Technik- oder TCO-Hebel fuer Argumente, Alternativen und Konzessionspakete liefern.
+
+**Konzessionsverstaendnis:** Konzessionen sollen im MVP ausdruecklich als Tauschobjekte verstanden werden, nicht als reines Nachgeben. Jede relevante Konzession sollte deshalb fachlich mit moeglicher Gegenleistung, Wert fuer die Gegenseite, Kosten oder Risiko fuer die eigene Seite und Reihenfolge im Gespraech gedacht werden. Die Grundregel lautet: Konzessionen nur gegen Gegenleistung oder gegen strategischen Nutzen.
+
+**ZOPA, WAP und BATNA im MVP:** ZOPA, WAP und BATNA duerfen im MVP manuell oder trainergefuehrt gepflegt werden. Es gibt keine automatische Berechnungspflicht. Eine BATNA-Staerke kann als einfache fachliche Einschaetzung sichtbar sein, ohne dass das System sie automatisch oder verbindlich bewertet.
+
+**Im MVP editierbar:** Trainerseitig sollten alle Strategiebausteine bearbeitbar sein: Ziele, ZOPA-Dimensionen, WAP, BATNA-Optionen, BATNA-Staerke, Konzessionen, Argumentationslinien, Gegenargumente, Reaktionsoptionen, offene Fragen, Hypothesenimplikationen, strategierelevante Notizen und Eskalationspfad. Trainee-Bearbeitung kann je nach Trainingssetting erlaubt, eingeschraenkt oder durch Trainer freizugeben sein.
+
+**Optional oder spaeter:** KI-gestuetzte Strategievorschlaege, automatische ZOPA- oder BATNA-Ableitung, komplexe Strategieversionierung, verbindliche Freigaben, automatische Angebotsanalyse, detaillierte Paketoptimierung und wiederverwendbare Strategie-Templates bleiben spaeter.
+
+**MVP-Abgrenzung:** Keine automatische ZOPA-Berechnung, keine verbindliche KI-Strategie-Generierung, keine automatische BATNA-Bewertung, keine rechtliche oder kommerzielle Freigabelogik, keine komplexe Strategieversionierung, keine automatische Angebotsanalyse, keine eigene RFQ-Arbeitsstrecke und keine technische Implementierung.
+
+**Offene Produktentscheidungen:** Welche Strategiebausteine sind Pflicht, welche Felder bleiben optional, welche Strategiebausteine darf der Trainee selbst bearbeiten, braucht eine Strategie Trainerfreigabe und wie sichtbar werden trainerinterne Strategiehinweise.
 
 ### 8. Kultur- und Rollenbriefing
 
 **MVP-Status:** MVP-Core.
 
-**Zweck des Screens:** Trainee und Trainer auf Lieferantenrolle, Gespraechsdynamik, kulturelle Arbeitshypothesen und erwartete Taktiken vorbereiten.
+**Zweck des Screens:** Der Screen bereitet Trainee und Trainer auf Lieferantenrolle, Gespraechsdynamik, Beziehungskontext, kulturelle Arbeitshypothesen und erwartete Taktiken vor. Er hilft, die Gegenseite nicht nur als Organisation, sondern als Rolle im konkreten Gespraech zu verstehen.
 
-**Hauptnutzer:** Trainee und Trainer.
+**Rolle im Workflow:** Das Kultur- und Rollenbriefing folgt auf Analyse und Strategie und bereitet Simulationskonfiguration oder reale Gespraechsvorbereitung fachlich vor. Es macht sichtbar, welche Annahmen ueber Interessen, Constraints, Taktiken, Beziehung und Kommunikation fuer das Gespraech relevant sind und welche davon noch geprueft werden sollten.
 
-**Zentrale Nutzeraktionen:** Lieferantenannahmen lesen, kulturelle Hinweise pruefen, Rollenbriefing fuer eine spaetere Simulation vorbereiten, Unsicherheiten markieren.
+**Primaere Nutzer:** Trainer und Trainee.
 
-**Wichtigste Ausgaben / Anzeigen:** Lieferantenprofil, Beziehungskontext, kultureller Kontext, Interessen, wahrscheinliche Taktiken, Constraints, Rollenbriefing, einfache Hypothesenliste.
+**Mindestens sichtbar im MVP:**
 
-**MVP-Erweiterungen:** Lieferantenbeziehungsnotiz und Hypothesenliste koennen hier fachlich sichtbar werden, bleiben aber einfache Notizen und keine eigenstaendigen Module.
+- Bezug zum Verhandlungsprojekt.
+- Lieferant oder Gegenrolle.
+- Rollenbeschreibung der Gegenseite.
+- Erwartete Interessen.
+- Erwartete Constraints.
+- Moegliche taktische Muster.
+- Beziehungskontext.
+- Kulturelle Arbeitshypothesen.
+- Do's / Don'ts als praktische Hinweise.
+- Kommunikationsrisiken.
+- Hierarchie- oder Entscheidungslogik, falls relevant.
+- Offene Unsicherheiten.
+- Hinweise, welche Annahmen geprueft werden sollten.
 
-**MVP-Abgrenzung:** Kein stereotypes oder automatisiertes Kultururteil als harte Wahrheit. Keine Simulation-Engine und kein automatisches Rollenverhalten im MVP.
+**Kulturelle Arbeitshypothesen:** Kulturelle Hinweise sind im MVP Arbeitshypothesen, keine Zuschreibungen und keine harten Wahrheiten. Sie muessen kontextbezogen, vorsichtig formuliert und als Hypothesen gekennzeichnet sein. Sinnvoll sind Hinweise wie moegliche Kommunikationsrisiken, Entscheidungswege, Hierarchieerwartungen oder Gespraechsrituale, sofern sie aus Projektkontext, Trainerwissen, Lieferantenerfahrung oder plausiblen Quellen abgeleitet und nicht deterministisch formuliert werden.
+
+**Bias-Abgrenzung:** Der Screen darf keine stereotypen oder deterministischen Aussagen erzeugen. Er soll nicht behaupten, dass Personen aufgrund von Land, Kultur oder Herkunft auf eine bestimmte Weise handeln. Kulturhinweise sollen immer an Kontext, Rolle, Organisation, Situation und Unsicherheit gebunden sein. Offene Unsicherheiten und Prueffragen sind ausdruecklich Teil des Briefings.
+
+**Im MVP editierbar:** Trainerseitig sollten Rollenbeschreibung, Beziehungskontext, kulturelle Arbeitshypothesen, erwartete Taktiken, Do's / Don'ts, Kommunikationsrisiken, offene Unsicherheiten und Pruefhinweise bearbeitbar sein. Trainee-Bearbeitung ist optional und kann je nach Trainingssetting eingeschraenkt oder freigegeben werden.
+
+**Optional oder spaeter:** Eigenes Kulturbriefing-Fachobjekt, automatische Bias-Bewertung, quellenbasierte Laender- oder Organisationsprofile, produktive KI-Rollenengine, dynamisch simuliertes Gegenrollenverhalten und systematische Auswertung kultureller Interaktionsmuster bleiben spaeter.
+
+**MVP-Abgrenzung:** Kein stereotypes Kultururteil, kein automatisches Laenderprofil als Wahrheit, kein `CulturalBriefing` als eigenes neues Datenmodell, keine automatische Bias-Bewertung, keine automatische Simulation der Gegenseite, keine produktive KI-Rollenengine und keine technische Implementierung.
+
+**Offene Produktentscheidungen:** Welche kulturellen Hinweise didaktisch sinnvoll sind, welche Inhalte trainerintern bleiben, wie Bias sprachlich vermieden wird, wie klar Kulturhinweise als Hypothesen markiert werden muessen und wann ein Kulturbriefing spaeter ein eigenes Fachobjekt wird.
 
 ### 9. Simulation konfigurieren
 
 **MVP-Status:** MVP-Core.
 
-**Zweck des Screens:** Einen Trainingsdurchlauf fachlich vorbereiten: Rolle, Szenario, Schwierigkeitsgrad, Ziele, Erfolgskriterien, Sprache und Briefing.
+**Zweck des Screens:** Der Screen bereitet einen Trainingsdurchlauf fachlich vor, ohne eine produktive Simulation-Engine vorauszusetzen. Er beschreibt, was eine spaetere Simulation braucht: Szenario, Rolle, Ziel, Schwierigkeit, Gespraechsphase, Sprache, Briefing, Erfolgskriterien und trainerinterne Hinweise.
 
-**Hauptnutzer:** Trainer.
+**Rolle im Workflow:** Die Simulationskonfiguration folgt auf Strategie-Builder und Kultur- und Rollenbriefing. Sie verdichtet Strategie, Gegenrolle, erwartete Einwaende, taktische Muster und Lernziel in ein vorbereitetes Szenario. Im MVP ist sie Vorbereitung, nicht Durchfuehrung.
 
-**Zentrale Nutzeraktionen:** Szenario fachlich anlegen, Strategie und Lieferant zuordnen, Rollenbeschreibung festlegen, Erfolgskriterien und Zeitrahmen definieren, Trainee zuweisen.
+**Primaere Nutzer:** Trainer.
 
-**Wichtigste Ausgaben / Anzeigen:** Simulationsbriefing, Startbereitschaft als fachlicher Status, zugeordnete Strategie, Rollen- und Lieferantenannahmen.
+**Mindestens sichtbar im MVP:**
 
-**MVP-Abgrenzung:** Dieser Screen konfiguriert nur. Er beinhaltet keine produktive Simulation-Engine, keinen laufenden Dialog, keinen Voice-Modus, keine Streaming-Logik und keine automatische Auswertung.
+- Szenariotitel.
+- Bezug zum Verhandlungsprojekt.
+- Zugeordnete Strategie.
+- Zugeordneter Trainee oder Rolle.
+- Lieferant / Gegenrolle.
+- Rollenbeschreibung der Gegenseite.
+- Gespraechsphase.
+- Schwierigkeitsgrad.
+- Sprache.
+- Ziel der Simulation.
+- Erfolgskriterien.
+- Zeitrahmen oder Laenge.
+- Briefing fuer den Trainee.
+- Interne Trainerhinweise.
+- Erwartete Einwaende oder taktische Muster.
+- Startbereitschaft als fachlicher Status.
+
+**Vorbereitung statt Durchfuehrung:** Simulation konfigurieren ist im MVP ein Vorbereitungsscreen. Er beschreibt, welche fachlichen Parameter eine spaetere Simulation braucht. Er ist nicht gleichbedeutend mit produktiver Simulationsdurchfuehrung, laufendem Chat, Voice-Modus, Streaming, automatischer Taktikerkennung oder automatischer Auswertung.
+
+**Schwierigkeitsgrade als fachliche Orientierung:** Die folgenden Level koennen im MVP als Orientierung fuer Trainer dienen. Sie beschreiben didaktische Intensitaet, keine technische Engine-Logik.
+
+1. **Guided Practice:** Gefuehrte Uebung mit klaren Hinweisen, niedriger Druckintensitaet und Fokus auf Grundstruktur.
+2. **Realistic Standard:** Realistischer Standardfall mit typischen Einwaenden und normaler Verhandlungsdynamik.
+3. **Pressure:** Hoeherer Zeit-, Kosten- oder Lieferdruck, der Priorisierung und Standfestigkeit trainiert.
+4. **Tactical:** Staerker taktisches Gegenverhalten, etwa Anker, Fristen, Eskalationsandrohung oder Informationsasymmetrie.
+5. **Executive Escalation:** Managementnahe oder eskalierte Situation mit hoher Sichtbarkeit, knapper Zeit und sensibler Stakeholderdynamik.
+
+**Moegliche Gespraechsphasen:** Fuer die fachliche Vorbereitung sind diese Phasen sinnvoll:
+
+- Vorbereitung / Briefing.
+- Opening.
+- Exploration.
+- Bargaining.
+- Closing.
+- Debriefing.
+
+**Im MVP editierbar:** Trainerseitig sollten Szenariotitel, zugeordnete Rolle, Schwierigkeitsgrad, Gespraechsphase, Sprache, Ziel, Erfolgskriterien, Zeitrahmen, Trainee-Briefing, interne Trainerhinweise und erwartete Einwaende oder taktische Muster bearbeitbar sein.
+
+**Optional oder spaeter:** Produktive Simulation, laufender Chat, Dialogspeicherung, automatische Auswertung, Scorelogik, Voice, Streaming, automatische Taktikerkennung, RAG-Anbindung, Prompt-Engine-Spezifikation und adaptive Schwierigkeit bleiben spaeter.
+
+**MVP-Abgrenzung:** Keine produktive Simulation-Engine, kein laufender Chat, kein Voice-Modus, keine Streaming-Logik, keine automatische Taktikerkennung, keine automatische Auswertung, keine technische Prompt-Engine-Spezifikation und keine RAG-Anbindung als Pflicht.
+
+**Offene Produktentscheidungen:** Welche Szenariotypen zuerst gebraucht werden, welche Schwierigkeitsgrade fuer den MVP reichen, welche Gespraechsphasen fest gefuehrt werden sollen, wann aus der Konfiguration ein produktiver Simulationsscreen wird und welche Trainerhinweise fuer Trainees unsichtbar bleiben.
 
 ### 10. Trainerreview / Trainerkommentar
 
@@ -545,9 +648,9 @@ Diese Tabelle dient nur der fachlichen Orientierung. Sie legt keine neuen Datenm
 | Knowledge Base / Datenbasis | Dokumente, Quelle/Dokumenttyp, Company-/Projektbezug, Einkaufshistorie, Anfragepositionen, Knowledge Claims, Datenluecken, Qualitaets- oder Vertrauenshinweise | MVP-Core |
 | Verhandlungsprojekt anlegen / bearbeiten | Projekttitel, Company, Trainee oder Rolle, Verhandlungsart, Warengruppe, Artikel oder Leistung, Menge, Zielregion, Lieferzeit, interne Zielgroesse, Lieferant, Prioritaet, Status, Business Pressure, technische Abhaengigkeit, Supplier Power, Risiken, Lieferantenbeziehungsnotiz, Stakeholdernotiz | MVP-Core |
 | Analyseansicht | Kurzbriefing, Projektinformationen, Lieferanteninformationen, Einkaufshistorie, Anfragepositionen, Knowledge Claims, Fakten, Annahmen, Hypothesen, Risiken, Chancen, Datenluecken, offene Fragen, Stakeholdernotiz, reduzierte Vergleichsnotizen | MVP-Core |
-| Strategie-Builder | Ziele, ZOPA, BATNA, Konzessionen, Argumentation, reduzierte Angebots-/RFQ-Notizen | MVP-Core |
-| Kultur- und Rollenbriefing | Lieferantenrolle, Beziehungskontext, kulturelle Arbeitshypothesen, erwartete Taktiken | MVP-Core |
-| Simulation konfigurieren | Szenario, Rolle, Schwierigkeit, Erfolgskriterien, Briefing | MVP-Core |
+| Strategie-Builder | Strategietitel, Projektbezug, Zielbild, Muss-/Soll-/Nice-to-have-Ziele, ZOPA-Dimensionen, WAP, BATNA-Optionen und BATNA-Staerke, Konzessionen als Tauschobjekte, Argumentation, Gegenargumente, Reaktionsoptionen, offene Fragen, Hypothesenimplikationen, strategierelevante Stakeholder- und Lieferantenbeziehungsnotizen, Eskalationsnotiz, reduzierte Angebots-/RFQ-Notizen | MVP-Core |
+| Kultur- und Rollenbriefing | Projektbezug, Lieferant oder Gegenrolle, Rollenbeschreibung, erwartete Interessen und Constraints, taktische Muster, Beziehungskontext, kulturelle Arbeitshypothesen, Do's / Don'ts, Kommunikationsrisiken, Entscheidungslogik, offene Unsicherheiten, Pruefhinweise | MVP-Core |
+| Simulation konfigurieren | Szenariotitel, Projektbezug, zugeordnete Strategie, Trainee oder Rolle, Lieferant oder Gegenrolle, Rollenbeschreibung, Gespraechsphase, Schwierigkeit, Sprache, Ziel, Erfolgskriterien, Zeitrahmen, Trainee-Briefing, interne Trainerhinweise, erwartete Einwaende oder taktische Muster, Startbereitschaft | MVP-Core |
 | Trainerreview / Trainerkommentar | Trainerfeedback, Sichtbarkeit, Lernpunkt, fachlicher Bezug | MVP-Core |
 | Import- und Upload-Uebersicht | Upload- und Importstatus, Validierung, Mapping | Zielbild, nicht MVP |
 | Simulation durchfuehren | Laufender Dialog, Phasen, Nachrichten, Abschluss | Zielbild, nicht MVP |
@@ -560,9 +663,9 @@ Dieses Konzept erstellt keine Prompts und keine Implementierung. Es markiert nur
 
 - **Knowledge Base / Datenbasis:** Spaeter koennen Chunking, Embeddings, Claim-Extraktion, OCR oder Quellenqualitaetsbewertung ergaenzt werden. Sie sind nicht Teil des MVP-Screen-Scopes.
 - **Analyseansicht:** Spaeter koennen KI-gestuetzte Zusammenfassungen, Hypothesen oder Empfehlungen entstehen. Im MVP muss die Trennung von Fakt, Annahme, Hypothese und Empfehlung fachlich sichtbar sein.
-- **Strategie-Builder:** Spaeter koennen Vorschlaege fuer ZOPA, BATNA, Konzessionen und Argumentationslinien entstehen. Im MVP bleibt Strategie manuell oder trainergefuehrt.
-- **Kultur- und Rollenbriefing:** Spaetere Hinweise muessen als Arbeitshypothesen formuliert werden und duerfen nicht als deterministische Aussagen erscheinen.
-- **Simulation konfigurieren:** Spaeterer Andockpunkt fuer eine Simulation-Engine; im MVP nur fachliche Vorbereitung.
+- **Strategie-Builder:** Spaeter koennen Vorschlaege fuer ZOPA, BATNA, Konzessionen und Argumentationslinien entstehen. Im MVP bleiben Strategie, ZOPA, WAP und BATNA manuell oder trainergefuehrt; es gibt keine automatische Berechnungspflicht und keine verbindliche KI-Strategie-Generierung.
+- **Kultur- und Rollenbriefing:** Hinweise muessen als Arbeitshypothesen formuliert werden und duerfen nicht als deterministische Aussagen erscheinen. Der MVP erzeugt kein stereotypes Kultururteil, kein automatisches Laenderprofil als Wahrheit und kein eigenes `CulturalBriefing`-Datenmodell.
+- **Simulation konfigurieren:** Spaeterer Andockpunkt fuer eine Simulation-Engine; im MVP nur fachliche Vorbereitung. Produktive Simulation, Chat, Voice, Streaming, automatische Taktikerkennung und automatische Auswertung bleiben ausgeschlossen.
 - **Simulation durchfuehren, Auswertung und Lernhistorie:** Zielbild nach dem MVP, nicht Pflicht in Phase A1.
 
 ## 10. MVP-Abgrenzung
@@ -584,6 +687,9 @@ Dieses Konzept erstellt keine Prompts und keine Implementierung. Es markiert nur
 - Einfache Hypothesenliste innerhalb bestehender Screens.
 - Reduzierter RFQ-/Angebotsvergleich als Notiz- oder Vergleichslogik innerhalb bestehender Screens.
 - Klare Trennung von Fakten, Annahmen, Hypothesen und Empfehlungen.
+- Manuell oder trainergefuehrt gepflegte Strategiebausteine inklusive ZOPA, WAP, BATNA und Konzessionslogik.
+- Kulturelle Hinweise als vorsichtig formulierte Arbeitshypothesen mit Bias-Abgrenzung.
+- Simulationskonfiguration als Vorbereitungsscreen ohne produktive Durchfuehrung.
 
 ### Spaeter oder Zielbild
 
@@ -591,13 +697,15 @@ Dieses Konzept erstellt keine Prompts und keine Implementierung. Es markiert nur
 - Produktive Upload-, Import-, Parser-, Mapping- oder OCR-Strecken.
 - Produktives RAG, Chunking, Embeddings und automatische Claim-Extraktion.
 - Simulation durchfuehren als produktive Engine.
+- Laufender Chat, Voice-Modus, Streaming-Logik, automatische Taktikerkennung und automatische Auswertung.
 - Auswertung und Lerntransfer als vollwertiger eigener Screen.
 - Lernhistorie, Fortschritt, Zertifikate und Benchmarks.
 - Team-/Admin-Dashboards.
 - Rechte- und Rollensystem.
 - CRM-Anbindung.
 - Relationship Memory als eigenes Modul.
-- Vollautomatische Angebotsanalyse oder eigenes RFQ-Modul.
+- Vollautomatische ZOPA-Berechnung, verbindliche KI-Strategie-Generierung, automatische BATNA-Bewertung, vollautomatische Angebotsanalyse oder eigenes RFQ-Modul.
+- Automatisches Laenderprofil als Wahrheit, automatische Bias-Bewertung, eigenes `CulturalBriefing`-Modell oder produktive KI-Rollenengine.
 
 ### Nicht-Ziele dieses Dokuments
 
@@ -613,6 +721,8 @@ Dieses Konzept erstellt keine Prompts und keine Implementierung. Es markiert nur
 - Keine OCR-Implementierung.
 - Keine KI-Prompts im Detail.
 - Keine Simulation-Engine.
+- Keine produktive Chat-, Voice- oder Streaming-Logik.
+- Keine automatische Taktikerkennung.
 - Keine Rechteverwaltung.
 
 ## 11. Nachgelagerte Detail-Cluster
@@ -634,10 +744,14 @@ Moegliche Cluster sind:
 - Welche Trainernotizen bleiben intern?
 - Wie werden reale Personen und reine Trainingsrollen im `UserProfile` fachlich unterschieden?
 - Welche Strategiebausteine sind Pflicht, welche optional?
+- Welche Strategiebausteine duerfen Trainees selbst bearbeiten und braucht eine Strategie Trainerfreigabe?
 - Welche Pflichtinformationen braucht ein Verhandlungsprojekt im MVP?
 - Welche Datenqualitaetsindikatoren braucht die Knowledge Base?
 - Welche vorhandenen Claims duerfen im MVP manuell gepflegt werden?
 - Wie werden Hypothesen, Fakten, Annahmen und Empfehlungen visuell und sprachlich getrennt?
 - Welche minimale Angebots- oder RFQ-Vergleichslogik reicht im MVP als Notiz- oder Vergleichsansicht?
 - Welche kulturellen Hinweise sind didaktisch sinnvoll und rechtlich unkritisch?
+- Wie klar muessen kulturelle Hinweise als Hypothesen markiert werden und welche Inhalte bleiben trainerintern?
+- Welche Szenariotypen, Schwierigkeitsgrade und Gespraechsphasen reichen fuer die MVP-Simulationsvorbereitung?
+- Wann wird aus der Simulationskonfiguration ein produktiver Simulationsscreen?
 - Welche Funktionen gehoeren erst in Zielbild-Screens statt in den MVP-Core?

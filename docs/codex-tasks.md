@@ -45,13 +45,13 @@
 - Phase B1 begonnen: API- und Frontend-Gap-Analyse fuer die 10 MVP-Core-Screens erstellt
 - Phase B2 umgesetzt: Backend API Readiness fuer Company, UserProfile, SupplierProfile, RequestItem und NegotiationProject mit Listenfiltern, PATCH-Endpunkten und konsistenter Foreign-Key-Validierung
 - Phase B3 umgesetzt: Lesende Backend API Readiness fuer Knowledge Base, Importstatus und Einkaufsdaten mit GET-Endpunkten fuer DocumentChunk, KnowledgeClaim, ProcurementHistoryItem, ImportJob und ImportRow sowie zusaetzlichen KnowledgeDocument-Listenfiltern
+- Phase B4 umgesetzt: Backend API Readiness fuer Strategieobjekte mit CRUD-nahen GET/POST/PATCH-Endpunkten, Listenfiltern und Foreign-Key-Validierung fuer Strategy, ZopaItem, BatnaOption, ConcessionItem und ArgumentationLine
 
 ## Naechste Schritte
 
-1. Backend API Readiness fuer Strategieobjekte planen.
-2. Backend API Readiness fuer SimulationScenario und TrainerComment planen.
-3. Frontend-Grundlayout, Navigation und API-Client planen.
-4. Frontend-Flows fuer Company, UserProfile, SupplierProfile, RequestItem und Projects planen.
-5. Frontend-Flows fuer Knowledge Base, Analyse, Strategie-Builder, Simulation konfigurieren und Trainerreview ableiten.
-6. Dashboard zunaechst als einfache Komposition oder spaeter als Summary-API entscheiden.
-7. Chunking-Service, Embedding-Erzeugung, RAG, Upload/Import, OCR, Voice und produktive Simulation spaeter planen.
+1. Backend API Readiness fuer SimulationScenario und TrainerComment planen.
+2. Frontend-Grundlayout, Navigation und API-Client planen.
+3. Frontend-Flows fuer Company, UserProfile, SupplierProfile, RequestItem und Projects planen.
+4. Frontend-Flows fuer Knowledge Base, Analyse, Strategie-Builder, Simulation konfigurieren und Trainerreview ableiten.
+5. Dashboard zunaechst als einfache Komposition oder spaeter als Summary-API entscheiden.
+6. Chunking-Service, Embedding-Erzeugung, RAG, Upload/Import, OCR, Voice und produktive Simulation spaeter planen.

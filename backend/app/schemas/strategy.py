@@ -29,6 +29,26 @@ class StrategyCreate(StrategyBase):
     pass
 
 
+class StrategyUpdate(BaseModel):
+    company_id: UUID | None = None
+    negotiation_project_id: UUID | None = None
+    title: str | None = None
+    status: str | None = None
+    version: int | None = None
+    is_active: bool | None = None
+    overall_objective: str | None = None
+    target_outcome: str | None = None
+    minimum_acceptable_outcome: str | None = None
+    walk_away_point: str | None = None
+    zopa_summary: str | None = None
+    batna_summary: str | None = None
+    concession_strategy: str | None = None
+    argumentation_summary: str | None = None
+    risk_assessment: str | None = None
+    notes: str | None = None
+    metadata_json: dict[str, Any] | None = None
+
+
 class StrategyRead(StrategyBase):
     model_config = ConfigDict(from_attributes=True)
 

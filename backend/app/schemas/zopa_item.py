@@ -27,6 +27,24 @@ class ZopaItemCreate(ZopaItemBase):
     pass
 
 
+class ZopaItemUpdate(BaseModel):
+    strategy_id: UUID | None = None
+    dimension: str | None = None
+    description: str | None = None
+    buyer_target_value: str | None = None
+    buyer_walk_away_value: str | None = None
+    supplier_expected_target_value: str | None = None
+    supplier_estimated_walk_away_value: str | None = None
+    possible_agreement_range: str | None = None
+    currency: str | None = None
+    unit: str | None = None
+    priority: str | None = None
+    confidence_level: str | None = None
+    information_kind: str | None = None
+    source_reference: str | None = None
+    metadata_json: dict[str, Any] | None = None
+
+
 class ZopaItemRead(ZopaItemBase):
     model_config = ConfigDict(from_attributes=True)
 

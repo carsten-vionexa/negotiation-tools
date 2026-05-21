@@ -238,8 +238,10 @@ Bewertung: Trainerreview kann im MVP auch ohne produktive Simulation sinnvoll se
 
 ## 5. Querschnittliche API-Luecken
 
-1. Filterfaehige Listenendpunkte: Die bestehenden Router brauchen fuer MVP-Flows Filter nach Company, Projekt, UserProfile, Supplier, Strategy, Status und Sichtbarkeit.
-2. Update-Endpunkte: Alle bearbeitbaren MVP-Screens benoetigen `PATCH` oder `PUT`; aktuell gibt es fuer registrierte Router nur `POST`.
+Stand nach Phase B2 / Issue #20: Die erste Backend-Readiness fuer Stammdaten und Projekte ist umgesetzt. Fuer `Company`, `UserProfile`, `SupplierProfile`, `RequestItem` und `NegotiationProject` gibt es nun fachliche Listenfilter und `PATCH`-Endpunkte. Create- und Patch-Flows validieren relevante Foreign Keys konsistent; bei `NegotiationProject` wird zusaetzlich die Company-Zugehoerigkeit von Owner, Anfrageposition und Lieferantenprofil geprueft. Es wurden keine neuen fachlichen Modelle, Tabellen, Migrationen oder Frontend-Aenderungen eingefuehrt.
+
+1. Filterfaehige Listenendpunkte: Fuer die Stammdaten- und Projektbasis sind erste Filter vorhanden. Weitere Filter bleiben fuer Knowledge Base, Strategy, SimulationScenario, TrainerComment und spaetere Sichtbarkeitslogik offen.
+2. Update-Endpunkte: Fuer Company, UserProfile, SupplierProfile, RequestItem und NegotiationProject sind `PATCH`-Endpunkte vorhanden. Updates fuer Knowledge-Base-, Strategy-, Simulation- und Review-Objekte bleiben Folgearbeit.
 3. Fehlende Router fuer bereits modellierte Objekte: Besonders wichtig sind Strategy-Objekte, SimulationScenario und TrainerComment. Fuer Knowledge Base sind Claims, Chunks, ProcurementHistoryItems und Importstatus relevant.
 4. Detail-/Summary-Antworten: Viele Screens brauchen zusammengesetzte Daten, etwa Projekt mit Company/Owner/Supplier/RequestItem, Strategie mit Unterlisten, Company mit Datenlage oder Dashboard-Summary.
 5. JSONB-Konventionen: Analyse-, Stakeholder-, Relationship-, Hypothesen- und reduzierte Angebotsvergleichsnotizen sollten fuer den MVP als klare Dokumentationskonventionen gefuehrt werden, bevor neue Tabellen entstehen.

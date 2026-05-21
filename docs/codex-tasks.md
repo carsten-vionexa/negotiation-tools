@@ -43,15 +43,15 @@
 - Roadmap-Uebersicht ergaenzt: roadmap.md
 - Phase A1 abgeschlossen: MVP-Screen-Scope fachlich in `screen-by-screen-concept.md` finalisiert
 - Phase B1 begonnen: API- und Frontend-Gap-Analyse fuer die 10 MVP-Core-Screens erstellt
+- Phase B2 umgesetzt: Backend API Readiness fuer Company, UserProfile, SupplierProfile, RequestItem und NegotiationProject mit Listenfiltern, PATCH-Endpunkten und konsistenter Foreign-Key-Validierung
 
 ## Naechste Schritte
 
-1. Backend API Readiness fuer Stammdaten und Projekte planen.
-2. Backend API Readiness fuer Knowledge-Base-Lesezugriffe planen.
-3. Backend API Readiness fuer Strategieobjekte planen.
-4. Backend API Readiness fuer SimulationScenario und TrainerComment planen.
-5. Frontend-Grundlayout, Navigation und API-Client planen.
-6. Frontend-Flows fuer Company, UserProfile, SupplierProfile, RequestItem und Projects planen.
-7. Frontend-Flows fuer Knowledge Base, Analyse, Strategie-Builder, Simulation konfigurieren und Trainerreview ableiten.
-8. Dashboard zunaechst als einfache Komposition oder spaeter als Summary-API entscheiden.
-9. Chunking-Service, Embedding-Erzeugung, RAG, Upload/Import, OCR, Voice und produktive Simulation spaeter planen.
+1. Backend API Readiness fuer Knowledge-Base-Lesezugriffe planen.
+2. Backend API Readiness fuer Strategieobjekte planen.
+3. Backend API Readiness fuer SimulationScenario und TrainerComment planen.
+4. Frontend-Grundlayout, Navigation und API-Client planen.
+5. Frontend-Flows fuer Company, UserProfile, SupplierProfile, RequestItem und Projects planen.
+6. Frontend-Flows fuer Knowledge Base, Analyse, Strategie-Builder, Simulation konfigurieren und Trainerreview ableiten.
+7. Dashboard zunaechst als einfache Komposition oder spaeter als Summary-API entscheiden.
+8. Chunking-Service, Embedding-Erzeugung, RAG, Upload/Import, OCR, Voice und produktive Simulation spaeter planen.

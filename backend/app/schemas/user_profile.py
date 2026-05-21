@@ -19,6 +19,16 @@ class UserProfileCreate(UserProfileBase):
     pass
 
 
+class UserProfileUpdate(BaseModel):
+    company_id: UUID | None = None
+    display_name: str | None = None
+    email: str | None = None
+    role: str | None = None
+    department: str | None = None
+    notes: str | None = None
+    profile_data: dict[str, Any] | None = None
+
+
 class UserProfileRead(UserProfileBase):
     model_config = ConfigDict(from_attributes=True)
 

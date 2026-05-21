@@ -31,6 +31,27 @@ class RequestItemCreate(RequestItemBase):
     pass
 
 
+class RequestItemUpdate(BaseModel):
+    company_id: UUID | None = None
+    title: str | None = None
+    article_name: str | None = None
+    article_description: str | None = None
+    category: str | None = None
+    specification: str | None = None
+    requested_quantity: Decimal | None = None
+    unit: str | None = None
+    target_price: Decimal | None = None
+    rough_price_expectation: Decimal | None = None
+    currency: str | None = None
+    required_delivery_date: date | None = None
+    target_delivery_time: str | None = None
+    target_region: str | None = None
+    priority: str | None = None
+    status: str | None = None
+    comment: str | None = None
+    metadata_json: dict[str, Any] | None = None
+
+
 class RequestItemRead(RequestItemBase):
     model_config = ConfigDict(from_attributes=True)
 

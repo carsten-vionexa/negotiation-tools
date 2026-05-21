@@ -119,8 +119,8 @@ Issue #14 finalisiert den MVP-Screen-Scope fachlich. Der MVP besteht aus zehn Co
 | 2 | Firmenprofil / Company-Uebersicht | Trainer | Unternehmens- und Mandantenkontext fuer Verhandlungsprojekte bereitstellen | MVP-Core |
 | 3 | Trainee- / Rollenprofil | Trainer, Trainee | Reale Person oder Trainingsrolle, Lernziel und Trainingskontext fuer Vorbereitung, Simulation und Feedback klaeren | MVP-Core |
 | 4 | Knowledge Base / Datenbasis | Trainer | Vorhandene Quellen und strukturierte Datenlage als fachliche Grundlage sichtbar machen | MVP-Core |
-| 5 | Verhandlungsprojekt anlegen / bearbeiten | Trainer, spaeter Trainee | Konkreten Verhandlungsfall mit Ziel, Lieferant, Rahmenbedingungen und Status definieren | MVP-Core |
-| 6 | Analyseansicht | Trainee, Trainer | Projekt, Datenlage, Risiken, Chancen, Annahmen und Hypothesen verstehen | MVP-Core |
+| 5 | Verhandlungsprojekt anlegen / bearbeiten | Trainer, spaeter Trainee | Operatives Herzstueck des MVP: konkreten Verhandlungsfall mit Company, Rolle, Lieferant, Bedarf, Ziel, Rahmenbedingungen und Status definieren | MVP-Core |
+| 6 | Analyseansicht | Trainee, Trainer | Projekt-, Firmen-, Lieferanten- und Datenbasis zu einer strukturierten Ausgangslage verdichten und Fakten, Annahmen und Hypothesen trennen | MVP-Core |
 | 7 | Strategie-Builder | Trainee, Trainer | Zielbild, ZOPA, BATNA, Konzessionen, Argumentation und reduzierte Vergleichslogik strukturieren | MVP-Core |
 | 8 | Kultur- und Rollenbriefing | Trainee, Trainer | Lieferantenrolle, Gespraechsdynamik und kulturelle Arbeitshypothesen vorbereiten | MVP-Core |
 | 9 | Simulation konfigurieren | Trainer | Trainingsszenario, Rolle, Schwierigkeit, Erfolgskriterien und Briefing fachlich vorbereiten | MVP-Core |
@@ -130,10 +130,10 @@ Issue #14 finalisiert den MVP-Screen-Scope fachlich. Der MVP besteht aus zehn Co
 
 Diese Erweiterungen gehoeren zum MVP, aber nicht als eigene Screens:
 
-- **Einfache Lieferantenbeziehungsnotiz:** Als Notiz im Verhandlungsprojekt, in der Analyseansicht oder im Kultur- und Rollenbriefing. Sie beschreibt Beziehungslage, Vorgeschichte, Vertrauen, Abhaengigkeiten oder offene Spannungen knapp und fachlich.
-- **Einfache Stakeholdernotiz:** Als Notiz im Verhandlungsprojekt oder in der Analyseansicht. Sie haelt relevante interne oder externe Stakeholder, Interessen, Einfluss und offene Rueckfragen fest.
-- **Einfache Hypothesenliste:** Als klar markierter Bereich in Analyseansicht, Strategie-Builder oder Kultur- und Rollenbriefing. Hypothesen muessen von Fakten und belastbaren Quellen getrennt bleiben.
-- **Reduzierter RFQ-/Angebotsvergleich:** Im MVP nur als einfache Notiz- oder Vergleichslogik innerhalb von Verhandlungsprojekt, Analyseansicht oder Strategie-Builder. Es gibt kein eigenstaendiges RFQ-Modul und keine vollautomatische Angebotsanalyse.
+- **Einfache Lieferantenbeziehungsnotiz:** Als Notiz im Verhandlungsprojekt, in der Analyseansicht oder im Kultur- und Rollenbriefing. Sie beschreibt Beziehungslage, Vorgeschichte, Vertrauen, Abhaengigkeiten oder offene Spannungen knapp und fachlich. Sie ist kein Relationship-Memory-Modul.
+- **Einfache Stakeholdernotiz:** Als Notiz im Verhandlungsprojekt oder in der Analyseansicht. Sie haelt relevante interne oder externe Stakeholder, Interessen, Einfluss, Quelle, Confidence und offene Rueckfragen fest. Sie ist kein Stakeholder-Management-System.
+- **Einfache Hypothesenliste:** Als klar markierter Bereich in Analyseansicht, Strategie-Builder oder Kultur- und Rollenbriefing. Hypothesen muessen von Fakten und Annahmen getrennt bleiben und sollen Beobachtung, Confidence, Quelle oder Ursprung, Pruefaktion und Strategieimplikation enthalten koennen.
+- **Reduzierter RFQ-/Angebotsvergleich:** Im MVP nur als einfache Notiz- oder Vergleichslogik innerhalb von Verhandlungsprojekt, Analyseansicht oder Strategie-Builder. Es gibt kein eigenstaendiges RFQ-Modul, keine RFQ-Engine, keine vollautomatische Angebotsanalyse und keine neuen Angebotsvergleichsmodelle.
 
 ### 3.3 Zielbild-Screens und spaetere Screens
 
@@ -155,6 +155,7 @@ Diese Erweiterungen gehoeren zum MVP, aber nicht als eigene Screens:
 - Admin-, Rollen- und Rechteverwaltung.
 - Relationship Memory als eigenes Modul.
 - Vollautomatische Angebotsanalyse, eigenes RFQ-Modul oder automatische Angebotsbewertung.
+- SupplierBid-Modell, BidComparison-Modell, StakeholderNote-Modell, Relationship-Memory-Modul, Stakeholder-Graph oder politische Mapping-Engine.
 - OCR, RAG, Embeddings, produktive Upload-Verarbeitung oder automatisierte Claim-Extraktion.
 - Neue Datenmodelle, API-Endpunkte, Frontend-Komponenten oder technische Implementierungsdetails.
 
@@ -285,33 +286,116 @@ Die Folgeissues #15, #16, #17 und #18 sollten auf Basis dieser Abgrenzung als na
 
 **MVP-Status:** MVP-Core.
 
-**Zweck des Screens:** Einen konkreten Verhandlungsfall definieren, der Analyse, Strategie, Briefing, Simulationskonfiguration und Trainerreview zusammenhaelt.
+**Zweck des Screens:** Das Verhandlungsprojekt ist das operative Herzstueck des MVP. Der Screen definiert den konkreten Verhandlungsfall und verbindet Company, Trainee oder Rolle, Lieferant, Bedarf, Ziel, Rahmenbedingungen, Business Pressure, technische Abhaengigkeiten, Supplier Power und Workflow-Status. Aus diesem Screen entsteht der fachliche Bezugspunkt fuer Analyse, Strategie, Briefing, Simulationskonfiguration und Trainerreview.
 
-**Hauptnutzer:** Trainer, spaeter ggf. Trainee im Self-Service-Modus.
+**Rolle im Workflow:** Der Screen uebersetzt den Company- und Datenkontext in eine konkrete Verhandlungssituation. Er liegt nach Firmenprofil, Trainee- oder Rollenprofil und Datenbasis und vor Analyse und Strategie. Ohne sauber beschriebenes Projekt bleiben Analyse, Hypothesen und spaetere Trainingslogik zu abstrakt.
 
-**Zentrale Nutzeraktionen:** Projekt anlegen oder bearbeiten, Anfrageposition und Lieferant zuordnen, Verhandlungsziel und Rahmenbedingungen erfassen, Prioritaeten und Risiken beschreiben.
+**Primaere Nutzer:** Zunaechst Trainer. Eine Projektanlage durch Trainees ist optional oder spaeter zu entscheiden.
 
-**Wichtigste Ausgaben / Anzeigen:** Projektbriefing, zugeordnete Anfrageposition, Lieferantenprofil, Datenlage, Status im Workflow, einfache Lieferantenbeziehungsnotiz und einfache Stakeholdernotiz.
+**Mindestens sichtbar im MVP:**
 
-**MVP-Erweiterungen:** Lieferantenbeziehungsnotiz und Stakeholdernotiz sind einfache fachliche Notizen innerhalb des Projekts. Sie sind kein Relationship-Memory-Modul und kein Stakeholder-Management-Modul.
+- Projekttitel.
+- Company.
+- Zugeordneter Trainee oder zugeordnete Rolle.
+- Verhandlungsart.
+- Warengruppe.
+- Artikel oder Leistung.
+- Menge.
+- Zielregion.
+- Gewuenschte Lieferzeit.
+- Interne Preisannahme oder Zielgroesse.
+- Aktueller oder potenzieller Lieferant.
+- Projektprioritaet.
+- Projektstatus.
+- Business Pressure.
+- Technische Abhaengigkeit.
+- Supplier Power oder Lieferantenmacht.
+- Risikoindikatoren.
+- Einfache Lieferantenbeziehungsnotiz.
+- Einfache Stakeholdernotiz.
 
-**MVP-Abgrenzung:** Keine automatische Projektanlage aus Importdaten als Pflicht, keine CRM-Anbindung, keine komplexe Projektfreigabe und kein eigenes RFQ-Modul.
+**Im MVP editierbar:** Die wichtigsten Projekt- und Kontextfelder sollen trainerseitig manuell pflegbar sein: Titel, Company-Bezug, Rolle oder Trainee, Verhandlungsart, Warengruppe, Artikel oder Leistung, Menge, Region, Lieferzeit, interne Zielgroesse, Lieferant, Prioritaet, Status, Business Pressure, technische Abhaengigkeit, Supplier Power, Risikoindikatoren und einfache Kontextnotizen. Eine automatische Projektanlage aus Importdaten ist keine MVP-Pflicht.
+
+**Einfache Lieferantenbeziehungsnotiz:** Diese Notiz beschreibt im MVP nur die qualitative Beziehung zum Lieferanten im Kontext dieses Projekts. Moegliche Inhalte sind Beziehungslage wie neu, etabliert, belastet, partnerschaftlich oder eskaliert, bisherige Erfahrungen, bekannte Konflikte, bekannte Argumentationsmuster, technische oder kommerzielle Abhaengigkeit, persoenliche Beziehungsebene, offene Spannungen sowie bisherige Zugestaendnisse oder Eskalationen. Sie ist ausdruecklich kein Relationship-Memory-Modul, keine vollstaendige Beziehungshistorie und keine automatische Dokumentenauswertung.
+
+**Einfache Stakeholdernotiz:** Diese Notiz macht interne oder externe Stakeholderinteressen sichtbar, ohne ein eigenes Stakeholder-System zu bauen. Moegliche Inhalte sind Stakeholder oder Bereich, Rolle wie Entscheider, Einflussnehmer, Betroffener, Blockierer oder Unterstuetzer, Interesse, Haltung, Einfluss, Notiz, Quelle, Confidence und Sichtbarkeit als trainerintern oder trainee-sichtbar. Sie ist keine Rechte- oder Freigabelogik und kein politisches Mapping.
+
+**Optionale oder spaetere Informationen:** Automatische Ableitung aus Importdaten, feinere Freigabe- oder Eskalationslogik, mehrere Verhandlungsrunden, umfangreiche Beziehungshistorie, strukturierte Stakeholderlandschaft, integrierte Ausschreibungsakte und technische Angebotsauswertung bleiben spaeter.
+
+**MVP-Abgrenzung:** Keine automatische Projektanlage aus Importdaten, keine CRM-/ERP-Anbindung, keine komplexe Projektfreigabe, kein eigenes RFQ-Modul, keine RFQ-Engine, kein Relationship Memory, kein Stakeholder-Graph, kein ProjectParticipant-Modell, kein StakeholderNote-Modell und keine neuen technischen Implementierungsdetails.
+
+**Offene Produktentscheidungen:** Welche Projektfelder im MVP Pflichtfelder sind, ob Trainees Projekte selbst anlegen duerfen, welche Notizen trainee-sichtbar sind, welche Risikoindikatoren minimal reichen und wann aus reduzierten Notizen spaeter eigene Procurement- oder Relationship-Funktionen werden.
 
 ### 6. Analyseansicht
 
 **MVP-Status:** MVP-Core.
 
-**Zweck des Screens:** Projektkontext, Datenbasis, Lieferantenannahmen, Risiken, Chancen und offene Informationsluecken strukturiert sichtbar machen.
+**Zweck des Screens:** Die Analyseansicht macht aus Projekt-, Firmen-, Lieferanten- und Datenbasis eine strukturierte Verhandlungsausgangslage. Sie soll Trainee und Trainer helfen, das Verhandlungsproblem zu verstehen, belegte Informationen von Einschaetzungen zu trennen und offene Pruefpunkte in Strategiearbeit zu uebersetzen.
 
-**Hauptnutzer:** Trainee und Trainer.
+**Rolle im Workflow:** Die Analyseansicht folgt auf Projektdefinition und Datenbasis. Sie bereitet Strategie-Builder, Kultur- und Rollenbriefing, Simulationskonfiguration und Trainerreview vor. Sie ist kein automatischer Wahrheitsgenerator, sondern ein strukturierter Arbeitsraum fuer Ausgangslage, Datenluecken, Risiken, Chancen, Annahmen und Hypothesen.
 
-**Zentrale Nutzeraktionen:** Analyse lesen, Quellen und Claims nachvollziehen, Risiken markieren, offene Fragen sammeln, Hypothesen von Fakten trennen.
+**Primaere Nutzer:** Trainer und Trainee.
 
-**Wichtigste Ausgaben / Anzeigen:** Zusammenfassung des Verhandlungsfalls, relevante Claims, Einkaufshistorie, Anfragepositionen, Lieferantenprofil, Risiko- und Machtannahmen, offene Datenluecken, einfache Hypothesenliste, einfache Stakeholdernotiz.
+**Mindestens sichtbar im MVP:**
 
-**MVP-Erweiterungen:** Die Hypothesenliste wird ausdruecklich als Hypothese markiert und von Fakten, Quellen und Empfehlungen getrennt. Eine einfache Angebots- oder RFQ-Vergleichssicht darf nur reduzierte Vergleichsnotizen, Eckwerte oder manuell gepflegte Gegenueberstellungen enthalten.
+- Kurzbriefing des Verhandlungsfalls.
+- Relevante Projektinformationen.
+- Relevante Lieferanteninformationen.
+- Einkaufshistorie, falls vorhanden.
+- Anfragepositionen, falls vorhanden.
+- Relevante Knowledge Claims, falls vorhanden.
+- Datenluecken.
+- Risiken.
+- Chancen.
+- Supplier Power oder Lieferantenmacht.
+- Technische Abhaengigkeit.
+- Business Pressure.
+- Offene Fragen.
+- Einfache Stakeholdernotiz.
+- Einfache Hypothesenliste.
+- Optional reduzierte RFQ-/Angebotsvergleichsnotizen.
 
-**MVP-Abgrenzung:** Keine produktive automatische Analysepflicht, keine vollautomatische Angebotsanalyse, keine OCR-/RAG-Pflicht und keine automatische Bewertung von Lieferantenangeboten.
+**Im MVP editierbar:** Trainerseitig sollen Datenluecken, Risiken, Chancen, offene Fragen, einfache Stakeholdernotizen und Hypothesen manuell gepflegt oder korrigiert werden koennen. Trainee-Bearbeitung ist fachlich moeglich, aber je nach Trainingssetting optional oder trainerfreizugeben. Knowledge Claims, Einkaufshistorie und Anfragepositionen koennen in der Analyse sichtbar sein, ohne dass dieser Screen Import-, Claim-Extraktions- oder Datenpflegefunktionen uebernimmt.
+
+**Trennung von Fakten, Annahmen und Hypothesen:** Fakten, Annahmen und Hypothesen muessen im MVP sichtbar getrennt werden.
+
+- **Fakten:** Belegte oder vorhandene Informationen aus Datenbasis, Einkaufshistorie, Anfragepositionen, Knowledge Claims oder manuell bestaetigten Quellen.
+- **Annahmen:** Plausible, aber nicht sicher belegte Einschaetzungen, etwa zur Preisentwicklung, internen Prioritaet oder Lieferfaehigkeit.
+- **Hypothesen:** Ueberpruefbare Vermutungen ueber Motive, Zwaenge, Taktiken oder Interessen der Gegenseite oder interner Stakeholder.
+
+**Einfache Hypothesenliste:** Die Hypothesenliste ist eine eingebettete MVP-Erweiterung der Analyseansicht und ggf. des Strategie-Builders oder Briefings. Sie soll Verhandler bewusst darin trainieren, belegte Fakten von pruefbaren Vermutungen zu unterscheiden.
+
+Moegliche Hypothesentypen:
+
+- Lieferantenmotiv.
+- Preisdruck.
+- Kapazitaetsargument.
+- Taktischer Anker.
+- Interner Entscheidungsdruck.
+- Technische Abhaengigkeit.
+- Verhandlungsbereitschaft.
+- Kulturelle oder organisatorische Arbeitshypothese.
+
+Mindeststruktur einer Hypothese:
+
+- Beobachtung.
+- Hypothese.
+- Confidence.
+- Quelle oder Ursprung.
+- Pruefaktion.
+- Moegliche Strategieimplikation.
+
+Qualitaetsregel: Hypothesen duerfen nicht als Fakten dargestellt werden. Jede relevante Hypothese soll idealerweise eine Pruefaktion bekommen und ihre moegliche Strategieimplikation sichtbar machen.
+
+**Einfache Stakeholdernotiz in der Analyse:** Stakeholderinformationen koennen hier sichtbar werden, wenn sie die Ausgangslage, interne Interessen, Freigabedruck oder Konflikte beeinflussen. Sie bleiben eingebettete Notizen mit Stakeholder oder Bereich, Rolle, Interesse, Haltung, Einfluss, Notiz, Quelle, Confidence und Sichtbarkeit. Daraus entsteht im MVP kein Stakeholder-Graph, kein ProjectParticipant-Modell, kein eigenes StakeholderNote-Modell, keine Rechte- oder Freigabelogik und keine politische Mapping-Engine.
+
+**Reduzierter RFQ-/Angebotsvergleich:** Falls ein Projekt aus einer Ausschreibung oder mehreren Angeboten entsteht, darf die Analyseansicht verhandlungsrelevante Unterschiede als eingebettete Notiz- oder Vergleichslogik sichtbar machen. Moegliche Inhalte sind Lieferant, Preis, Menge, Lieferzeit, Zahlungsziel, technische Vergleichbarkeit, Risiko, TCO-Hinweis, offene Rueckfragen und verhandlungsrelevanter Punkt. Diese Logik dient der Vorbereitung von Fragen und Hebeln, nicht einer produktiven Angebotsbewertung.
+
+**Optionale oder spaetere Informationen:** KI-gestuetzte Analysevorschlaege, automatische Angebotsvergleiche, automatische Lieferantenbewertungen, OCR-/RAG-gestuetzte Quellenarbeit, detaillierte TCO-Berechnungen und komplexe Scoringmodelle bleiben spaeter.
+
+**MVP-Abgrenzung:** Keine produktive automatische Analysepflicht, keine automatische Angebotsanalyse, keine automatische Lieferantenbewertung, keine OCR-/RAG-Pflicht, keine KI-generierte Analyse als verbindliche Wahrheit, keine automatische Hypothesengenerierung als Pflicht, keine KI-Wahrheitsbewertung, kein komplexes Scoringmodell, kein eigenes RFQ-Modul, kein SupplierBid-Modell, kein BidComparison-Modell, keine Lieferantenportale, keine automatische TCO-Berechnung und keine neuen Datenmodelle.
+
+**Offene Produktentscheidungen:** Welche Analysebestandteile fuer Trainees sichtbar sind, wer Hypothesen bearbeiten darf, wie Confidence sprachlich standardisiert wird, welche reduzierte RFQ-/Angebotsvergleichslogik fuer den MVP ausreicht und ab wann spaeter eigenstaendige Procurement-Module gerechtfertigt sind.
 
 ### 7. Strategie-Builder
 
@@ -459,8 +543,8 @@ Diese Tabelle dient nur der fachlichen Orientierung. Sie legt keine neuen Datenm
 | Firmenprofil / Company-Uebersicht | Firmenname, Branche, Verhandlungsrolle, Maerkte/Regionen, strategischer Druck, Warengruppen, Verhandlungssituationen, Datenquellen, Projekte | MVP-Core |
 | Trainee- / Rollenprofil | Reale Person oder Trainingsrolle, Funktion, Erfahrungsstand, Verhandlungsrolle, Trainingsziele, Sprache, Entwicklungsfelder, sichtbare und trainerinterne Hinweise | MVP-Core |
 | Knowledge Base / Datenbasis | Dokumente, Quelle/Dokumenttyp, Company-/Projektbezug, Einkaufshistorie, Anfragepositionen, Knowledge Claims, Datenluecken, Qualitaets- oder Vertrauenshinweise | MVP-Core |
-| Verhandlungsprojekt anlegen / bearbeiten | Projektbriefing, Lieferant, Anfrageposition, Ziel, Risiken, Lieferantenbeziehungsnotiz, Stakeholdernotiz | MVP-Core |
-| Analyseansicht | Fakten, Annahmen, Hypothesen, Risiken, Chancen, Datenluecken, reduzierte Vergleichsnotizen | MVP-Core |
+| Verhandlungsprojekt anlegen / bearbeiten | Projekttitel, Company, Trainee oder Rolle, Verhandlungsart, Warengruppe, Artikel oder Leistung, Menge, Zielregion, Lieferzeit, interne Zielgroesse, Lieferant, Prioritaet, Status, Business Pressure, technische Abhaengigkeit, Supplier Power, Risiken, Lieferantenbeziehungsnotiz, Stakeholdernotiz | MVP-Core |
+| Analyseansicht | Kurzbriefing, Projektinformationen, Lieferanteninformationen, Einkaufshistorie, Anfragepositionen, Knowledge Claims, Fakten, Annahmen, Hypothesen, Risiken, Chancen, Datenluecken, offene Fragen, Stakeholdernotiz, reduzierte Vergleichsnotizen | MVP-Core |
 | Strategie-Builder | Ziele, ZOPA, BATNA, Konzessionen, Argumentation, reduzierte Angebots-/RFQ-Notizen | MVP-Core |
 | Kultur- und Rollenbriefing | Lieferantenrolle, Beziehungskontext, kulturelle Arbeitshypothesen, erwartete Taktiken | MVP-Core |
 | Simulation konfigurieren | Szenario, Rolle, Schwierigkeit, Erfolgskriterien, Briefing | MVP-Core |

@@ -1,7 +1,10 @@
 from fastapi import APIRouter
 
 from app.api.routes import (
+    argumentation_lines,
+    batna_options,
     companies,
+    concession_items,
     document_chunks,
     health,
     import_jobs,
@@ -11,8 +14,10 @@ from app.api.routes import (
     negotiation_projects,
     procurement_history_items,
     request_items,
+    strategies,
     supplier_profiles,
     user_profiles,
+    zopa_items,
 )
 
 api_router = APIRouter()
@@ -47,4 +52,17 @@ api_router.include_router(
     negotiation_projects.router,
     prefix="/negotiation-projects",
     tags=["negotiation projects"],
+)
+api_router.include_router(strategies.router, prefix="/strategies", tags=["strategies"])
+api_router.include_router(zopa_items.router, prefix="/zopa-items", tags=["zopa items"])
+api_router.include_router(batna_options.router, prefix="/batna-options", tags=["batna options"])
+api_router.include_router(
+    concession_items.router,
+    prefix="/concession-items",
+    tags=["concession items"],
+)
+api_router.include_router(
+    argumentation_lines.router,
+    prefix="/argumentation-lines",
+    tags=["argumentation lines"],
 )

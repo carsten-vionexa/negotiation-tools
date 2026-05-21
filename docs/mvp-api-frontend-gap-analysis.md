@@ -181,22 +181,22 @@ Bewertung: Vorhandene Modelle koennen viel lesen, aber Analyseinformationen sind
 1. Zweck im MVP: Strategie, Ziele, ZOPA, WAP, BATNA, Konzessionen und Argumentationslinien sichtbar und bearbeitbar machen.
 2. Relevante bestehende Modelle: `Strategy`, `ZopaItem`, `BatnaOption`, `ConcessionItem`, `ArgumentationLine`, `NegotiationProject`, `Company`, optional `KnowledgeClaim`.
 3. Relevante bestehende Pydantic-Schemas: vorhanden fuer alle genannten Strategieobjekte.
-4. Relevante bestehende Router / Endpunkte: keine Strategy- oder Strategie-Kindobjekt-Router registriert; Projekt- und Company-Endpunkte existieren.
-5. Fehlende oder unklare API-Endpunkte: CRUD fuer `Strategy`, `ZopaItem`, `BatnaOption`, `ConcessionItem`, `ArgumentationLine` fehlt; Filter nach `negotiation_project_id`, `company_id`, `strategy_id`, `is_active`, `status` fehlen; API fuer Strategie-Detail mit Unterlisten fehlt; Aktiv-/Versionierungslogik ist nur modellseitig vorbereitet.
+4. Relevante bestehende Router / Endpunkte: `GET/POST/PATCH /api/strategies`, `GET/POST/PATCH /api/zopa-items`, `GET/POST/PATCH /api/batna-options`, `GET/POST/PATCH /api/concession-items`, `GET/POST/PATCH /api/argumentation-lines`; Projekt- und Company-Endpunkte existieren.
+5. Fehlende oder unklare API-Endpunkte: API fuer Strategie-Detail mit eingebetteten Unterlisten fehlt; Aktiv-/Versionierungslogik ist nur modellseitig vorbereitet.
 6. Daten, die im MVP gelesen werden muessen: Strategie-Kopf, Zielbild, Ziel-/Grenzwerte, ZOPA-Dimensionen, WAP, BATNA-Optionen, Konzessionen, Argumentationslinien, Risiken, offene Fragen und strategierelevante Notizen.
 7. Daten, die im MVP bearbeitet werden muessen: Strategie-Kopf und alle Unterlisten fuer ZOPA, BATNA, Konzessionen und Argumentation.
 8. Benoetigte Frontend-Ansicht oder Flow: Strategieuebersicht je Projekt, Strategie bearbeiten, Unterlisten mit Inline- oder Drawer-Edit fuer ZOPA/BATNA/Konzessionen/Argumente, Status/Active-Markierung.
 9. Abhaengigkeiten zu anderen Screens: Analyseansicht, Projekt, Simulation konfigurieren, Kultur- und Rollenbriefing, Trainerreview.
 10. Nicht-MVP-Abgrenzung: keine automatische ZOPA-Berechnung, keine verbindliche KI-Strategie-Generierung, keine automatische BATNA-Bewertung, keine komplexe Freigabe oder Versionierung.
 
-Bewertung: Die Datenbasis fuer den Strategie-Builder ist stark vorbereitet, aber die API-Readiness ist hier die groesste unmittelbare Backend-Luecke, weil keine Router fuer die Strategieobjekte existieren.
+Bewertung: Die Datenbasis und API-Readiness fuer den Strategie-Builder sind fuer einfache MVP-Flows vorbereitet. Eine zusammengesetzte Strategie-Detailantwort mit Unterlisten bleibt eine spaetere Komfort- oder Performance-Option.
 
 ### 4.8 Kultur- und Rollenbriefing
 
 1. Zweck im MVP: Lieferantenrolle, Beziehungskontext und kulturelle Arbeitshypothesen vorsichtig abbilden.
 2. Relevante bestehende Modelle: `SupplierProfile`, `NegotiationProject`, `Strategy`, `KnowledgeClaim`, `SimulationScenario`, optional `UserProfile`.
 3. Relevante bestehende Pydantic-Schemas: vorhanden fuer alle genannten Modelle.
-4. Relevante bestehende Router / Endpunkte: `GET/POST /api/supplier-profiles`, `GET /api/negotiation-projects`; keine Router fuer Strategy, KnowledgeClaim oder SimulationScenario.
+4. Relevante bestehende Router / Endpunkte: `GET/POST /api/supplier-profiles`, `GET /api/negotiation-projects`, `GET/POST/PATCH /api/strategies`; KnowledgeClaim ist lesend verfuegbar, SimulationScenario fehlt noch.
 5. Fehlende oder unklare API-Endpunkte: Briefing-Summary fehlt; Update fuer SupplierProfile fehlt; Filter fuer SupplierProfiles nach Company und Projekte nach Supplier fehlen; Claims mit `claim_type=cultural_hint` oder `information_kind=hypothesis` sind nicht per Router verfuegbar; kein API-Kontrakt fuer Do's/Don'ts, offene Unsicherheiten oder Pruefhinweise.
 6. Daten, die im MVP gelesen werden muessen: SupplierProfile mit Rolle, Beziehung, Macht, Risiko, kulturellem Kontext, Interessen, Taktiken, Constraints; Projektkontext; strategierelevante Hinweise; optional Szenario-Briefing.
 7. Daten, die im MVP bearbeitet werden muessen: Rollenbeschreibung, Beziehungskontext, kulturelle Arbeitshypothesen, erwartete Taktiken, Kommunikationsrisiken, Do's/Don'ts und offene Unsicherheiten, vermutlich zunaechst in `SupplierProfile`-JSONB/Freitext oder `SimulationScenario`.
@@ -211,7 +211,7 @@ Bewertung: `SupplierProfile` ist fuer den MVP ausreichend, solange Briefing-Inha
 1. Zweck im MVP: `SimulationScenario` fachlich vorbereiten, ohne produktive Simulation durchzufuehren.
 2. Relevante bestehende Modelle: `SimulationScenario`, `NegotiationProject`, `Strategy`, `SupplierProfile`, `UserProfile`, optional `TrainerComment`.
 3. Relevante bestehende Pydantic-Schemas: vorhanden fuer `SimulationScenario` und alle Bezugsobjekte.
-4. Relevante bestehende Router / Endpunkte: keine SimulationScenario-Router; Bezugsobjekte Projekt, SupplierProfile und UserProfile sind lesend/anlegend verfuegbar; Strategy-Router fehlt.
+4. Relevante bestehende Router / Endpunkte: keine SimulationScenario-Router; Bezugsobjekte Projekt, SupplierProfile, UserProfile und Strategy sind lesend/anlegend verfuegbar.
 5. Fehlende oder unklare API-Endpunkte: CRUD fuer SimulationScenario fehlt; Filter nach `negotiation_project_id`, `strategy_id`, `supplier_profile_id`, `user_profile_id`, `status` fehlen; Validierung gleicher Company ueber verknuepfte Objekte waere fuer Create/Update zu klaeren; Startbereitschaft ist fachlich in `status` oder `metadata_json` zu definieren.
 6. Daten, die im MVP gelesen werden muessen: Szenariotitel, Projekt, Strategie, Trainee/Rolle, Supplier/Gegenrolle, Rolle, Land/Region, kultureller Kontext, Schwierigkeit, Kommunikationsstil, Phase, Trainingsziel, Brief, Erfolgskriterien, Zeitlimit, Sprache, Status.
 7. Daten, die im MVP bearbeitet werden muessen: alle Konfigurationsfelder von `SimulationScenario`; keine Messages, keine Ergebnisse, keine Engine-Steuerung.
@@ -238,11 +238,11 @@ Bewertung: Trainerreview kann im MVP auch ohne produktive Simulation sinnvoll se
 
 ## 5. Querschnittliche API-Luecken
 
-Stand nach Phase B3 / Issue #21: Die lesende Backend-Readiness fuer Knowledge-Base-, Import- und Einkaufsdaten ist umgesetzt. Fuer `DocumentChunk`, `KnowledgeClaim`, `ProcurementHistoryItem`, `ImportJob` und `ImportRow` gibt es nun `GET`-Listen- und Detailendpunkte mit MVP-relevanten Filtern. `KnowledgeDocument` wurde um Listenfilter fuer Company, Projekt, Dokumenttyp, Parsing-Status und Quelle erweitert. Es wurden keine Upload-, Importverarbeitungs-, OCR-, RAG-, KI-, Frontend-, Modell- oder Migrationsaenderungen eingefuehrt.
+Stand nach Phase B4 / Issue #22: Die Backend-Readiness fuer Strategieobjekte ist umgesetzt. Fuer `Strategy`, `ZopaItem`, `BatnaOption`, `ConcessionItem` und `ArgumentationLine` gibt es nun Listen-, Detail-, Create- und PATCH-Endpunkte mit MVP-relevanten Filtern. Create-Endpunkte validieren referenzierte Objekte; PATCH-Endpunkte aktualisieren nur gesetzte Felder. Es wurden keine automatische ZOPA-Berechnung, BATNA-Bewertung, KI-Strategie-Generierung, Angebotsanalyse, neue Versionierungslogik, Frontend-Aenderungen, Modell- oder Migrationsaenderungen eingefuehrt.
 
-1. Filterfaehige Listenendpunkte: Fuer die Stammdaten-, Projekt- und Knowledge-Base-Lesebasis sind erste Filter vorhanden. Weitere Filter bleiben fuer Strategy, SimulationScenario, TrainerComment und spaetere Sichtbarkeitslogik offen.
-2. Update-Endpunkte: Fuer Company, UserProfile, SupplierProfile, RequestItem und NegotiationProject sind `PATCH`-Endpunkte vorhanden. Updates fuer Knowledge-Base-, Strategy-, Simulation- und Review-Objekte bleiben Folgearbeit.
-3. Fehlende Router fuer bereits modellierte Objekte: Besonders wichtig sind Strategy-Objekte, SimulationScenario und TrainerComment. Fuer Knowledge Base sind Claims, Chunks, ProcurementHistoryItems und Importstatus nun lesend verfuegbar; fachliche Schreib- und Review-Flows bleiben Folgearbeit.
+1. Filterfaehige Listenendpunkte: Fuer Stammdaten, Projekte, Knowledge-Base-Lesebasis und Strategieobjekte sind erste Filter vorhanden. Weitere Filter bleiben fuer SimulationScenario, TrainerComment und spaetere Sichtbarkeitslogik offen.
+2. Update-Endpunkte: Fuer Company, UserProfile, SupplierProfile, RequestItem, NegotiationProject und Strategieobjekte sind `PATCH`-Endpunkte vorhanden. Updates fuer Knowledge-Base-, Simulation- und Review-Objekte bleiben Folgearbeit.
+3. Fehlende Router fuer bereits modellierte Objekte: Besonders wichtig sind nun SimulationScenario und TrainerComment. Fuer Knowledge Base sind Claims, Chunks, ProcurementHistoryItems und Importstatus lesend verfuegbar; Strategieobjekte sind CRUD-nah verfuegbar; fachliche Schreib- und Review-Flows bleiben Folgearbeit.
 4. Detail-/Summary-Antworten: Viele Screens brauchen zusammengesetzte Daten, etwa Projekt mit Company/Owner/Supplier/RequestItem, Strategie mit Unterlisten, Company mit Datenlage oder Dashboard-Summary.
 5. JSONB-Konventionen: Analyse-, Stakeholder-, Relationship-, Hypothesen- und reduzierte Angebotsvergleichsnotizen sollten fuer den MVP als klare Dokumentationskonventionen gefuehrt werden, bevor neue Tabellen entstehen.
 6. Sichtbarkeit: Trainerinterne vs. trainee-sichtbare Inhalte sind fachlich markiert, aber noch keine Rechteverwaltung. API-Filter duerfen das als fachlichen Parameter behandeln, nicht als vollstaendige Auth-Loesung.
@@ -269,6 +269,26 @@ Umgesetzte Filter:
 
 Bewusst nicht umgesetzt wurden Filter fuer Felder, die im aktuellen Modell nicht existieren: `DocumentChunk.chunk_type`, `DocumentChunk.status`, `KnowledgeClaim.status`, `KnowledgeClaim.target_entity`, `ProcurementHistoryItem.supplier_profile_id`, `ProcurementHistoryItem.article_name`, `ImportJob.created_by_user_profile_id`. Bei `ImportRow.status` wird der API-Filter bewusst auf das vorhandene Feld `validation_status` gemappt; bei projektbezogenen Filtern wird `negotiation_project_id` auf das interne Feld `project_id` gemappt.
 
+### 5.2 Phase B4 Strategy-API-Status
+
+Ergaenzte Endpunkte:
+
+- `GET /api/strategies`, `POST /api/strategies`, `GET /api/strategies/{id}`, `PATCH /api/strategies/{id}`
+- `GET /api/zopa-items`, `POST /api/zopa-items`, `GET /api/zopa-items/{id}`, `PATCH /api/zopa-items/{id}`
+- `GET /api/batna-options`, `POST /api/batna-options`, `GET /api/batna-options/{id}`, `PATCH /api/batna-options/{id}`
+- `GET /api/concession-items`, `POST /api/concession-items`, `GET /api/concession-items/{id}`, `PATCH /api/concession-items/{id}`
+- `GET /api/argumentation-lines`, `POST /api/argumentation-lines`, `GET /api/argumentation-lines/{id}`, `PATCH /api/argumentation-lines/{id}`
+
+Umgesetzte Filter:
+
+- `Strategy`: `company_id`, `negotiation_project_id`, `status`, `is_active`
+- `ZopaItem`: `strategy_id`, `dimension`, `priority`, `information_kind`
+- `BatnaOption`: `strategy_id`, `option_type`, `feasibility_level`, `risk_level`, `ranking`
+- `ConcessionItem`: `strategy_id`, `concession_type`, `concession_order`, `is_final_offer_item`, `risk_level`
+- `ArgumentationLine`: `strategy_id`, `argument_type`, `priority`, `information_kind`
+
+Bewusst ohne Schemaaenderung umgesetzt wurden die API-Filter `option_type` und `concession_order`: `option_type` wird auf das vorhandene Modellfeld `batna_type` gemappt, `concession_order` auf `sequence_order`.
+
 ## 6. Querschnittliche Frontend-Luecken
 
 1. App-Shell und Navigation: Es fehlt eine fachliche Navigation fuer Dashboard, Companies, Profile, Datenbasis, Projekte, Analyse, Strategie, Briefing, Simulation und Reviews.
@@ -290,7 +310,7 @@ Die Reihenfolge sollte Backend-Readiness und Frontend-Nutzbarkeit so staffeln, d
    Status: umgesetzt in Phase B3 / Issue #21. Upload/Import selbst bleibt ausgeschlossen.
 
 3. Backend API Readiness fuer Strategieobjekte  
-   Begruendung: Der Strategie-Builder ist ein zentraler MVP-Screen und die Modelle/Schemas sind vorhanden, aber Router fehlen vollstaendig.
+   Status: umgesetzt in Phase B4 / Issue #22. Automatische Strategie-, ZOPA-, BATNA- oder Angebotslogik bleibt ausgeschlossen.
 
 4. Backend API Readiness fuer SimulationScenario und TrainerComment  
    Begruendung: Simulation konfigurieren und Trainerreview benoetigen eigene Router, Filter, Updates und Sichtbarkeitsmarkierung. `SimulationMessage` und `SimulationResult` koennen zunaechst nachrangig oder lesend geplant werden, solange keine produktive Simulation entsteht.

@@ -2,10 +2,16 @@ from app.schemas.argumentation_line import (
     ArgumentationLineBase,
     ArgumentationLineCreate,
     ArgumentationLineRead,
+    ArgumentationLineUpdate,
 )
-from app.schemas.batna_option import BatnaOptionBase, BatnaOptionCreate, BatnaOptionRead
+from app.schemas.batna_option import BatnaOptionBase, BatnaOptionCreate, BatnaOptionRead, BatnaOptionUpdate
 from app.schemas.company import CompanyBase, CompanyCreate, CompanyRead
-from app.schemas.concession_item import ConcessionItemBase, ConcessionItemCreate, ConcessionItemRead
+from app.schemas.concession_item import (
+    ConcessionItemBase,
+    ConcessionItemCreate,
+    ConcessionItemRead,
+    ConcessionItemUpdate,
+)
 from app.schemas.document_chunk import DocumentChunkBase, DocumentChunkCreate, DocumentChunkRead
 from app.schemas.import_job import ImportJobBase, ImportJobCreate, ImportJobRead
 from app.schemas.import_row import ImportRowBase, ImportRowCreate, ImportRowRead
@@ -29,25 +35,28 @@ from app.schemas.request_item import RequestItemBase, RequestItemCreate, Request
 from app.schemas.simulation_message import SimulationMessageBase, SimulationMessageCreate, SimulationMessageRead
 from app.schemas.simulation_result import SimulationResultBase, SimulationResultCreate, SimulationResultRead
 from app.schemas.simulation_scenario import SimulationScenarioBase, SimulationScenarioCreate, SimulationScenarioRead
-from app.schemas.strategy import StrategyBase, StrategyCreate, StrategyRead
+from app.schemas.strategy import StrategyBase, StrategyCreate, StrategyRead, StrategyUpdate
 from app.schemas.supplier_profile import SupplierProfileBase, SupplierProfileCreate, SupplierProfileRead
 from app.schemas.trainer_comment import TrainerCommentBase, TrainerCommentCreate, TrainerCommentRead
 from app.schemas.user_profile import UserProfileBase, UserProfileCreate, UserProfileRead
-from app.schemas.zopa_item import ZopaItemBase, ZopaItemCreate, ZopaItemRead
+from app.schemas.zopa_item import ZopaItemBase, ZopaItemCreate, ZopaItemRead, ZopaItemUpdate
 
 __all__ = [
     "ArgumentationLineBase",
     "ArgumentationLineCreate",
     "ArgumentationLineRead",
+    "ArgumentationLineUpdate",
     "BatnaOptionBase",
     "BatnaOptionCreate",
     "BatnaOptionRead",
+    "BatnaOptionUpdate",
     "CompanyBase",
     "CompanyCreate",
     "CompanyRead",
     "ConcessionItemBase",
     "ConcessionItemCreate",
     "ConcessionItemRead",
+    "ConcessionItemUpdate",
     "DocumentChunkBase",
     "DocumentChunkCreate",
     "DocumentChunkRead",
@@ -84,6 +93,7 @@ __all__ = [
     "StrategyBase",
     "StrategyCreate",
     "StrategyRead",
+    "StrategyUpdate",
     "SupplierProfileBase",
     "SupplierProfileCreate",
     "SupplierProfileRead",
@@ -96,4 +106,5 @@ __all__ = [
     "ZopaItemBase",
     "ZopaItemCreate",
     "ZopaItemRead",
+    "ZopaItemUpdate",
 ]

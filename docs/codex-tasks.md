@@ -51,6 +51,7 @@
 - Phase B7 umgesetzt: Frontend-Flows fuer Companies, UserProfiles und NegotiationProjects mit Listen, Details, einfachen Create/Edit-Formularen, Projektbeziehungen zu Company/UserProfile/SupplierProfile/RequestItem und Dashboard-Zaehlern ergaenzt
 - Phase B8 umgesetzt: Frontend-Flow fuer Datenbasis und Analyse mit Knowledge-API-Modulen, projekt-/companybezogenen Leseansichten, Datenluecken-Empty-States und Links aus dem Projektdetail vorbereitet
 - Phase B9 umgesetzt: Frontend-Flow fuer Strategie-Builder mit Strategie-Kopf, ZOPA, BATNA, Konzessionen als Tauschobjekte und Argumentationslinien auf bestehenden Strategie-Endpunkten vorbereitet
+- Phase B10 umgesetzt: Frontend-Flows fuer Szenario-Konfiguration und Trainerreview mit SimulationScenario- und TrainerComment-API-Modulen vorbereitet
 
 ## Manuelle Pruefhilfe Phase B7
 
@@ -83,8 +84,25 @@
 - `/projects/[id]`: Link "Strategie vorbereiten" pruefen.
 - `/analysis?projectId=<bestehende Projekt-ID>`: Link zur Strategie pruefen.
 
+## Manuelle Pruefhilfe Phase B10
+
+- `/simulation`: Projektauswahl und Empty State pruefen.
+- `/simulation?projectId=<bestehende Projekt-ID>`: Projektkontext, Strategieauswahl und vorhandene Szenarien pruefen.
+- Neues Szenario anlegen.
+- Szenario bearbeiten: Schwierigkeit, Gespraechsphase, Sprache, Trainingsziel, Briefing und Erfolgskriterien speichern.
+- Pruefen, dass keine produktive Simulation, kein Chat und keine Voice-Funktion vorhanden sind.
+- `/trainer-review`: Auswahlansicht pruefen.
+- `/trainer-review?projectId=<bestehende Projekt-ID>`: Szenarioliste fuer Review pruefen.
+- `/trainer-review?scenarioId=<bestehende Szenario-ID>`: Kommentar-Liste pruefen.
+- Trainerkommentar anlegen.
+- Sichtbarkeit zwischen trainerintern und trainee-sichtbar markieren.
+- Einfachen Lernpunkt / naechsten Fokus als Kommentar erfassen.
+- Kommentar bearbeiten.
+- `/projects/[id]`: Links zu Simulation und Trainerreview pruefen.
+- `/strategy?projectId=<bestehende Projekt-ID>`: Link zu Simulation pruefen.
+
 ## Naechste Schritte
 
-1. Frontend-Flows fuer Kultur- und Rollenbriefing, Simulation konfigurieren und Trainerreview ableiten.
+1. Frontend-Flows fachlich konsolidieren und grosse Seiten in Komponenten aufteilen.
 2. Dashboard bei Bedarf spaeter als Summary-API statt Listenkomposition optimieren.
-3. Chunking-Service, Embedding-Erzeugung, RAG, Upload/Import, OCR, Voice und produktive Simulation spaeter planen.
+3. Upload/Import, RAG, OCR, Voice und produktive Simulation weiterhin spaeter planen.

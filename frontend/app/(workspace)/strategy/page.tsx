@@ -196,6 +196,8 @@ function StrategyHeader({ projectId, projectTitle, companyName }: { projectId: s
         <>
           <ActionLink href={`/projects/${projectId}`} label="Zum Projekt" icon={<ArrowLeft className="size-4" />} />
           <ActionLink href={`/analysis?projectId=${projectId}`} label="Zur Analyse" icon={<ArrowRight className="size-4" />} />
+          <ActionLink href={`/simulation?projectId=${projectId}`} label="Szenario konfigurieren" icon={<ArrowRight className="size-4" />} />
+          <ActionLink href={`/trainer-review?projectId=${projectId}`} label="Trainerreview" icon={<ArrowRight className="size-4" />} />
         </>
       }
     />

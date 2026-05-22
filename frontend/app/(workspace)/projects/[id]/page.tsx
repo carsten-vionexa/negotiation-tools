@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { revalidatePath } from "next/cache";
-import { ArrowLeft, ArrowRight, Building2, Database, Save, Sparkles, Target } from "lucide-react";
+import { ArrowLeft, ArrowRight, Building2, ClipboardList, Database, MessageSquareText, Save, Sparkles, Target } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { ErrorState } from "@/components/state-patterns";
@@ -166,6 +166,8 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             <FlowLink href={`/knowledge-base?projectId=${project.id}`} label="Datenbasis anzeigen" icon={<Database className="size-4" />} />
             <FlowLink href={`/analysis?projectId=${project.id}`} label="Analyse vorbereiten" icon={<Sparkles className="size-4" />} />
             <FlowLink href={`/strategy?projectId=${project.id}`} label="Strategie vorbereiten" icon={<Target className="size-4" />} />
+            <FlowLink href={`/simulation?projectId=${project.id}`} label="Szenario konfigurieren" icon={<ClipboardList className="size-4" />} />
+            <FlowLink href={`/trainer-review?projectId=${project.id}`} label="Trainerreview" icon={<MessageSquareText className="size-4" />} />
           </div>
         </aside>
       </section>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { revalidatePath } from "next/cache";
-import { ArrowLeft, Building2, Save } from "lucide-react";
+import { ArrowLeft, ArrowRight, Building2, Database, Save, Sparkles } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { ErrorState } from "@/components/state-patterns";
@@ -162,6 +162,10 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             <Meta label="Kategorie" value={project.category || "Nicht gesetzt"} />
             <Meta label="Prioritaet" value={project.priority || "Nicht gesetzt"} />
           </dl>
+          <div className="mt-5 grid gap-2 border-t border-border pt-4">
+            <FlowLink href={`/knowledge-base?projectId=${project.id}`} label="Datenbasis anzeigen" icon={<Database className="size-4" />} />
+            <FlowLink href={`/analysis?projectId=${project.id}`} label="Analyse vorbereiten" icon={<Sparkles className="size-4" />} />
+          </div>
         </aside>
       </section>
     </>
@@ -205,6 +209,18 @@ function BackLink({ href, label }: { href: string; label: string }) {
     <Link href={href} className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm font-medium hover:bg-muted">
       <ArrowLeft className="size-4" />
       {label}
+    </Link>
+  );
+}
+
+function FlowLink({ href, label, icon }: { href: string; label: string; icon: ReactNode }) {
+  return (
+    <Link href={href} className="inline-flex items-center justify-between gap-3 rounded-md border border-border px-3 py-2 text-sm font-medium hover:bg-muted">
+      <span className="inline-flex items-center gap-2">
+        {icon}
+        {label}
+      </span>
+      <ArrowRight className="size-4" />
     </Link>
   );
 }

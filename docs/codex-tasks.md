@@ -49,6 +49,7 @@
 - Phase B5 umgesetzt: Backend API Readiness fuer SimulationScenario und TrainerComment mit GET/POST/PATCH-Endpunkten, Listenfiltern, Foreign-Key-Validierung und Sichtbarkeitsfilter fuer Trainerkommentare
 - Phase B6 umgesetzt: Frontend-Grundlayout mit App-Shell, MVP-Navigation, App-Router-Platzhalterroutes, schlankem API-Client und einfachen Loading-/Error-/Empty-State-Mustern vorbereitet
 - Phase B7 umgesetzt: Frontend-Flows fuer Companies, UserProfiles und NegotiationProjects mit Listen, Details, einfachen Create/Edit-Formularen, Projektbeziehungen zu Company/UserProfile/SupplierProfile/RequestItem und Dashboard-Zaehlern ergaenzt
+- Phase B8 umgesetzt: Frontend-Flow fuer Datenbasis und Analyse mit Knowledge-API-Modulen, projekt-/companybezogenen Leseansichten, Datenluecken-Empty-States und Links aus dem Projektdetail vorbereitet
 
 ## Manuelle Pruefhilfe Phase B7
 
@@ -60,8 +61,16 @@
 - `/projects`: Projektliste und Projektanlage mit Company-, Owner-, Supplier- und Request-Item-Auswahl pruefen.
 - `/projects/[id]`: Projektbearbeitung, Beziehungsbox und Link zur Company pruefen.
 
+## Manuelle Pruefhilfe Phase B8
+
+- `/knowledge-base`: Auswahl-/Uebersichtsansicht und Empty-States fuer Quellen, Claims, Anfragepositionen und Einkaufshistorie pruefen.
+- `/knowledge-base?projectId=<bestehende Projekt-ID>`: Projektkontext, abgeleitete Company und gefilterte Datenbasis pruefen.
+- `/analysis`: Projekt-Auswahl oder Hinweis bei leerem Datenbestand pruefen.
+- `/analysis?projectId=<bestehende Projekt-ID>`: Projekt, Company, SupplierProfile, RequestItem, Claim-Gruppen, Hypothesen, Datenluecken, Risiken, Chancen und offene Fragen pruefen.
+- `/projects/[id]`: Links "Datenbasis anzeigen" und "Analyse vorbereiten" pruefen.
+
 ## Naechste Schritte
 
-1. Frontend-Flows fuer Knowledge Base, Analyse, Strategie-Builder, Simulation konfigurieren und Trainerreview ableiten.
+1. Frontend-Flows fuer Strategie-Builder, Simulation konfigurieren und Trainerreview ableiten.
 2. Dashboard bei Bedarf spaeter als Summary-API statt Listenkomposition optimieren.
 3. Chunking-Service, Embedding-Erzeugung, RAG, Upload/Import, OCR, Voice und produktive Simulation spaeter planen.

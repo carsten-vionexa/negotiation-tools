@@ -52,6 +52,20 @@
 - Phase B8 umgesetzt: Frontend-Flow fuer Datenbasis und Analyse mit Knowledge-API-Modulen, projekt-/companybezogenen Leseansichten, Datenluecken-Empty-States und Links aus dem Projektdetail vorbereitet
 - Phase B9 umgesetzt: Frontend-Flow fuer Strategie-Builder mit Strategie-Kopf, ZOPA, BATNA, Konzessionen als Tauschobjekte und Argumentationslinien auf bestehenden Strategie-Endpunkten vorbereitet
 - Phase B10 umgesetzt: Frontend-Flows fuer Szenario-Konfiguration und Trainerreview mit SimulationScenario- und TrainerComment-API-Modulen vorbereitet
+- Phase C0.1 umgesetzt: MVP-Abnahme-Checkliste nach Phase B in `docs/mvp-acceptance-checklist.md` erstellt
+
+## Phase C0: MVP-Konsolidierung nach Phase B
+
+Ziel von Phase C0 ist die Stabilisierung, fachliche Abnahme und bessere Pruefbarkeit des vorhandenen MVP-Standes nach Phase B. Phase C0 ist keine Feature-Phase. Upload/Import, RAG, OCR, Voice, produktive Simulation und automatische Auswertung bleiben spaetere Ausbaustufen.
+
+Geplante C0-Arbeitspakete:
+
+1. C0.1: Ausfuehrliche MVP-Abnahme-Checkliste erstellen.
+2. C0.2: Browser-Smoke-Test-Plan fuer MVP-Routen dokumentieren.
+3. C0.3: End-to-End-Testpfad mit Rheinwerk-Demo-Fall definieren.
+4. C0.4: Technische Verifikations-Checkliste ergaenzen.
+5. C0.5: Roadmap und Nicht-MVP-Grenzen nach Phase B aktualisieren.
+6. C0.6: Frontend-Konsolidierungsplan fuer grosse MVP-Seiten erstellen.
 
 ## Manuelle Pruefhilfe Phase B7
 
@@ -101,8 +115,18 @@
 - `/projects/[id]`: Links zu Simulation und Trainerreview pruefen.
 - `/strategy?projectId=<bestehende Projekt-ID>`: Link zu Simulation pruefen.
 
+## Manuelle Pruefhilfe Phase C0.1
+
+- `docs/mvp-acceptance-checklist.md` lesen und pruefen, ob die komplette User Journey Company -> Profile -> Project -> Knowledge Base -> Analysis -> Strategy -> Simulation -> Trainerreview abgedeckt ist.
+- Pruefen, ob technische Vorpruefung, Browser-Smoke-Uebersicht, Empty States, Error States und Abnahmeprotokoll enthalten sind.
+- Pruefen, ob die bewussten Nicht-MVP-Funktionen klar abgegrenzt sind.
+- Sicherstellen, dass keine Upload-/Import-, RAG-, OCR-, Voice- oder produktive Simulationsfunktion eingefuehrt wurde.
+
 ## Naechste Schritte
 
-1. Frontend-Flows fachlich konsolidieren und grosse Seiten in Komponenten aufteilen.
-2. Dashboard bei Bedarf spaeter als Summary-API statt Listenkomposition optimieren.
-3. Upload/Import, RAG, OCR, Voice und produktive Simulation weiterhin spaeter planen.
+1. C0.2 Browser-Smoke-Test-Plan fuer MVP-Routen dokumentieren.
+2. C0.3 End-to-End-Testpfad mit Rheinwerk-Demo-Fall definieren.
+3. C0.4 Technische Verifikations-Checkliste ergaenzen.
+4. C0.5 Roadmap und Nicht-MVP-Grenzen nach Phase B aktualisieren.
+5. C0.6 Frontend-Konsolidierungsplan fuer grosse MVP-Seiten erstellen.
+6. Upload/Import, RAG, OCR, Voice und produktive Simulation weiterhin erst nach C0 planen.

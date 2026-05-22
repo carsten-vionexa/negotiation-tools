@@ -69,7 +69,12 @@ export default async function AnalysisPage({ searchParams }: { searchParams: Pro
         eyebrow="Analyse"
         title="Analyse vorbereiten"
         description={`Projektbezogene Arbeitsansicht fuer "${project.title}" bei ${company.name}.`}
-        actions={<ActionLink href={`/knowledge-base?projectId=${project.id}`} label="Datenbasis anzeigen" />}
+        actions={
+          <>
+            <ActionLink href={`/knowledge-base?projectId=${project.id}`} label="Datenbasis anzeigen" />
+            <ActionLink href={`/strategy?projectId=${project.id}`} label="Strategie vorbereiten" />
+          </>
+        }
       />
 
       <section className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">

@@ -1,23 +1,49 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-import { EmptyState, ErrorState, LoadingState } from "@/components/state-patterns";
+import { ErrorState } from "@/components/state-patterns";
 import { PageHeader } from "@/components/page-header";
+import { listCompanies } from "@/lib/api/companies";
+import { listNegotiationProjects } from "@/lib/api/negotiation-projects";
+import { listUserProfiles } from "@/lib/api/user-profiles";
 import { workflowSteps } from "@/lib/navigation";
 
-const dashboardCards = [
-  { label: "Aktive Projekte", value: "Projektliste folgt", href: "/projects" },
-  { label: "Offene Reviews", value: "Trainerreview folgt", href: "/trainer-review" },
-  { label: "Datenbasis", value: "Quellenuebersicht folgt", href: "/knowledge-base" },
-];
+export default async function DashboardPage() {
+  let projects;
+  let companies;
+  let profiles;
 
-export default function DashboardPage() {
+  try {
+    [projects, companies, profiles] = await Promise.all([
+      listNegotiationProjects(),
+      listCompanies(),
+      listUserProfiles(),
+    ]);
+  } catch (error) {
+    return (
+      <>
+        <PageHeader
+          eyebrow="Workspace"
+          title="Dashboard"
+          description="Startpunkt fuer Stammdaten, Rollenprofile und Verhandlungsprojekte."
+        />
+        <ErrorState title="Dashboard-Daten konnten nicht geladen werden." description={getErrorDescription(error)} />
+      </>
+    );
+  }
+
+  const dashboardCards = [
+    { label: "Projekte", value: projects.length, href: "/projects" },
+    { label: "Companies", value: companies.length, href: "/companies" },
+    { label: "Profile", value: profiles.length, href: "/profiles" },
+  ];
+
   return (
     <>
       <PageHeader
-        eyebrow="Grundlage vorbereitet"
+        eyebrow="Workspace"
         title="Dashboard"
-        description="Startpunkt fuer die spaeteren MVP-Flows: aktive Projekte, naechste Arbeitsschritte und offene Trainerreviews."
+        description="Startpunkt fuer Stammdaten, Rollenprofile und Verhandlungsprojekte."
       />
 
       <section className="grid gap-4 md:grid-cols-3">
@@ -25,7 +51,7 @@ export default function DashboardPage() {
           <Link key={card.label} href={card.href} className="rounded-md border border-border bg-card p-5 hover:bg-muted">
             <p className="text-sm text-muted-foreground">{card.label}</p>
             <div className="mt-3 flex items-center justify-between gap-3">
-              <p className="font-semibold">{card.value}</p>
+              <p className="text-2xl font-semibold">{card.value}</p>
               <ArrowRight className="size-4 shrink-0" />
             </div>
           </Link>
@@ -42,12 +68,10 @@ export default function DashboardPage() {
           ))}
         </div>
       </section>
-
-      <div className="grid gap-4 lg:grid-cols-3">
-        <LoadingState title="LoadingState" description="Wiederverwendbares Muster fuer spaetere Datenladezustaende." />
-        <ErrorState title="ErrorState" description="Wiederverwendbares Muster fuer API- und Runtime-Fehler." />
-        <EmptyState title="EmptyState" description="Wiederverwendbares Muster fuer leere Listen oder fehlende Daten." />
-      </div>
     </>
   );
+}
+
+function getErrorDescription(error: unknown) {
+  return error instanceof Error ? error.message : "Bitte pruefe, ob das Backend erreichbar ist.";
 }

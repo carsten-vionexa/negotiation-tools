@@ -48,10 +48,20 @@
 - Phase B4 umgesetzt: Backend API Readiness fuer Strategieobjekte mit CRUD-nahen GET/POST/PATCH-Endpunkten, Listenfiltern und Foreign-Key-Validierung fuer Strategy, ZopaItem, BatnaOption, ConcessionItem und ArgumentationLine
 - Phase B5 umgesetzt: Backend API Readiness fuer SimulationScenario und TrainerComment mit GET/POST/PATCH-Endpunkten, Listenfiltern, Foreign-Key-Validierung und Sichtbarkeitsfilter fuer Trainerkommentare
 - Phase B6 umgesetzt: Frontend-Grundlayout mit App-Shell, MVP-Navigation, App-Router-Platzhalterroutes, schlankem API-Client und einfachen Loading-/Error-/Empty-State-Mustern vorbereitet
+- Phase B7 umgesetzt: Frontend-Flows fuer Companies, UserProfiles und NegotiationProjects mit Listen, Details, einfachen Create/Edit-Formularen, Projektbeziehungen zu Company/UserProfile/SupplierProfile/RequestItem und Dashboard-Zaehlern ergaenzt
+
+## Manuelle Pruefhilfe Phase B7
+
+- `/dashboard`: Zaehler fuer Projekte, Companies und Profile pruefen.
+- `/companies`: Company-Liste, Empty/Error-State und einfache Anlage pruefen.
+- `/companies/[id]`: Stammdaten bearbeiten und verknuepfte Projekte pruefen.
+- `/profiles`: Rollenprofil-Liste und einfache Anlage mit Company-Auswahl pruefen.
+- `/profiles/[id]`: Profilbearbeitung und Owner-Projektliste pruefen.
+- `/projects`: Projektliste und Projektanlage mit Company-, Owner-, Supplier- und Request-Item-Auswahl pruefen.
+- `/projects/[id]`: Projektbearbeitung, Beziehungsbox und Link zur Company pruefen.
 
 ## Naechste Schritte
 
-1. Phase B7: Frontend-Flows fuer Stammdaten und Projekte umsetzen.
-2. Frontend-Flows fuer Knowledge Base, Analyse, Strategie-Builder, Simulation konfigurieren und Trainerreview ableiten.
-3. Dashboard zunaechst als einfache Komposition oder spaeter als Summary-API entscheiden.
-4. Chunking-Service, Embedding-Erzeugung, RAG, Upload/Import, OCR, Voice und produktive Simulation spaeter planen.
+1. Frontend-Flows fuer Knowledge Base, Analyse, Strategie-Builder, Simulation konfigurieren und Trainerreview ableiten.
+2. Dashboard bei Bedarf spaeter als Summary-API statt Listenkomposition optimieren.
+3. Chunking-Service, Embedding-Erzeugung, RAG, Upload/Import, OCR, Voice und produktive Simulation spaeter planen.

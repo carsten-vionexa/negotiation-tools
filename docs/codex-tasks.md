@@ -53,6 +53,7 @@
 - Phase B9 umgesetzt: Frontend-Flow fuer Strategie-Builder mit Strategie-Kopf, ZOPA, BATNA, Konzessionen als Tauschobjekte und Argumentationslinien auf bestehenden Strategie-Endpunkten vorbereitet
 - Phase B10 umgesetzt: Frontend-Flows fuer Szenario-Konfiguration und Trainerreview mit SimulationScenario- und TrainerComment-API-Modulen vorbereitet
 - Phase C0.1 umgesetzt: MVP-Abnahme-Checkliste nach Phase B in `docs/mvp-acceptance-checklist.md` erstellt
+- Phase C0.2 umgesetzt: Browser-Smoke-Test-Plan fuer MVP-Routen in `docs/browser-smoke-test-plan.md` erstellt
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -122,11 +123,18 @@ Geplante C0-Arbeitspakete:
 - Pruefen, ob die bewussten Nicht-MVP-Funktionen klar abgegrenzt sind.
 - Sicherstellen, dass keine Upload-/Import-, RAG-, OCR-, Voice- oder produktive Simulationsfunktion eingefuehrt wurde.
 
+## Manuelle Pruefhilfe Phase C0.2
+
+- `docs/browser-smoke-test-plan.md` lesen und pruefen, ob alle MVP-Routen enthalten sind.
+- Pruefen, ob projektspezifische Query-Parameter-Flows fuer Knowledge Base, Analysis, Strategy, Simulation und Trainerreview enthalten sind.
+- Pruefen, ob Empty-State-, Error-State- und Backend-nicht-erreichbar-Faelle dokumentiert sind.
+- Pruefen, ob die Workflow-Kette Project -> Knowledge Base -> Analysis -> Strategy -> Simulation -> Trainerreview als Browserpruefung enthalten ist.
+- Sicherstellen, dass keine automatisierten Tests, keine neuen Features und kein Frontend-Refactoring eingefuehrt wurden.
+
 ## Naechste Schritte
 
-1. C0.2 Browser-Smoke-Test-Plan fuer MVP-Routen dokumentieren.
-2. C0.3 End-to-End-Testpfad mit Rheinwerk-Demo-Fall definieren.
-3. C0.4 Technische Verifikations-Checkliste ergaenzen.
-4. C0.5 Roadmap und Nicht-MVP-Grenzen nach Phase B aktualisieren.
-5. C0.6 Frontend-Konsolidierungsplan fuer grosse MVP-Seiten erstellen.
-6. Upload/Import, RAG, OCR, Voice und produktive Simulation weiterhin erst nach C0 planen.
+1. C0.3 End-to-End-Testpfad mit Rheinwerk-Demo-Fall definieren.
+2. C0.4 Technische Verifikations-Checkliste ergaenzen.
+3. C0.5 Roadmap und Nicht-MVP-Grenzen nach Phase B aktualisieren.
+4. C0.6 Frontend-Konsolidierungsplan fuer grosse MVP-Seiten erstellen.
+5. Upload/Import, RAG, OCR, Voice und produktive Simulation weiterhin erst nach C0 planen.

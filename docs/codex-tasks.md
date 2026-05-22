@@ -50,6 +50,7 @@
 - Phase B6 umgesetzt: Frontend-Grundlayout mit App-Shell, MVP-Navigation, App-Router-Platzhalterroutes, schlankem API-Client und einfachen Loading-/Error-/Empty-State-Mustern vorbereitet
 - Phase B7 umgesetzt: Frontend-Flows fuer Companies, UserProfiles und NegotiationProjects mit Listen, Details, einfachen Create/Edit-Formularen, Projektbeziehungen zu Company/UserProfile/SupplierProfile/RequestItem und Dashboard-Zaehlern ergaenzt
 - Phase B8 umgesetzt: Frontend-Flow fuer Datenbasis und Analyse mit Knowledge-API-Modulen, projekt-/companybezogenen Leseansichten, Datenluecken-Empty-States und Links aus dem Projektdetail vorbereitet
+- Phase B9 umgesetzt: Frontend-Flow fuer Strategie-Builder mit Strategie-Kopf, ZOPA, BATNA, Konzessionen als Tauschobjekte und Argumentationslinien auf bestehenden Strategie-Endpunkten vorbereitet
 
 ## Manuelle Pruefhilfe Phase B7
 
@@ -69,8 +70,21 @@
 - `/analysis?projectId=<bestehende Projekt-ID>`: Projekt, Company, SupplierProfile, RequestItem, Claim-Gruppen, Hypothesen, Datenluecken, Risiken, Chancen und offene Fragen pruefen.
 - `/projects/[id]`: Links "Datenbasis anzeigen" und "Analyse vorbereiten" pruefen.
 
+## Manuelle Pruefhilfe Phase B9
+
+- `/strategy`: Projektauswahl und Empty State pruefen.
+- `/strategy?projectId=<bestehende Projekt-ID>`: Projektkontext und vorhandene Strategie pruefen.
+- Strategie-Kopf neu anlegen, falls noch keine Strategie existiert.
+- Strategie-Kopf bearbeiten und speichern.
+- ZOPA-Dimension anlegen oder bearbeiten.
+- BATNA-Option anlegen oder bearbeiten.
+- Konzession als Tauschobjekt mit Bedingung und Gegenleistung anlegen oder bearbeiten.
+- Argumentationslinie mit Claim, Evidence, Gegenargument und Reaktionsstrategie anlegen oder bearbeiten.
+- `/projects/[id]`: Link "Strategie vorbereiten" pruefen.
+- `/analysis?projectId=<bestehende Projekt-ID>`: Link zur Strategie pruefen.
+
 ## Naechste Schritte
 
-1. Frontend-Flows fuer Strategie-Builder, Simulation konfigurieren und Trainerreview ableiten.
+1. Frontend-Flows fuer Kultur- und Rollenbriefing, Simulation konfigurieren und Trainerreview ableiten.
 2. Dashboard bei Bedarf spaeter als Summary-API statt Listenkomposition optimieren.
 3. Chunking-Service, Embedding-Erzeugung, RAG, Upload/Import, OCR, Voice und produktive Simulation spaeter planen.

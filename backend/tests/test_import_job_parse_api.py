@@ -1,9 +1,13 @@
 from collections.abc import Generator
+from datetime import datetime
+from io import BytesIO
 from pathlib import Path
 from uuid import UUID, uuid4
 
 import pytest
 from fastapi.testclient import TestClient
+from openpyxl import Workbook
+from openpyxl.chart import BarChart, Reference
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_db
@@ -33,6 +37,7 @@ def upload_import_job(
     source_type: str = "csv",
 ) -> dict[str, object]:
     filename = "requests.csv" if source_type == "csv" else "requests.xlsx"
+    mime_type = "text/csv" if source_type == "csv" else "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     response = client.post(
         "/api/import-jobs/upload",
         data={
@@ -40,10 +45,50 @@ def upload_import_job(
             "source_type": source_type,
             "target_entity": "request_item",
         },
-        files={"file": (filename, content, "text/csv")},
+        files={"file": (filename, content, mime_type)},
     )
     assert response.status_code == 201
     return response.json()
+
+
+def create_xlsx_content(
+    rows: list[list[object]],
+    *,
+    sheet_name: str = "Requests",
+    with_hidden_first_sheet: bool = False,
+) -> bytes:
+    workbook = Workbook()
+    worksheet = workbook.active
+    if with_hidden_first_sheet:
+        worksheet.title = "Instructions"
+        worksheet.sheet_state = "hidden"
+        worksheet = workbook.create_sheet(sheet_name)
+    else:
+        worksheet.title = sheet_name
+    for row in rows:
+        worksheet.append(row)
+
+    output = BytesIO()
+    workbook.save(output)
+    workbook.close()
+    return output.getvalue()
+
+
+def create_xlsx_without_visible_worksheet() -> bytes:
+    workbook = Workbook()
+    worksheet = workbook.active
+    worksheet.title = "Hidden Data"
+    worksheet.append(["Value"])
+    worksheet.append([1])
+    chart = BarChart()
+    chart.add_data(Reference(worksheet, min_col=1, min_row=1, max_row=2), titles_from_data=True)
+    workbook.create_chartsheet("Overview").add_chart(chart)
+    worksheet.sheet_state = "hidden"
+
+    output = BytesIO()
+    workbook.save(output)
+    workbook.close()
+    return output.getvalue()
 
 
 def read_rows(client: TestClient, import_job_id: object) -> list[dict[str, object]]:
@@ -124,17 +169,106 @@ def test_parse_rejects_unknown_import_job(client: TestClient) -> None:
     assert response.status_code == 404
 
 
-def test_parse_fails_excel_job_without_creating_rows(client: TestClient, tmp_path: Path) -> None:
+def test_parse_xlsx_creates_technical_raw_rows_from_first_visible_sheet(
+    client: TestClient,
+    tmp_path: Path,
+) -> None:
     configure_storage(client, tmp_path)
     company = create_company(client)
-    import_job = upload_import_job(client, company["id"], b"workbook", source_type="excel")
+    import_job = upload_import_job(
+        client,
+        company["id"],
+        create_xlsx_content(
+            [
+                ["Artikel", "Menge", "Preis", "Stand", "Freigabe", "Notiz", "Formel"],
+                ["Bearing 6204", 10, 12.5, datetime(2026, 5, 26, 9, 30), True, None, "=1+1"],
+                [None, None, None, None, None, None, None],
+                ["Seal", None, 3.1, None, False, "review", None],
+            ],
+            sheet_name="Import Data",
+            with_hidden_first_sheet=True,
+        ),
+        source_type="excel",
+    )
+
+    response = client.post(f"/api/import-jobs/{import_job['id']}/parse")
+
+    assert response.status_code == 200
+    parsed_job = response.json()
+    assert parsed_job["status"] == "parsed"
+    assert parsed_job["total_rows"] == 2
+    assert parsed_job["processed_rows"] == 2
+    assert parsed_job["valid_rows"] == 0
+    assert parsed_job["error_rows"] == 0
+    assert parsed_job["error_summary"] is None
+    assert parsed_job["validation_summary_json"] == {}
+    assert parsed_job["started_at"] is not None
+    assert parsed_job["completed_at"] is None
+
+    rows = read_rows(client, import_job["id"])
+    assert [row["row_number"] for row in rows] == [2, 4]
+    assert [row["sheet_name"] for row in rows] == ["Import Data", "Import Data"]
+    assert [row["raw_data_json"] for row in rows] == [
+        {
+            "Artikel": "Bearing 6204",
+            "Menge": 10,
+            "Preis": 12.5,
+            "Stand": "2026-05-26T09:30:00",
+            "Freigabe": True,
+            "Notiz": "",
+            "Formel": "",
+        },
+        {
+            "Artikel": "Seal",
+            "Menge": "",
+            "Preis": 3.1,
+            "Stand": "",
+            "Freigabe": False,
+            "Notiz": "review",
+            "Formel": "",
+        },
+    ]
+    for row in rows:
+        assert row["validation_status"] == "pending"
+        assert row["mapped_data_json"] == {}
+        assert row["metadata_json"] == {}
+        assert row["target_entity"] is None
+        assert row["target_record_id"] is None
+
+
+def test_parse_invalid_xlsx_fails_job_without_creating_rows(client: TestClient, tmp_path: Path) -> None:
+    configure_storage(client, tmp_path)
+    company = create_company(client)
+    import_job = upload_import_job(client, company["id"], b"not an xlsx workbook", source_type="excel")
 
     response = client.post(f"/api/import-jobs/{import_job['id']}/parse")
 
     assert response.status_code == 400
     failed_job = client.get(f"/api/import-jobs/{import_job['id']}").json()
     assert failed_job["status"] == "failed"
-    assert "Only CSV" in failed_job["error_summary"]
+    assert failed_job["error_summary"] == "XLSX file is invalid."
+    assert read_rows(client, import_job["id"]) == []
+
+
+def test_parse_xlsx_without_visible_worksheet_fails_without_creating_rows(
+    client: TestClient,
+    tmp_path: Path,
+) -> None:
+    configure_storage(client, tmp_path)
+    company = create_company(client)
+    import_job = upload_import_job(
+        client,
+        company["id"],
+        create_xlsx_without_visible_worksheet(),
+        source_type="excel",
+    )
+
+    response = client.post(f"/api/import-jobs/{import_job['id']}/parse")
+
+    assert response.status_code == 400
+    failed_job = client.get(f"/api/import-jobs/{import_job['id']}").json()
+    assert failed_job["status"] == "failed"
+    assert failed_job["error_summary"] == "XLSX workbook has no visible worksheet."
     assert read_rows(client, import_job["id"]) == []
 
 
@@ -169,6 +303,42 @@ def test_parse_structure_errors_fail_job_without_partial_rows(
     assert read_rows(client, import_job["id"]) == []
 
 
+@pytest.mark.parametrize(
+    ("rows", "expected_error"),
+    [
+        ([], "worksheet is empty"),
+        ([[None, None], ["Bearing", 10]], "header is missing"),
+        ([["Artikel", None, "Menge"], ["Bearing", "unused", 10]], "empty column name"),
+        ([["Artikel", "Artikel"], ["Bearing", 10]], "duplicate column names"),
+        ([["Artikel"], ["Bearing"], ["Seal", "extra"]], "more values than the header"),
+    ],
+)
+def test_parse_xlsx_structure_errors_fail_job_without_partial_rows(
+    client: TestClient,
+    tmp_path: Path,
+    rows: list[list[object]],
+    expected_error: str,
+) -> None:
+    configure_storage(client, tmp_path)
+    company = create_company(client)
+    import_job = upload_import_job(
+        client,
+        company["id"],
+        create_xlsx_content(rows),
+        source_type="excel",
+    )
+
+    response = client.post(f"/api/import-jobs/{import_job['id']}/parse")
+
+    assert response.status_code == 400
+    failed_job = client.get(f"/api/import-jobs/{import_job['id']}").json()
+    assert failed_job["status"] == "failed"
+    assert expected_error in failed_job["error_summary"]
+    assert failed_job["started_at"] is not None
+    assert failed_job["completed_at"] is not None
+    assert read_rows(client, import_job["id"]) == []
+
+
 @pytest.mark.parametrize("storage_key", [None, "../outside.csv", "imports/missing.csv"])
 def test_parse_invalid_or_missing_storage_key_fails_job(
     client: TestClient,
@@ -178,6 +348,31 @@ def test_parse_invalid_or_missing_storage_key_fails_job(
     configure_storage(client, tmp_path)
     company = create_company(client)
     import_job = upload_import_job(client, company["id"], b"Artikel\nBearing\n")
+    mutate_storage_key(client, import_job["id"], storage_key)
+
+    response = client.post(f"/api/import-jobs/{import_job['id']}/parse")
+
+    assert response.status_code == 400
+    failed_job = client.get(f"/api/import-jobs/{import_job['id']}").json()
+    assert failed_job["status"] == "failed"
+    assert failed_job["error_summary"]
+    assert read_rows(client, import_job["id"]) == []
+
+
+@pytest.mark.parametrize("storage_key", [None, "../outside.xlsx", "imports/missing.xlsx"])
+def test_parse_xlsx_invalid_or_missing_storage_key_fails_job(
+    client: TestClient,
+    tmp_path: Path,
+    storage_key: str | None,
+) -> None:
+    configure_storage(client, tmp_path)
+    company = create_company(client)
+    import_job = upload_import_job(
+        client,
+        company["id"],
+        create_xlsx_content([["Artikel"], ["Bearing"]]),
+        source_type="excel",
+    )
     mutate_storage_key(client, import_job["id"], storage_key)
 
     response = client.post(f"/api/import-jobs/{import_job['id']}/parse")

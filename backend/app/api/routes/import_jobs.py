@@ -24,11 +24,16 @@ from app.services.storage import (
     UploadSizeExceededError,
     UploadType,
 )
+from app.services.xlsx_import_parser import ParsedXlsxRow, XlsxImportParserError, parse_xlsx_file
 
 router = APIRouter()
 
 SOURCE_TYPE_EXTENSIONS = {"csv": ".csv", "excel": ".xlsx"}
 TARGET_ENTITIES = {"procurement_history_item", "request_item"}
+
+
+class ImportJobParserError(ValueError):
+    """An ImportJob cannot be dispatched safely to a technical parser."""
 
 
 def get_storage_service() -> LocalStorageService:
@@ -170,8 +175,8 @@ def parse_import_job(
         ) from exc
 
     try:
-        parsed_rows = _read_csv_rows_for_job(db, import_job, storage_service)
-    except (CsvImportParserError, InvalidStoragePathError) as exc:
+        parsed_rows = _read_rows_for_job(db, import_job, storage_service)
+    except (ImportJobParserError, CsvImportParserError, XlsxImportParserError, InvalidStoragePathError) as exc:
         _fail_import_job(db, import_job, str(exc))
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
 
@@ -198,29 +203,31 @@ def parse_import_job(
     return import_job
 
 
-def _read_csv_rows_for_job(
+def _read_rows_for_job(
     db: Session,
     import_job: ImportJob,
     storage_service: LocalStorageService,
-) -> list[ParsedCsvRow]:
-    if import_job.source_type != "csv":
-        raise CsvImportParserError("Only CSV import jobs can be parsed in this phase.")
+) -> list[ParsedCsvRow] | list[ParsedXlsxRow]:
     if not import_job.storage_key:
-        raise CsvImportParserError("Import job has no stored CSV file.")
+        raise ImportJobParserError("Import job has no stored source file.")
     if db.scalar(select(ImportRow.id).where(ImportRow.import_job_id == import_job.id).limit(1)) is not None:
-        raise CsvImportParserError("Import job already contains raw rows.")
+        raise ImportJobParserError("Import job already contains raw rows.")
 
     path = storage_service.local_path_for_key(import_job.storage_key)
-    return parse_csv_file(path)
+    if import_job.source_type == "csv":
+        return parse_csv_file(path)
+    if import_job.source_type == "excel":
+        return parse_xlsx_file(path)
+    raise ImportJobParserError("Only CSV and XLSX import jobs can be parsed.")
 
 
-def _build_import_row(import_job: ImportJob, parsed_row: ParsedCsvRow) -> ImportRow:
+def _build_import_row(import_job: ImportJob, parsed_row: ParsedCsvRow | ParsedXlsxRow) -> ImportRow:
     return ImportRow(
         import_job_id=import_job.id,
         company_id=import_job.company_id,
         project_id=import_job.project_id,
         row_number=parsed_row.row_number,
-        sheet_name=None,
+        sheet_name=parsed_row.sheet_name if isinstance(parsed_row, ParsedXlsxRow) else None,
         raw_data_json=parsed_row.raw_data_json,
         mapped_data_json={},
         validation_status="pending",

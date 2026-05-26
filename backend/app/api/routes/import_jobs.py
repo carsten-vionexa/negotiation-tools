@@ -1,4 +1,5 @@
 import mimetypes
+from datetime import datetime, timezone
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
@@ -10,9 +11,11 @@ from app.api.deps import get_db
 from app.api.validation import ensure_exists, ensure_optional_exists, ensure_optional_same_company, get_or_404
 from app.models.company import Company
 from app.models.import_job import ImportJob
+from app.models.import_row import ImportRow
 from app.models.knowledge_document import KnowledgeDocument
 from app.models.negotiation_project import NegotiationProject
 from app.schemas.import_job import ImportJobRead
+from app.services.csv_import_parser import CsvImportParserError, ParsedCsvRow, parse_csv_file
 from app.services.storage import (
     InvalidStoragePathError,
     LocalStorageService,
@@ -136,6 +139,105 @@ def upload_import_job(
             detail="Unable to persist import job.",
         ) from exc
     return import_job
+
+
+@router.post("/{import_job_id}/parse", response_model=ImportJobRead)
+def parse_import_job(
+    import_job_id: UUID,
+    db: Session = Depends(get_db),
+    storage_service: LocalStorageService = Depends(get_storage_service),
+) -> ImportJob:
+    import_job = db.scalar(select(ImportJob).where(ImportJob.id == import_job_id).with_for_update())
+    if import_job is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Import job not found.")
+    if import_job.status != "pending":
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Import job can only be parsed from pending status.",
+        )
+
+    import_job.status = "parsing"
+    import_job.started_at = datetime.now(timezone.utc)
+    import_job.error_summary = None
+    try:
+        db.commit()
+        db.refresh(import_job)
+    except SQLAlchemyError as exc:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Unable to start import parsing.",
+        ) from exc
+
+    try:
+        parsed_rows = _read_csv_rows_for_job(db, import_job, storage_service)
+    except (CsvImportParserError, InvalidStoragePathError) as exc:
+        _fail_import_job(db, import_job, str(exc))
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+
+    rows = [_build_import_row(import_job, parsed_row) for parsed_row in parsed_rows]
+    import_job.status = "parsed"
+    import_job.total_rows = len(rows)
+    import_job.processed_rows = len(rows)
+    import_job.valid_rows = 0
+    import_job.error_rows = 0
+    import_job.error_summary = None
+    import_job.validation_summary_json = {}
+    import_job.completed_at = None
+    try:
+        db.add_all(rows)
+        db.commit()
+        db.refresh(import_job)
+    except SQLAlchemyError as exc:
+        db.rollback()
+        _fail_import_job(db, import_job, "Unable to persist parsed import rows.")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Unable to persist parsed import rows.",
+        ) from exc
+    return import_job
+
+
+def _read_csv_rows_for_job(
+    db: Session,
+    import_job: ImportJob,
+    storage_service: LocalStorageService,
+) -> list[ParsedCsvRow]:
+    if import_job.source_type != "csv":
+        raise CsvImportParserError("Only CSV import jobs can be parsed in this phase.")
+    if not import_job.storage_key:
+        raise CsvImportParserError("Import job has no stored CSV file.")
+    if db.scalar(select(ImportRow.id).where(ImportRow.import_job_id == import_job.id).limit(1)) is not None:
+        raise CsvImportParserError("Import job already contains raw rows.")
+
+    path = storage_service.local_path_for_key(import_job.storage_key)
+    return parse_csv_file(path)
+
+
+def _build_import_row(import_job: ImportJob, parsed_row: ParsedCsvRow) -> ImportRow:
+    return ImportRow(
+        import_job_id=import_job.id,
+        company_id=import_job.company_id,
+        project_id=import_job.project_id,
+        row_number=parsed_row.row_number,
+        sheet_name=None,
+        raw_data_json=parsed_row.raw_data_json,
+        mapped_data_json={},
+        validation_status="pending",
+        error_message=None,
+        warning_message=None,
+        target_entity=None,
+        target_record_id=None,
+        metadata_json={},
+    )
+
+
+def _fail_import_job(db: Session, import_job: ImportJob, error_summary: str) -> None:
+    import_job.status = "failed"
+    import_job.error_summary = error_summary
+    import_job.completed_at = datetime.now(timezone.utc)
+    db.commit()
+    db.refresh(import_job)
 
 
 @router.get("/{import_job_id}", response_model=ImportJobRead)

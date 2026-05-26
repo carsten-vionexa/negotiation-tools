@@ -28,6 +28,8 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase C2: Lokale Storage-Service-Grundlage fuer sichere Upload-Dateiablage vorbereitet
 - Phase C3: KnowledgeDocument-Upload-Endpunkt mit Datei- und Quellenmetadaten umgesetzt
 - Phase C4: ImportJob-Upload-Endpunkt fuer CSV-/XLSX-Dateien ohne Parsing umgesetzt
+- Phase C5: ImportJob-Verarbeitungs- und Review-Kontrakt fuer parsergestuetzte Rohdaten dokumentiert
+- Phase C6: CSV-Parser-Endpunkt erzeugt reviewbare `ImportRow`-Rohdaten aus gespeicherten ImportJobs
 
 Der aktuelle MVP-Workflow lautet:
 
@@ -114,7 +116,7 @@ Diese Punkte bleiben spaetere Ausbaustufen und duerfen nicht als bereits geliefe
 
 ## 8. Phase C: Upload und Import
 
-Status: Begonnen. C1 bis C5 sind umgesetzt; C6 CSV-Parsing fuer pruefbare `ImportRow`-Rohdaten ist der naechste Schritt.
+Status: Begonnen. C1 bis C6 sind umgesetzt; C7 XLSX-Parsing fuer pruefbare `ImportRow`-Rohdaten ist der naechste Schritt.
 
 Ziel: Die Datenbasis des MVP praktisch befuellbar machen. Dabei sollen Upload, Dateiablage, ImportJobs, Parsing, Mapping, Validierung und Zielobjekt-Erzeugung schrittweise umgesetzt werden.
 
@@ -125,10 +127,11 @@ Schritte:
 3. C3 abgeschlossen: KnowledgeDocument-Upload-Endpunkt mit sicherer Storage-Ablage und Pending-Startzustand implementiert.
 4. C4 abgeschlossen: ImportJob-Upload-Endpunkt mit sicherer Storage-Ablage und Pending-Startzustand ohne Parsing implementiert.
 5. C5 abgeschlossen: ImportJob-Status-/Review-Kontrakt, Rohdatenvertrag, Fehlergrenzen und Parser-Vorbereitung in `docs/import-job-processing-contract.md` dokumentiert.
-6. C6 als naechster Schritt: CSV-Parsing fuer `ImportRow`-Rohdaten entwickeln; XLSX-Parsing separat anschliessen.
-7. Mapping- und Validierungslogik implementieren.
-8. Zielobjekt-Erzeugung fuer `ProcurementHistoryItem` vorbereiten.
-9. Zielobjekt-Erzeugung fuer `RequestItem` vorbereiten.
+6. C6 abgeschlossen: `POST /api/import-jobs/{id}/parse` liest gespeicherte CSV-Dateien technisch und erzeugt atomar ausschliesslich pruefbare `ImportRow`-Rohdaten.
+7. C7 als naechster Schritt: XLSX-Parsing fuer `ImportRow`-Rohdaten separat anschliessen.
+8. Mapping- und Validierungslogik implementieren.
+9. Zielobjekt-Erzeugung fuer `ProcurementHistoryItem` vorbereiten.
+10. Zielobjekt-Erzeugung fuer `RequestItem` vorbereiten.
 
 Wichtige Hinweise aus der MVP-Abnahme fuer Phase C:
 

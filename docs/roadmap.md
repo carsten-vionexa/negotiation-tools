@@ -26,6 +26,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - MVP-Abnahmetest in `docs/mvp-acceptance-results.md` dokumentiert: bestanden mit offenen Nicht-Blockern
 - Phase C1: Upload-/Import-API-Kontrakt in `docs/upload-import-api-contract.md` dokumentiert
 - Phase C2: Lokale Storage-Service-Grundlage fuer sichere Upload-Dateiablage vorbereitet
+- Phase C3: KnowledgeDocument-Upload-Endpunkt mit Datei- und Quellenmetadaten umgesetzt
 
 Der aktuelle MVP-Workflow lautet:
 
@@ -112,7 +113,7 @@ Diese Punkte bleiben spaetere Ausbaustufen und duerfen nicht als bereits geliefe
 
 ## 8. Phase C: Upload und Import
 
-Status: Begonnen. C1 ist dokumentiert und C2 lokale Dateiablage / Storage-Service ist umgesetzt; C3 ist der naechste Schritt.
+Status: Begonnen. C1 bis C3 sind umgesetzt; C4 ImportJob-Upload ohne Parsing ist der naechste Schritt.
 
 Ziel: Die Datenbasis des MVP praktisch befuellbar machen. Dabei sollen Upload, Dateiablage, ImportJobs, Parsing, Mapping, Validierung und Zielobjekt-Erzeugung schrittweise umgesetzt werden.
 
@@ -120,12 +121,13 @@ Schritte:
 
 1. C1 abgeschlossen: Upload-/Import-Architektur und API-Kontrakt in `docs/upload-import-api-contract.md` vorbereitet.
 2. C2 abgeschlossen: Konfigurierbare lokale Dateiablage und Storage-Service mit sicheren Keys, Dateityp-Regeln, Pruefsumme und Groessenlimit vorbereitet.
-3. C3 naechster Schritt, danach C4: Upload-Endpunkte fuer KnowledgeDocument und ImportJob getrennt implementieren.
-4. ImportJob beim Upload erzeugen oder verknuepfen, noch ohne Parsing.
-5. Excel-/CSV-Parsing fuer Einkaufshistorie und Anfragenkatalog entwickeln.
-6. Mapping- und Validierungslogik implementieren.
-7. Zielobjekt-Erzeugung fuer `ProcurementHistoryItem` vorbereiten.
-8. Zielobjekt-Erzeugung fuer `RequestItem` vorbereiten.
+3. C3 abgeschlossen: KnowledgeDocument-Upload-Endpunkt mit sicherer Storage-Ablage und Pending-Startzustand implementiert.
+4. C4 naechster Schritt: ImportJob-Upload-Endpunkt ohne Parsing implementieren.
+5. ImportJob beim Upload erzeugen oder verknuepfen, noch ohne Parsing.
+6. Excel-/CSV-Parsing fuer Einkaufshistorie und Anfragenkatalog entwickeln.
+7. Mapping- und Validierungslogik implementieren.
+8. Zielobjekt-Erzeugung fuer `ProcurementHistoryItem` vorbereiten.
+9. Zielobjekt-Erzeugung fuer `RequestItem` vorbereiten.
 
 Wichtige Hinweise aus der MVP-Abnahme fuer Phase C:
 

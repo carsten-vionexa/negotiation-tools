@@ -131,6 +131,20 @@ def test_calculates_reproducible_sha256_for_stored_file(storage_service: LocalSt
     assert storage_service.checksum_sha256(storage_key) == storage_service.checksum_sha256(storage_key)
 
 
+def test_stores_stream_and_deletes_resulting_file(storage_service: LocalStorageService) -> None:
+    from io import BytesIO
+
+    stored_upload = storage_service.store(UploadType.KNOWLEDGE, "source.txt", BytesIO(b"stored document\n"))
+
+    assert stored_upload.file_size_bytes == len(b"stored document\n")
+    assert stored_upload.checksum == "4c7f324f6558fbc46c13c9f9ebf0b1d5e929ed563710b7dac557b064c002708e"
+    assert storage_service.local_path_for_key(stored_upload.storage_key).read_bytes() == b"stored document\n"
+
+    storage_service.delete(stored_upload.storage_key)
+
+    assert not storage_service.local_path_for_key(stored_upload.storage_key).exists()
+
+
 def test_validates_configured_upload_size_limit(storage_service: LocalStorageService) -> None:
     limit = 25 * 1024 * 1024
 

@@ -14,8 +14,13 @@ from app.models.import_job import ImportJob
 from app.models.import_row import ImportRow
 from app.models.knowledge_document import KnowledgeDocument
 from app.models.negotiation_project import NegotiationProject
-from app.schemas.import_job import ImportJobRead
+from app.schemas.import_job import ImportJobMapRequest, ImportJobRead
 from app.services.csv_import_parser import CsvImportParserError, ParsedCsvRow, parse_csv_file
+from app.services.import_row_mapper import (
+    ImportRowMappingError,
+    map_import_rows,
+    validate_mapping_configuration,
+)
 from app.services.storage import (
     InvalidStoragePathError,
     LocalStorageService,
@@ -245,6 +250,72 @@ def _fail_import_job(db: Session, import_job: ImportJob, error_summary: str) -> 
     import_job.completed_at = datetime.now(timezone.utc)
     db.commit()
     db.refresh(import_job)
+
+
+@router.post("/{import_job_id}/map", response_model=ImportJobRead)
+def map_import_job(
+    import_job_id: UUID,
+    payload: ImportJobMapRequest,
+    db: Session = Depends(get_db),
+) -> ImportJob:
+    import_job = db.scalar(select(ImportJob).where(ImportJob.id == import_job_id).with_for_update())
+    if import_job is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Import job not found.")
+    if import_job.status != "parsed":
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Import job can only be mapped from parsed status.",
+        )
+
+    try:
+        validate_mapping_configuration(import_job.target_entity, payload.field_mapping)
+    except ImportRowMappingError as exc:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+
+    import_job.status = "mapping"
+    import_job.error_summary = None
+    try:
+        db.commit()
+        db.refresh(import_job)
+    except SQLAlchemyError as exc:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Unable to start import mapping.",
+        ) from exc
+
+    rows = list(
+        db.scalars(
+            select(ImportRow)
+            .where(ImportRow.import_job_id == import_job.id)
+            .order_by(ImportRow.row_number)
+            .with_for_update()
+        ).all()
+    )
+    try:
+        mapped_rows = map_import_rows(rows, payload.field_mapping)
+    except ImportRowMappingError as exc:
+        _fail_import_job(db, import_job, str(exc))
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+
+    import_job.mapping_json = payload.model_dump()
+    import_job.status = "mapped"
+    import_job.error_summary = None
+    import_job.completed_at = None
+    for row, mapped_data_json in zip(rows, mapped_rows, strict=True):
+        row.mapped_data_json = mapped_data_json
+
+    try:
+        db.commit()
+        db.refresh(import_job)
+    except SQLAlchemyError as exc:
+        db.rollback()
+        _fail_import_job(db, import_job, "Unable to persist mapped import rows.")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Unable to persist mapped import rows.",
+        ) from exc
+    return import_job
 
 
 @router.get("/{import_job_id}", response_model=ImportJobRead)

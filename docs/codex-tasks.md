@@ -55,19 +55,34 @@
 - Phase C0.1 umgesetzt: MVP-Abnahme-Checkliste nach Phase B in `docs/mvp-acceptance-checklist.md` erstellt
 - Phase C0.2 umgesetzt: Browser-Smoke-Test-Plan fuer MVP-Routen in `docs/browser-smoke-test-plan.md` erstellt
 - Phase C0.3 umgesetzt: End-to-End-Testpfad mit Rheinwerk-Demo-Fall in `docs/mvp-e2e-test-path.md` erstellt
+- Phase C0.4 umgesetzt: Technische Verifikations-Checkliste in `docs/technical-verification-checklist.md` erstellt
+- Phase C0.5 umgesetzt: Roadmap und Nicht-MVP-Grenzen nach Phase B aktualisiert
+- Phase C0.6 umgesetzt: Frontend-Konsolidierungsplan fuer grosse MVP-Seiten in `docs/frontend-consolidation-plan.md` erstellt
+- Phase C0.7 umgesetzt: MVP-Abnahmetest durchgefuehrt und Ergebnisse in `docs/mvp-acceptance-results.md` dokumentiert
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
-Ziel von Phase C0 ist die Stabilisierung, fachliche Abnahme und bessere Pruefbarkeit des vorhandenen MVP-Standes nach Phase B. Phase C0 ist keine Feature-Phase. Upload/Import, RAG, OCR, Voice, produktive Simulation und automatische Auswertung bleiben spaetere Ausbaustufen.
+Status: Abgeschlossen.
 
-Geplante C0-Arbeitspakete:
+Ziel von Phase C0 war die Stabilisierung, fachliche Abnahme und bessere Pruefbarkeit des vorhandenen MVP-Standes nach Phase B. Phase C0 war keine Feature-Phase. Upload/Import, RAG, OCR, Voice, produktive Simulation und automatische Auswertung bleiben spaetere Ausbaustufen.
 
-1. C0.1: Ausfuehrliche MVP-Abnahme-Checkliste erstellen.
-2. C0.2: Browser-Smoke-Test-Plan fuer MVP-Routen dokumentieren.
-3. C0.3: End-to-End-Testpfad mit Rheinwerk-Demo-Fall definieren.
-4. C0.4: Technische Verifikations-Checkliste ergaenzen.
-5. C0.5: Roadmap und Nicht-MVP-Grenzen nach Phase B aktualisieren.
-6. C0.6: Frontend-Konsolidierungsplan fuer grosse MVP-Seiten erstellen.
+Umgesetzte C0-Arbeitspakete:
+
+1. C0.1: Ausfuehrliche MVP-Abnahme-Checkliste erstellt.
+2. C0.2: Browser-Smoke-Test-Plan fuer MVP-Routen dokumentiert.
+3. C0.3: End-to-End-Testpfad mit Rheinwerk-Demo-Fall definiert.
+4. C0.4: Technische Verifikations-Checkliste ergaenzt.
+5. C0.5: Roadmap und Nicht-MVP-Grenzen nach Phase B aktualisiert.
+6. C0.6: Frontend-Konsolidierungsplan fuer grosse MVP-Seiten erstellt.
+7. C0.7: MVP-Abnahmetest durchgefuehrt und in `docs/mvp-acceptance-results.md` dokumentiert.
+
+Ergebnis der C0.7-Abnahme:
+
+- Gesamtergebnis: bestanden mit offenen Nicht-Blockern.
+- Keine harten Blocker fuer Phase C gefunden.
+- Docker-Frontend-Dev-Setup mit Next.js/Turbopack ist als technischer Nicht-Blocker dokumentiert.
+- SupplierProfile- und RequestItem-Frontend-Flows sind als fachlich wichtige Verbesserungspunkte fuer Phase C dokumentiert.
+- Phase C Upload/Import kann nach Abschluss und Merge von Issue #46 geplant und gestartet werden.
 
 ## Manuelle Pruefhilfe Phase B7
 
@@ -139,9 +154,18 @@ Geplante C0-Arbeitspakete:
 - Pruefen, ob erwartete Ergebnisse, Abbruchpunkte, akzeptierte Datenluecken und Nicht-MVP-Grenzen dokumentiert sind.
 - Sicherstellen, dass keine Seed-Daten, keine automatisierten Tests, keine API-Aenderungen und keine Upload-/Import-Funktionen eingefuehrt wurden.
 
+## Manuelle Pruefhilfe Phase C0.7
+
+- `docs/mvp-acceptance-results.md` lesen und pruefen, ob technische Verifikation, Browser-Smoke-Test und Rheinwerk-E2E-Testpfad nachvollziehbar dokumentiert sind.
+- Pruefen, ob das Ergebnis `bestanden mit offenen Nicht-Blockern` klar dokumentiert ist.
+- Pruefen, ob der Docker-Frontend-/Turbopack-Befund einschliesslich lokaler Gegenprobe auf Port `3001` enthalten ist.
+- Pruefen, ob offene Nicht-Blocker und akzeptierte Datenluecken getrennt dokumentiert sind.
+- Sicherstellen, dass keine neuen Features, keine Upload-/Import-Logik, keine Migrationen und kein Refactoring eingefuehrt wurden.
+
 ## Naechste Schritte
 
-1. C0.4 Technische Verifikations-Checkliste ergaenzen.
-2. C0.5 Roadmap und Nicht-MVP-Grenzen nach Phase B aktualisieren.
-3. C0.6 Frontend-Konsolidierungsplan fuer grosse MVP-Seiten erstellen.
-4. Upload/Import, RAG, OCR, Voice und produktive Simulation weiterhin erst nach C0 planen.
+1. Phase C1: Upload-/Import-Architektur und API-Kontrakt vorbereiten.
+2. Danach lokale Dateiablage / Storage-Service planen und implementieren.
+3. Danach Upload-Endpunkte fuer KnowledgeDocument und ImportJob vorbereiten.
+4. Danach ImportJob-Erzeugung, CSV-/Excel-Parsing, Mapping, Validierung und Zielobjekt-Erzeugung schrittweise planen.
+5. Offene Nicht-Blocker aus `docs/mvp-acceptance-results.md` bei der Phase-C-Planung beruecksichtigen, insbesondere SupplierProfile- und RequestItem-Frontend-Flows.

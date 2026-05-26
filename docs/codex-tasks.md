@@ -64,6 +64,7 @@
 - Phase C3 umgesetzt: KnowledgeDocument-Upload-Endpunkt mit sicherer lokaler Dateiablage ueber den C2-Storage-Service, Datei- und Quellenmetadaten sowie Pending-Startzustand implementiert, ohne Parsing-, Chunk-, Claim- oder Importlogik
 - Phase C4 umgesetzt: ImportJob-Upload-Endpunkt fuer CSV-/XLSX-Dateien mit sicherer lokaler Dateiablage ueber den C2-Storage-Service, Datei- und Importmetadaten sowie Pending-Startzustand implementiert, ohne ImportRows, Parsing, Mapping, Validierung oder Zielobjekt-Erzeugung
 - Phase C5 umgesetzt: ImportJob-Verarbeitungs-, Status- und Review-Kontrakt sowie CSV-/XLSX-Parser-Vorbereitung in `docs/import-job-processing-contract.md` dokumentiert, ohne Parser-, Mapping-, Validierungs-, Zielobjekt-, API- oder Migrationslogik
+- Phase C6 umgesetzt: CSV-Parser-Endpunkt fuer gespeicherte pending ImportJobs implementiert, der atomar ausschliesslich technische `ImportRow`-Rohdaten mit Quellzeilennummern erzeugt, ohne XLSX/PDF, Mapping, Validierung oder Zielobjekt-Erzeugung
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -91,7 +92,7 @@ Ergebnis der C0.7-Abnahme:
 
 ## Phase C: Upload und Import
 
-Status: Phase C1 bis C5 umgesetzt; C6 ist als CSV-Rohdatenparser der naechste Implementierungsschritt.
+Status: Phase C1 bis C6 umgesetzt; C7 ist als XLSX-Rohdatenparser der naechste Implementierungsschritt.
 
 Umgesetzte Schritte:
 
@@ -100,10 +101,11 @@ Umgesetzte Schritte:
 3. C3: `POST /knowledge-documents/upload` fuer `.pdf`-, `.md`- und `.txt`-Dateien mit Knowledge-Metadaten, sicherer Ablage und `parsing_status="pending"` umgesetzt.
 4. C4: `POST /import-jobs/upload` fuer `.csv`- und `.xlsx`-Dateien mit Importmetadaten, sicherer Ablage und `status="pending"` umgesetzt; es entstehen keine `ImportRow`-Datensaetze.
 5. C5: ImportJob-Lifecycle, Status-/Review-API-Kontrakt, Rohdaten- und Fehlervertrag sowie getrennte PDF-Beruecksichtigung in `docs/import-job-processing-contract.md` dokumentiert.
+6. C6: `POST /import-jobs/{id}/parse` fuer gespeicherte CSV-Dateien umgesetzt; der Endpoint erzeugt ausschliesslich reviewbare `ImportRow.raw_data_json`-Rohdaten, aktualisiert Parserstatus und Zaehler und beendet strukturelle Parserfehler ohne Teil-Rows als `failed`.
 
 Naechster Schritt:
 
-1. C6: CSV-Parser implementieren, der aus gespeicherten CSV-Dateien ausschliesslich pruefbare `ImportRow`-Rohdaten erzeugt.
+1. C7: XLSX-Parser implementieren, der aus gespeicherten XLSX-Dateien ausschliesslich pruefbare `ImportRow`-Rohdaten erzeugt.
 
 C1 definiert getrennte Zielvertraege fuer Knowledge-Uploads und Import-Uploads,
 Request-/Response-Metadaten, Startstatus, Sicherheitsregeln,
@@ -113,7 +115,9 @@ KnowledgeDocument-Upload, C4 fuer den ImportJob-Dateiupload. Parser-, Mapping-,
 Validierungs-, Zielobjekt-, Chunk- und Claim-Logik sowie Migrationen sind nicht
 Bestandteil von C4. C5 definiert ausschliesslich den anschliessenden Vertrag
 von `pending` zu reviewbaren Rohdaten; die Parser-Implementierung beginnt mit
-C6.
+C6. C6 implementiert ausschliesslich den CSV-Rohdatenparser; XLSX folgt in C7,
+waehrend PDF-Verarbeitung, Mapping, Validierung und Zielobjekte weiterhin
+getrennte spaetere Arbeit bleiben.
 
 ## Manuelle Pruefhilfe Phase B7
 

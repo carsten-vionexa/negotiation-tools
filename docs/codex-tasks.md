@@ -66,6 +66,7 @@
 - Phase C5 umgesetzt: ImportJob-Verarbeitungs-, Status- und Review-Kontrakt sowie CSV-/XLSX-Parser-Vorbereitung in `docs/import-job-processing-contract.md` dokumentiert, ohne Parser-, Mapping-, Validierungs-, Zielobjekt-, API- oder Migrationslogik
 - Phase C6 umgesetzt: CSV-Parser-Endpunkt fuer gespeicherte pending ImportJobs implementiert, der atomar ausschliesslich technische `ImportRow`-Rohdaten mit Quellzeilennummern erzeugt, ohne XLSX/PDF, Mapping, Validierung oder Zielobjekt-Erzeugung
 - Phase C7 umgesetzt: XLSX-Parser an den bestehenden Parse-Endpunkt angeschlossen, der aus dem ersten sichtbaren Worksheet atomar ausschliesslich technische `ImportRow`-Rohdaten mit Sheet- und Quellzeilenbezug erzeugt, ohne PDF/OCR, Mapping, Validierung oder Zielobjekt-Erzeugung
+- Phase C8 umgesetzt: Expliziten Mapping-Endpunkt fuer geparste ImportJobs implementiert, der validierte Mapping-Konfigurationen und unveraenderte Raw-Werte ausschliesslich in `ImportJob.mapping_json` und `ImportRow.mapped_data_json` uebernimmt, ohne Validierung, Zielobjekte, PDF/OCR oder KI-Zuordnung
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -93,7 +94,7 @@ Ergebnis der C0.7-Abnahme:
 
 ## Phase C: Upload und Import
 
-Status: Phase C1 bis C7 umgesetzt; C8 ist als expliziter Mapping-Schritt der naechste Implementierungsschritt.
+Status: Phase C1 bis C8 umgesetzt; C9 ist als Validierungsschritt der naechste Implementierungsschritt.
 
 Umgesetzte Schritte:
 
@@ -104,10 +105,11 @@ Umgesetzte Schritte:
 5. C5: ImportJob-Lifecycle, Status-/Review-API-Kontrakt, Rohdaten- und Fehlervertrag sowie getrennte PDF-Beruecksichtigung in `docs/import-job-processing-contract.md` dokumentiert.
 6. C6: `POST /import-jobs/{id}/parse` fuer gespeicherte CSV-Dateien umgesetzt; der Endpoint erzeugt ausschliesslich reviewbare `ImportRow.raw_data_json`-Rohdaten, aktualisiert Parserstatus und Zaehler und beendet strukturelle Parserfehler ohne Teil-Rows als `failed`.
 7. C7: Den bestehenden Parse-Endpunkt fuer gespeicherte XLSX-Dateien erweitert; der separate technische Parser liest das erste sichtbare Worksheet, erhaelt `sheet_name` und Quellzeilennummern und verwendet denselben reinen Raw-Row-Vertrag wie CSV.
+8. C8: `POST /import-jobs/{id}/map` fuer Jobs im Status `parsed` umgesetzt; der Endpoint verlangt ein explizites `field_mapping`, verwendet die bestehenden Modellfeldnamen und befuellt atomar ausschliesslich Mapping-Konfiguration und gemappte Row-Rohwerte.
 
 Naechster Schritt:
 
-1. C8: Mapping-Kontrakt konkretisieren und explizites Mapping auf den stabilen CSV-/XLSX-Rohdaten anwenden.
+1. C9: Gemappte `ImportRow`-Daten ohne Zielobjekt-Erzeugung fachlich validieren.
 
 C1 definiert getrennte Zielvertraege fuer Knowledge-Uploads und Import-Uploads,
 Request-/Response-Metadaten, Startstatus, Sicherheitsregeln,
@@ -118,9 +120,9 @@ Validierungs-, Zielobjekt-, Chunk- und Claim-Logik sowie Migrationen sind nicht
 Bestandteil von C4. C5 definiert ausschliesslich den anschliessenden Vertrag
 von `pending` zu reviewbaren Rohdaten; die Parser-Implementierung beginnt mit
 C6. C6 implementiert ausschliesslich den CSV-Rohdatenparser, C7 denselben
-Rohdatenvertrag fuer XLSX mit Worksheet-Kontext. PDF-Verarbeitung bleibt
-separat vorgemerkt; Mapping, Validierung und Zielobjekte bleiben getrennte
-spaetere Arbeit.
+Rohdatenvertrag fuer XLSX mit Worksheet-Kontext. C8 wendet darauf
+ausschliesslich explizite Mapping-Regeln an; Validierung und Zielobjekte
+bleiben getrennte spaetere Arbeit. PDF-Verarbeitung bleibt separat vorgemerkt.
 
 ## Manuelle Pruefhilfe Phase B7
 
@@ -202,6 +204,6 @@ spaetere Arbeit.
 
 ## Naechste Schritte
 
-1. Phase C8: Mapping-Kontrakt konkretisieren und explizites Mapping auf `ImportRow`-Rohdaten implementieren.
-2. Danach Validierung und Zielobjekt-Erzeugung in getrennten Issues umsetzen; PDF-Verarbeitung bleibt separat in Issue #55 vorgemerkt.
+1. Phase C9: Gemappte `ImportRow`-Daten validieren.
+2. Danach Zielobjekt-Erzeugung in getrennten Issues umsetzen; PDF-Verarbeitung bleibt separat in Issue #55 vorgemerkt.
 3. Offene Nicht-Blocker aus `docs/mvp-acceptance-results.md` bei der Phase-C-Planung beruecksichtigen, insbesondere SupplierProfile- und RequestItem-Frontend-Flows.

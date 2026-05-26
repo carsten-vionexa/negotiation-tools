@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 class ImportJobBase(BaseModel):
@@ -39,3 +39,19 @@ class ImportJobRead(ImportJobBase):
     id: UUID
     created_at: datetime
     updated_at: datetime
+
+
+class ImportJobMapRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    field_mapping: dict[str, str] = Field(min_length=1)
+
+    @field_validator("field_mapping")
+    @classmethod
+    def reject_blank_field_names(cls, field_mapping: dict[str, str]) -> dict[str, str]:
+        if any(
+            not target_field.strip() or not source_column.strip()
+            for target_field, source_column in field_mapping.items()
+        ):
+            raise ValueError("Mapping target fields and source columns cannot be blank.")
+        return field_mapping

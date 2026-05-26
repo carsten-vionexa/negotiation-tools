@@ -59,6 +59,7 @@
 - Phase C0.5 umgesetzt: Roadmap und Nicht-MVP-Grenzen nach Phase B aktualisiert
 - Phase C0.6 umgesetzt: Frontend-Konsolidierungsplan fuer grosse MVP-Seiten in `docs/frontend-consolidation-plan.md` erstellt
 - Phase C0.7 umgesetzt: MVP-Abnahmetest durchgefuehrt und Ergebnisse in `docs/mvp-acceptance-results.md` dokumentiert
+- Phase C1 umgesetzt: Verbindlichen Upload-/Import-API-Kontrakt in `docs/upload-import-api-contract.md` dokumentiert, ohne Upload-, Storage- oder Importlogik zu implementieren
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -83,6 +84,24 @@ Ergebnis der C0.7-Abnahme:
 - Docker-Frontend-Dev-Setup mit Next.js/Turbopack ist als technischer Nicht-Blocker dokumentiert.
 - SupplierProfile- und RequestItem-Frontend-Flows sind als fachlich wichtige Verbesserungspunkte fuer Phase C dokumentiert.
 - Phase C Upload/Import kann nach Abschluss und Merge von Issue #46 geplant und gestartet werden.
+
+## Phase C: Upload und Import
+
+Status: Phase C1 dokumentiert; C2 ist der naechste Implementierungsschritt.
+
+Umgesetzter Schritt:
+
+1. C1: Upload-/Import-Architektur und API-Kontrakt in `docs/upload-import-api-contract.md` festgelegt.
+
+Naechster Schritt:
+
+1. C2: Lokale Dateiablage / Storage-Service auf Grundlage des C1-Kontrakts vorbereiten.
+
+C1 definiert getrennte Zielvertraege fuer Knowledge-Uploads und
+Import-Uploads, Request-/Response-Metadaten, Startstatus, Sicherheitsregeln,
+Storage-Key-Konventionen sowie Modell- und API-Gaps. C1 implementiert
+ausdruecklich keine Upload-Endpunkte, Dateiablage, Parser-, Mapping-,
+Validierungs- oder Zielobjekt-Logik und keine Migration.
 
 ## Manuelle Pruefhilfe Phase B7
 
@@ -164,8 +183,8 @@ Ergebnis der C0.7-Abnahme:
 
 ## Naechste Schritte
 
-1. Phase C1: Upload-/Import-Architektur und API-Kontrakt vorbereiten.
-2. Danach lokale Dateiablage / Storage-Service planen und implementieren.
-3. Danach Upload-Endpunkte fuer KnowledgeDocument und ImportJob vorbereiten.
-4. Danach ImportJob-Erzeugung, CSV-/Excel-Parsing, Mapping, Validierung und Zielobjekt-Erzeugung schrittweise planen.
+1. Phase C2: Lokale Dateiablage / Storage-Service auf Basis von `docs/upload-import-api-contract.md` vorbereiten.
+2. Danach KnowledgeDocument-Upload-Endpunkt als C3 implementieren.
+3. Danach ImportJob-Upload-Endpunkt ohne Parsing als C4 implementieren.
+4. Danach CSV-/Excel-Parsing, Mapping, Validierung und Zielobjekt-Erzeugung in getrennten Issues planen.
 5. Offene Nicht-Blocker aus `docs/mvp-acceptance-results.md` bei der Phase-C-Planung beruecksichtigen, insbesondere SupplierProfile- und RequestItem-Frontend-Flows.

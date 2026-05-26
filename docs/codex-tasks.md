@@ -63,6 +63,7 @@
 - Phase C2 umgesetzt: Lokale Storage-Service-Grundlage mit konfigurierbaren Upload-Verzeichnissen, serverseitigen relativen Storage-Keys, Extension-Regeln, sicherer Pfadauflosung, SHA-256-Pruefsumme und Groessenlimit-Pruefung vorbereitet, ohne Upload-Endpunkte oder Importlogik zu implementieren
 - Phase C3 umgesetzt: KnowledgeDocument-Upload-Endpunkt mit sicherer lokaler Dateiablage ueber den C2-Storage-Service, Datei- und Quellenmetadaten sowie Pending-Startzustand implementiert, ohne Parsing-, Chunk-, Claim- oder Importlogik
 - Phase C4 umgesetzt: ImportJob-Upload-Endpunkt fuer CSV-/XLSX-Dateien mit sicherer lokaler Dateiablage ueber den C2-Storage-Service, Datei- und Importmetadaten sowie Pending-Startzustand implementiert, ohne ImportRows, Parsing, Mapping, Validierung oder Zielobjekt-Erzeugung
+- Phase C5 umgesetzt: ImportJob-Verarbeitungs-, Status- und Review-Kontrakt sowie CSV-/XLSX-Parser-Vorbereitung in `docs/import-job-processing-contract.md` dokumentiert, ohne Parser-, Mapping-, Validierungs-, Zielobjekt-, API- oder Migrationslogik
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -90,7 +91,7 @@ Ergebnis der C0.7-Abnahme:
 
 ## Phase C: Upload und Import
 
-Status: Phase C1 dokumentiert, C2 als lokale Storage-Grundlage, C3 als KnowledgeDocument-Upload-Endpunkt und C4 als ImportJob-Upload-Endpunkt umgesetzt; C5 ist der naechste Planungsschritt.
+Status: Phase C1 bis C5 umgesetzt; C6 ist als CSV-Rohdatenparser der naechste Implementierungsschritt.
 
 Umgesetzte Schritte:
 
@@ -98,10 +99,11 @@ Umgesetzte Schritte:
 2. C2: Konfigurierbare lokale Upload-Verzeichnisse und Storage-Service fuer sichere relative Keys, Dateityp-Regeln, Pfadauflosung, SHA-256 und Groessenlimit vorbereitet.
 3. C3: `POST /knowledge-documents/upload` fuer `.pdf`-, `.md`- und `.txt`-Dateien mit Knowledge-Metadaten, sicherer Ablage und `parsing_status="pending"` umgesetzt.
 4. C4: `POST /import-jobs/upload` fuer `.csv`- und `.xlsx`-Dateien mit Importmetadaten, sicherer Ablage und `status="pending"` umgesetzt; es entstehen keine `ImportRow`-Datensaetze.
+5. C5: ImportJob-Lifecycle, Status-/Review-API-Kontrakt, Rohdaten- und Fehlervertrag sowie getrennte PDF-Beruecksichtigung in `docs/import-job-processing-contract.md` dokumentiert.
 
 Naechster Schritt:
 
-1. C5: ImportJob-Status-/Review-Kontrakt und Parser-Vorbereitung planen.
+1. C6: CSV-Parser implementieren, der aus gespeicherten CSV-Dateien ausschliesslich pruefbare `ImportRow`-Rohdaten erzeugt.
 
 C1 definiert getrennte Zielvertraege fuer Knowledge-Uploads und Import-Uploads,
 Request-/Response-Metadaten, Startstatus, Sicherheitsregeln,
@@ -109,7 +111,9 @@ Storage-Key-Konventionen sowie Modell- und API-Gaps. C2 stellt ausschliesslich
 die lokale Storage-Grundlage bereit. C3 nutzt diese Grundlage fuer den
 KnowledgeDocument-Upload, C4 fuer den ImportJob-Dateiupload. Parser-, Mapping-,
 Validierungs-, Zielobjekt-, Chunk- und Claim-Logik sowie Migrationen sind nicht
-Bestandteil von C4.
+Bestandteil von C4. C5 definiert ausschliesslich den anschliessenden Vertrag
+von `pending` zu reviewbaren Rohdaten; die Parser-Implementierung beginnt mit
+C6.
 
 ## Manuelle Pruefhilfe Phase B7
 
@@ -191,6 +195,6 @@ Bestandteil von C4.
 
 ## Naechste Schritte
 
-1. Phase C5: ImportJob-Status-/Review-Kontrakt und Parser-Vorbereitung planen.
-2. Danach CSV-/Excel-Parsing, Mapping, Validierung und Zielobjekt-Erzeugung in getrennten Issues planen.
+1. Phase C6: CSV-Parser fuer `ImportRow`-Rohdaten auf Basis des C5-Kontrakts implementieren.
+2. Danach XLSX-Parsing, Mapping, Validierung und Zielobjekt-Erzeugung in getrennten Issues umsetzen.
 3. Offene Nicht-Blocker aus `docs/mvp-acceptance-results.md` bei der Phase-C-Planung beruecksichtigen, insbesondere SupplierProfile- und RequestItem-Frontend-Flows.

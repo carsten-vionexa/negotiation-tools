@@ -60,6 +60,7 @@
 - Phase C0.6 umgesetzt: Frontend-Konsolidierungsplan fuer grosse MVP-Seiten in `docs/frontend-consolidation-plan.md` erstellt
 - Phase C0.7 umgesetzt: MVP-Abnahmetest durchgefuehrt und Ergebnisse in `docs/mvp-acceptance-results.md` dokumentiert
 - Phase C1 umgesetzt: Verbindlichen Upload-/Import-API-Kontrakt in `docs/upload-import-api-contract.md` dokumentiert, ohne Upload-, Storage- oder Importlogik zu implementieren
+- Phase C2 umgesetzt: Lokale Storage-Service-Grundlage mit konfigurierbaren Upload-Verzeichnissen, serverseitigen relativen Storage-Keys, Extension-Regeln, sicherer Pfadauflosung, SHA-256-Pruefsumme und Groessenlimit-Pruefung vorbereitet, ohne Upload-Endpunkte oder Importlogik zu implementieren
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -87,21 +88,23 @@ Ergebnis der C0.7-Abnahme:
 
 ## Phase C: Upload und Import
 
-Status: Phase C1 dokumentiert; C2 ist der naechste Implementierungsschritt.
+Status: Phase C1 dokumentiert und C2 als lokale Storage-Grundlage umgesetzt; C3 ist der naechste Implementierungsschritt.
 
-Umgesetzter Schritt:
+Umgesetzte Schritte:
 
 1. C1: Upload-/Import-Architektur und API-Kontrakt in `docs/upload-import-api-contract.md` festgelegt.
+2. C2: Konfigurierbare lokale Upload-Verzeichnisse und Storage-Service fuer sichere relative Keys, Dateityp-Regeln, Pfadauflosung, SHA-256 und Groessenlimit vorbereitet.
 
 Naechster Schritt:
 
-1. C2: Lokale Dateiablage / Storage-Service auf Grundlage des C1-Kontrakts vorbereiten.
+1. C3: KnowledgeDocument-Upload-Endpunkt auf Grundlage des C1-Kontrakts und des C2-Storage-Service implementieren.
 
-C1 definiert getrennte Zielvertraege fuer Knowledge-Uploads und
-Import-Uploads, Request-/Response-Metadaten, Startstatus, Sicherheitsregeln,
-Storage-Key-Konventionen sowie Modell- und API-Gaps. C1 implementiert
-ausdruecklich keine Upload-Endpunkte, Dateiablage, Parser-, Mapping-,
-Validierungs- oder Zielobjekt-Logik und keine Migration.
+C1 definiert getrennte Zielvertraege fuer Knowledge-Uploads und Import-Uploads,
+Request-/Response-Metadaten, Startstatus, Sicherheitsregeln,
+Storage-Key-Konventionen sowie Modell- und API-Gaps. C2 stellt ausschliesslich
+die lokale Storage-Grundlage bereit und implementiert ausdruecklich keine
+Upload-Endpunkte, Parser-, Mapping-, Validierungs- oder Zielobjekt-Logik und
+keine Migration.
 
 ## Manuelle Pruefhilfe Phase B7
 
@@ -183,8 +186,7 @@ Validierungs- oder Zielobjekt-Logik und keine Migration.
 
 ## Naechste Schritte
 
-1. Phase C2: Lokale Dateiablage / Storage-Service auf Basis von `docs/upload-import-api-contract.md` vorbereiten.
-2. Danach KnowledgeDocument-Upload-Endpunkt als C3 implementieren.
-3. Danach ImportJob-Upload-Endpunkt ohne Parsing als C4 implementieren.
-4. Danach CSV-/Excel-Parsing, Mapping, Validierung und Zielobjekt-Erzeugung in getrennten Issues planen.
-5. Offene Nicht-Blocker aus `docs/mvp-acceptance-results.md` bei der Phase-C-Planung beruecksichtigen, insbesondere SupplierProfile- und RequestItem-Frontend-Flows.
+1. Phase C3: KnowledgeDocument-Upload-Endpunkt auf Basis von `docs/upload-import-api-contract.md` und dem C2-Storage-Service implementieren.
+2. Danach ImportJob-Upload-Endpunkt ohne Parsing als C4 implementieren.
+3. Danach CSV-/Excel-Parsing, Mapping, Validierung und Zielobjekt-Erzeugung in getrennten Issues planen.
+4. Offene Nicht-Blocker aus `docs/mvp-acceptance-results.md` bei der Phase-C-Planung beruecksichtigen, insbesondere SupplierProfile- und RequestItem-Frontend-Flows.

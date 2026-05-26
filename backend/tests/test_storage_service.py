@@ -154,3 +154,22 @@ def test_rejects_configured_target_directory_outside_upload_base(tmp_path: Path)
 
     with pytest.raises(InvalidStoragePathError):
         LocalStorageService(configuration=configuration)
+
+
+def test_derives_subdirectories_when_only_upload_base_dir_is_overridden(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    upload_base_dir = tmp_path / "custom-uploads"
+    monkeypatch.setenv("UPLOAD_BASE_DIR", str(upload_base_dir))
+    monkeypatch.delenv("UPLOAD_TMP_DIR", raising=False)
+    monkeypatch.delenv("UPLOAD_KNOWLEDGE_DIR", raising=False)
+    monkeypatch.delenv("UPLOAD_IMPORT_DIR", raising=False)
+
+    configuration = Settings(_env_file=None)
+    service = LocalStorageService(configuration=configuration)
+
+    assert configuration.upload_tmp_dir == upload_base_dir / "tmp"
+    assert configuration.upload_knowledge_dir == upload_base_dir / "knowledge"
+    assert configuration.upload_import_dir == upload_base_dir / "imports"
+    assert service.generate_storage_key(UploadType.IMPORT, "input.csv").startswith("imports/")

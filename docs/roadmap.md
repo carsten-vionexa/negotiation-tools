@@ -22,7 +22,8 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Screen-by-Screen-Konzept
 - Phase A1: MVP-Screen-Scope fachlich abgeschlossen
 - Phase B: Backend-API-Readiness und Frontend-Flows fuer die MVP-Kernstrecke abgeschlossen
-- Phase C0: MVP-Konsolidierung nach Phase B begonnen
+- Phase C0: MVP-Konsolidierung nach Phase B abgeschlossen
+- MVP-Abnahmetest in `docs/mvp-acceptance-results.md` dokumentiert: bestanden mit offenen Nicht-Blockern
 
 Der aktuelle MVP-Workflow lautet:
 
@@ -35,6 +36,7 @@ Der aktuelle MVP-Workflow lautet:
 - Danach Frontend- und Backend-Arbeitspakete umsetzen.
 - Vor neuen Feature-Phasen den bestehenden MVP fachlich und technisch abnehmen.
 - Upload/Import, Knowledge Intelligence und produktive Simulation erst nach sauberer C0-Konsolidierung starten.
+- Phase C Upload/Import schrittweise starten und nicht direkt grosse Importlogik bauen.
 
 ## 4. Phase A: Produkt- und MVP-Scope
 
@@ -61,13 +63,13 @@ Umgesetzt wurden:
 
 ## 6. Phase C0: MVP-Konsolidierung nach Phase B
 
-Status: Begonnen.
+Status: Abgeschlossen.
 
 Ziel: Den vorhandenen MVP-Stand stabilisieren, fachlich pruefen und besser testbar machen, bevor Phase C Upload/Import beginnt.
 
 C0 ist keine Feature-Phase. Sie dient Abnahme, Testbarkeit und Dokumentationskonsistenz.
 
-Arbeitspakete:
+Umgesetzte Arbeitspakete:
 
 1. MVP-Abnahme-Checkliste.
 2. Browser-Smoke-Test-Plan.
@@ -75,6 +77,14 @@ Arbeitspakete:
 4. Technische Verifikations-Checkliste.
 5. Roadmap und Nicht-MVP-Grenzen.
 6. Frontend-Konsolidierungsplan.
+7. MVP-Abnahmetest mit Ergebnisdokumentation in `docs/mvp-acceptance-results.md`.
+
+Ergebnis der MVP-Abnahme:
+
+- Gesamtergebnis: bestanden mit offenen Nicht-Blockern.
+- Keine harten Blocker fuer den Start von Phase C.
+- Docker-Frontend-Dev-Setup mit Next.js/Turbopack ist als technischer Nicht-Blocker dokumentiert.
+- SupplierProfile- und RequestItem-Frontend-Flows sind als fachlich wichtige Verbesserungspunkte fuer Phase C dokumentiert.
 
 ## 7. Nicht-MVP-Grenzen
 
@@ -96,20 +106,30 @@ Nicht Teil des aktuellen MVP sind:
 - Stakeholder-Graph
 - automatische Angebotsanalyse
 
-Diese Punkte bleiben spaetere Ausbaustufen und duerfen vor Abschluss von C0 nicht als bereits gelieferte MVP-Funktionen bewertet werden.
+Diese Punkte bleiben spaetere Ausbaustufen und duerfen nicht als bereits gelieferte MVP-Funktionen bewertet werden.
 
 ## 8. Phase C: Upload und Import
 
-Status: Noch nicht gestartet. Phase C beginnt erst nach sauberer C0-Konsolidierung.
+Status: Naechster geplanter Schritt nach C0-Abnahme.
 
-Moegliche Schritte:
+Ziel: Die Datenbasis des MVP praktisch befuellbar machen. Dabei sollen Upload, Dateiablage, ImportJobs, Parsing, Mapping, Validierung und Zielobjekt-Erzeugung schrittweise umgesetzt werden.
 
-1. Upload-API entwerfen.
-2. Lokale Dateiablage fuer Entwicklung implementieren.
-3. ImportJob beim Upload erzeugen oder verknuepfen.
-4. Excel-/CSV-Parsing fuer Einkaufshistorie und Anfragenkatalog entwickeln.
-5. Mapping- und Validierungslogik implementieren.
-6. Zielobjekt-Erzeugung fuer `ProcurementHistoryItem` und `RequestItem` vorbereiten.
+Empfohlene Schritte:
+
+1. Upload-/Import-Architektur und API-Kontrakt vorbereiten.
+2. Lokale Dateiablage / Storage-Service vorbereiten.
+3. Upload-Endpunkte fuer KnowledgeDocument und ImportJob implementieren.
+4. ImportJob beim Upload erzeugen oder verknuepfen, noch ohne Parsing.
+5. Excel-/CSV-Parsing fuer Einkaufshistorie und Anfragenkatalog entwickeln.
+6. Mapping- und Validierungslogik implementieren.
+7. Zielobjekt-Erzeugung fuer `ProcurementHistoryItem` vorbereiten.
+8. Zielobjekt-Erzeugung fuer `RequestItem` vorbereiten.
+
+Wichtige Hinweise aus der MVP-Abnahme fuer Phase C:
+
+- SupplierProfile-Frontend-Flow sollte ergaenzt oder parallel eingeplant werden, weil importierte Einkaufsdaten typischerweise Lieferanteninformationen enthalten.
+- RequestItem-Frontend-Flow sollte ergaenzt oder parallel eingeplant werden, weil importierte Anfragenkataloge sonst nicht vollstaendig im Frontend nutzbar sind.
+- Die Importlogik soll nicht als grosser Block umgesetzt werden, sondern in klar getrennten Schritten: Upload, Storage, ImportJob, Parsing, Mapping, Validierung, Zielobjekt-Erzeugung.
 
 ## 9. Phase D: Analyse und Strategieunterstuetzung
 

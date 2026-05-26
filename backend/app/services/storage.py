@@ -3,7 +3,8 @@ from dataclasses import dataclass
 from enum import Enum
 import hashlib
 from pathlib import Path, PurePosixPath
-from typing import Final
+from tempfile import NamedTemporaryFile
+from typing import BinaryIO, Final
 from uuid import UUID, uuid4
 
 from app.core.config import Settings, settings
@@ -34,6 +35,13 @@ class UploadType(str, Enum):
 class UploadRule:
     directory_setting: str
     allowed_extensions: frozenset[str]
+
+
+@dataclass(frozen=True)
+class StoredUpload:
+    storage_key: str
+    file_size_bytes: int
+    checksum: str
 
 
 UPLOAD_RULES: Final[dict[UploadType, UploadRule]] = {
@@ -119,6 +127,37 @@ class LocalStorageService:
             for chunk in iter(lambda: stored_file.read(1024 * 1024), b""):
                 digest.update(chunk)
         return digest.hexdigest()
+
+    def store(self, upload_type: UploadType, original_filename: str, source: BinaryIO) -> StoredUpload:
+        storage_key = self.generate_storage_key(upload_type, original_filename)
+        target_path = self.local_path_for_key(storage_key)
+        self.ensure_directories()
+
+        digest = hashlib.sha256()
+        file_size_bytes = 0
+        temporary_path: Path | None = None
+        try:
+            with NamedTemporaryFile(dir=self.tmp_directory, prefix=".upload-", suffix=".tmp", delete=False) as temporary:
+                temporary_path = Path(temporary.name)
+                for chunk in iter(lambda: source.read(1024 * 1024), b""):
+                    file_size_bytes += len(chunk)
+                    self.validate_size(file_size_bytes)
+                    digest.update(chunk)
+                    temporary.write(chunk)
+            temporary_path.replace(target_path)
+        except Exception:
+            if temporary_path is not None:
+                temporary_path.unlink(missing_ok=True)
+            raise
+
+        return StoredUpload(
+            storage_key=storage_key,
+            file_size_bytes=file_size_bytes,
+            checksum=digest.hexdigest(),
+        )
+
+    def delete(self, storage_key: str) -> None:
+        self.local_path_for_key(storage_key).unlink(missing_ok=True)
 
     def is_size_allowed(self, file_size_bytes: int) -> bool:
         return 0 <= file_size_bytes <= self.configuration.max_upload_size_bytes

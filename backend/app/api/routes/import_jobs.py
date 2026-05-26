@@ -21,6 +21,7 @@ from app.services.import_row_mapper import (
     map_import_rows,
     validate_mapping_configuration,
 )
+from app.services.import_row_validator import ImportRowValidationError, validate_import_rows
 from app.services.storage import (
     InvalidStoragePathError,
     LocalStorageService,
@@ -314,6 +315,86 @@ def map_import_job(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Unable to persist mapped import rows.",
+        ) from exc
+    return import_job
+
+
+@router.post("/{import_job_id}/validate", response_model=ImportJobRead)
+def validate_import_job(
+    import_job_id: UUID,
+    db: Session = Depends(get_db),
+) -> ImportJob:
+    import_job = db.scalar(select(ImportJob).where(ImportJob.id == import_job_id).with_for_update())
+    if import_job is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Import job not found.")
+    if import_job.status != "mapped":
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Import job can only be validated from mapped status.",
+        )
+    if import_job.target_entity not in TARGET_ENTITIES:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Unsupported target entity.")
+
+    import_job.status = "validating"
+    import_job.error_summary = None
+    try:
+        db.commit()
+        db.refresh(import_job)
+    except SQLAlchemyError as exc:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Unable to start import validation.",
+        ) from exc
+
+    rows = list(
+        db.scalars(
+            select(ImportRow)
+            .where(ImportRow.import_job_id == import_job.id)
+            .order_by(ImportRow.row_number)
+            .with_for_update()
+        ).all()
+    )
+    try:
+        validation_results = validate_import_rows(import_job.target_entity, rows)
+    except ImportRowValidationError as exc:
+        _fail_import_job(db, import_job, str(exc))
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(exc)) from exc
+
+    errors_by_field: dict[str, int] = {}
+    valid_rows = 0
+    for row, result in zip(rows, validation_results, strict=True):
+        row.validation_status = result.validation_status
+        row.error_message = result.error_message
+        row.warning_message = result.warning_message
+        if result.validation_status == "valid":
+            valid_rows += 1
+        for field in result.error_fields:
+            errors_by_field[field] = errors_by_field.get(field, 0) + 1
+
+    import_job.status = "validated"
+    import_job.processed_rows = len(rows)
+    import_job.valid_rows = valid_rows
+    import_job.error_rows = len(rows) - valid_rows
+    import_job.error_summary = None
+    import_job.validation_summary_json = {
+        "total_rows": len(rows),
+        "processed_rows": len(rows),
+        "valid_rows": valid_rows,
+        "error_rows": len(rows) - valid_rows,
+        "target_entity": import_job.target_entity,
+        "ruleset": "c9_minimal",
+        "errors_by_field": errors_by_field,
+    }
+    try:
+        db.commit()
+        db.refresh(import_job)
+    except SQLAlchemyError as exc:
+        db.rollback()
+        _fail_import_job(db, import_job, "Unable to persist validated import rows.")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Unable to persist validated import rows.",
         ) from exc
     return import_job
 

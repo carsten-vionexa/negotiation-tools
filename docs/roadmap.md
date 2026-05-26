@@ -24,6 +24,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase B: Backend-API-Readiness und Frontend-Flows fuer die MVP-Kernstrecke abgeschlossen
 - Phase C0: MVP-Konsolidierung nach Phase B abgeschlossen
 - MVP-Abnahmetest in `docs/mvp-acceptance-results.md` dokumentiert: bestanden mit offenen Nicht-Blockern
+- Phase C1: Upload-/Import-API-Kontrakt in `docs/upload-import-api-contract.md` dokumentiert
 
 Der aktuelle MVP-Workflow lautet:
 
@@ -110,15 +111,15 @@ Diese Punkte bleiben spaetere Ausbaustufen und duerfen nicht als bereits geliefe
 
 ## 8. Phase C: Upload und Import
 
-Status: Naechster geplanter Schritt nach C0-Abnahme.
+Status: Begonnen. C1 ist dokumentiert; C2 lokale Dateiablage / Storage-Service ist der naechste Schritt.
 
 Ziel: Die Datenbasis des MVP praktisch befuellbar machen. Dabei sollen Upload, Dateiablage, ImportJobs, Parsing, Mapping, Validierung und Zielobjekt-Erzeugung schrittweise umgesetzt werden.
 
-Empfohlene Schritte:
+Schritte:
 
-1. Upload-/Import-Architektur und API-Kontrakt vorbereiten.
-2. Lokale Dateiablage / Storage-Service vorbereiten.
-3. Upload-Endpunkte fuer KnowledgeDocument und ImportJob implementieren.
+1. C1 abgeschlossen: Upload-/Import-Architektur und API-Kontrakt in `docs/upload-import-api-contract.md` vorbereitet.
+2. C2 naechster Schritt: Lokale Dateiablage / Storage-Service vorbereiten.
+3. C3/C4: Upload-Endpunkte fuer KnowledgeDocument und ImportJob getrennt implementieren.
 4. ImportJob beim Upload erzeugen oder verknuepfen, noch ohne Parsing.
 5. Excel-/CSV-Parsing fuer Einkaufshistorie und Anfragenkatalog entwickeln.
 6. Mapping- und Validierungslogik implementieren.

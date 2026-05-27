@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { revalidatePath } from "next/cache";
-import { ArrowLeft, ArrowRight, Building2, ClipboardList, Database, MessageSquareText, Save, Sparkles, Target } from "lucide-react";
+import { ArrowLeft, ArrowRight, Building2, ClipboardList, Database, Handshake, MessageSquareText, Save, Sparkles, Target } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { ErrorState } from "@/components/state-patterns";
@@ -47,6 +47,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   const supplierById = new Map(suppliers.map((supplier) => [supplier.id, supplier]));
   const requestById = new Map(requestItems.map((item) => [item.id, item]));
   const company = companyById.get(project.company_id);
+  const supplier = supplierById.get(project.supplier_profile_id ?? "");
 
   return (
     <>
@@ -79,7 +80,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               }))}
             />
             <Select
-              label="Supplier Profile"
+              label="Lieferantenprofil"
               name="supplier_profile_id"
               defaultValue={project.supplier_profile_id}
               options={suppliers.map((supplier) => ({
@@ -87,6 +88,13 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                 label: `${supplier.name} (${companyById.get(supplier.company_id)?.name ?? "Firma unbekannt"})`,
               }))}
             />
+            <p className="text-xs leading-5 text-muted-foreground md:col-span-2">
+              Lieferantenprofile lassen sich unter{" "}
+              <Link href="/suppliers" className="font-medium text-primary hover:underline">
+                Lieferanten
+              </Link>{" "}
+              anlegen und pflegen. Der Freitextwert fuer aktuelle Lieferanten bleibt fuer bestehenden Projektkontext erhalten.
+            </p>
             <Select
               label="Request Item"
               name="request_item_id"
@@ -156,7 +164,25 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               }
             />
             <Meta label="Owner" value={profileById.get(project.owner_id ?? "")?.display_name ?? "Nicht gesetzt"} />
-            <Meta label="Supplier" value={supplierById.get(project.supplier_profile_id ?? "")?.name ?? "Nicht gesetzt"} />
+            <Meta
+              label="Lieferantenprofil"
+              value={
+                supplier ? (
+                  <Link href={`/suppliers/${supplier.id}`} className="inline-flex items-center gap-2 text-primary">
+                    <Handshake className="size-4" />
+                    {supplier.name}
+                  </Link>
+                ) : (
+                  "Nicht gesetzt"
+                )
+              }
+            />
+            {supplier ? (
+              <Meta
+                label="Lieferantenkontext"
+                value={[supplier.country, supplier.industry, supplier.relationship_status].filter(Boolean).join(" - ") || "Keine Details gepflegt"}
+              />
+            ) : null}
             <Meta label="Request Item" value={requestById.get(project.request_item_id ?? "")?.title ?? "Nicht gesetzt"} />
             <Meta label="Status" value={project.status} />
             <Meta label="Kategorie" value={project.category || "Nicht gesetzt"} />

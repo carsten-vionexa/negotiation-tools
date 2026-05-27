@@ -35,6 +35,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase C9: Minimaler Validierungs-Endpunkt bewertet gemappte `ImportRow`-Daten und setzt reviewbare Row-/Job-Status
 - Phase C10: Zielobjekt-Endpunkt erzeugt `ProcurementHistoryItem` aus validierten gemappten `ImportRow`-Daten und setzt idempotente Row-Referenzen
 - Phase C11: Derselbe Zielobjekt-Endpunkt erzeugt `RequestItem` aus validierten gemappten `ImportRow`-Daten mit defensiver Titelableitung und idempotenten Row-Referenzen
+- Phase C12: Read-only-Frontend fuer ImportJobs und ImportRows unter `/imports` und `/imports/[id]` umgesetzt
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
 - Frontend-Hardening Issue #73: Frontend-Server-Actions weisen fehlende oder leere Pflichtfelder ueber einen gemeinsamen `FormData`-Helper mit nachvollziehbarer Meldung zurueck
@@ -124,7 +125,7 @@ Diese Punkte bleiben spaetere Ausbaustufen und duerfen nicht als bereits geliefe
 
 ## 8. Phase C: Upload und Import
 
-Status: Begonnen. C1 bis C11, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 sind umgesetzt.
+Status: Begonnen. C1 bis C12, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 sind umgesetzt.
 
 Ziel: Die Datenbasis des MVP praktisch befuellbar machen. Dabei sollen Upload, Dateiablage, ImportJobs, Parsing, Mapping, Validierung und Zielobjekt-Erzeugung schrittweise umgesetzt werden.
 
@@ -141,9 +142,10 @@ Schritte:
 9. C9 abgeschlossen: `POST /api/import-jobs/{id}/validate` bewertet gemappte Werte mit einem minimalen Regelsatz, setzt Row-Status, Job-Zaehler und eine Validierungszusammenfassung, ohne Zielobjekte anzulegen.
 10. C10 abgeschlossen: `POST /api/import-jobs/{id}/create-targets` erzeugt fuer validierte `procurement_history_item`-Jobs echte `ProcurementHistoryItem`-Datensaetze aus `mapped_data_json`, setzt Row-Zielreferenzen und verhindert erneute Erzeugung bereits importierter Rows.
 11. C11 abgeschlossen: Derselbe Create-Targets-Endpunkt erzeugt fuer validierte `request_item`-Jobs echte `RequestItem`-Datensaetze aus `mapped_data_json`, leitet bei Bedarf `title` aus `article_name` ab und belaesst den Modell-Defaultstatus `open`.
-12. Frontend Issue #66 abgeschlossen: `/suppliers` und `/suppliers/[id]` bilden SupplierProfile-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen den strukturierten Lieferantenbezug erreichbar und sichtbar.
-13. Frontend Issue #69 abgeschlossen: `/request-items` und `/request-items/[id]` bilden RequestItem-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen die strukturierte Anfrageposition erreichbar und sichtbar.
-14. Frontend Issue #73 abgeschlossen: Ein gemeinsamer `FormData`-Helper trimmt Formularstrings und bricht Pflichtfelder in Server Actions bei fehlenden oder leeren Werten mit feldbezogenem Fehler ab.
+12. C12 abgeschlossen: `/imports` und `/imports/[id]` stellen bestehende ImportJobs, Status-, Mapping-/Validierungs- und Row-Reviewdaten rein lesend dar und verlinken die Ansicht aus der Navigation.
+13. Frontend Issue #66 abgeschlossen: `/suppliers` und `/suppliers/[id]` bilden SupplierProfile-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen den strukturierten Lieferantenbezug erreichbar und sichtbar.
+14. Frontend Issue #69 abgeschlossen: `/request-items` und `/request-items/[id]` bilden RequestItem-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen die strukturierte Anfrageposition erreichbar und sichtbar.
+15. Frontend Issue #73 abgeschlossen: Ein gemeinsamer `FormData`-Helper trimmt Formularstrings und bricht Pflichtfelder in Server Actions bei fehlenden oder leeren Werten mit feldbezogenem Fehler ab.
 
 Wichtige Hinweise aus der MVP-Abnahme fuer Phase C:
 
@@ -154,6 +156,15 @@ Wichtige Hinweise aus der MVP-Abnahme fuer Phase C:
 Naechster sinnvoller Schritt:
 
 1. Naechsten fachlichen Schritt separat priorisieren.
+
+### Manuelle Pruefhilfe C12
+
+- `/imports` oeffnen und Navigation, Loading-, Error- und Empty-State pruefen.
+- Einen vorhandenen ImportJob oeffnen.
+- Auf `/imports/[id]` pruefen, ob Datei, Status, Zielobjekt, Zaehler und Summaries angezeigt werden.
+- Bei einem Job mit Rows pruefen, ob Raw-, Mapping-, Validierungs- und Zielreferenzdaten sichtbar sind.
+- Eine ungueltige ImportJob-ID aufrufen und Error-State pruefen.
+- Sicherstellen, dass keine Upload- oder Processing-Buttons sichtbar sind.
 
 ## 9. Phase D: Analyse und Strategieunterstuetzung
 

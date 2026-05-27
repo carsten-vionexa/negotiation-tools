@@ -70,6 +70,7 @@
 - Phase C9 umgesetzt: Minimalen Validierungs-Endpunkt fuer gemappte ImportRows implementiert, der `valid`/`invalid`, knappe Row-Fehler, Job-Zaehler und `validation_summary_json` setzt, ohne Zielobjekte, PDF/OCR oder KI-Validierung
 - Phase C10 umgesetzt: Zielobjekt-Erzeugung fuer validierte `procurement_history_item`-ImportRows mit `POST /import-jobs/{id}/create-targets`, Row-Zielreferenzen, Statusabschluss und Idempotenzschutz ueber `target_record_id` implementiert, ohne RequestItem-, SupplierProfile-, Frontend-, PDF/OCR- oder KI-Logik
 - Phase C11 umgesetzt: Zielobjekt-Erzeugung fuer validierte `request_item`-ImportRows ueber den bestehenden Create-Targets-Endpunkt mit defensiver `title`-Ableitung aus `article_name`, Modell-Defaultstatus und Idempotenzschutz implementiert, ohne SupplierProfile-, Frontend-, PDF/OCR-, KI-, Parser-, Mapping- oder neue Validierungslogik
+- Phase C12 umgesetzt: Read-only-Frontend-Liste und -Detailansicht fuer bestehende ImportJobs unter `/imports` und `/imports/[id]` mit Status-, Summary- und ImportRow-Reviewdaten sowie Navigationseintrag umgesetzt, ohne Upload-, Processing-, Backend- oder Migrationslogik
 - Frontend-Nutzbarkeitsflow Issue #66 umgesetzt: SupplierProfile-Liste sowie Create/Edit-Detailflow unter `/suppliers` ergaenzt, in die Navigation aufgenommen und den strukturierten Lieferantenbezug in Projektanlage und Projektdetail nutzbar gemacht, ohne Backend-, Import- oder Migrationslogik
 - Frontend-Nutzbarkeitsflow Issue #69 umgesetzt: RequestItem-Liste sowie Create/Edit-Detailflow unter `/request-items` ergaenzt, in die Navigation aufgenommen und die strukturierte Anfrageposition in Projektanlage und Projektdetail nutzbar gemacht, ohne Backend-, Import- oder Migrationslogik
 - Frontend-Hardening Issue #73 umgesetzt: Gemeinsamen `FormData`-Helper fuer getrimmte optionale Werte und explizite Pflichtfeldfehler eingefuehrt sowie die bestehenden Frontend-Server-Actions darauf umgestellt, ohne Backend-, Import- oder Migrationslogik
@@ -100,7 +101,7 @@ Ergebnis der C0.7-Abnahme:
 
 ## Phase C: Upload und Import
 
-Status: Phase C1 bis C11, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 umgesetzt.
+Status: Phase C1 bis C12, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 umgesetzt.
 
 Umgesetzte Schritte:
 
@@ -115,9 +116,10 @@ Umgesetzte Schritte:
 9. C9: `POST /import-jobs/{id}/validate` fuer Jobs im Status `mapped` umgesetzt; der Endpoint prueft gemappte Pflicht-, Zahlen-, Datums- und Waehrungswerte, markiert Rows als `valid` oder `invalid` und aggregiert das Review-Ergebnis als `validated`, auch wenn einzelne Rows fehlerhaft sind.
 10. C10: `POST /import-jobs/{id}/create-targets` fuer validierte Jobs mit Ziel `procurement_history_item` umgesetzt; der Endpoint erzeugt Zielobjekte ausschliesslich aus gueltigen `mapped_data_json`-Rows, setzt Row-Referenzen und schliesst idempotent als `completed` oder `completed_with_errors` ab.
 11. C11: Den bestehenden Create-Targets-Endpunkt fuer validierte Jobs mit Ziel `request_item` erweitert; er erzeugt echte `RequestItem`-Datensaetze aus gueltigen `mapped_data_json`-Rows, leitet fehlende Titel aus `article_name` ab und belaesst `status` beim Modell-Default `open`.
-12. Frontend Issue #66: SupplierProfiles als pflegbare Lieferantenstammdaten unter `/suppliers` bereitgestellt und fuer die Projektzuordnung sowie Projektanzeige erreichbar gemacht.
-13. Frontend Issue #69: RequestItems als pflegbare Anfragepositionen unter `/request-items` bereitgestellt und fuer die Projektzuordnung sowie strukturierte Projektanzeige erreichbar gemacht.
-14. Frontend Issue #73: Pflichtfelder in Frontend-Server-Actions ueber einen gemeinsamen `FormData`-Helper gegen fehlende oder leere Posts abgesichert; statt leerer Strings entsteht ein feldbezogener Fehler.
+12. C12: Bestehende ImportJobs unter `/imports` gelistet und unter `/imports/[id]` mit Datei-, Status-, Zaehler-, Summary- und ImportRow-Reviewdaten lesbar gemacht; die Navigation fuehrt zur Ansicht und stellt keine Verarbeitungsaktion bereit.
+13. Frontend Issue #66: SupplierProfiles als pflegbare Lieferantenstammdaten unter `/suppliers` bereitgestellt und fuer die Projektzuordnung sowie Projektanzeige erreichbar gemacht.
+14. Frontend Issue #69: RequestItems als pflegbare Anfragepositionen unter `/request-items` bereitgestellt und fuer die Projektzuordnung sowie strukturierte Projektanzeige erreichbar gemacht.
+15. Frontend Issue #73: Pflichtfelder in Frontend-Server-Actions ueber einen gemeinsamen `FormData`-Helper gegen fehlende oder leere Posts abgesichert; statt leerer Strings entsteht ein feldbezogener Fehler.
 
 Naechster Schritt:
 
@@ -140,6 +142,15 @@ erweitert denselben Endpoint um `RequestItem`-Zielobjekte. PDF-Verarbeitung
 bleibt separat vorgemerkt. Die Issues #66 und #69 machen die strukturierten
 SupplierProfile- und RequestItem-Bezuege anschliessend im Frontend pflegbar
 und in Projekten zuordenbar.
+
+## Manuelle Pruefhilfe C12
+
+- `/imports` oeffnen und Navigation, Loading-, Error- und Empty-State pruefen.
+- Einen vorhandenen ImportJob oeffnen.
+- Auf `/imports/[id]` pruefen, ob Datei, Status, Zielobjekt, Zaehler und Summaries angezeigt werden.
+- Bei einem Job mit Rows pruefen, ob Raw-, Mapping-, Validierungs- und Zielreferenzdaten sichtbar sind.
+- Eine ungueltige ImportJob-ID aufrufen und Error-State pruefen.
+- Sicherstellen, dass keine Upload- oder Processing-Buttons sichtbar sind.
 
 ## Manuelle Pruefhilfe Phase B7
 

@@ -73,6 +73,7 @@
 - Phase C12 umgesetzt: Read-only-Frontend-Liste und -Detailansicht fuer bestehende ImportJobs unter `/imports` und `/imports/[id]` mit Status-, Summary- und ImportRow-Reviewdaten sowie Navigationseintrag umgesetzt, ohne Upload-, Processing-, Backend- oder Migrationslogik
 - Phase C13 umgesetzt: CSV-/XLSX-Upload-Frontend unter `/imports/new` mit Company-/Projektkontext, `source_type`, `target_entity`, Server-Action-Validierung und Redirect auf `/imports/[id]` umgesetzt, ohne Processing-, Backend- oder Migrationslogik
 - Phase C14 umgesetzt: Parse-Aktion fuer `pending` CSV-/XLSX-ImportJobs in `/imports/[id]` mit Server-Action-Fehleranzeige, Revalidierung und bestehender Row-Reviewanzeige umgesetzt, ohne Mapping-, Validate-, Create-Targets-, Backend- oder Migrationslogik
+- Phase C15 umgesetzt: Explizite Mapping-Aktion fuer `parsed` ImportJobs in `/imports/[id]` mit Raw-Quellfeldauswahl, target-entity-spezifischen Zielfeldern und sichtbaren `mapping_json`-/`mapped_data_json`-Ergebnissen umgesetzt, ohne Validate-, Create-Targets-, Backend- oder Migrationslogik
 - Frontend-Nutzbarkeitsflow Issue #66 umgesetzt: SupplierProfile-Liste sowie Create/Edit-Detailflow unter `/suppliers` ergaenzt, in die Navigation aufgenommen und den strukturierten Lieferantenbezug in Projektanlage und Projektdetail nutzbar gemacht, ohne Backend-, Import- oder Migrationslogik
 - Frontend-Nutzbarkeitsflow Issue #69 umgesetzt: RequestItem-Liste sowie Create/Edit-Detailflow unter `/request-items` ergaenzt, in die Navigation aufgenommen und die strukturierte Anfrageposition in Projektanlage und Projektdetail nutzbar gemacht, ohne Backend-, Import- oder Migrationslogik
 - Frontend-Hardening Issue #73 umgesetzt: Gemeinsamen `FormData`-Helper fuer getrimmte optionale Werte und explizite Pflichtfeldfehler eingefuehrt sowie die bestehenden Frontend-Server-Actions darauf umgestellt, ohne Backend-, Import- oder Migrationslogik
@@ -103,7 +104,7 @@ Ergebnis der C0.7-Abnahme:
 
 ## Phase C: Upload und Import
 
-Status: Phase C1 bis C14, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 umgesetzt.
+Status: Phase C1 bis C15, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 umgesetzt.
 
 Umgesetzte Schritte:
 
@@ -121,9 +122,10 @@ Umgesetzte Schritte:
 12. C12: Bestehende ImportJobs unter `/imports` gelistet und unter `/imports/[id]` mit Datei-, Status-, Zaehler-, Summary- und ImportRow-Reviewdaten lesbar gemacht; die Navigation fuehrt zur Ansicht und stellt keine Verarbeitungsaktion bereit.
 13. C13: Einen sichtbaren Einstieg unter `/imports` und das Upload-Formular `/imports/new` fuer `.csv`/`.xlsx` bereitgestellt; der serverseitige Multipart-Upload validiert Pflichtfelder und fuehrt nach Anlage direkt in die Read-only-Detailansicht, ohne Processing auszulösen.
 14. C14: In `/imports/[id]` den Parse-Start ausschliesslich fuer `pending`-Jobs bereitgestellt; Erfolg aktualisiert Status, Zaehler und ImportRows fuer Review, waehrend API-/Statusfehler sichtbar bleiben.
-15. Frontend Issue #66: SupplierProfiles als pflegbare Lieferantenstammdaten unter `/suppliers` bereitgestellt und fuer die Projektzuordnung sowie Projektanzeige erreichbar gemacht.
-16. Frontend Issue #69: RequestItems als pflegbare Anfragepositionen unter `/request-items` bereitgestellt und fuer die Projektzuordnung sowie strukturierte Projektanzeige erreichbar gemacht.
-17. Frontend Issue #73: Pflichtfelder in Frontend-Server-Actions ueber einen gemeinsamen `FormData`-Helper gegen fehlende oder leere Posts abgesichert; statt leerer Strings entsteht ein feldbezogener Fehler.
+15. C15: In `/imports/[id]` fuer `parsed`-Jobs ein explizites Mappingformular bereitgestellt; Quellfelder stammen aus sichtbaren `raw_data_json`, Zielfelder aus dem bestehenden Vertrag und Erfolg aktualisiert `mapping_json` sowie gemappte Row-Daten im Review.
+16. Frontend Issue #66: SupplierProfiles als pflegbare Lieferantenstammdaten unter `/suppliers` bereitgestellt und fuer die Projektzuordnung sowie Projektanzeige erreichbar gemacht.
+17. Frontend Issue #69: RequestItems als pflegbare Anfragepositionen unter `/request-items` bereitgestellt und fuer die Projektzuordnung sowie strukturierte Projektanzeige erreichbar gemacht.
+18. Frontend Issue #73: Pflichtfelder in Frontend-Server-Actions ueber einen gemeinsamen `FormData`-Helper gegen fehlende oder leere Posts abgesichert; statt leerer Strings entsteht ein feldbezogener Fehler.
 
 Naechster Schritt:
 
@@ -144,8 +146,9 @@ die gemappten Row-Werte und setzt Review-Status. C10 erzeugt
 `ProcurementHistoryItem`-Zielobjekte aus validierten gemappten Rows; C11
 erweitert denselben Endpoint um `RequestItem`-Zielobjekte. C12 macht ImportJobs
 und Rows im Frontend sichtbar; C13 ergaenzt das Anlegen per CSV-/XLSX-Upload.
-C14 macht ausschliesslich den ersten Processing-Schritt Parse in der Detailansicht
-nutzbar; Mapping, Validierung und Zielobjekt-Erzeugung bleiben ohne Frontend-Aktion.
+C14 macht den ersten Processing-Schritt Parse in der Detailansicht nutzbar;
+C15 ergaenzt anschliessend ausschliesslich das explizite Mapping geparster Rows.
+Validierung und Zielobjekt-Erzeugung bleiben ohne Frontend-Aktion.
 PDF-Verarbeitung bleibt separat vorgemerkt. Die Issues #66 und #69 machen die strukturierten
 SupplierProfile- und RequestItem-Bezuege anschliessend im Frontend pflegbar
 und in Projekten zuordenbar.
@@ -159,7 +162,7 @@ und in Projekten zuordenbar.
 - Eine gueltige XLSX-Datei mit `source_type=excel` und passender `target_entity` hochladen.
 - Nach jedem erfolgreichen Upload den Redirect auf `/imports/[id]` pruefen.
 - In `/imports` pruefen, ob die neuen Jobs sichtbar sind.
-- Sicherstellen, dass keine Map-/Validate-/Create-Targets-Buttons sichtbar sind.
+- Sicherstellen, dass keine Validate-/Create-Targets-Buttons sichtbar sind.
 
 ## Manuelle Pruefhilfe C14
 
@@ -168,7 +171,16 @@ und in Projekten zuordenbar.
 - Die Parse-Aktion ausloesen und nach Erfolg pruefen, ob Status, `total_rows`, `processed_rows`, `valid_rows`, `error_rows` sowie erzeugte ImportRows mit Reviewdaten aktualisiert sichtbar sind.
 - Eine XLSX-Datei ueber `/imports/new` hochladen und denselben Parse-Test ausfuehren; bei den ImportRows insbesondere `sheet_name` pruefen.
 - Bei einem nicht mehr `pending` Job pruefen, dass keine Parse-Aktion angeboten wird und stattdessen die Statusinformation sichtbar ist.
-- Sicherstellen, dass keine Map-/Validate-/Create-Targets-Buttons sichtbar sind.
+- Sicherstellen, dass keine Validate-/Create-Targets-Buttons sichtbar sind.
+
+## Manuelle Pruefhilfe C15
+
+- Eine CSV-Datei ueber `/imports/new` hochladen, parsen und pruefen, ob `ImportRows.raw_data_json` sichtbar sind.
+- Bei Status `parsed` das Mapping-Formular nutzen und fuer `target_entity=procurement_history_item` Zielfelder auf vorhandene Quellfelder mappen.
+- Das Mapping ausloesen und pruefen, ob der Status `mapped`, `mapping_json` und `mapped_data_json` sichtbar sind; `raw_data_json` bleibt weiterhin sichtbar.
+- Eine XLSX-Datei beziehungsweise einen `request_item`-Import mit derselben Upload-, Parse- und Mapping-Strecke pruefen.
+- Bei einem nicht `parsed` Job pruefen, dass keine Mapping-Aktion angeboten wird und stattdessen eine Statusinformation erscheint.
+- Sicherstellen, dass keine Validate-/Create-Targets-Buttons sichtbar sind.
 
 ## Manuelle Pruefhilfe Phase B7
 

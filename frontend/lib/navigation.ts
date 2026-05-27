@@ -5,6 +5,7 @@ import {
   Building2,
   ClipboardCheck,
   ClipboardList,
+  FileInput,
   FileSearch,
   Handshake,
   LayoutDashboard,
@@ -78,6 +79,12 @@ export const navigationGroups: NavigationGroup[] = [
         description: "Quellen, Claims und Importstatus",
         icon: BookOpen,
       },
+      {
+        label: "Imports",
+        href: "/imports",
+        description: "ImportJobs und Row-Review",
+        icon: FileInput,
+      },
     ],
   },
   {
@@ -125,6 +132,7 @@ export const workflowSteps = [
   "Anfragepositionen",
   "Projekte",
   "Datenbasis",
+  "Imports",
   "Analyse",
   "Strategie",
   "Briefing",

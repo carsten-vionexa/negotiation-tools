@@ -33,6 +33,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase C7: XLSX-Parser-Endpunkt erzeugt reviewbare `ImportRow`-Rohdaten aus dem ersten sichtbaren Worksheet gespeicherter ImportJobs
 - Phase C8: Expliziter Mapping-Endpunkt befuellt `ImportJob.mapping_json` und `ImportRow.mapped_data_json` aus reviewbaren Rohdaten
 - Phase C9: Minimaler Validierungs-Endpunkt bewertet gemappte `ImportRow`-Daten und setzt reviewbare Row-/Job-Status
+- Phase C10: Zielobjekt-Endpunkt erzeugt `ProcurementHistoryItem` aus validierten gemappten `ImportRow`-Daten und setzt idempotente Row-Referenzen
 
 Der aktuelle MVP-Workflow lautet:
 
@@ -101,7 +102,7 @@ Nicht Teil des aktuellen MVP sind:
 
 - produktiver Datei-Upload und Dateiimport
 - Excel-/CSV-/PDF-/Markdown-Parsing
-- automatische Zielobjekt-Erzeugung aus Importdaten
+- Zielobjekt-Erzeugung aus Importdaten fuer andere Zieltypen als das in C10 implementierte `ProcurementHistoryItem`
 - semantische Dokumentintelligenz mit Embeddings
 - OCR
 - automatische Claim-Extraktion
@@ -119,7 +120,7 @@ Diese Punkte bleiben spaetere Ausbaustufen und duerfen nicht als bereits geliefe
 
 ## 8. Phase C: Upload und Import
 
-Status: Begonnen. C1 bis C9 sind umgesetzt; C10 Zielobjekt-Erzeugung fuer `ProcurementHistoryItem` ist der naechste Schritt.
+Status: Begonnen. C1 bis C10 sind umgesetzt; C11 Zielobjekt-Erzeugung fuer `RequestItem` ist der naechste Schritt.
 
 Ziel: Die Datenbasis des MVP praktisch befuellbar machen. Dabei sollen Upload, Dateiablage, ImportJobs, Parsing, Mapping, Validierung und Zielobjekt-Erzeugung schrittweise umgesetzt werden.
 
@@ -134,8 +135,8 @@ Schritte:
 7. C7 abgeschlossen: Derselbe Parse-Endpunkt liest gespeicherte XLSX-Dateien mit separatem technischen Parser und erzeugt aus dem ersten sichtbaren Worksheet ausschliesslich pruefbare `ImportRow`-Rohdaten mit Sheet-Kontext.
 8. C8 abgeschlossen: `POST /api/import-jobs/{id}/map` wendet ein explizites Mapping auf geparste CSV-/XLSX-Rohdaten an und befuellt ausschliesslich `mapping_json` und `mapped_data_json`.
 9. C9 abgeschlossen: `POST /api/import-jobs/{id}/validate` bewertet gemappte Werte mit einem minimalen Regelsatz, setzt Row-Status, Job-Zaehler und eine Validierungszusammenfassung, ohne Zielobjekte anzulegen.
-10. C10 als naechster Schritt: Zielobjekt-Erzeugung fuer `ProcurementHistoryItem` vorbereiten.
-11. C11: Zielobjekt-Erzeugung fuer `RequestItem` vorbereiten.
+10. C10 abgeschlossen: `POST /api/import-jobs/{id}/create-targets` erzeugt fuer validierte `procurement_history_item`-Jobs echte `ProcurementHistoryItem`-Datensaetze aus `mapped_data_json`, setzt Row-Zielreferenzen und verhindert erneute Erzeugung bereits importierter Rows.
+11. C11 als naechster Schritt: Zielobjekt-Erzeugung fuer `RequestItem` umsetzen.
 
 Wichtige Hinweise aus der MVP-Abnahme fuer Phase C:
 

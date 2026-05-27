@@ -68,6 +68,7 @@
 - Phase C7 umgesetzt: XLSX-Parser an den bestehenden Parse-Endpunkt angeschlossen, der aus dem ersten sichtbaren Worksheet atomar ausschliesslich technische `ImportRow`-Rohdaten mit Sheet- und Quellzeilenbezug erzeugt, ohne PDF/OCR, Mapping, Validierung oder Zielobjekt-Erzeugung
 - Phase C8 umgesetzt: Expliziten Mapping-Endpunkt fuer geparste ImportJobs implementiert, der validierte Mapping-Konfigurationen und unveraenderte Raw-Werte ausschliesslich in `ImportJob.mapping_json` und `ImportRow.mapped_data_json` uebernimmt, ohne Validierung, Zielobjekte, PDF/OCR oder KI-Zuordnung
 - Phase C9 umgesetzt: Minimalen Validierungs-Endpunkt fuer gemappte ImportRows implementiert, der `valid`/`invalid`, knappe Row-Fehler, Job-Zaehler und `validation_summary_json` setzt, ohne Zielobjekte, PDF/OCR oder KI-Validierung
+- Phase C10 umgesetzt: Zielobjekt-Erzeugung fuer validierte `procurement_history_item`-ImportRows mit `POST /import-jobs/{id}/create-targets`, Row-Zielreferenzen, Statusabschluss und Idempotenzschutz ueber `target_record_id` implementiert, ohne RequestItem-, SupplierProfile-, Frontend-, PDF/OCR- oder KI-Logik
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -95,7 +96,7 @@ Ergebnis der C0.7-Abnahme:
 
 ## Phase C: Upload und Import
 
-Status: Phase C1 bis C9 umgesetzt; C10 ist als erster Zielobjekt-Schritt der naechste Implementierungsschritt.
+Status: Phase C1 bis C10 umgesetzt; C11 ist als naechster Zielobjekt-Schritt vorgesehen.
 
 Umgesetzte Schritte:
 
@@ -108,10 +109,11 @@ Umgesetzte Schritte:
 7. C7: Den bestehenden Parse-Endpunkt fuer gespeicherte XLSX-Dateien erweitert; der separate technische Parser liest das erste sichtbare Worksheet, erhaelt `sheet_name` und Quellzeilennummern und verwendet denselben reinen Raw-Row-Vertrag wie CSV.
 8. C8: `POST /import-jobs/{id}/map` fuer Jobs im Status `parsed` umgesetzt; der Endpoint verlangt ein explizites `field_mapping`, verwendet die bestehenden Modellfeldnamen und befuellt atomar ausschliesslich Mapping-Konfiguration und gemappte Row-Rohwerte.
 9. C9: `POST /import-jobs/{id}/validate` fuer Jobs im Status `mapped` umgesetzt; der Endpoint prueft gemappte Pflicht-, Zahlen-, Datums- und Waehrungswerte, markiert Rows als `valid` oder `invalid` und aggregiert das Review-Ergebnis als `validated`, auch wenn einzelne Rows fehlerhaft sind.
+10. C10: `POST /import-jobs/{id}/create-targets` fuer validierte Jobs mit Ziel `procurement_history_item` umgesetzt; der Endpoint erzeugt Zielobjekte ausschliesslich aus gueltigen `mapped_data_json`-Rows, setzt Row-Referenzen und schliesst idempotent als `completed` oder `completed_with_errors` ab.
 
 Naechster Schritt:
 
-1. C10: Zielobjekt-Erzeugung fuer `ProcurementHistoryItem` auf Basis validierter Rows vorbereiten.
+1. C11: Zielobjekt-Erzeugung fuer `RequestItem` auf Basis validierter Rows umsetzen.
 
 C1 definiert getrennte Zielvertraege fuer Knowledge-Uploads und Import-Uploads,
 Request-/Response-Metadaten, Startstatus, Sicherheitsregeln,
@@ -124,8 +126,10 @@ von `pending` zu reviewbaren Rohdaten; die Parser-Implementierung beginnt mit
 C6. C6 implementiert ausschliesslich den CSV-Rohdatenparser, C7 denselben
 Rohdatenvertrag fuer XLSX mit Worksheet-Kontext. C8 wendet darauf
 ausschliesslich explizite Mapping-Regeln an. C9 bewertet darauf ausschliesslich
-die gemappten Row-Werte und setzt Review-Status; Zielobjekte bleiben dem
-getrennten Folgeschritt vorbehalten. PDF-Verarbeitung bleibt separat vorgemerkt.
+die gemappten Row-Werte und setzt Review-Status. C10 erzeugt ausschliesslich
+`ProcurementHistoryItem`-Zielobjekte aus validierten gemappten Rows; die
+`RequestItem`-Erzeugung bleibt C11 vorbehalten. PDF-Verarbeitung bleibt separat
+vorgemerkt.
 
 ## Manuelle Pruefhilfe Phase B7
 
@@ -207,6 +211,6 @@ getrennten Folgeschritt vorbehalten. PDF-Verarbeitung bleibt separat vorgemerkt.
 
 ## Naechste Schritte
 
-1. Phase C10: Zielobjekt-Erzeugung fuer `ProcurementHistoryItem` auf Basis validierter Rows vorbereiten.
-2. Danach Zielobjekt-Erzeugung in getrennten Issues umsetzen; PDF-Verarbeitung bleibt separat in Issue #55 vorgemerkt.
+1. Phase C11: Zielobjekt-Erzeugung fuer `RequestItem` auf Basis validierter Rows umsetzen.
+2. Weitere Zielobjekt-Erzeugung bleibt getrennten Issues vorbehalten; PDF-Verarbeitung bleibt separat in Issue #55 vorgemerkt.
 3. Offene Nicht-Blocker aus `docs/mvp-acceptance-results.md` bei der Phase-C-Planung beruecksichtigen, insbesondere SupplierProfile- und RequestItem-Frontend-Flows.

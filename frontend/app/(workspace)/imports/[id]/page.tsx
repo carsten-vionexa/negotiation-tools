@@ -9,6 +9,8 @@ import { getImportJob } from "@/lib/api/import-jobs";
 import { listImportRows, type ImportRowSummary } from "@/lib/api/import-rows";
 import { getNegotiationProject } from "@/lib/api/negotiation-projects";
 
+import { ImportParseForm } from "./parse-form";
+
 export default async function ImportDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   let company;
@@ -99,6 +101,17 @@ export default async function ImportDetailPage({ params }: { params: Promise<{ i
           </dl>
         </aside>
       </section>
+
+      {importJob.status === "pending" ? (
+        <ImportParseForm importJobId={importJob.id} />
+      ) : (
+        <section className="rounded-md border border-border bg-card p-5">
+          <h2 className="text-base font-semibold">Parsing</h2>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            Parsing ist nur fuer ImportJobs im Status pending verfuegbar. Dieser Job hat bereits den Status {importJob.status}.
+          </p>
+        </section>
+      )}
 
       <section className="grid gap-4 lg:grid-cols-2">
         <JsonPanel title="Mapping" value={importJob.mapping_json} />

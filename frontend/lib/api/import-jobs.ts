@@ -1,4 +1,4 @@
-import { apiGet, apiPostForm } from "@/lib/api-client";
+import { apiGet, apiPost, apiPostForm } from "@/lib/api-client";
 
 export type ImportJobSummary = {
   id: string;
@@ -67,4 +67,8 @@ export function uploadImportJob(payload: ImportJobUpload) {
   }
 
   return apiPostForm<ImportJobRead>("/api/import-jobs/upload", formData);
+}
+
+export function parseImportJob(id: string) {
+  return apiPost<ImportJobRead>(`/api/import-jobs/${id}/parse`, undefined);
 }

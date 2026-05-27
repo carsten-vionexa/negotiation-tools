@@ -15,12 +15,13 @@ Geprueft werden die vorhandenen MVP-Routen und die wichtigsten Query-Parameter-F
 - Profile-Flow
 - Project-Flow
 - Knowledge-Base-Flow
+- ImportJob-Upload- und Parse-Review-Flow
 - Analysis-Flow
 - Strategy-Flow
 - Simulation-Scenario-Flow
 - Trainerreview-Flow
 
-Nicht geprueft werden produktive Upload-/Import-Funktionen, RAG, OCR, Voice, Chat, Streaming oder automatische Auswertung, weil diese bewusst nicht Teil des aktuellen MVP sind.
+Geprueft wird die begrenzte ImportJob-Strecke aus CSV-/XLSX-Upload und manuellem Parse-Start. Nicht geprueft werden eine vollstaendige Import-Processing-Automation, Mapping-/Validate-/Create-Targets-UI, RAG, OCR, Voice, Chat, Streaming oder automatische Auswertung, weil diese bewusst nicht Teil des aktuellen MVP sind.
 
 ## 3. Voraussetzungen
 
@@ -136,7 +137,7 @@ Empfohlene Testdaten:
 | Route oeffnet | Datenbasis-Auswahl oder Uebersicht erscheint | offen |  |
 | Empty State | Fehlende Quellen, Claims oder Einkaufsdaten werden verstaendlich dargestellt | offen |  |
 | Projektwahl / Links | vorhandene Projekte koennen zur projektbezogenen Datenbasis fuehren | offen |  |
-| Nicht-MVP-Grenze | keine produktive Upload-/Import-Engine sichtbar | offen |  |
+| Nicht-MVP-Grenze | keine semantische Dokumentverarbeitung, OCR- oder automatische Analysefunktion sichtbar | offen |  |
 | Error State | API-Fehler wird sichtbar angezeigt | offen |  |
 
 ### 5.9 `/knowledge-base?projectId=<existing-project-id>`
@@ -151,7 +152,19 @@ Empfohlene Testdaten:
 | Zur Analyse | Link zu `/analysis?projectId=<id>` funktioniert, sofern vorhanden | offen |  |
 | Ungueltige Projekt-ID | verstaendlicher Error State | offen |  |
 
-### 5.10 `/analysis`
+### 5.10 `/imports`, `/imports/new` und `/imports/[id]`
+
+| Pruefpunkt | Erwartung | Ergebnis | Notiz |
+|---|---|---|---|
+| Liste und Upload-Einstieg | `/imports` listet Jobs oder zeigt einen Empty State und verlinkt auf `/imports/new` | offen |  |
+| CSV-Upload | Gueltige `.csv`-Datei erzeugt einen `pending` ImportJob und fuehrt in dessen Detailansicht | offen |  |
+| CSV-Parse | `ImportJob parsen` aktualisiert Status und Zaehler und macht geparste ImportRows sichtbar | offen |  |
+| XLSX-Parse | Dieselbe Strecke funktioniert fuer `.xlsx`; erzeugte Rows zeigen Sheet-Kontext | offen |  |
+| Statusgrenze | Bei einem nicht mehr `pending` Job wird keine Parse-Aktion angeboten | offen |  |
+| Processing-Grenze | Keine Map-/Validate-/Create-Targets-Aktion wird angeboten | offen |  |
+| Error State | Upload- oder Parse-API-Fehler wird verstaendlich sichtbar statt einer leeren Seite | offen |  |
+
+### 5.11 `/analysis`
 
 | Pruefpunkt | Erwartung | Ergebnis | Notiz |
 |---|---|---|---|
@@ -160,7 +173,7 @@ Empfohlene Testdaten:
 | Empty State | Wenn keine Projekte vorhanden sind, wird naechster Schritt verstaendlich beschrieben | offen |  |
 | Error State | API-Fehler wird sichtbar angezeigt | offen |  |
 
-### 5.11 `/analysis?projectId=<existing-project-id>`
+### 5.12 `/analysis?projectId=<existing-project-id>`
 
 | Pruefpunkt | Erwartung | Ergebnis | Notiz |
 |---|---|---|---|
@@ -172,7 +185,7 @@ Empfohlene Testdaten:
 | Zur Strategie | Link zu `/strategy?projectId=<id>` funktioniert | offen |  |
 | Ungueltige Projekt-ID | verstaendlicher Error State | offen |  |
 
-### 5.12 `/strategy`
+### 5.13 `/strategy`
 
 | Pruefpunkt | Erwartung | Ergebnis | Notiz |
 |---|---|---|---|
@@ -181,7 +194,7 @@ Empfohlene Testdaten:
 | Empty State | Wenn keine Projekte vorhanden sind, wird naechster Schritt verstaendlich beschrieben | offen |  |
 | Error State | API-Fehler wird sichtbar angezeigt | offen |  |
 
-### 5.13 `/strategy?projectId=<existing-project-id>`
+### 5.14 `/strategy?projectId=<existing-project-id>`
 
 | Pruefpunkt | Erwartung | Ergebnis | Notiz |
 |---|---|---|---|
@@ -197,7 +210,7 @@ Empfohlene Testdaten:
 | Zum Trainerreview | Link zu `/trainer-review?projectId=<id>` funktioniert | offen |  |
 | Nicht-MVP-Grenze | keine automatische ZOPA-/BATNA-/KI-Strategie-Funktion sichtbar | offen |  |
 
-### 5.14 `/simulation`
+### 5.15 `/simulation`
 
 | Pruefpunkt | Erwartung | Ergebnis | Notiz |
 |---|---|---|---|
@@ -206,7 +219,7 @@ Empfohlene Testdaten:
 | Nicht-MVP-Grenze | Seite kommuniziert Vorbereitung statt produktiver Simulation | offen |  |
 | Error State | API-Fehler wird sichtbar angezeigt | offen |  |
 
-### 5.15 `/simulation?projectId=<existing-project-id>`
+### 5.16 `/simulation?projectId=<existing-project-id>`
 
 | Pruefpunkt | Erwartung | Ergebnis | Notiz |
 |---|---|---|---|
@@ -218,7 +231,7 @@ Empfohlene Testdaten:
 | Zum Trainerreview | Link zu `/trainer-review?projectId=<id>` oder Szenario-Review funktioniert | offen |  |
 | Nicht-MVP-Grenze | kein Chat, kein Voice, keine produktive Simulation, kein Streaming | offen |  |
 
-### 5.16 `/trainer-review`
+### 5.17 `/trainer-review`
 
 | Pruefpunkt | Erwartung | Ergebnis | Notiz |
 |---|---|---|---|
@@ -229,7 +242,7 @@ Empfohlene Testdaten:
 | Nicht-MVP-Grenze | keine automatische Bewertung oder Score-Engine sichtbar | offen |  |
 | Error State | API-Fehler wird sichtbar angezeigt | offen |  |
 
-### 5.17 `/trainer-review?projectId=<existing-project-id>`
+### 5.18 `/trainer-review?projectId=<existing-project-id>`
 
 | Pruefpunkt | Erwartung | Ergebnis | Notiz |
 |---|---|---|---|
@@ -239,7 +252,7 @@ Empfohlene Testdaten:
 | Szenarioauswahl | vorhandenes Szenario fuehrt zu `/trainer-review?scenarioId=<id>` | offen |  |
 | Ungueltige Projekt-ID | verstaendlicher Error State | offen |  |
 
-### 5.18 `/trainer-review?scenarioId=<existing-scenario-id>`
+### 5.19 `/trainer-review?scenarioId=<existing-scenario-id>`
 
 | Pruefpunkt | Erwartung | Ergebnis | Notiz |
 |---|---|---|---|
@@ -262,7 +275,7 @@ Empfohlene Testdaten:
 | Error States | Backend-/API-Fehler werden sichtbar angezeigt | offen |  |
 | Query-Parameter | gueltige IDs laden Kontext; ungueltige IDs erzeugen Error State | offen |  |
 | Workflow-Kette | Project -> Knowledge Base -> Imports -> Analysis -> Strategy -> Simulation -> Trainerreview ist klickbar | offen |  |
-| Nicht-MVP-Grenzen | keine Upload-/Import-, RAG-, OCR-, Voice-, Chat- oder produktive Simulationsfunktion wird suggeriert | offen |  |
+| Nicht-MVP-Grenzen | keine vollstaendige Importautomation, Mapping-/Validate-/Create-Targets-UI, RAG-, OCR-, Voice-, Chat- oder produktive Simulationsfunktion wird suggeriert | offen |  |
 
 ## 7. Backend-nicht-erreichbar-Test
 
@@ -291,6 +304,7 @@ Optionaler Negativtest:
 | Profile-Flow | offen | nein |  |
 | Project-Flow | offen | nein |  |
 | Knowledge Base | offen | nein |  |
+| Imports / Parse-Review | offen | nein |  |
 | Analysis | offen | nein |  |
 | Strategy | offen | nein |  |
 | Simulation | offen | nein |  |
@@ -319,8 +333,9 @@ Nicht Bestandteil dieses Plans sind:
 - Playwright-/Cypress-/E2E-Automation,
 - Unit-Tests,
 - API-Contract-Tests,
-- produktiver Upload/Import,
-- Excel-/CSV-Parsing,
+- vollstaendig produktiver Import inklusive Processing-/Review-Automation,
+- Mapping-/Validate-/Create-Targets-UI,
+- PDF-/OCR-Parsing oder semantische Dokumentverarbeitung,
 - RAG,
 - OCR,
 - Embeddings,

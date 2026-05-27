@@ -6,7 +6,7 @@ Phase C0 stabilisiert den nach Phase B erreichten MVP-Stand, bevor Phase C Uploa
 
 Der pruefbare MVP-Workflow lautet:
 
-`Company -> Profile -> Project -> Knowledge Base -> Analysis -> Strategy -> Simulation -> Trainerreview`
+`Company -> Profile -> Project -> Knowledge Base -> Imports -> Analysis -> Strategy -> Simulation -> Trainerreview`
 
 Die Abnahme soll klaeren:
 

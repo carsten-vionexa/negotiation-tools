@@ -1,4 +1,4 @@
-import { apiGet } from "@/lib/api-client";
+import { apiGet, apiPostForm } from "@/lib/api-client";
 
 export type ImportJobSummary = {
   id: string;
@@ -29,6 +29,14 @@ export type ImportJobSummary = {
 
 export type ImportJobRead = ImportJobSummary;
 
+export type ImportJobUpload = {
+  file: File;
+  company_id: string;
+  project_id?: string | null;
+  source_type: "csv" | "excel";
+  target_entity: "procurement_history_item" | "request_item";
+};
+
 export type ImportJobListFilters = {
   company_id?: string;
   negotiation_project_id?: string;
@@ -45,4 +53,18 @@ export function listImportJobs(filters?: ImportJobListFilters) {
 
 export function getImportJob(id: string) {
   return apiGet<ImportJobRead>(`/api/import-jobs/${id}`, { cache: "no-store" });
+}
+
+export function uploadImportJob(payload: ImportJobUpload) {
+  const formData = new FormData();
+  formData.set("file", payload.file);
+  formData.set("company_id", payload.company_id);
+  formData.set("source_type", payload.source_type);
+  formData.set("target_entity", payload.target_entity);
+
+  if (payload.project_id) {
+    formData.set("project_id", payload.project_id);
+  }
+
+  return apiPostForm<ImportJobRead>("/api/import-jobs/upload", formData);
 }

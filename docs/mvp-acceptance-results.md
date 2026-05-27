@@ -12,7 +12,7 @@ Der MVP-Abnahmetest wurde erfolgreich durchgefuehrt. Die technische Verifikation
 
 Gepruefter MVP-Workflow:
 
-`Company -> Profile -> Project -> Knowledge Base -> Analysis -> Strategy -> Simulation Scenario -> Trainerreview`
+`Company -> Profile -> Project -> Knowledge Base -> Imports -> Analysis -> Strategy -> Simulation Scenario -> Trainerreview`
 
 ## 2. Repository-Stand
 
@@ -351,7 +351,7 @@ Der Browser-Smoke-Test der zentralen MVP-Kernrouten ist bestanden.
 
 Getesteter Workflow:
 
-`Company -> Profile -> Project -> Knowledge Base -> Analysis -> Strategy -> Simulation Scenario -> Trainerreview`
+`Company -> Profile -> Project -> Knowledge Base -> Imports -> Analysis -> Strategy -> Simulation Scenario -> Trainerreview`
 
 Getesteter Kontext:
 

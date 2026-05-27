@@ -36,13 +36,14 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase C10: Zielobjekt-Endpunkt erzeugt `ProcurementHistoryItem` aus validierten gemappten `ImportRow`-Daten und setzt idempotente Row-Referenzen
 - Phase C11: Derselbe Zielobjekt-Endpunkt erzeugt `RequestItem` aus validierten gemappten `ImportRow`-Daten mit defensiver Titelableitung und idempotenten Row-Referenzen
 - Phase C12: Read-only-Frontend fuer ImportJobs und ImportRows unter `/imports` und `/imports/[id]` umgesetzt
+- Phase C13: Upload-Frontend fuer CSV-/XLSX-ImportJobs unter `/imports/new` mit Redirect in die Read-only-Detailansicht umgesetzt
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
 - Frontend-Hardening Issue #73: Frontend-Server-Actions weisen fehlende oder leere Pflichtfelder ueber einen gemeinsamen `FormData`-Helper mit nachvollziehbarer Meldung zurueck
 
 Der aktuelle MVP-Workflow lautet:
 
-`Company -> Profile -> Project -> Knowledge Base -> Analysis -> Strategy -> Simulation Scenario Configuration -> Trainerreview`
+`Company -> Profile -> Project -> Knowledge Base -> Imports -> Analysis -> Strategy -> Simulation Scenario Configuration -> Trainerreview`
 
 ## 3. Roadmap-Prinzipien
 
@@ -125,7 +126,7 @@ Diese Punkte bleiben spaetere Ausbaustufen und duerfen nicht als bereits geliefe
 
 ## 8. Phase C: Upload und Import
 
-Status: Begonnen. C1 bis C12, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 sind umgesetzt.
+Status: Begonnen. C1 bis C13, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 sind umgesetzt.
 
 Ziel: Die Datenbasis des MVP praktisch befuellbar machen. Dabei sollen Upload, Dateiablage, ImportJobs, Parsing, Mapping, Validierung und Zielobjekt-Erzeugung schrittweise umgesetzt werden.
 
@@ -143,9 +144,10 @@ Schritte:
 10. C10 abgeschlossen: `POST /api/import-jobs/{id}/create-targets` erzeugt fuer validierte `procurement_history_item`-Jobs echte `ProcurementHistoryItem`-Datensaetze aus `mapped_data_json`, setzt Row-Zielreferenzen und verhindert erneute Erzeugung bereits importierter Rows.
 11. C11 abgeschlossen: Derselbe Create-Targets-Endpunkt erzeugt fuer validierte `request_item`-Jobs echte `RequestItem`-Datensaetze aus `mapped_data_json`, leitet bei Bedarf `title` aus `article_name` ab und belaesst den Modell-Defaultstatus `open`.
 12. C12 abgeschlossen: `/imports` und `/imports/[id]` stellen bestehende ImportJobs, Status-, Mapping-/Validierungs- und Row-Reviewdaten rein lesend dar und verlinken die Ansicht aus der Navigation.
-13. Frontend Issue #66 abgeschlossen: `/suppliers` und `/suppliers/[id]` bilden SupplierProfile-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen den strukturierten Lieferantenbezug erreichbar und sichtbar.
-14. Frontend Issue #69 abgeschlossen: `/request-items` und `/request-items/[id]` bilden RequestItem-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen die strukturierte Anfrageposition erreichbar und sichtbar.
-15. Frontend Issue #73 abgeschlossen: Ein gemeinsamer `FormData`-Helper trimmt Formularstrings und bricht Pflichtfelder in Server Actions bei fehlenden oder leeren Werten mit feldbezogenem Fehler ab.
+13. C13 abgeschlossen: `/imports/new` nimmt `.csv`- und `.xlsx`-Dateien mit Company, optionalem Project, `source_type` und `target_entity` als ImportJob entgegen und leitet nach erfolgreichem Upload auf `/imports/[id]` weiter; Processing-Aktionen bleiben ausserhalb der UI.
+14. Frontend Issue #66 abgeschlossen: `/suppliers` und `/suppliers/[id]` bilden SupplierProfile-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen den strukturierten Lieferantenbezug erreichbar und sichtbar.
+15. Frontend Issue #69 abgeschlossen: `/request-items` und `/request-items/[id]` bilden RequestItem-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen die strukturierte Anfrageposition erreichbar und sichtbar.
+16. Frontend Issue #73 abgeschlossen: Ein gemeinsamer `FormData`-Helper trimmt Formularstrings und bricht Pflichtfelder in Server Actions bei fehlenden oder leeren Werten mit feldbezogenem Fehler ab.
 
 Wichtige Hinweise aus der MVP-Abnahme fuer Phase C:
 
@@ -157,14 +159,16 @@ Naechster sinnvoller Schritt:
 
 1. Naechsten fachlichen Schritt separat priorisieren.
 
-### Manuelle Pruefhilfe C12
+### Manuelle Pruefhilfe C13
 
-- `/imports` oeffnen und Navigation, Loading-, Error- und Empty-State pruefen.
-- Einen vorhandenen ImportJob oeffnen.
-- Auf `/imports/[id]` pruefen, ob Datei, Status, Zielobjekt, Zaehler und Summaries angezeigt werden.
-- Bei einem Job mit Rows pruefen, ob Raw-, Mapping-, Validierungs- und Zielreferenzdaten sichtbar sind.
-- Eine ungueltige ImportJob-ID aufrufen und Error-State pruefen.
-- Sicherstellen, dass keine Upload- oder Processing-Buttons sichtbar sind.
+- `/imports` oeffnen und den Einstieg `ImportJob hochladen` pruefen.
+- `/imports/new` oeffnen.
+- Das Upload-Formular mit fehlenden Pflichtfeldern absenden und nachvollziehbare Fehler pruefen.
+- Eine gueltige CSV-Datei mit `source_type=csv` und passender `target_entity` hochladen.
+- Eine gueltige XLSX-Datei mit `source_type=excel` und passender `target_entity` hochladen.
+- Nach jedem erfolgreichen Upload den Redirect auf `/imports/[id]` pruefen.
+- In `/imports` pruefen, ob die neuen Jobs sichtbar sind.
+- Sicherstellen, dass keine Parse-/Map-/Validate-/Create-Targets-Buttons sichtbar sind.
 
 ## 9. Phase D: Analyse und Strategieunterstuetzung
 

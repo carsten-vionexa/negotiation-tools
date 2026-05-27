@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, FileInput } from "lucide-react";
+import { ArrowRight, FileInput, Upload } from "lucide-react";
 
 import { PageHeader } from "@/components/page-header";
 import { EmptyState, ErrorState } from "@/components/state-patterns";
@@ -25,6 +25,7 @@ export default async function ImportsPage() {
           eyebrow="Datenbasis"
           title="Imports"
           description="Status- und Reviewansicht bestehender CSV- und XLSX-ImportJobs."
+          actions={<UploadLink />}
         />
         <ErrorState title="ImportJobs konnten nicht geladen werden." description={getErrorDescription(error)} />
       </>
@@ -40,6 +41,7 @@ export default async function ImportsPage() {
         eyebrow="Datenbasis"
         title="Imports"
         description="Status- und Reviewansicht bestehender CSV- und XLSX-ImportJobs."
+        actions={<UploadLink />}
       />
 
       {imports.length === 0 ? (
@@ -95,6 +97,15 @@ function Counter({ label, value }: { label: string; value: number }) {
     <span>
       <span className="text-muted-foreground">{label}:</span> {value}
     </span>
+  );
+}
+
+function UploadLink() {
+  return (
+    <Link href="/imports/new" className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">
+      <Upload className="size-4" />
+      ImportJob hochladen
+    </Link>
   );
 }
 

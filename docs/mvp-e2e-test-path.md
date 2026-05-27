@@ -4,7 +4,7 @@
 
 Dieses Dokument beschreibt einen manuellen End-to-End-Testpfad fuer den MVP-Stand nach Phase B. Der Testpfad soll zeigen, ob der vorhandene Workflow fachlich zusammenhaengend durchlaufen werden kann:
 
-`Company -> Profile -> Project -> Knowledge Base -> Analysis -> Strategy -> Simulation -> Trainerreview`
+`Company -> Profile -> Project -> Knowledge Base -> Imports -> Analysis -> Strategy -> Simulation -> Trainerreview`
 
 Der Testpfad ist Teil von Phase C0. Er ist keine Feature-Implementierung und keine automatisierte Testausfuehrung. Er dient als fachliche Abnahme- und Demo-Grundlage, bevor Phase C Upload/Import beginnt.
 

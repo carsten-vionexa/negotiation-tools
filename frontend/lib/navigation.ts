@@ -4,6 +4,7 @@ import {
   BriefcaseBusiness,
   Building2,
   ClipboardCheck,
+  ClipboardList,
   FileSearch,
   Handshake,
   LayoutDashboard,
@@ -58,6 +59,12 @@ export const navigationGroups: NavigationGroup[] = [
         href: "/suppliers",
         description: "Strukturierte Lieferantenprofile",
         icon: Handshake,
+      },
+      {
+        label: "Anfragepositionen",
+        href: "/request-items",
+        description: "Strukturierte Bedarfe",
+        icon: ClipboardList,
       },
       {
         label: "Projekte",
@@ -115,6 +122,7 @@ export const workflowSteps = [
   "Firmen",
   "Rollenprofile",
   "Lieferanten",
+  "Anfragepositionen",
   "Projekte",
   "Datenbasis",
   "Analyse",

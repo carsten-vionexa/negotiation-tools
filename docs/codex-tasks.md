@@ -71,6 +71,7 @@
 - Phase C10 umgesetzt: Zielobjekt-Erzeugung fuer validierte `procurement_history_item`-ImportRows mit `POST /import-jobs/{id}/create-targets`, Row-Zielreferenzen, Statusabschluss und Idempotenzschutz ueber `target_record_id` implementiert, ohne RequestItem-, SupplierProfile-, Frontend-, PDF/OCR- oder KI-Logik
 - Phase C11 umgesetzt: Zielobjekt-Erzeugung fuer validierte `request_item`-ImportRows ueber den bestehenden Create-Targets-Endpunkt mit defensiver `title`-Ableitung aus `article_name`, Modell-Defaultstatus und Idempotenzschutz implementiert, ohne SupplierProfile-, Frontend-, PDF/OCR-, KI-, Parser-, Mapping- oder neue Validierungslogik
 - Frontend-Nutzbarkeitsflow Issue #66 umgesetzt: SupplierProfile-Liste sowie Create/Edit-Detailflow unter `/suppliers` ergaenzt, in die Navigation aufgenommen und den strukturierten Lieferantenbezug in Projektanlage und Projektdetail nutzbar gemacht, ohne Backend-, Import- oder Migrationslogik
+- Frontend-Nutzbarkeitsflow Issue #69 umgesetzt: RequestItem-Liste sowie Create/Edit-Detailflow unter `/request-items` ergaenzt, in die Navigation aufgenommen und die strukturierte Anfrageposition in Projektanlage und Projektdetail nutzbar gemacht, ohne Backend-, Import- oder Migrationslogik
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -98,7 +99,7 @@ Ergebnis der C0.7-Abnahme:
 
 ## Phase C: Upload und Import
 
-Status: Phase C1 bis C11 sowie der SupplierProfile-Frontend-Flow aus Issue #66 umgesetzt; Issue #69 ist als naechster Frontend-Nutzbarkeitsflow vorgesehen.
+Status: Phase C1 bis C11 sowie die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 umgesetzt; Issue #73 bleibt als separate kleine Frontend-Hardening-Nacharbeit offen.
 
 Umgesetzte Schritte:
 
@@ -114,10 +115,11 @@ Umgesetzte Schritte:
 10. C10: `POST /import-jobs/{id}/create-targets` fuer validierte Jobs mit Ziel `procurement_history_item` umgesetzt; der Endpoint erzeugt Zielobjekte ausschliesslich aus gueltigen `mapped_data_json`-Rows, setzt Row-Referenzen und schliesst idempotent als `completed` oder `completed_with_errors` ab.
 11. C11: Den bestehenden Create-Targets-Endpunkt fuer validierte Jobs mit Ziel `request_item` erweitert; er erzeugt echte `RequestItem`-Datensaetze aus gueltigen `mapped_data_json`-Rows, leitet fehlende Titel aus `article_name` ab und belaesst `status` beim Modell-Default `open`.
 12. Frontend Issue #66: SupplierProfiles als pflegbare Lieferantenstammdaten unter `/suppliers` bereitgestellt und fuer die Projektzuordnung sowie Projektanzeige erreichbar gemacht.
+13. Frontend Issue #69: RequestItems als pflegbare Anfragepositionen unter `/request-items` bereitgestellt und fuer die Projektzuordnung sowie strukturierte Projektanzeige erreichbar gemacht.
 
 Naechster Schritt:
 
-1. Frontend-Nutzbarkeitsblock fortsetzen: Issue #69 RequestItem-Frontend-Flow umsetzen.
+1. Issue #73 als getrennte kleine Frontend-Hardening-Nacharbeit priorisieren, sofern kein fachlich hoeher priorisierter Schritt vorgezogen wird.
 
 C1 definiert getrennte Zielvertraege fuer Knowledge-Uploads und Import-Uploads,
 Request-/Response-Metadaten, Startstatus, Sicherheitsregeln,
@@ -133,7 +135,9 @@ ausschliesslich explizite Mapping-Regeln an. C9 bewertet darauf ausschliesslich
 die gemappten Row-Werte und setzt Review-Status. C10 erzeugt
 `ProcurementHistoryItem`-Zielobjekte aus validierten gemappten Rows; C11
 erweitert denselben Endpoint um `RequestItem`-Zielobjekte. PDF-Verarbeitung
-bleibt separat vorgemerkt.
+bleibt separat vorgemerkt. Die Issues #66 und #69 machen die strukturierten
+SupplierProfile- und RequestItem-Bezuege anschliessend im Frontend pflegbar
+und in Projekten zuordenbar.
 
 ## Manuelle Pruefhilfe Phase B7
 
@@ -221,7 +225,15 @@ bleibt separat vorgemerkt.
 - `/projects/[id]`: Auswahl speichern, nach Reload bestaetigen und den verlinkten Lieferantenkontext in der Beziehungsbox pruefen.
 - Sicherstellen, dass keine RequestItem-, Import-, Backend-Migrations-, PDF/OCR- oder KI-Logik eingefuehrt wurde.
 
+## Manuelle Pruefhilfe Issue #69
+
+- `/request-items`: Navigation, Loading-/Error-/Empty-State und die Anlage einer Anfrageposition mit Company-Bezug pruefen.
+- `/request-items/[id]`: Kernfelder bearbeiten und die Liste verknuepfter Projekte pruefen.
+- `/projects`: Angelegte Anfrageposition im Feld `Anfrageposition` auswaehlen und ein Projekt anlegen.
+- `/projects/[id]`: Auswahl speichern, nach Reload bestaetigen und den verlinkten Bedarf mit Kernfeldern in der Beziehungsbox pruefen.
+- Sicherstellen, dass keine SupplierProfile-, Import-, Backend-Migrations-, PDF/OCR- oder KI-Logik eingefuehrt wurde.
+
 ## Naechste Schritte
 
-1. Frontend-Nutzbarkeitsblock fortsetzen: Issue #69 RequestItem-Frontend-Flow.
+1. Issue #73 bleibt als separate kleine Frontend-Hardening-Nacharbeit offen, sofern kein hoeher priorisierter Schritt dokumentiert wird.
 2. Weitere Zielobjekt-Erzeugung bleibt getrennten Issues vorbehalten; PDF-Verarbeitung bleibt separat in Issue #55 vorgemerkt.

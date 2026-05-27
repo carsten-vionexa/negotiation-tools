@@ -48,6 +48,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   const requestById = new Map(requestItems.map((item) => [item.id, item]));
   const company = companyById.get(project.company_id);
   const supplier = supplierById.get(project.supplier_profile_id ?? "");
+  const requestItem = requestById.get(project.request_item_id ?? "");
 
   return (
     <>
@@ -96,7 +97,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
               anlegen und pflegen. Der Freitextwert fuer aktuelle Lieferanten bleibt fuer bestehenden Projektkontext erhalten.
             </p>
             <Select
-              label="Request Item"
+              label="Anfrageposition"
               name="request_item_id"
               defaultValue={project.request_item_id}
               options={requestItems.map((item) => ({
@@ -104,6 +105,13 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                 label: `${item.title} (${companyById.get(item.company_id)?.name ?? "Firma unbekannt"})`,
               }))}
             />
+            <p className="text-xs leading-5 text-muted-foreground md:col-span-2">
+              Strukturierte Bedarfe lassen sich unter{" "}
+              <Link href="/request-items" className="font-medium text-primary hover:underline">
+                Anfragepositionen
+              </Link>{" "}
+              anlegen und pflegen. Projektinterne Anfragefelder bleiben fuer zusaetzlichen Kontext erhalten.
+            </p>
             <Field label="Status" name="status" defaultValue={project.status} />
             <Field label="Kategorie" name="category" defaultValue={project.category} />
             <Field label="Prioritaet" name="priority" defaultValue={project.priority} />
@@ -183,7 +191,28 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
                 value={[supplier.country, supplier.industry, supplier.relationship_status].filter(Boolean).join(" - ") || "Keine Details gepflegt"}
               />
             ) : null}
-            <Meta label="Request Item" value={requestById.get(project.request_item_id ?? "")?.title ?? "Nicht gesetzt"} />
+            <Meta
+              label="Anfrageposition"
+              value={
+                requestItem ? (
+                  <Link href={`/request-items/${requestItem.id}`} className="inline-flex items-center gap-2 text-primary">
+                    <ClipboardList className="size-4" />
+                    {requestItem.title}
+                  </Link>
+                ) : (
+                  "Nicht gesetzt"
+                )
+              }
+            />
+            {requestItem ? (
+              <>
+                <Meta label="Artikel / Service" value={requestItem.article_name || "Nicht gesetzt"} />
+                <Meta label="Menge" value={[requestItem.requested_quantity, requestItem.unit].filter(Boolean).join(" ") || "Nicht gesetzt"} />
+                <Meta label="Zielpreis" value={[requestItem.target_price, requestItem.currency].filter(Boolean).join(" ") || "Nicht gesetzt"} />
+                <Meta label="Lieferdatum" value={requestItem.required_delivery_date || requestItem.target_delivery_time || "Nicht gesetzt"} />
+                <Meta label="Zielregion" value={requestItem.target_region || "Nicht gesetzt"} />
+              </>
+            ) : null}
             <Meta label="Status" value={project.status} />
             <Meta label="Kategorie" value={project.category || "Nicht gesetzt"} />
             <Meta label="Prioritaet" value={project.priority || "Nicht gesetzt"} />

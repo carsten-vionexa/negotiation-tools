@@ -54,9 +54,14 @@ export default async function ProjectsPage() {
       <section className="rounded-md border border-border bg-card p-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <h2 className="text-base font-semibold">Projekt anlegen</h2>
-          <Link href="/suppliers" className="text-sm font-medium text-primary hover:underline">
-            Lieferantenprofile pflegen
-          </Link>
+          <div className="flex flex-wrap gap-4">
+            <Link href="/suppliers" className="text-sm font-medium text-primary hover:underline">
+              Lieferantenprofile pflegen
+            </Link>
+            <Link href="/request-items" className="text-sm font-medium text-primary hover:underline">
+              Anfragepositionen pflegen
+            </Link>
+          </div>
         </div>
         {companies.length === 0 ? (
           <p className="mt-3 text-sm leading-6 text-muted-foreground">Lege zuerst eine Firma an, bevor Projekte erstellt werden.</p>
@@ -65,6 +70,11 @@ export default async function ProjectsPage() {
             {suppliers.length === 0 ? (
               <p className="mt-3 text-sm leading-6 text-muted-foreground">
                 Noch kein strukturiertes Lieferantenprofil vorhanden. Lege eines unter Lieferanten an, damit es hier auswaehlbar ist.
+              </p>
+            ) : null}
+            {requestItems.length === 0 ? (
+              <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                Noch keine strukturierte Anfrageposition vorhanden. Lege eine unter Anfragepositionen an, damit sie hier auswaehlbar ist.
               </p>
             ) : null}
             <form action={createProjectAction} className="mt-4 grid gap-3 md:grid-cols-2">
@@ -87,7 +97,7 @@ export default async function ProjectsPage() {
                 }))}
               />
               <Select
-                label="Request Item"
+                label="Anfrageposition"
                 name="request_item_id"
                 options={requestItems.map((item) => ({
                   value: item.id,

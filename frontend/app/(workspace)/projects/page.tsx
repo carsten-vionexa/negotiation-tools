@@ -52,57 +52,69 @@ export default async function ProjectsPage() {
       />
 
       <section className="rounded-md border border-border bg-card p-5">
-        <h2 className="text-base font-semibold">Projekt anlegen</h2>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="text-base font-semibold">Projekt anlegen</h2>
+          <Link href="/suppliers" className="text-sm font-medium text-primary hover:underline">
+            Lieferantenprofile pflegen
+          </Link>
+        </div>
         {companies.length === 0 ? (
           <p className="mt-3 text-sm leading-6 text-muted-foreground">Lege zuerst eine Firma an, bevor Projekte erstellt werden.</p>
         ) : (
-          <form action={createProjectAction} className="mt-4 grid gap-3 md:grid-cols-2">
-            <Field label="Titel" name="title" required />
-            <Select label="Firma" name="company_id" required options={companies.map((company) => ({ value: company.id, label: company.name }))} />
-            <Select
-              label="Owner"
-              name="owner_id"
-              options={profiles.map((profile) => ({
-                value: profile.id,
-                label: `${profile.display_name} (${companyById.get(profile.company_id)?.name ?? "Firma unbekannt"})`,
-              }))}
-            />
-            <Select
-              label="Supplier Profile"
-              name="supplier_profile_id"
-              options={suppliers.map((supplier) => ({
-                value: supplier.id,
-                label: `${supplier.name} (${companyById.get(supplier.company_id)?.name ?? "Firma unbekannt"})`,
-              }))}
-            />
-            <Select
-              label="Request Item"
-              name="request_item_id"
-              options={requestItems.map((item) => ({
-                value: item.id,
-                label: `${item.title} (${companyById.get(item.company_id)?.name ?? "Firma unbekannt"})`,
-              }))}
-            />
-            <Field label="Status" name="status" defaultValue="draft" />
-            <Field label="Kategorie" name="category" />
-            <Field label="Prioritaet" name="priority" />
-            <Field label="Artikel / Service" name="article_or_service" />
-            <Field label="Zielregion" name="target_region" />
-            <label className="md:col-span-2">
-              <span className="text-sm font-medium">Ziel / Objective</span>
-              <textarea name="objective" rows={3} className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-            </label>
-            <label className="md:col-span-2">
-              <span className="text-sm font-medium">Kontext / Notizen</span>
-              <textarea name="context" rows={3} className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
-            </label>
-            <div className="md:col-span-2">
-              <button className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">
-                <Plus className="size-4" />
-                Anlegen
-              </button>
-            </div>
-          </form>
+          <>
+            {suppliers.length === 0 ? (
+              <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                Noch kein strukturiertes Lieferantenprofil vorhanden. Lege eines unter Lieferanten an, damit es hier auswaehlbar ist.
+              </p>
+            ) : null}
+            <form action={createProjectAction} className="mt-4 grid gap-3 md:grid-cols-2">
+              <Field label="Titel" name="title" required />
+              <Select label="Firma" name="company_id" required options={companies.map((company) => ({ value: company.id, label: company.name }))} />
+              <Select
+                label="Owner"
+                name="owner_id"
+                options={profiles.map((profile) => ({
+                  value: profile.id,
+                  label: `${profile.display_name} (${companyById.get(profile.company_id)?.name ?? "Firma unbekannt"})`,
+                }))}
+              />
+              <Select
+                label="Lieferantenprofil"
+                name="supplier_profile_id"
+                options={suppliers.map((supplier) => ({
+                  value: supplier.id,
+                  label: `${supplier.name} (${companyById.get(supplier.company_id)?.name ?? "Firma unbekannt"})`,
+                }))}
+              />
+              <Select
+                label="Request Item"
+                name="request_item_id"
+                options={requestItems.map((item) => ({
+                  value: item.id,
+                  label: `${item.title} (${companyById.get(item.company_id)?.name ?? "Firma unbekannt"})`,
+                }))}
+              />
+              <Field label="Status" name="status" defaultValue="draft" />
+              <Field label="Kategorie" name="category" />
+              <Field label="Prioritaet" name="priority" />
+              <Field label="Artikel / Service" name="article_or_service" />
+              <Field label="Zielregion" name="target_region" />
+              <label className="md:col-span-2">
+                <span className="text-sm font-medium">Ziel / Objective</span>
+                <textarea name="objective" rows={3} className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+              </label>
+              <label className="md:col-span-2">
+                <span className="text-sm font-medium">Kontext / Notizen</span>
+                <textarea name="context" rows={3} className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
+              </label>
+              <div className="md:col-span-2">
+                <button className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">
+                  <Plus className="size-4" />
+                  Anlegen
+                </button>
+              </div>
+            </form>
+          </>
         )}
       </section>
 

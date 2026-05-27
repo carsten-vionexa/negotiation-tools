@@ -70,6 +70,7 @@
 - Phase C9 umgesetzt: Minimalen Validierungs-Endpunkt fuer gemappte ImportRows implementiert, der `valid`/`invalid`, knappe Row-Fehler, Job-Zaehler und `validation_summary_json` setzt, ohne Zielobjekte, PDF/OCR oder KI-Validierung
 - Phase C10 umgesetzt: Zielobjekt-Erzeugung fuer validierte `procurement_history_item`-ImportRows mit `POST /import-jobs/{id}/create-targets`, Row-Zielreferenzen, Statusabschluss und Idempotenzschutz ueber `target_record_id` implementiert, ohne RequestItem-, SupplierProfile-, Frontend-, PDF/OCR- oder KI-Logik
 - Phase C11 umgesetzt: Zielobjekt-Erzeugung fuer validierte `request_item`-ImportRows ueber den bestehenden Create-Targets-Endpunkt mit defensiver `title`-Ableitung aus `article_name`, Modell-Defaultstatus und Idempotenzschutz implementiert, ohne SupplierProfile-, Frontend-, PDF/OCR-, KI-, Parser-, Mapping- oder neue Validierungslogik
+- Frontend-Nutzbarkeitsflow Issue #66 umgesetzt: SupplierProfile-Liste sowie Create/Edit-Detailflow unter `/suppliers` ergaenzt, in die Navigation aufgenommen und den strukturierten Lieferantenbezug in Projektanlage und Projektdetail nutzbar gemacht, ohne Backend-, Import- oder Migrationslogik
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -97,7 +98,7 @@ Ergebnis der C0.7-Abnahme:
 
 ## Phase C: Upload und Import
 
-Status: Phase C1 bis C11 umgesetzt; als naechster sinnvoller Block sind die Frontend-Nutzbarkeitsflows vorgesehen.
+Status: Phase C1 bis C11 sowie der SupplierProfile-Frontend-Flow aus Issue #66 umgesetzt; Issue #69 ist als naechster Frontend-Nutzbarkeitsflow vorgesehen.
 
 Umgesetzte Schritte:
 
@@ -112,10 +113,11 @@ Umgesetzte Schritte:
 9. C9: `POST /import-jobs/{id}/validate` fuer Jobs im Status `mapped` umgesetzt; der Endpoint prueft gemappte Pflicht-, Zahlen-, Datums- und Waehrungswerte, markiert Rows als `valid` oder `invalid` und aggregiert das Review-Ergebnis als `validated`, auch wenn einzelne Rows fehlerhaft sind.
 10. C10: `POST /import-jobs/{id}/create-targets` fuer validierte Jobs mit Ziel `procurement_history_item` umgesetzt; der Endpoint erzeugt Zielobjekte ausschliesslich aus gueltigen `mapped_data_json`-Rows, setzt Row-Referenzen und schliesst idempotent als `completed` oder `completed_with_errors` ab.
 11. C11: Den bestehenden Create-Targets-Endpunkt fuer validierte Jobs mit Ziel `request_item` erweitert; er erzeugt echte `RequestItem`-Datensaetze aus gueltigen `mapped_data_json`-Rows, leitet fehlende Titel aus `article_name` ab und belaesst `status` beim Modell-Default `open`.
+12. Frontend Issue #66: SupplierProfiles als pflegbare Lieferantenstammdaten unter `/suppliers` bereitgestellt und fuer die Projektzuordnung sowie Projektanzeige erreichbar gemacht.
 
 Naechster Schritt:
 
-1. Frontend-Nutzbarkeitsblock: Issue #66 SupplierProfile-Frontend-Flow und Issue #69 RequestItem-Frontend-Flow umsetzen.
+1. Frontend-Nutzbarkeitsblock fortsetzen: Issue #69 RequestItem-Frontend-Flow umsetzen.
 
 C1 definiert getrennte Zielvertraege fuer Knowledge-Uploads und Import-Uploads,
 Request-/Response-Metadaten, Startstatus, Sicherheitsregeln,
@@ -211,7 +213,15 @@ bleibt separat vorgemerkt.
 - Pruefen, ob offene Nicht-Blocker und akzeptierte Datenluecken getrennt dokumentiert sind.
 - Sicherstellen, dass keine neuen Features, keine Upload-/Import-Logik, keine Migrationen und kein Refactoring eingefuehrt wurden.
 
+## Manuelle Pruefhilfe Issue #66
+
+- `/suppliers`: Navigation, Loading-/Error-/Empty-State und die Anlage eines Lieferantenprofils mit Company-Bezug pruefen.
+- `/suppliers/[id]`: Kernfelder bearbeiten und die Liste verknuepfter Projekte pruefen.
+- `/projects`: Angelegtes Lieferantenprofil im Feld `Lieferantenprofil` auswaehlen und ein Projekt anlegen.
+- `/projects/[id]`: Auswahl speichern, nach Reload bestaetigen und den verlinkten Lieferantenkontext in der Beziehungsbox pruefen.
+- Sicherstellen, dass keine RequestItem-, Import-, Backend-Migrations-, PDF/OCR- oder KI-Logik eingefuehrt wurde.
+
 ## Naechste Schritte
 
-1. Frontend-Nutzbarkeitsblock umsetzen: Issue #66 SupplierProfile-Frontend-Flow und Issue #69 RequestItem-Frontend-Flow.
+1. Frontend-Nutzbarkeitsblock fortsetzen: Issue #69 RequestItem-Frontend-Flow.
 2. Weitere Zielobjekt-Erzeugung bleibt getrennten Issues vorbehalten; PDF-Verarbeitung bleibt separat in Issue #55 vorgemerkt.

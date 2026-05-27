@@ -5,6 +5,7 @@ import {
   Building2,
   ClipboardCheck,
   FileSearch,
+  Handshake,
   LayoutDashboard,
   MessageSquareText,
   ShieldCheck,
@@ -51,6 +52,12 @@ export const navigationGroups: NavigationGroup[] = [
         href: "/profiles",
         description: "Trainee- und Trainingsrollen",
         icon: Users,
+      },
+      {
+        label: "Lieferanten",
+        href: "/suppliers",
+        description: "Strukturierte Lieferantenprofile",
+        icon: Handshake,
       },
       {
         label: "Projekte",
@@ -107,6 +114,7 @@ export const workflowSteps = [
   "Dashboard",
   "Firmen",
   "Rollenprofile",
+  "Lieferanten",
   "Projekte",
   "Datenbasis",
   "Analyse",

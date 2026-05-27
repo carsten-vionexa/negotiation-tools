@@ -15,6 +15,7 @@ from app.models.import_row import ImportRow
 from app.models.knowledge_document import KnowledgeDocument
 from app.models.negotiation_project import NegotiationProject
 from app.models.procurement_history_item import ProcurementHistoryItem
+from app.models.request_item import RequestItem
 from app.schemas.import_job import ImportJobMapRequest, ImportJobRead
 from app.services.csv_import_parser import CsvImportParserError, ParsedCsvRow, parse_csv_file
 from app.services.import_row_mapper import (
@@ -22,7 +23,11 @@ from app.services.import_row_mapper import (
     map_import_rows,
     validate_mapping_configuration,
 )
-from app.services.import_target_creator import ImportTargetCreationError, build_procurement_history_item
+from app.services.import_target_creator import (
+    ImportTargetCreationError,
+    build_procurement_history_item,
+    build_request_item,
+)
 from app.services.import_row_validator import ImportRowValidationError, validate_import_rows
 from app.services.storage import (
     InvalidStoragePathError,
@@ -414,10 +419,10 @@ def create_import_job_targets(
             status_code=status.HTTP_409_CONFLICT,
             detail="Import job targets can only be created from validated status.",
         )
-    if import_job.target_entity != "procurement_history_item":
+    if import_job.target_entity not in TARGET_ENTITIES:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Target creation is only supported for procurement_history_item.",
+            detail="Unsupported target entity.",
         )
 
     import_job.status = "processing"
@@ -440,12 +445,15 @@ def create_import_job_targets(
             .with_for_update()
         ).all()
     )
-    created_targets: list[tuple[ImportRow, ProcurementHistoryItem]] = []
+    created_targets: list[tuple[ImportRow, ProcurementHistoryItem | RequestItem]] = []
     for row in rows:
         if row.validation_status != "valid" or row.target_record_id is not None:
             continue
         try:
-            target = build_procurement_history_item(import_job.company_id, row.mapped_data_json)
+            if import_job.target_entity == "procurement_history_item":
+                target = build_procurement_history_item(import_job.company_id, row.mapped_data_json)
+            else:
+                target = build_request_item(import_job.company_id, row.mapped_data_json)
         except ImportTargetCreationError as exc:
             row.validation_status = "error"
             row.error_message = str(exc)
@@ -456,7 +464,7 @@ def create_import_job_targets(
     try:
         db.flush()
         for row, target in created_targets:
-            row.target_entity = "procurement_history_item"
+            row.target_entity = import_job.target_entity
             row.target_record_id = target.id
             row.validation_status = "imported"
             row.error_message = None

@@ -231,3 +231,4 @@ Spaetere Themen:
 - CRM-/ERP-Anbindung
 - Audit Trail
 - Management-Reporting
+- deutsche und englische Menüs 

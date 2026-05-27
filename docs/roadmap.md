@@ -36,6 +36,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase C10: Zielobjekt-Endpunkt erzeugt `ProcurementHistoryItem` aus validierten gemappten `ImportRow`-Daten und setzt idempotente Row-Referenzen
 - Phase C11: Derselbe Zielobjekt-Endpunkt erzeugt `RequestItem` aus validierten gemappten `ImportRow`-Daten mit defensiver Titelableitung und idempotenten Row-Referenzen
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
+- Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
 
 Der aktuelle MVP-Workflow lautet:
 
@@ -122,7 +123,7 @@ Diese Punkte bleiben spaetere Ausbaustufen und duerfen nicht als bereits geliefe
 
 ## 8. Phase C: Upload und Import
 
-Status: Begonnen. C1 bis C11 und Issue #66 SupplierProfile-Frontend-Flow sind umgesetzt; Issue #69 ist der naechste Frontend-Nutzbarkeitsflow.
+Status: Begonnen. C1 bis C11 und die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sind umgesetzt; Issue #73 bleibt als separate kleine Frontend-Hardening-Nacharbeit offen.
 
 Ziel: Die Datenbasis des MVP praktisch befuellbar machen. Dabei sollen Upload, Dateiablage, ImportJobs, Parsing, Mapping, Validierung und Zielobjekt-Erzeugung schrittweise umgesetzt werden.
 
@@ -140,16 +141,17 @@ Schritte:
 10. C10 abgeschlossen: `POST /api/import-jobs/{id}/create-targets` erzeugt fuer validierte `procurement_history_item`-Jobs echte `ProcurementHistoryItem`-Datensaetze aus `mapped_data_json`, setzt Row-Zielreferenzen und verhindert erneute Erzeugung bereits importierter Rows.
 11. C11 abgeschlossen: Derselbe Create-Targets-Endpunkt erzeugt fuer validierte `request_item`-Jobs echte `RequestItem`-Datensaetze aus `mapped_data_json`, leitet bei Bedarf `title` aus `article_name` ab und belaesst den Modell-Defaultstatus `open`.
 12. Frontend Issue #66 abgeschlossen: `/suppliers` und `/suppliers/[id]` bilden SupplierProfile-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen den strukturierten Lieferantenbezug erreichbar und sichtbar.
+13. Frontend Issue #69 abgeschlossen: `/request-items` und `/request-items/[id]` bilden RequestItem-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen die strukturierte Anfrageposition erreichbar und sichtbar.
 
 Wichtige Hinweise aus der MVP-Abnahme fuer Phase C:
 
 - SupplierProfile-Frontend-Flow wurde mit Issue #66 ergaenzt, damit Lieferanteninformationen als strukturierter Projektbezug nutzbar sind.
-- RequestItem-Frontend-Flow sollte ergaenzt oder parallel eingeplant werden, weil importierte Anfragenkataloge sonst nicht vollstaendig im Frontend nutzbar sind.
+- RequestItem-Frontend-Flow wurde mit Issue #69 ergaenzt, damit importierte Anfragenkataloge als strukturierte Projektbezuege im Frontend nutzbar sind.
 - Die Importlogik soll nicht als grosser Block umgesetzt werden, sondern in klar getrennten Schritten: Upload, Storage, ImportJob, Parsing, Mapping, Validierung, Zielobjekt-Erzeugung.
 
 Naechster sinnvoller Schritt:
 
-1. Frontend-Nutzbarkeitsblock mit Issue #69 RequestItem-Frontend-Flow fortsetzen.
+1. Issue #73 als getrennte kleine Frontend-Hardening-Nacharbeit einplanen, sofern kein fachlich hoeher priorisierter Schritt vorgezogen wird.
 
 ## 9. Phase D: Analyse und Strategieunterstuetzung
 

@@ -9,6 +9,7 @@ import { createNegotiationProject, listNegotiationProjects } from "@/lib/api/neg
 import { listRequestItems } from "@/lib/api/request-items";
 import { listSupplierProfiles } from "@/lib/api/supplier-profiles";
 import { listUserProfiles } from "@/lib/api/user-profiles";
+import { optionalFormString, requiredFormString } from "@/lib/form-data";
 
 export default async function ProjectsPage() {
   let companies;
@@ -165,18 +166,18 @@ async function createProjectAction(formData: FormData) {
   "use server";
 
   await createNegotiationProject({
-    company_id: requiredString(formData, "company_id"),
-    owner_id: optionalString(formData, "owner_id"),
-    supplier_profile_id: optionalString(formData, "supplier_profile_id"),
-    request_item_id: optionalString(formData, "request_item_id"),
-    title: requiredString(formData, "title"),
-    status: optionalString(formData, "status") ?? "draft",
-    category: optionalString(formData, "category"),
-    priority: optionalString(formData, "priority"),
-    article_or_service: optionalString(formData, "article_or_service"),
-    target_region: optionalString(formData, "target_region"),
-    objective: optionalString(formData, "objective"),
-    context: optionalString(formData, "context"),
+    company_id: requiredFormString(formData, "company_id", "Firma"),
+    owner_id: optionalFormString(formData, "owner_id"),
+    supplier_profile_id: optionalFormString(formData, "supplier_profile_id"),
+    request_item_id: optionalFormString(formData, "request_item_id"),
+    title: requiredFormString(formData, "title", "Titel"),
+    status: optionalFormString(formData, "status") ?? "draft",
+    category: optionalFormString(formData, "category"),
+    priority: optionalFormString(formData, "priority"),
+    article_or_service: optionalFormString(formData, "article_or_service"),
+    target_region: optionalFormString(formData, "target_region"),
+    objective: optionalFormString(formData, "objective"),
+    context: optionalFormString(formData, "context"),
   });
   revalidatePath("/projects");
 }
@@ -229,15 +230,6 @@ function Select({
       </select>
     </label>
   );
-}
-
-function optionalString(formData: FormData, key: string) {
-  const value = formData.get(key);
-  return typeof value === "string" && value.trim() ? value.trim() : null;
-}
-
-function requiredString(formData: FormData, key: string) {
-  return optionalString(formData, key) ?? "";
 }
 
 function getErrorDescription(error: unknown) {

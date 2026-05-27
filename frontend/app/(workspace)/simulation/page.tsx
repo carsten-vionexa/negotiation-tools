@@ -18,6 +18,7 @@ import {
 import { listStrategies, type StrategyRead } from "@/lib/api/strategies";
 import { getSupplierProfile, type SupplierProfileRead } from "@/lib/api/supplier-profiles";
 import { getUserProfile, listUserProfiles, type UserProfileSummary } from "@/lib/api/user-profiles";
+import { optionalFormString, requiredFormString } from "@/lib/form-data";
 
 type SimulationSearchParams = {
   projectId?: string;
@@ -328,24 +329,24 @@ function refreshSimulation(projectId: string): never {
 
 function scenarioPayload(formData: FormData) {
   return {
-    strategy_id: optionalString(formData, "strategy_id"),
-    supplier_profile_id: optionalString(formData, "supplier_profile_id"),
-    user_profile_id: optionalString(formData, "user_profile_id"),
-    title: requiredString(formData, "title"),
-    status: optionalString(formData, "status") ?? "draft",
-    scenario_type: optionalString(formData, "scenario_type"),
-    counterparty_name: optionalString(formData, "counterparty_name"),
-    counterparty_role: optionalString(formData, "counterparty_role"),
-    country_or_region: optionalString(formData, "country_or_region"),
-    cultural_context: optionalString(formData, "cultural_context"),
-    difficulty_level: optionalString(formData, "difficulty_level"),
-    communication_style: optionalString(formData, "communication_style"),
-    negotiation_phase: optionalString(formData, "negotiation_phase"),
-    training_goal: optionalString(formData, "training_goal"),
-    scenario_brief: optionalString(formData, "scenario_brief"),
-    success_criteria: optionalString(formData, "success_criteria"),
+    strategy_id: optionalFormString(formData, "strategy_id"),
+    supplier_profile_id: optionalFormString(formData, "supplier_profile_id"),
+    user_profile_id: optionalFormString(formData, "user_profile_id"),
+    title: requiredFormString(formData, "title", "Titel"),
+    status: optionalFormString(formData, "status") ?? "draft",
+    scenario_type: optionalFormString(formData, "scenario_type"),
+    counterparty_name: optionalFormString(formData, "counterparty_name"),
+    counterparty_role: optionalFormString(formData, "counterparty_role"),
+    country_or_region: optionalFormString(formData, "country_or_region"),
+    cultural_context: optionalFormString(formData, "cultural_context"),
+    difficulty_level: optionalFormString(formData, "difficulty_level"),
+    communication_style: optionalFormString(formData, "communication_style"),
+    negotiation_phase: optionalFormString(formData, "negotiation_phase"),
+    training_goal: optionalFormString(formData, "training_goal"),
+    scenario_brief: optionalFormString(formData, "scenario_brief"),
+    success_criteria: optionalFormString(formData, "success_criteria"),
     time_limit_minutes: optionalNumber(formData, "time_limit_minutes"),
-    language: optionalString(formData, "language"),
+    language: optionalFormString(formData, "language"),
   };
 }
 
@@ -444,17 +445,8 @@ function SubmitButton({ label }: { label: string }) {
   );
 }
 
-function optionalString(formData: FormData, key: string) {
-  const value = formData.get(key);
-  return typeof value === "string" && value.trim() ? value.trim() : null;
-}
-
-function requiredString(formData: FormData, key: string) {
-  return optionalString(formData, key) ?? "";
-}
-
 function optionalNumber(formData: FormData, key: string) {
-  const value = optionalString(formData, key);
+  const value = optionalFormString(formData, key);
   return value ? Number(value) : null;
 }
 

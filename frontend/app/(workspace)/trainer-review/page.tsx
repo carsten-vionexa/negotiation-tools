@@ -12,6 +12,7 @@ import { getSimulationScenario, listSimulationScenarios, type SimulationScenario
 import { getStrategy } from "@/lib/api/strategies";
 import { createTrainerComment, listTrainerComments, updateTrainerComment, type TrainerCommentRead } from "@/lib/api/trainer-comments";
 import { listUserProfiles, type UserProfileSummary } from "@/lib/api/user-profiles";
+import { optionalFormString, requiredFormString } from "@/lib/form-data";
 
 type TrainerReviewSearchParams = {
   projectId?: string;
@@ -350,12 +351,12 @@ function refreshReview(scenarioId: string, projectId: string): never {
 
 function commentPayload(formData: FormData) {
   return {
-    trainer_user_profile_id: optionalString(formData, "trainer_user_profile_id"),
-    comment_type: optionalString(formData, "comment_type"),
-    comment_text: requiredString(formData, "comment_text"),
-    related_competency: optionalString(formData, "related_competency"),
-    severity: optionalString(formData, "severity"),
-    is_visible_to_trainee: optionalString(formData, "visibility") === "trainee_visible",
+    trainer_user_profile_id: optionalFormString(formData, "trainer_user_profile_id"),
+    comment_type: optionalFormString(formData, "comment_type"),
+    comment_text: requiredFormString(formData, "comment_text", "Kommentartext / Lernpunkt"),
+    related_competency: optionalFormString(formData, "related_competency"),
+    severity: optionalFormString(formData, "severity"),
+    is_visible_to_trainee: optionalFormString(formData, "visibility") === "trainee_visible",
   };
 }
 
@@ -461,15 +462,6 @@ function SubmitButton({ label }: { label: string }) {
       </button>
     </div>
   );
-}
-
-function optionalString(formData: FormData, key: string) {
-  const value = formData.get(key);
-  return typeof value === "string" && value.trim() ? value.trim() : null;
-}
-
-function requiredString(formData: FormData, key: string) {
-  return optionalString(formData, key) ?? "";
 }
 
 function formatDate(value?: string | null) {

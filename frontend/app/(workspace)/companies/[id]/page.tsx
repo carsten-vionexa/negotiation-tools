@@ -6,6 +6,7 @@ import { EmptyState, ErrorState } from "@/components/state-patterns";
 import { PageHeader } from "@/components/page-header";
 import { getCompany, updateCompany } from "@/lib/api/companies";
 import { listNegotiationProjects } from "@/lib/api/negotiation-projects";
+import { optionalFormString, requiredFormString } from "@/lib/form-data";
 
 export default async function CompanyDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -111,11 +112,11 @@ async function updateCompanyAction(id: string, formData: FormData) {
   "use server";
 
   await updateCompany(id, {
-    name: requiredString(formData, "name"),
-    industry: optionalString(formData, "industry"),
-    country: optionalString(formData, "country"),
-    website: optionalString(formData, "website"),
-    description: optionalString(formData, "description"),
+    name: requiredFormString(formData, "name", "Name"),
+    industry: optionalFormString(formData, "industry"),
+    country: optionalFormString(formData, "country"),
+    website: optionalFormString(formData, "website"),
+    description: optionalFormString(formData, "description"),
   });
   revalidatePath("/companies");
   revalidatePath(`/companies/${id}`);
@@ -161,15 +162,6 @@ function Meta({ label, value }: { label: string; value?: string | null }) {
       <dd className="mt-1 font-medium">{value || "Nicht gepflegt"}</dd>
     </div>
   );
-}
-
-function optionalString(formData: FormData, key: string) {
-  const value = formData.get(key);
-  return typeof value === "string" && value.trim() ? value.trim() : null;
-}
-
-function requiredString(formData: FormData, key: string) {
-  return optionalString(formData, key) ?? "";
 }
 
 function getErrorDescription(error: unknown) {

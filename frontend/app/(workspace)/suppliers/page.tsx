@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/page-header";
 import { EmptyState, ErrorState } from "@/components/state-patterns";
 import { listCompanies } from "@/lib/api/companies";
 import { createSupplierProfile, listSupplierProfiles } from "@/lib/api/supplier-profiles";
+import { optionalFormString, requiredFormString } from "@/lib/form-data";
 
 export default async function SuppliersPage() {
   let companies;
@@ -110,17 +111,17 @@ async function createSupplierAction(formData: FormData) {
   "use server";
 
   await createSupplierProfile({
-    company_id: requiredString(formData, "company_id"),
-    name: requiredString(formData, "name"),
-    country: optionalString(formData, "country"),
-    region: optionalString(formData, "region"),
-    industry: optionalString(formData, "industry"),
-    supplier_type: optionalString(formData, "supplier_type"),
-    relationship_status: optionalString(formData, "relationship_status"),
-    risk_level: optionalString(formData, "risk_level"),
-    contact_name: optionalString(formData, "contact_name"),
-    contact_email: optionalString(formData, "contact_email"),
-    notes: optionalString(formData, "notes"),
+    company_id: requiredFormString(formData, "company_id", "Firma"),
+    name: requiredFormString(formData, "name", "Name"),
+    country: optionalFormString(formData, "country"),
+    region: optionalFormString(formData, "region"),
+    industry: optionalFormString(formData, "industry"),
+    supplier_type: optionalFormString(formData, "supplier_type"),
+    relationship_status: optionalFormString(formData, "relationship_status"),
+    risk_level: optionalFormString(formData, "risk_level"),
+    contact_name: optionalFormString(formData, "contact_name"),
+    contact_email: optionalFormString(formData, "contact_email"),
+    notes: optionalFormString(formData, "notes"),
   });
   revalidatePath("/suppliers");
   revalidatePath("/projects");
@@ -148,15 +149,6 @@ function Field({ label, name, required = false }: { label: string; name: string;
       <input name={name} required={required} className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
     </label>
   );
-}
-
-function optionalString(formData: FormData, key: string) {
-  const value = formData.get(key);
-  return typeof value === "string" && value.trim() ? value.trim() : null;
-}
-
-function requiredString(formData: FormData, key: string) {
-  return optionalString(formData, key) ?? "";
 }
 
 function getErrorDescription(error: unknown) {

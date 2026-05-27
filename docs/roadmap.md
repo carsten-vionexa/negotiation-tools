@@ -37,6 +37,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase C11: Derselbe Zielobjekt-Endpunkt erzeugt `RequestItem` aus validierten gemappten `ImportRow`-Daten mit defensiver Titelableitung und idempotenten Row-Referenzen
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
+- Frontend-Hardening Issue #73: Frontend-Server-Actions weisen fehlende oder leere Pflichtfelder ueber einen gemeinsamen `FormData`-Helper mit nachvollziehbarer Meldung zurueck
 
 Der aktuelle MVP-Workflow lautet:
 
@@ -123,7 +124,7 @@ Diese Punkte bleiben spaetere Ausbaustufen und duerfen nicht als bereits geliefe
 
 ## 8. Phase C: Upload und Import
 
-Status: Begonnen. C1 bis C11 und die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sind umgesetzt; Issue #73 bleibt als separate kleine Frontend-Hardening-Nacharbeit offen.
+Status: Begonnen. C1 bis C11, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 sind umgesetzt.
 
 Ziel: Die Datenbasis des MVP praktisch befuellbar machen. Dabei sollen Upload, Dateiablage, ImportJobs, Parsing, Mapping, Validierung und Zielobjekt-Erzeugung schrittweise umgesetzt werden.
 
@@ -142,6 +143,7 @@ Schritte:
 11. C11 abgeschlossen: Derselbe Create-Targets-Endpunkt erzeugt fuer validierte `request_item`-Jobs echte `RequestItem`-Datensaetze aus `mapped_data_json`, leitet bei Bedarf `title` aus `article_name` ab und belaesst den Modell-Defaultstatus `open`.
 12. Frontend Issue #66 abgeschlossen: `/suppliers` und `/suppliers/[id]` bilden SupplierProfile-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen den strukturierten Lieferantenbezug erreichbar und sichtbar.
 13. Frontend Issue #69 abgeschlossen: `/request-items` und `/request-items/[id]` bilden RequestItem-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen die strukturierte Anfrageposition erreichbar und sichtbar.
+14. Frontend Issue #73 abgeschlossen: Ein gemeinsamer `FormData`-Helper trimmt Formularstrings und bricht Pflichtfelder in Server Actions bei fehlenden oder leeren Werten mit feldbezogenem Fehler ab.
 
 Wichtige Hinweise aus der MVP-Abnahme fuer Phase C:
 
@@ -151,7 +153,7 @@ Wichtige Hinweise aus der MVP-Abnahme fuer Phase C:
 
 Naechster sinnvoller Schritt:
 
-1. Issue #73 als getrennte kleine Frontend-Hardening-Nacharbeit einplanen, sofern kein fachlich hoeher priorisierter Schritt vorgezogen wird.
+1. Naechsten fachlichen Schritt separat priorisieren.
 
 ## 9. Phase D: Analyse und Strategieunterstuetzung
 

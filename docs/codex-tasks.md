@@ -72,6 +72,7 @@
 - Phase C11 umgesetzt: Zielobjekt-Erzeugung fuer validierte `request_item`-ImportRows ueber den bestehenden Create-Targets-Endpunkt mit defensiver `title`-Ableitung aus `article_name`, Modell-Defaultstatus und Idempotenzschutz implementiert, ohne SupplierProfile-, Frontend-, PDF/OCR-, KI-, Parser-, Mapping- oder neue Validierungslogik
 - Frontend-Nutzbarkeitsflow Issue #66 umgesetzt: SupplierProfile-Liste sowie Create/Edit-Detailflow unter `/suppliers` ergaenzt, in die Navigation aufgenommen und den strukturierten Lieferantenbezug in Projektanlage und Projektdetail nutzbar gemacht, ohne Backend-, Import- oder Migrationslogik
 - Frontend-Nutzbarkeitsflow Issue #69 umgesetzt: RequestItem-Liste sowie Create/Edit-Detailflow unter `/request-items` ergaenzt, in die Navigation aufgenommen und die strukturierte Anfrageposition in Projektanlage und Projektdetail nutzbar gemacht, ohne Backend-, Import- oder Migrationslogik
+- Frontend-Hardening Issue #73 umgesetzt: Gemeinsamen `FormData`-Helper fuer getrimmte optionale Werte und explizite Pflichtfeldfehler eingefuehrt sowie die bestehenden Frontend-Server-Actions darauf umgestellt, ohne Backend-, Import- oder Migrationslogik
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -99,7 +100,7 @@ Ergebnis der C0.7-Abnahme:
 
 ## Phase C: Upload und Import
 
-Status: Phase C1 bis C11 sowie die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 umgesetzt; Issue #73 bleibt als separate kleine Frontend-Hardening-Nacharbeit offen.
+Status: Phase C1 bis C11, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 umgesetzt.
 
 Umgesetzte Schritte:
 
@@ -116,10 +117,11 @@ Umgesetzte Schritte:
 11. C11: Den bestehenden Create-Targets-Endpunkt fuer validierte Jobs mit Ziel `request_item` erweitert; er erzeugt echte `RequestItem`-Datensaetze aus gueltigen `mapped_data_json`-Rows, leitet fehlende Titel aus `article_name` ab und belaesst `status` beim Modell-Default `open`.
 12. Frontend Issue #66: SupplierProfiles als pflegbare Lieferantenstammdaten unter `/suppliers` bereitgestellt und fuer die Projektzuordnung sowie Projektanzeige erreichbar gemacht.
 13. Frontend Issue #69: RequestItems als pflegbare Anfragepositionen unter `/request-items` bereitgestellt und fuer die Projektzuordnung sowie strukturierte Projektanzeige erreichbar gemacht.
+14. Frontend Issue #73: Pflichtfelder in Frontend-Server-Actions ueber einen gemeinsamen `FormData`-Helper gegen fehlende oder leere Posts abgesichert; statt leerer Strings entsteht ein feldbezogener Fehler.
 
 Naechster Schritt:
 
-1. Issue #73 als getrennte kleine Frontend-Hardening-Nacharbeit priorisieren, sofern kein fachlich hoeher priorisierter Schritt vorgezogen wird.
+1. Naechsten fachlichen Schritt separat priorisieren.
 
 C1 definiert getrennte Zielvertraege fuer Knowledge-Uploads und Import-Uploads,
 Request-/Response-Metadaten, Startstatus, Sicherheitsregeln,
@@ -235,5 +237,5 @@ und in Projekten zuordenbar.
 
 ## Naechste Schritte
 
-1. Issue #73 bleibt als separate kleine Frontend-Hardening-Nacharbeit offen, sofern kein hoeher priorisierter Schritt dokumentiert wird.
+1. Naechsten fachlichen Schritt separat priorisieren.
 2. Weitere Zielobjekt-Erzeugung bleibt getrennten Issues vorbehalten; PDF-Verarbeitung bleibt separat in Issue #55 vorgemerkt.

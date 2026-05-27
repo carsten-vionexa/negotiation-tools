@@ -7,6 +7,7 @@ import { EmptyState, ErrorState } from "@/components/state-patterns";
 import { listCompanies } from "@/lib/api/companies";
 import { listNegotiationProjects } from "@/lib/api/negotiation-projects";
 import { getSupplierProfile, updateSupplierProfile } from "@/lib/api/supplier-profiles";
+import { optionalFormString, requiredFormString } from "@/lib/form-data";
 
 export default async function SupplierDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -135,20 +136,20 @@ async function updateSupplierAction(id: string, formData: FormData) {
   "use server";
 
   await updateSupplierProfile(id, {
-    company_id: requiredString(formData, "company_id"),
-    name: requiredString(formData, "name"),
-    country: optionalString(formData, "country"),
-    region: optionalString(formData, "region"),
-    industry: optionalString(formData, "industry"),
-    supplier_type: optionalString(formData, "supplier_type"),
-    power_level: optionalString(formData, "power_level"),
-    risk_level: optionalString(formData, "risk_level"),
-    website: optionalString(formData, "website"),
-    contact_name: optionalString(formData, "contact_name"),
-    contact_email: optionalString(formData, "contact_email"),
-    relationship_status: optionalString(formData, "relationship_status"),
-    cultural_context: optionalString(formData, "cultural_context"),
-    notes: optionalString(formData, "notes"),
+    company_id: requiredFormString(formData, "company_id", "Firma"),
+    name: requiredFormString(formData, "name", "Name"),
+    country: optionalFormString(formData, "country"),
+    region: optionalFormString(formData, "region"),
+    industry: optionalFormString(formData, "industry"),
+    supplier_type: optionalFormString(formData, "supplier_type"),
+    power_level: optionalFormString(formData, "power_level"),
+    risk_level: optionalFormString(formData, "risk_level"),
+    website: optionalFormString(formData, "website"),
+    contact_name: optionalFormString(formData, "contact_name"),
+    contact_email: optionalFormString(formData, "contact_email"),
+    relationship_status: optionalFormString(formData, "relationship_status"),
+    cultural_context: optionalFormString(formData, "cultural_context"),
+    notes: optionalFormString(formData, "notes"),
   });
   revalidatePath("/suppliers");
   revalidatePath(`/suppliers/${id}`);
@@ -186,15 +187,6 @@ function Field({
       />
     </label>
   );
-}
-
-function optionalString(formData: FormData, key: string) {
-  const value = formData.get(key);
-  return typeof value === "string" && value.trim() ? value.trim() : null;
-}
-
-function requiredString(formData: FormData, key: string) {
-  return optionalString(formData, key) ?? "";
 }
 
 function getErrorDescription(error: unknown) {

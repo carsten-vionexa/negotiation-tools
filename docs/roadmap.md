@@ -39,6 +39,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase C13: Upload-Frontend fuer CSV-/XLSX-ImportJobs unter `/imports/new` mit Redirect in die Read-only-Detailansicht umgesetzt
 - Phase C14: Parse-Aktion fuer pending CSV-/XLSX-ImportJobs in `/imports/[id]` mit anschliessender Row-Reviewanzeige umgesetzt
 - Phase C15: Explizite Mapping-Aktion fuer parsed ImportJobs in `/imports/[id]` mit sichtbarer Mapping-Konfiguration und gemappten Row-Daten umgesetzt
+- Phase C16: Validate-Aktion fuer mapped ImportJobs in `/imports/[id]` mit sichtbarer Summary und Row-Validierung umgesetzt
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
 - Frontend-Hardening Issue #73: Frontend-Server-Actions weisen fehlende oder leere Pflichtfelder ueber einen gemeinsamen `FormData`-Helper mit nachvollziehbarer Meldung zurueck
@@ -108,8 +109,8 @@ Ergebnis der MVP-Abnahme:
 
 Nicht Teil des aktuellen MVP sind:
 
-- vollstaendig produktiver Dateiimport inklusive kompletter Processing-/Review-Automation; CSV-/XLSX-Upload, manueller Parse-Start und explizites Mapping fuer ImportJobs sind als begrenzte Phase-C-Strecke vorhanden
-- Validate- und Create-Targets-UI fuer ImportJobs
+- vollstaendig produktiver Dateiimport inklusive kompletter Processing-/Review-Automation; CSV-/XLSX-Upload, manueller Parse-Start, explizites Mapping und Validierung fuer ImportJobs sind als begrenzte Phase-C-Strecke vorhanden
+- Create-Targets-UI fuer ImportJobs
 - PDF-/OCR-Parsing und semantische Dokumentverarbeitung; technisches CSV-/XLSX-Parsing fuer ImportJobs ist bereits vorhanden
 - KI-gestuetztes Mapping
 - automatische Analyse oder Strategieerzeugung
@@ -130,7 +131,7 @@ Diese Punkte bleiben spaetere Ausbaustufen und duerfen nicht als bereits geliefe
 
 ## 8. Phase C: Upload und Import
 
-Status: Begonnen. C1 bis C15, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 sind umgesetzt.
+Status: Begonnen. C1 bis C16, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 sind umgesetzt.
 
 Ziel: Die Datenbasis des MVP praktisch befuellbar machen. Dabei sollen Upload, Dateiablage, ImportJobs, Parsing, Mapping, Validierung und Zielobjekt-Erzeugung schrittweise umgesetzt werden.
 
@@ -151,15 +152,18 @@ Schritte:
 13. C13 abgeschlossen: `/imports/new` nimmt `.csv`- und `.xlsx`-Dateien mit Company, optionalem Project, `source_type` und `target_entity` als ImportJob entgegen und leitet nach erfolgreichem Upload auf `/imports/[id]` weiter; Processing-Aktionen bleiben ausserhalb der UI.
 14. C14 abgeschlossen: `/imports/[id]` bietet fuer `pending`-Jobs ausschliesslich den Parse-Start an, aktualisiert nach Erfolg Status, Zaehler und vorhandene ImportRows fuer Review und zeigt API-Fehler nachvollziehbar an.
 15. C15 abgeschlossen: `/imports/[id]` bietet fuer `parsed`-Jobs ein explizites Zielfeld-zu-Quellspalte-Mapping aus den geparsten Raw-Feldern an, startet `POST /api/import-jobs/{id}/map` und zeigt anschliessend `mapping_json` sowie `mapped_data_json` im bestehenden Review.
-16. Frontend Issue #66 abgeschlossen: `/suppliers` und `/suppliers/[id]` bilden SupplierProfile-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen den strukturierten Lieferantenbezug erreichbar und sichtbar.
-17. Frontend Issue #69 abgeschlossen: `/request-items` und `/request-items/[id]` bilden RequestItem-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen die strukturierte Anfrageposition erreichbar und sichtbar.
-18. Frontend Issue #73 abgeschlossen: Ein gemeinsamer `FormData`-Helper trimmt Formularstrings und bricht Pflichtfelder in Server Actions bei fehlenden oder leeren Werten mit feldbezogenem Fehler ab.
+16. C16 abgeschlossen: `/imports/[id]` bietet fuer `mapped`-Jobs `POST /api/import-jobs/{id}/validate` als explizite Aktion an und zeigt nach Erfolg `validation_summary_json`, Row-Validierungsstatus sowie Row-Fehler-/Warnmeldungen im bestehenden Review; Create-Targets wird nicht angeboten.
+17. Frontend Issue #66 abgeschlossen: `/suppliers` und `/suppliers/[id]` bilden SupplierProfile-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen den strukturierten Lieferantenbezug erreichbar und sichtbar.
+18. Frontend Issue #69 abgeschlossen: `/request-items` und `/request-items/[id]` bilden RequestItem-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen die strukturierte Anfrageposition erreichbar und sichtbar.
+19. Frontend Issue #73 abgeschlossen: Ein gemeinsamer `FormData`-Helper trimmt Formularstrings und bricht Pflichtfelder in Server Actions bei fehlenden oder leeren Werten mit feldbezogenem Fehler ab.
 
 Wichtige Hinweise aus der MVP-Abnahme fuer Phase C:
 
 - SupplierProfile-Frontend-Flow wurde mit Issue #66 ergaenzt, damit Lieferanteninformationen als strukturierter Projektbezug nutzbar sind.
 - RequestItem-Frontend-Flow wurde mit Issue #69 ergaenzt, damit importierte Anfragenkataloge als strukturierte Projektbezuege im Frontend nutzbar sind.
 - Die Importlogik soll nicht als grosser Block umgesetzt werden, sondern in klar getrennten Schritten: Upload, Storage, ImportJob, Parsing, Mapping, Validierung, Zielobjekt-Erzeugung.
+- Die derzeit statischen Mapping-Zielfeldlisten im Frontend sollten mittelfristig zentralisiert oder aus Backend-/Contract-Metadaten abgeleitet werden, damit Frontend und Backend nicht auseinanderlaufen. Dies ist kein Refactoring-Bestandteil von C16.
+- Nach Abschluss von Validate und einer spaeteren Create-Targets-UI sollte die ImportJob-Detailseite gegebenenfalls als klarer Prozessschritt-/Stepper-Flow geglaettet werden. Dies ist kein Refactoring-Bestandteil von C16.
 
 Naechster sinnvoller Schritt:
 
@@ -174,7 +178,7 @@ Naechster sinnvoller Schritt:
 - Eine gueltige XLSX-Datei mit `source_type=excel` und passender `target_entity` hochladen.
 - Nach jedem erfolgreichen Upload den Redirect auf `/imports/[id]` pruefen.
 - In `/imports` pruefen, ob die neuen Jobs sichtbar sind.
-- Sicherstellen, dass keine Validate-/Create-Targets-Buttons sichtbar sind.
+- Sicherstellen, dass vor dem Mapping keine Validate-Aktion und weiterhin keine Create-Targets-Aktion sichtbar ist.
 
 ### Manuelle Pruefhilfe C14
 
@@ -183,7 +187,7 @@ Naechster sinnvoller Schritt:
 - Die Parse-Aktion ausloesen und nach Erfolg pruefen, ob Status und Zaehler aktualisiert sowie erzeugte ImportRows mit Roh- und Reviewdaten sichtbar sind.
 - Eine XLSX-Datei ueber `/imports/new` hochladen und denselben Parse-Test ausfuehren; bei den ImportRows insbesondere den Sheet-Kontext pruefen.
 - Bei einem nicht mehr `pending` Job pruefen, dass keine Parse-Aktion angeboten wird und stattdessen eine Statusinformation erscheint.
-- Sicherstellen, dass keine Validate-/Create-Targets-Buttons sichtbar sind.
+- Sicherstellen, dass vor dem Mapping keine Validate-Aktion und weiterhin keine Create-Targets-Aktion sichtbar ist.
 
 ### Manuelle Pruefhilfe C15
 
@@ -192,7 +196,16 @@ Naechster sinnvoller Schritt:
 - Das Mapping ausloesen und pruefen, ob der Job danach `mapped` meldet sowie `mapping_json` und `ImportRow.mapped_data_json` sichtbar sind; Raw-Daten bleiben sichtbar.
 - Eine XLSX-Datei beziehungsweise einen `request_item`-Import ueber dieselbe Upload-, Parse- und Mapping-Strecke pruefen.
 - Bei einem nicht `parsed` Job pruefen, dass keine Mapping-Aktion angeboten wird und stattdessen eine Statusinformation erscheint.
-- Sicherstellen, dass keine Validate-/Create-Targets-Buttons sichtbar sind.
+- Sicherstellen, dass vor Status `mapped` keine Validate-Aktion und weiterhin keine Create-Targets-Aktion sichtbar ist.
+
+### Manuelle Pruefhilfe C16
+
+- Eine CSV-Datei ueber `/imports/new` hochladen, den Job parsen und mappen.
+- Bei Status `mapped` die Aktion `ImportJob validieren` ausloesen.
+- Nach Erfolg pruefen, ob Status `validated`, `validation_summary_json`, Row-Validierungsstatus sowie Row-Fehler-/Warnhinweise sichtbar beziehungsweise aktualisiert sind; Raw- und Mapped-Daten bleiben sichtbar.
+- Einen `request_item`-Import beziehungsweise XLSX-Import mit derselben Upload-, Parse-, Mapping- und Validate-Strecke pruefen, soweit Testdaten vorhanden sind.
+- Bei einem nicht `mapped` Job pruefen, dass keine Validate-Aktion angeboten wird und stattdessen eine Statusinformation erscheint.
+- Sicherstellen, dass kein Create-Targets-Button sichtbar ist.
 
 ## 9. Phase D: Analyse und Strategieunterstuetzung
 

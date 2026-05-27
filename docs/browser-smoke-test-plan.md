@@ -261,7 +261,7 @@ Empfohlene Testdaten:
 | Empty States | fehlende Daten werden fachlich erklaert | offen |  |
 | Error States | Backend-/API-Fehler werden sichtbar angezeigt | offen |  |
 | Query-Parameter | gueltige IDs laden Kontext; ungueltige IDs erzeugen Error State | offen |  |
-| Workflow-Kette | Project -> Knowledge Base -> Analysis -> Strategy -> Simulation -> Trainerreview ist klickbar | offen |  |
+| Workflow-Kette | Project -> Knowledge Base -> Imports -> Analysis -> Strategy -> Simulation -> Trainerreview ist klickbar | offen |  |
 | Nicht-MVP-Grenzen | keine Upload-/Import-, RAG-, OCR-, Voice-, Chat- oder produktive Simulationsfunktion wird suggeriert | offen |  |
 
 ## 7. Backend-nicht-erreichbar-Test

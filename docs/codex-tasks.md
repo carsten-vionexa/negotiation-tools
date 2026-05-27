@@ -71,6 +71,7 @@
 - Phase C10 umgesetzt: Zielobjekt-Erzeugung fuer validierte `procurement_history_item`-ImportRows mit `POST /import-jobs/{id}/create-targets`, Row-Zielreferenzen, Statusabschluss und Idempotenzschutz ueber `target_record_id` implementiert, ohne RequestItem-, SupplierProfile-, Frontend-, PDF/OCR- oder KI-Logik
 - Phase C11 umgesetzt: Zielobjekt-Erzeugung fuer validierte `request_item`-ImportRows ueber den bestehenden Create-Targets-Endpunkt mit defensiver `title`-Ableitung aus `article_name`, Modell-Defaultstatus und Idempotenzschutz implementiert, ohne SupplierProfile-, Frontend-, PDF/OCR-, KI-, Parser-, Mapping- oder neue Validierungslogik
 - Phase C12 umgesetzt: Read-only-Frontend-Liste und -Detailansicht fuer bestehende ImportJobs unter `/imports` und `/imports/[id]` mit Status-, Summary- und ImportRow-Reviewdaten sowie Navigationseintrag umgesetzt, ohne Upload-, Processing-, Backend- oder Migrationslogik
+- Phase C13 umgesetzt: CSV-/XLSX-Upload-Frontend unter `/imports/new` mit Company-/Projektkontext, `source_type`, `target_entity`, Server-Action-Validierung und Redirect auf `/imports/[id]` umgesetzt, ohne Processing-, Backend- oder Migrationslogik
 - Frontend-Nutzbarkeitsflow Issue #66 umgesetzt: SupplierProfile-Liste sowie Create/Edit-Detailflow unter `/suppliers` ergaenzt, in die Navigation aufgenommen und den strukturierten Lieferantenbezug in Projektanlage und Projektdetail nutzbar gemacht, ohne Backend-, Import- oder Migrationslogik
 - Frontend-Nutzbarkeitsflow Issue #69 umgesetzt: RequestItem-Liste sowie Create/Edit-Detailflow unter `/request-items` ergaenzt, in die Navigation aufgenommen und die strukturierte Anfrageposition in Projektanlage und Projektdetail nutzbar gemacht, ohne Backend-, Import- oder Migrationslogik
 - Frontend-Hardening Issue #73 umgesetzt: Gemeinsamen `FormData`-Helper fuer getrimmte optionale Werte und explizite Pflichtfeldfehler eingefuehrt sowie die bestehenden Frontend-Server-Actions darauf umgestellt, ohne Backend-, Import- oder Migrationslogik
@@ -101,7 +102,7 @@ Ergebnis der C0.7-Abnahme:
 
 ## Phase C: Upload und Import
 
-Status: Phase C1 bis C12, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 umgesetzt.
+Status: Phase C1 bis C13, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 umgesetzt.
 
 Umgesetzte Schritte:
 
@@ -117,9 +118,10 @@ Umgesetzte Schritte:
 10. C10: `POST /import-jobs/{id}/create-targets` fuer validierte Jobs mit Ziel `procurement_history_item` umgesetzt; der Endpoint erzeugt Zielobjekte ausschliesslich aus gueltigen `mapped_data_json`-Rows, setzt Row-Referenzen und schliesst idempotent als `completed` oder `completed_with_errors` ab.
 11. C11: Den bestehenden Create-Targets-Endpunkt fuer validierte Jobs mit Ziel `request_item` erweitert; er erzeugt echte `RequestItem`-Datensaetze aus gueltigen `mapped_data_json`-Rows, leitet fehlende Titel aus `article_name` ab und belaesst `status` beim Modell-Default `open`.
 12. C12: Bestehende ImportJobs unter `/imports` gelistet und unter `/imports/[id]` mit Datei-, Status-, Zaehler-, Summary- und ImportRow-Reviewdaten lesbar gemacht; die Navigation fuehrt zur Ansicht und stellt keine Verarbeitungsaktion bereit.
-13. Frontend Issue #66: SupplierProfiles als pflegbare Lieferantenstammdaten unter `/suppliers` bereitgestellt und fuer die Projektzuordnung sowie Projektanzeige erreichbar gemacht.
-14. Frontend Issue #69: RequestItems als pflegbare Anfragepositionen unter `/request-items` bereitgestellt und fuer die Projektzuordnung sowie strukturierte Projektanzeige erreichbar gemacht.
-15. Frontend Issue #73: Pflichtfelder in Frontend-Server-Actions ueber einen gemeinsamen `FormData`-Helper gegen fehlende oder leere Posts abgesichert; statt leerer Strings entsteht ein feldbezogener Fehler.
+13. C13: Einen sichtbaren Einstieg unter `/imports` und das Upload-Formular `/imports/new` fuer `.csv`/`.xlsx` bereitgestellt; der serverseitige Multipart-Upload validiert Pflichtfelder und fuehrt nach Anlage direkt in die Read-only-Detailansicht, ohne Processing auszulösen.
+14. Frontend Issue #66: SupplierProfiles als pflegbare Lieferantenstammdaten unter `/suppliers` bereitgestellt und fuer die Projektzuordnung sowie Projektanzeige erreichbar gemacht.
+15. Frontend Issue #69: RequestItems als pflegbare Anfragepositionen unter `/request-items` bereitgestellt und fuer die Projektzuordnung sowie strukturierte Projektanzeige erreichbar gemacht.
+16. Frontend Issue #73: Pflichtfelder in Frontend-Server-Actions ueber einen gemeinsamen `FormData`-Helper gegen fehlende oder leere Posts abgesichert; statt leerer Strings entsteht ein feldbezogener Fehler.
 
 Naechster Schritt:
 
@@ -138,19 +140,23 @@ Rohdatenvertrag fuer XLSX mit Worksheet-Kontext. C8 wendet darauf
 ausschliesslich explizite Mapping-Regeln an. C9 bewertet darauf ausschliesslich
 die gemappten Row-Werte und setzt Review-Status. C10 erzeugt
 `ProcurementHistoryItem`-Zielobjekte aus validierten gemappten Rows; C11
-erweitert denselben Endpoint um `RequestItem`-Zielobjekte. PDF-Verarbeitung
-bleibt separat vorgemerkt. Die Issues #66 und #69 machen die strukturierten
+erweitert denselben Endpoint um `RequestItem`-Zielobjekte. C12 macht ImportJobs
+und Rows im Frontend sichtbar; C13 ergaenzt ausschliesslich das Anlegen per
+CSV-/XLSX-Upload, nicht die Processing-Schritte. PDF-Verarbeitung bleibt
+separat vorgemerkt. Die Issues #66 und #69 machen die strukturierten
 SupplierProfile- und RequestItem-Bezuege anschliessend im Frontend pflegbar
 und in Projekten zuordenbar.
 
-## Manuelle Pruefhilfe C12
+## Manuelle Pruefhilfe C13
 
-- `/imports` oeffnen und Navigation, Loading-, Error- und Empty-State pruefen.
-- Einen vorhandenen ImportJob oeffnen.
-- Auf `/imports/[id]` pruefen, ob Datei, Status, Zielobjekt, Zaehler und Summaries angezeigt werden.
-- Bei einem Job mit Rows pruefen, ob Raw-, Mapping-, Validierungs- und Zielreferenzdaten sichtbar sind.
-- Eine ungueltige ImportJob-ID aufrufen und Error-State pruefen.
-- Sicherstellen, dass keine Upload- oder Processing-Buttons sichtbar sind.
+- `/imports` oeffnen und den Einstieg `ImportJob hochladen` pruefen.
+- `/imports/new` oeffnen.
+- Das Upload-Formular mit fehlenden Pflichtfeldern absenden und nachvollziehbare Fehler pruefen.
+- Eine gueltige CSV-Datei mit `source_type=csv` und passender `target_entity` hochladen.
+- Eine gueltige XLSX-Datei mit `source_type=excel` und passender `target_entity` hochladen.
+- Nach jedem erfolgreichen Upload den Redirect auf `/imports/[id]` pruefen.
+- In `/imports` pruefen, ob die neuen Jobs sichtbar sind.
+- Sicherstellen, dass keine Parse-/Map-/Validate-/Create-Targets-Buttons sichtbar sind.
 
 ## Manuelle Pruefhilfe Phase B7
 
@@ -202,7 +208,7 @@ und in Projekten zuordenbar.
 
 ## Manuelle Pruefhilfe Phase C0.1
 
-- `docs/mvp-acceptance-checklist.md` lesen und pruefen, ob die komplette User Journey Company -> Profile -> Project -> Knowledge Base -> Analysis -> Strategy -> Simulation -> Trainerreview abgedeckt ist.
+- `docs/mvp-acceptance-checklist.md` lesen und pruefen, ob die komplette User Journey Company -> Profile -> Project -> Knowledge Base -> Imports -> Analysis -> Strategy -> Simulation -> Trainerreview abgedeckt ist.
 - Pruefen, ob technische Vorpruefung, Browser-Smoke-Uebersicht, Empty States, Error States und Abnahmeprotokoll enthalten sind.
 - Pruefen, ob die bewussten Nicht-MVP-Funktionen klar abgegrenzt sind.
 - Sicherstellen, dass keine Upload-/Import-, RAG-, OCR-, Voice- oder produktive Simulationsfunktion eingefuehrt wurde.
@@ -212,7 +218,7 @@ und in Projekten zuordenbar.
 - `docs/browser-smoke-test-plan.md` lesen und pruefen, ob alle MVP-Routen enthalten sind.
 - Pruefen, ob projektspezifische Query-Parameter-Flows fuer Knowledge Base, Analysis, Strategy, Simulation und Trainerreview enthalten sind.
 - Pruefen, ob Empty-State-, Error-State- und Backend-nicht-erreichbar-Faelle dokumentiert sind.
-- Pruefen, ob die Workflow-Kette Project -> Knowledge Base -> Analysis -> Strategy -> Simulation -> Trainerreview als Browserpruefung enthalten ist.
+- Pruefen, ob die Workflow-Kette Project -> Knowledge Base -> Imports -> Analysis -> Strategy -> Simulation -> Trainerreview als Browserpruefung enthalten ist.
 - Sicherstellen, dass keine automatisierten Tests, keine neuen Features und kein Frontend-Refactoring eingefuehrt wurden.
 
 ## Manuelle Pruefhilfe Phase C0.3

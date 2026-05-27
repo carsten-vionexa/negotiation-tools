@@ -32,6 +32,14 @@ export async function apiPost<TResponse, TBody = unknown>(
   return apiRequest<TResponse>(path, { ...options, method: "POST", body });
 }
 
+export async function apiPostForm<TResponse>(
+  path: string,
+  body: FormData,
+  options?: ApiClientOptions,
+) {
+  return apiRequest<TResponse>(path, { ...options, method: "POST", body });
+}
+
 export async function apiPatch<TResponse, TBody = unknown>(
   path: string,
   body: TBody,
@@ -45,14 +53,15 @@ async function apiRequest<TResponse>(
   options: ApiClientOptions & { method: "GET" | "POST" | "PATCH"; body?: unknown },
 ) {
   const { query, headers, body, ...requestOptions } = options;
+  const isFormData = body instanceof FormData;
   const response = await fetch(buildUrl(path, query), {
     ...requestOptions,
     headers: {
       Accept: "application/json",
-      ...(body === undefined ? {} : { "Content-Type": "application/json" }),
+      ...(body === undefined || isFormData ? {} : { "Content-Type": "application/json" }),
       ...headers,
     },
-    body: body === undefined ? undefined : JSON.stringify(body),
+    body: body === undefined ? undefined : isFormData ? body : JSON.stringify(body),
   });
 
   const parsedBody = await parseJson(response);

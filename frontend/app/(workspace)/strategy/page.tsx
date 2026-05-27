@@ -15,6 +15,7 @@ import { getRequestItem } from "@/lib/api/request-items";
 import { createStrategy, listStrategies, updateStrategy, type StrategyRead } from "@/lib/api/strategies";
 import { getSupplierProfile } from "@/lib/api/supplier-profiles";
 import { createZopaItem, listZopaItems, updateZopaItem, type ZopaItemRead } from "@/lib/api/zopa-items";
+import { optionalFormString, requiredFormString } from "@/lib/form-data";
 
 type StrategySearchParams = {
   projectId?: string;
@@ -438,10 +439,10 @@ async function createStrategyAction(projectId: string, companyId: string, formDa
   await createStrategy({
     company_id: companyId,
     negotiation_project_id: projectId,
-    title: requiredString(formData, "title"),
-    status: optionalString(formData, "status") ?? "draft",
-    overall_objective: optionalString(formData, "overall_objective"),
-    notes: optionalString(formData, "notes"),
+    title: requiredFormString(formData, "title", "Titel"),
+    status: optionalFormString(formData, "status") ?? "draft",
+    overall_objective: optionalFormString(formData, "overall_objective"),
+    notes: optionalFormString(formData, "notes"),
   });
   refreshStrategy(projectId);
 }
@@ -449,18 +450,18 @@ async function createStrategyAction(projectId: string, companyId: string, formDa
 async function updateStrategyAction(id: string, projectId: string, formData: FormData) {
   "use server";
   await updateStrategy(id, {
-    title: requiredString(formData, "title"),
-    status: optionalString(formData, "status") ?? "draft",
-    overall_objective: optionalString(formData, "overall_objective"),
-    target_outcome: optionalString(formData, "target_outcome"),
-    minimum_acceptable_outcome: optionalString(formData, "minimum_acceptable_outcome"),
-    walk_away_point: optionalString(formData, "walk_away_point"),
-    zopa_summary: optionalString(formData, "zopa_summary"),
-    batna_summary: optionalString(formData, "batna_summary"),
-    concession_strategy: optionalString(formData, "concession_strategy"),
-    argumentation_summary: optionalString(formData, "argumentation_summary"),
-    risk_assessment: optionalString(formData, "risk_assessment"),
-    notes: optionalString(formData, "notes"),
+    title: requiredFormString(formData, "title", "Titel"),
+    status: optionalFormString(formData, "status") ?? "draft",
+    overall_objective: optionalFormString(formData, "overall_objective"),
+    target_outcome: optionalFormString(formData, "target_outcome"),
+    minimum_acceptable_outcome: optionalFormString(formData, "minimum_acceptable_outcome"),
+    walk_away_point: optionalFormString(formData, "walk_away_point"),
+    zopa_summary: optionalFormString(formData, "zopa_summary"),
+    batna_summary: optionalFormString(formData, "batna_summary"),
+    concession_strategy: optionalFormString(formData, "concession_strategy"),
+    argumentation_summary: optionalFormString(formData, "argumentation_summary"),
+    risk_assessment: optionalFormString(formData, "risk_assessment"),
+    notes: optionalFormString(formData, "notes"),
   });
   refreshStrategy(projectId);
 }
@@ -521,69 +522,69 @@ function refreshStrategy(projectId: string): never {
 
 function zopaPayload(formData: FormData) {
   return {
-    dimension: optionalString(formData, "dimension"),
-    description: optionalString(formData, "description"),
-    buyer_target_value: optionalString(formData, "buyer_target_value"),
-    buyer_walk_away_value: optionalString(formData, "buyer_walk_away_value"),
-    supplier_expected_target_value: optionalString(formData, "supplier_expected_target_value"),
-    supplier_estimated_walk_away_value: optionalString(formData, "supplier_estimated_walk_away_value"),
-    possible_agreement_range: optionalString(formData, "possible_agreement_range"),
-    currency: optionalString(formData, "currency"),
-    unit: optionalString(formData, "unit"),
-    priority: optionalString(formData, "priority"),
-    confidence_level: optionalString(formData, "confidence_level"),
-    information_kind: optionalString(formData, "information_kind"),
-    source_reference: optionalString(formData, "source_reference"),
+    dimension: optionalFormString(formData, "dimension"),
+    description: optionalFormString(formData, "description"),
+    buyer_target_value: optionalFormString(formData, "buyer_target_value"),
+    buyer_walk_away_value: optionalFormString(formData, "buyer_walk_away_value"),
+    supplier_expected_target_value: optionalFormString(formData, "supplier_expected_target_value"),
+    supplier_estimated_walk_away_value: optionalFormString(formData, "supplier_estimated_walk_away_value"),
+    possible_agreement_range: optionalFormString(formData, "possible_agreement_range"),
+    currency: optionalFormString(formData, "currency"),
+    unit: optionalFormString(formData, "unit"),
+    priority: optionalFormString(formData, "priority"),
+    confidence_level: optionalFormString(formData, "confidence_level"),
+    information_kind: optionalFormString(formData, "information_kind"),
+    source_reference: optionalFormString(formData, "source_reference"),
   };
 }
 
 function batnaPayload(formData: FormData) {
   return {
-    title: requiredString(formData, "title"),
-    batna_type: optionalString(formData, "batna_type"),
-    description: optionalString(formData, "description"),
-    feasibility_level: optionalString(formData, "feasibility_level"),
-    estimated_cost: optionalString(formData, "estimated_cost"),
-    currency: optionalString(formData, "currency"),
-    estimated_lead_time: optionalString(formData, "estimated_lead_time"),
-    risk_level: optionalString(formData, "risk_level"),
-    impact_assessment: optionalString(formData, "impact_assessment"),
-    required_actions: optionalString(formData, "required_actions"),
+    title: requiredFormString(formData, "title", "Titel"),
+    batna_type: optionalFormString(formData, "batna_type"),
+    description: optionalFormString(formData, "description"),
+    feasibility_level: optionalFormString(formData, "feasibility_level"),
+    estimated_cost: optionalFormString(formData, "estimated_cost"),
+    currency: optionalFormString(formData, "currency"),
+    estimated_lead_time: optionalFormString(formData, "estimated_lead_time"),
+    risk_level: optionalFormString(formData, "risk_level"),
+    impact_assessment: optionalFormString(formData, "impact_assessment"),
+    required_actions: optionalFormString(formData, "required_actions"),
     is_preferred: booleanValue(formData, "is_preferred"),
     ranking: optionalNumber(formData, "ranking"),
-    confidence_level: optionalString(formData, "confidence_level"),
+    confidence_level: optionalFormString(formData, "confidence_level"),
   };
 }
 
 function concessionPayload(formData: FormData) {
   return {
-    title: requiredString(formData, "title"),
-    concession_type: optionalString(formData, "concession_type"),
-    description: optionalString(formData, "description"),
-    value_to_us: optionalString(formData, "value_to_us"),
-    value_to_counterparty: optionalString(formData, "value_to_counterparty"),
-    estimated_cost: optionalString(formData, "estimated_cost"),
-    currency: optionalString(formData, "currency"),
-    give_condition: optionalString(formData, "give_condition"),
-    required_counterpart: optionalString(formData, "required_counterpart"),
+    title: requiredFormString(formData, "title", "Titel"),
+    concession_type: optionalFormString(formData, "concession_type"),
+    description: optionalFormString(formData, "description"),
+    value_to_us: optionalFormString(formData, "value_to_us"),
+    value_to_counterparty: optionalFormString(formData, "value_to_counterparty"),
+    estimated_cost: optionalFormString(formData, "estimated_cost"),
+    currency: optionalFormString(formData, "currency"),
+    give_condition: optionalFormString(formData, "give_condition"),
+    required_counterpart: optionalFormString(formData, "required_counterpart"),
     sequence_order: optionalNumber(formData, "sequence_order"),
     is_final_offer_item: booleanValue(formData, "is_final_offer_item"),
-    risk_level: optionalString(formData, "risk_level"),
+    risk_level: optionalFormString(formData, "risk_level"),
   };
 }
 
 function argumentationPayload(formData: FormData) {
   return {
-    title: requiredString(formData, "title"),
-    argument_type: optionalString(formData, "argument_type"),
-    claim: optionalString(formData, "claim"),
-    evidence: optionalString(formData, "evidence"),
-    source_reference: optionalString(formData, "source_reference"),
-    expected_counterargument: optionalString(formData, "expected_counterargument"),
-    response_strategy: optionalString(formData, "response_strategy"),
-    priority: optionalString(formData, "priority"),
-    confidence_level: optionalString(formData, "confidence_level"),
-    information_kind: optionalString(formData, "information_kind"),
+    title: requiredFormString(formData, "title", "Titel"),
+    argument_type: optionalFormString(formData, "argument_type"),
+    claim: optionalFormString(formData, "claim"),
+    evidence: optionalFormString(formData, "evidence"),
+    source_reference: optionalFormString(formData, "source_reference"),
+    expected_counterargument: optionalFormString(formData, "expected_counterargument"),
+    response_strategy: optionalFormString(formData, "response_strategy"),
+    priority: optionalFormString(formData, "priority"),
+    confidence_level: optionalFormString(formData, "confidence_level"),
+    information_kind: optionalFormString(formData, "information_kind"),
   };
 }
 
@@ -720,17 +721,8 @@ function SubmitButton({ label }: { label: string }) {
   );
 }
 
-function optionalString(formData: FormData, key: string) {
-  const value = formData.get(key);
-  return typeof value === "string" && value.trim() ? value.trim() : null;
-}
-
-function requiredString(formData: FormData, key: string) {
-  return optionalString(formData, key) ?? "";
-}
-
 function optionalNumber(formData: FormData, key: string) {
-  const value = optionalString(formData, key);
+  const value = optionalFormString(formData, key);
   return value ? Number(value) : null;
 }
 

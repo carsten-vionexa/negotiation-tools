@@ -10,6 +10,7 @@ import { getNegotiationProject, updateNegotiationProject } from "@/lib/api/negot
 import { listRequestItems } from "@/lib/api/request-items";
 import { listSupplierProfiles } from "@/lib/api/supplier-profiles";
 import { listUserProfiles } from "@/lib/api/user-profiles";
+import { optionalFormString, requiredFormString } from "@/lib/form-data";
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -234,29 +235,29 @@ async function updateProjectAction(id: string, formData: FormData) {
   "use server";
 
   await updateNegotiationProject(id, {
-    company_id: requiredString(formData, "company_id"),
-    owner_id: optionalString(formData, "owner_id"),
-    supplier_profile_id: optionalString(formData, "supplier_profile_id"),
-    request_item_id: optionalString(formData, "request_item_id"),
-    title: requiredString(formData, "title"),
-    status: optionalString(formData, "status") ?? "draft",
-    negotiation_type: optionalString(formData, "negotiation_type"),
-    project_type: optionalString(formData, "project_type"),
-    category: optionalString(formData, "category"),
-    article_or_service: optionalString(formData, "article_or_service"),
-    quantity: optionalString(formData, "quantity"),
-    target_region: optionalString(formData, "target_region"),
-    desired_delivery_time: optionalString(formData, "desired_delivery_time"),
-    internal_price_expectation: optionalString(formData, "internal_price_expectation"),
-    currency: optionalString(formData, "currency"),
-    current_supplier: optionalString(formData, "current_supplier"),
-    priority: optionalString(formData, "priority"),
-    business_pressure: optionalString(formData, "business_pressure"),
-    technical_dependency_level: optionalString(formData, "technical_dependency_level"),
-    supplier_power_level: optionalString(formData, "supplier_power_level"),
-    risk_level: optionalString(formData, "risk_level"),
-    objective: optionalString(formData, "objective"),
-    context: optionalString(formData, "context"),
+    company_id: requiredFormString(formData, "company_id", "Firma"),
+    owner_id: optionalFormString(formData, "owner_id"),
+    supplier_profile_id: optionalFormString(formData, "supplier_profile_id"),
+    request_item_id: optionalFormString(formData, "request_item_id"),
+    title: requiredFormString(formData, "title", "Titel"),
+    status: optionalFormString(formData, "status") ?? "draft",
+    negotiation_type: optionalFormString(formData, "negotiation_type"),
+    project_type: optionalFormString(formData, "project_type"),
+    category: optionalFormString(formData, "category"),
+    article_or_service: optionalFormString(formData, "article_or_service"),
+    quantity: optionalFormString(formData, "quantity"),
+    target_region: optionalFormString(formData, "target_region"),
+    desired_delivery_time: optionalFormString(formData, "desired_delivery_time"),
+    internal_price_expectation: optionalFormString(formData, "internal_price_expectation"),
+    currency: optionalFormString(formData, "currency"),
+    current_supplier: optionalFormString(formData, "current_supplier"),
+    priority: optionalFormString(formData, "priority"),
+    business_pressure: optionalFormString(formData, "business_pressure"),
+    technical_dependency_level: optionalFormString(formData, "technical_dependency_level"),
+    supplier_power_level: optionalFormString(formData, "supplier_power_level"),
+    risk_level: optionalFormString(formData, "risk_level"),
+    objective: optionalFormString(formData, "objective"),
+    context: optionalFormString(formData, "context"),
   });
   revalidatePath("/projects");
   revalidatePath(`/projects/${id}`);
@@ -347,15 +348,6 @@ function Meta({ label, value }: { label: string; value: ReactNode }) {
       <dd className="mt-1 font-medium">{value}</dd>
     </div>
   );
-}
-
-function optionalString(formData: FormData, key: string) {
-  const value = formData.get(key);
-  return typeof value === "string" && value.trim() ? value.trim() : null;
-}
-
-function requiredString(formData: FormData, key: string) {
-  return optionalString(formData, key) ?? "";
 }
 
 function getErrorDescription(error: unknown) {

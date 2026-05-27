@@ -7,6 +7,7 @@ import { EmptyState, ErrorState } from "@/components/state-patterns";
 import { listCompanies } from "@/lib/api/companies";
 import { listNegotiationProjects } from "@/lib/api/negotiation-projects";
 import { getRequestItem, updateRequestItem } from "@/lib/api/request-items";
+import { optionalFormString, requiredFormString } from "@/lib/form-data";
 
 export default async function RequestItemDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -128,23 +129,23 @@ async function updateRequestItemAction(id: string, formData: FormData) {
   "use server";
 
   await updateRequestItem(id, {
-    company_id: requiredString(formData, "company_id"),
-    title: requiredString(formData, "title"),
-    article_name: optionalString(formData, "article_name"),
-    article_description: optionalString(formData, "article_description"),
-    category: optionalString(formData, "category"),
-    specification: optionalString(formData, "specification"),
-    requested_quantity: optionalString(formData, "requested_quantity"),
-    unit: optionalString(formData, "unit"),
-    target_price: optionalString(formData, "target_price"),
-    rough_price_expectation: optionalString(formData, "rough_price_expectation"),
-    currency: optionalString(formData, "currency"),
-    required_delivery_date: optionalString(formData, "required_delivery_date"),
-    target_delivery_time: optionalString(formData, "target_delivery_time"),
-    target_region: optionalString(formData, "target_region"),
-    priority: optionalString(formData, "priority"),
-    status: requiredString(formData, "status"),
-    comment: optionalString(formData, "comment"),
+    company_id: requiredFormString(formData, "company_id", "Firma"),
+    title: requiredFormString(formData, "title", "Titel"),
+    article_name: optionalFormString(formData, "article_name"),
+    article_description: optionalFormString(formData, "article_description"),
+    category: optionalFormString(formData, "category"),
+    specification: optionalFormString(formData, "specification"),
+    requested_quantity: optionalFormString(formData, "requested_quantity"),
+    unit: optionalFormString(formData, "unit"),
+    target_price: optionalFormString(formData, "target_price"),
+    rough_price_expectation: optionalFormString(formData, "rough_price_expectation"),
+    currency: optionalFormString(formData, "currency"),
+    required_delivery_date: optionalFormString(formData, "required_delivery_date"),
+    target_delivery_time: optionalFormString(formData, "target_delivery_time"),
+    target_region: optionalFormString(formData, "target_region"),
+    priority: optionalFormString(formData, "priority"),
+    status: requiredFormString(formData, "status", "Status"),
+    comment: optionalFormString(formData, "comment"),
   });
   revalidatePath("/request-items");
   revalidatePath(`/request-items/${id}`);
@@ -202,15 +203,6 @@ function TextArea({ label, name, defaultValue }: { label: string; name: string; 
       />
     </label>
   );
-}
-
-function optionalString(formData: FormData, key: string) {
-  const value = formData.get(key);
-  return typeof value === "string" && value.trim() ? value.trim() : null;
-}
-
-function requiredString(formData: FormData, key: string) {
-  return optionalString(formData, key) ?? "";
 }
 
 function getErrorDescription(error: unknown) {

@@ -6,6 +6,7 @@ import { EmptyState, ErrorState } from "@/components/state-patterns";
 import { PageHeader } from "@/components/page-header";
 import { listCompanies } from "@/lib/api/companies";
 import { createUserProfile, listUserProfiles } from "@/lib/api/user-profiles";
+import { optionalFormString, requiredFormString } from "@/lib/form-data";
 
 export default async function ProfilesPage() {
   let companies;
@@ -102,12 +103,12 @@ async function createProfileAction(formData: FormData) {
   "use server";
 
   await createUserProfile({
-    company_id: requiredString(formData, "company_id"),
-    display_name: requiredString(formData, "display_name"),
-    role: optionalString(formData, "role"),
-    department: optionalString(formData, "department"),
-    email: optionalString(formData, "email"),
-    notes: optionalString(formData, "notes"),
+    company_id: requiredFormString(formData, "company_id", "Firma"),
+    display_name: requiredFormString(formData, "display_name", "Display Name"),
+    role: optionalFormString(formData, "role"),
+    department: optionalFormString(formData, "department"),
+    email: optionalFormString(formData, "email"),
+    notes: optionalFormString(formData, "notes"),
   });
   revalidatePath("/profiles");
 }
@@ -119,15 +120,6 @@ function Field({ label, name, required = false }: { label: string; name: string;
       <input name={name} required={required} className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm" />
     </label>
   );
-}
-
-function optionalString(formData: FormData, key: string) {
-  const value = formData.get(key);
-  return typeof value === "string" && value.trim() ? value.trim() : null;
-}
-
-function requiredString(formData: FormData, key: string) {
-  return optionalString(formData, key) ?? "";
 }
 
 function getErrorDescription(error: unknown) {

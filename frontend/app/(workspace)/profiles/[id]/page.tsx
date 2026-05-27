@@ -7,6 +7,7 @@ import { PageHeader } from "@/components/page-header";
 import { listCompanies } from "@/lib/api/companies";
 import { listNegotiationProjects } from "@/lib/api/negotiation-projects";
 import { getUserProfile, updateUserProfile } from "@/lib/api/user-profiles";
+import { optionalFormString, requiredFormString } from "@/lib/form-data";
 
 export default async function ProfileDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -116,12 +117,12 @@ async function updateProfileAction(id: string, formData: FormData) {
   "use server";
 
   await updateUserProfile(id, {
-    company_id: requiredString(formData, "company_id"),
-    display_name: requiredString(formData, "display_name"),
-    role: optionalString(formData, "role"),
-    department: optionalString(formData, "department"),
-    email: optionalString(formData, "email"),
-    notes: optionalString(formData, "notes"),
+    company_id: requiredFormString(formData, "company_id", "Firma"),
+    display_name: requiredFormString(formData, "display_name", "Display Name"),
+    role: optionalFormString(formData, "role"),
+    department: optionalFormString(formData, "department"),
+    email: optionalFormString(formData, "email"),
+    notes: optionalFormString(formData, "notes"),
   });
   revalidatePath("/profiles");
   revalidatePath(`/profiles/${id}`);
@@ -158,15 +159,6 @@ function Field({
       />
     </label>
   );
-}
-
-function optionalString(formData: FormData, key: string) {
-  const value = formData.get(key);
-  return typeof value === "string" && value.trim() ? value.trim() : null;
-}
-
-function requiredString(formData: FormData, key: string) {
-  return optionalString(formData, key) ?? "";
 }
 
 function getErrorDescription(error: unknown) {

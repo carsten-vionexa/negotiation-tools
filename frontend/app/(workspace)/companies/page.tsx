@@ -5,6 +5,7 @@ import { ArrowRight, Building2, Plus } from "lucide-react";
 import { EmptyState, ErrorState } from "@/components/state-patterns";
 import { PageHeader } from "@/components/page-header";
 import { createCompany, listCompanies } from "@/lib/api/companies";
+import { optionalFormString, requiredFormString } from "@/lib/form-data";
 
 export default async function CompaniesPage() {
   let companies;
@@ -93,11 +94,11 @@ async function createCompanyAction(formData: FormData) {
   "use server";
 
   await createCompany({
-    name: requiredString(formData, "name"),
-    industry: optionalString(formData, "industry"),
-    country: optionalString(formData, "country"),
-    website: optionalString(formData, "website"),
-    description: optionalString(formData, "description"),
+    name: requiredFormString(formData, "name", "Name"),
+    industry: optionalFormString(formData, "industry"),
+    country: optionalFormString(formData, "country"),
+    website: optionalFormString(formData, "website"),
+    description: optionalFormString(formData, "description"),
   });
   revalidatePath("/companies");
 }
@@ -113,15 +114,6 @@ function Field({ label, name, required = false }: { label: string; name: string;
       />
     </label>
   );
-}
-
-function optionalString(formData: FormData, key: string) {
-  const value = formData.get(key);
-  return typeof value === "string" && value.trim() ? value.trim() : null;
-}
-
-function requiredString(formData: FormData, key: string) {
-  return optionalString(formData, key) ?? "";
 }
 
 function getErrorDescription(error: unknown) {

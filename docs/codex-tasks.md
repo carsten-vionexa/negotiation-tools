@@ -69,6 +69,7 @@
 - Phase C8 umgesetzt: Expliziten Mapping-Endpunkt fuer geparste ImportJobs implementiert, der validierte Mapping-Konfigurationen und unveraenderte Raw-Werte ausschliesslich in `ImportJob.mapping_json` und `ImportRow.mapped_data_json` uebernimmt, ohne Validierung, Zielobjekte, PDF/OCR oder KI-Zuordnung
 - Phase C9 umgesetzt: Minimalen Validierungs-Endpunkt fuer gemappte ImportRows implementiert, der `valid`/`invalid`, knappe Row-Fehler, Job-Zaehler und `validation_summary_json` setzt, ohne Zielobjekte, PDF/OCR oder KI-Validierung
 - Phase C10 umgesetzt: Zielobjekt-Erzeugung fuer validierte `procurement_history_item`-ImportRows mit `POST /import-jobs/{id}/create-targets`, Row-Zielreferenzen, Statusabschluss und Idempotenzschutz ueber `target_record_id` implementiert, ohne RequestItem-, SupplierProfile-, Frontend-, PDF/OCR- oder KI-Logik
+- Phase C11 umgesetzt: Zielobjekt-Erzeugung fuer validierte `request_item`-ImportRows ueber den bestehenden Create-Targets-Endpunkt mit defensiver `title`-Ableitung aus `article_name`, Modell-Defaultstatus und Idempotenzschutz implementiert, ohne SupplierProfile-, Frontend-, PDF/OCR-, KI-, Parser-, Mapping- oder neue Validierungslogik
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -96,7 +97,7 @@ Ergebnis der C0.7-Abnahme:
 
 ## Phase C: Upload und Import
 
-Status: Phase C1 bis C10 umgesetzt; C11 ist als naechster Zielobjekt-Schritt vorgesehen.
+Status: Phase C1 bis C11 umgesetzt; als naechster sinnvoller Block sind die Frontend-Nutzbarkeitsflows vorgesehen.
 
 Umgesetzte Schritte:
 
@@ -110,10 +111,11 @@ Umgesetzte Schritte:
 8. C8: `POST /import-jobs/{id}/map` fuer Jobs im Status `parsed` umgesetzt; der Endpoint verlangt ein explizites `field_mapping`, verwendet die bestehenden Modellfeldnamen und befuellt atomar ausschliesslich Mapping-Konfiguration und gemappte Row-Rohwerte.
 9. C9: `POST /import-jobs/{id}/validate` fuer Jobs im Status `mapped` umgesetzt; der Endpoint prueft gemappte Pflicht-, Zahlen-, Datums- und Waehrungswerte, markiert Rows als `valid` oder `invalid` und aggregiert das Review-Ergebnis als `validated`, auch wenn einzelne Rows fehlerhaft sind.
 10. C10: `POST /import-jobs/{id}/create-targets` fuer validierte Jobs mit Ziel `procurement_history_item` umgesetzt; der Endpoint erzeugt Zielobjekte ausschliesslich aus gueltigen `mapped_data_json`-Rows, setzt Row-Referenzen und schliesst idempotent als `completed` oder `completed_with_errors` ab.
+11. C11: Den bestehenden Create-Targets-Endpunkt fuer validierte Jobs mit Ziel `request_item` erweitert; er erzeugt echte `RequestItem`-Datensaetze aus gueltigen `mapped_data_json`-Rows, leitet fehlende Titel aus `article_name` ab und belaesst `status` beim Modell-Default `open`.
 
 Naechster Schritt:
 
-1. C11: Zielobjekt-Erzeugung fuer `RequestItem` auf Basis validierter Rows umsetzen.
+1. Frontend-Nutzbarkeitsblock: Issue #66 SupplierProfile-Frontend-Flow und Issue #69 RequestItem-Frontend-Flow umsetzen.
 
 C1 definiert getrennte Zielvertraege fuer Knowledge-Uploads und Import-Uploads,
 Request-/Response-Metadaten, Startstatus, Sicherheitsregeln,
@@ -126,10 +128,10 @@ von `pending` zu reviewbaren Rohdaten; die Parser-Implementierung beginnt mit
 C6. C6 implementiert ausschliesslich den CSV-Rohdatenparser, C7 denselben
 Rohdatenvertrag fuer XLSX mit Worksheet-Kontext. C8 wendet darauf
 ausschliesslich explizite Mapping-Regeln an. C9 bewertet darauf ausschliesslich
-die gemappten Row-Werte und setzt Review-Status. C10 erzeugt ausschliesslich
-`ProcurementHistoryItem`-Zielobjekte aus validierten gemappten Rows; die
-`RequestItem`-Erzeugung bleibt C11 vorbehalten. PDF-Verarbeitung bleibt separat
-vorgemerkt.
+die gemappten Row-Werte und setzt Review-Status. C10 erzeugt
+`ProcurementHistoryItem`-Zielobjekte aus validierten gemappten Rows; C11
+erweitert denselben Endpoint um `RequestItem`-Zielobjekte. PDF-Verarbeitung
+bleibt separat vorgemerkt.
 
 ## Manuelle Pruefhilfe Phase B7
 
@@ -211,6 +213,5 @@ vorgemerkt.
 
 ## Naechste Schritte
 
-1. Phase C11: Zielobjekt-Erzeugung fuer `RequestItem` auf Basis validierter Rows umsetzen.
+1. Frontend-Nutzbarkeitsblock umsetzen: Issue #66 SupplierProfile-Frontend-Flow und Issue #69 RequestItem-Frontend-Flow.
 2. Weitere Zielobjekt-Erzeugung bleibt getrennten Issues vorbehalten; PDF-Verarbeitung bleibt separat in Issue #55 vorgemerkt.
-3. Offene Nicht-Blocker aus `docs/mvp-acceptance-results.md` bei der Phase-C-Planung beruecksichtigen, insbesondere SupplierProfile- und RequestItem-Frontend-Flows.

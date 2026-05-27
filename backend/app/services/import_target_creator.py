@@ -4,6 +4,7 @@ from typing import Any
 from uuid import UUID
 
 from app.models.procurement_history_item import ProcurementHistoryItem
+from app.models.request_item import RequestItem
 from app.services.import_row_mapper import ALLOWED_TARGET_FIELDS
 
 
@@ -13,6 +14,10 @@ class ImportTargetCreationError(ValueError):
 
 DECIMAL_FIELDS = {"quantity", "unit_price", "lead_time_weeks"}
 STRING_FIELDS = ALLOWED_TARGET_FIELDS["procurement_history_item"] - DECIMAL_FIELDS - {"purchased_at"}
+REQUEST_ITEM_DECIMAL_FIELDS = {"requested_quantity", "target_price", "rough_price_expectation"}
+REQUEST_ITEM_STRING_FIELDS = (
+    ALLOWED_TARGET_FIELDS["request_item"] - REQUEST_ITEM_DECIMAL_FIELDS - {"required_delivery_date"}
+)
 
 
 def build_procurement_history_item(
@@ -34,9 +39,38 @@ def build_procurement_history_item(
     values["item_name"] = item_name
     for field in DECIMAL_FIELDS:
         values[field] = _optional_decimal(mapped_data_json.get(field), field)
-    values["purchased_at"] = _optional_date(mapped_data_json.get("purchased_at"))
+    values["purchased_at"] = _optional_date(mapped_data_json.get("purchased_at"), "purchased_at")
 
     return ProcurementHistoryItem(company_id=company_id, metadata_json={}, **values)
+
+
+def build_request_item(
+    company_id: UUID,
+    mapped_data_json: dict[str, Any],
+) -> RequestItem:
+    unknown_fields = sorted(set(mapped_data_json) - ALLOWED_TARGET_FIELDS["request_item"])
+    if unknown_fields:
+        fields = ", ".join(unknown_fields)
+        raise ImportTargetCreationError(f"Unsupported mapped fields for target creation: {fields}.")
+
+    values: dict[str, Any] = {
+        field: _optional_string(mapped_data_json.get(field))
+        for field in REQUEST_ITEM_STRING_FIELDS
+        if field != "title"
+    }
+    title = _optional_string(mapped_data_json.get("title")) or values["article_name"]
+    if title is None:
+        raise ImportTargetCreationError("One of title or article_name is required for target creation.")
+
+    values["title"] = title
+    for field in REQUEST_ITEM_DECIMAL_FIELDS:
+        values[field] = _optional_decimal(mapped_data_json.get(field), field)
+    values["required_delivery_date"] = _optional_date(
+        mapped_data_json.get("required_delivery_date"),
+        "required_delivery_date",
+    )
+
+    return RequestItem(company_id=company_id, metadata_json={}, **values)
 
 
 def _optional_string(value: object) -> str | None:
@@ -60,7 +94,7 @@ def _optional_decimal(value: object, field: str) -> Decimal | None:
     return decimal_value
 
 
-def _optional_date(value: object) -> date | None:
+def _optional_date(value: object, field: str) -> date | None:
     if value is None or (isinstance(value, str) and not value.strip()):
         return None
     if isinstance(value, datetime):
@@ -75,4 +109,4 @@ def _optional_date(value: object) -> date | None:
                 return datetime.fromisoformat(value.strip()).date()
             except ValueError:
                 pass
-    raise ImportTargetCreationError("purchased_at must be a valid date for target creation.")
+    raise ImportTargetCreationError(f"{field} must be a valid date for target creation.")

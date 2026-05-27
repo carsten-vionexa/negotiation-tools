@@ -80,3 +80,7 @@ export function parseImportJob(id: string) {
 export function mapImportJob(id: string, payload: ImportJobMapRequest) {
   return apiPost<ImportJobRead, ImportJobMapRequest>(`/api/import-jobs/${id}/map`, payload);
 }
+
+export function validateImportJob(id: string) {
+  return apiPost<ImportJobRead>(`/api/import-jobs/${id}/validate`, undefined);
+}

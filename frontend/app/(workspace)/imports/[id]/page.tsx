@@ -11,6 +11,7 @@ import { getNegotiationProject } from "@/lib/api/negotiation-projects";
 
 import { ImportMappingForm } from "./mapping-form";
 import { ImportParseForm } from "./parse-form";
+import { ImportValidateForm } from "./validate-form";
 
 export default async function ImportDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -126,6 +127,17 @@ export default async function ImportDetailPage({ params }: { params: Promise<{ i
           <h2 className="text-base font-semibold">Mapping</h2>
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
             Mapping ist nur fuer ImportJobs im Status parsed verfuegbar. Dieser Job hat den Status {importJob.status}.
+          </p>
+        </section>
+      )}
+
+      {importJob.status === "mapped" ? (
+        <ImportValidateForm importJobId={importJob.id} />
+      ) : (
+        <section className="rounded-md border border-border bg-card p-5">
+          <h2 className="text-base font-semibold">Validierung</h2>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            Validierung ist nur fuer ImportJobs im Status mapped verfuegbar. Dieser Job hat den Status {importJob.status}.
           </p>
         </section>
       )}

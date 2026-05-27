@@ -21,7 +21,7 @@ Geprueft werden die vorhandenen MVP-Routen und die wichtigsten Query-Parameter-F
 - Simulation-Scenario-Flow
 - Trainerreview-Flow
 
-Geprueft wird die begrenzte ImportJob-Strecke aus CSV-/XLSX-Upload und manuellem Parse-Start. Nicht geprueft werden eine vollstaendige Import-Processing-Automation, Mapping-/Validate-/Create-Targets-UI, RAG, OCR, Voice, Chat, Streaming oder automatische Auswertung, weil diese bewusst nicht Teil des aktuellen MVP sind.
+Geprueft wird die begrenzte ImportJob-Strecke aus CSV-/XLSX-Upload, manuellem Parse-Start und explizitem Mapping geparster Rows. Nicht geprueft werden eine vollstaendige Import-Processing-Automation, Validate-/Create-Targets-UI, RAG, PDF-/OCR-Verarbeitung, Voice, Chat, Streaming oder automatische Auswertung, weil diese bewusst nicht Teil des aktuellen MVP sind.
 
 ## 3. Voraussetzungen
 
@@ -161,8 +161,10 @@ Empfohlene Testdaten:
 | CSV-Parse | `ImportJob parsen` aktualisiert Status und Zaehler und macht geparste ImportRows sichtbar | offen |  |
 | XLSX-Parse | Dieselbe Strecke funktioniert fuer `.xlsx`; erzeugte Rows zeigen Sheet-Kontext | offen |  |
 | Statusgrenze | Bei einem nicht mehr `pending` Job wird keine Parse-Aktion angeboten | offen |  |
-| Processing-Grenze | Keine Map-/Validate-/Create-Targets-Aktion wird angeboten | offen |  |
-| Error State | Upload- oder Parse-API-Fehler wird verstaendlich sichtbar statt einer leeren Seite | offen |  |
+| Mapping | Bei `parsed` werden Raw-Quellfelder und zum Target Entity passende Zielfelder angeboten; nach Mapping sind `mapping_json` und `mapped_data_json` sichtbar | offen |  |
+| Mapping-Statusgrenze | Bei einem nicht `parsed` Job wird keine Mapping-Aktion angeboten | offen |  |
+| Processing-Grenze | Keine Validate-/Create-Targets-Aktion wird angeboten | offen |  |
+| Error State | Upload-, Parse- oder Mapping-API-Fehler wird verstaendlich sichtbar statt einer leeren Seite | offen |  |
 
 ### 5.11 `/analysis`
 
@@ -275,7 +277,7 @@ Empfohlene Testdaten:
 | Error States | Backend-/API-Fehler werden sichtbar angezeigt | offen |  |
 | Query-Parameter | gueltige IDs laden Kontext; ungueltige IDs erzeugen Error State | offen |  |
 | Workflow-Kette | Project -> Knowledge Base -> Imports -> Analysis -> Strategy -> Simulation -> Trainerreview ist klickbar | offen |  |
-| Nicht-MVP-Grenzen | keine vollstaendige Importautomation, Mapping-/Validate-/Create-Targets-UI, RAG-, OCR-, Voice-, Chat- oder produktive Simulationsfunktion wird suggeriert | offen |  |
+| Nicht-MVP-Grenzen | keine vollstaendige Importautomation, Validate-/Create-Targets-UI, PDF-/OCR- oder semantische Dokumentverarbeitung, RAG-, Voice-, Chat- oder produktive Simulationsfunktion wird suggeriert | offen |  |
 
 ## 7. Backend-nicht-erreichbar-Test
 
@@ -334,10 +336,9 @@ Nicht Bestandteil dieses Plans sind:
 - Unit-Tests,
 - API-Contract-Tests,
 - vollstaendig produktiver Import inklusive Processing-/Review-Automation,
-- Mapping-/Validate-/Create-Targets-UI,
+- Validate-/Create-Targets-UI,
 - PDF-/OCR-Parsing oder semantische Dokumentverarbeitung,
 - RAG,
-- OCR,
 - Embeddings,
 - Chat,
 - Voice,

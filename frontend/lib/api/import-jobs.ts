@@ -47,6 +47,10 @@ export type ImportJobListFilters = {
   limit?: number;
 };
 
+export type ImportJobMapRequest = {
+  field_mapping: Record<string, string>;
+};
+
 export function listImportJobs(filters?: ImportJobListFilters) {
   return apiGet<ImportJobSummary[]>("/api/import-jobs", { query: filters, cache: "no-store" });
 }
@@ -71,4 +75,8 @@ export function uploadImportJob(payload: ImportJobUpload) {
 
 export function parseImportJob(id: string) {
   return apiPost<ImportJobRead>(`/api/import-jobs/${id}/parse`, undefined);
+}
+
+export function mapImportJob(id: string, payload: ImportJobMapRequest) {
+  return apiPost<ImportJobRead, ImportJobMapRequest>(`/api/import-jobs/${id}/map`, payload);
 }

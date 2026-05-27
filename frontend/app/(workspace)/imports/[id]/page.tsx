@@ -9,6 +9,7 @@ import { getImportJob } from "@/lib/api/import-jobs";
 import { listImportRows, type ImportRowSummary } from "@/lib/api/import-rows";
 import { getNegotiationProject } from "@/lib/api/negotiation-projects";
 
+import { ImportMappingForm } from "./mapping-form";
 import { ImportParseForm } from "./parse-form";
 
 export default async function ImportDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -113,8 +114,24 @@ export default async function ImportDetailPage({ params }: { params: Promise<{ i
         </section>
       )}
 
+      {importJob.status === "parsed" ? (
+        <ImportMappingForm
+          importJobId={importJob.id}
+          targetEntity={importJob.target_entity}
+          sourceFields={getSourceFields(rows)}
+          existingMapping={getExistingFieldMapping(importJob.mapping_json)}
+        />
+      ) : (
+        <section className="rounded-md border border-border bg-card p-5">
+          <h2 className="text-base font-semibold">Mapping</h2>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            Mapping ist nur fuer ImportJobs im Status parsed verfuegbar. Dieser Job hat den Status {importJob.status}.
+          </p>
+        </section>
+      )}
+
       <section className="grid gap-4 lg:grid-cols-2">
-        <JsonPanel title="Mapping" value={importJob.mapping_json} />
+        <JsonPanel title="Mapping-Konfiguration" value={importJob.mapping_json} />
         <JsonPanel title="Validation Summary" value={importJob.validation_summary_json} />
         <div className="rounded-md border border-border bg-card p-5 lg:col-span-2">
           <h2 className="text-base font-semibold">Error Summary</h2>
@@ -216,4 +233,22 @@ function formatDate(date?: string | null) {
 
 function getErrorDescription(error: unknown) {
   return error instanceof Error ? error.message : "Bitte pruefe, ob das Backend erreichbar ist.";
+}
+
+function getSourceFields(rows: ImportRowSummary[]) {
+  return Array.from(new Set(rows.flatMap((row) => Object.keys(row.raw_data_json ?? {})))).sort((left, right) =>
+    left.localeCompare(right, "de"),
+  );
+}
+
+function getExistingFieldMapping(value?: Record<string, unknown>) {
+  const fieldMapping = value?.field_mapping;
+
+  if (!fieldMapping || typeof fieldMapping !== "object" || Array.isArray(fieldMapping)) {
+    return {};
+  }
+
+  return Object.fromEntries(
+    Object.entries(fieldMapping).filter((entry): entry is [string, string] => typeof entry[1] === "string"),
+  );
 }

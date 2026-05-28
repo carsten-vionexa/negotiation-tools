@@ -7,7 +7,7 @@ import { ErrorState } from "@/components/state-patterns";
 import { PageHeader } from "@/components/page-header";
 import { listCompanies } from "@/lib/api/companies";
 import { getNegotiationProject, updateNegotiationProject } from "@/lib/api/negotiation-projects";
-import { listRequestItems } from "@/lib/api/request-items";
+import { getRequestItem, listRequestItems } from "@/lib/api/request-items";
 import { listSupplierProfiles } from "@/lib/api/supplier-profiles";
 import { listUserProfiles } from "@/lib/api/user-profiles";
 import { optionalFormString, requiredFormString } from "@/lib/form-data";
@@ -49,7 +49,37 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   const requestById = new Map(requestItems.map((item) => [item.id, item]));
   const company = companyById.get(project.company_id);
   const supplier = supplierById.get(project.supplier_profile_id ?? "");
-  const requestItem = requestById.get(project.request_item_id ?? "");
+  let requestItem = requestById.get(project.request_item_id ?? "");
+
+  if (project.request_item_id && !requestItem) {
+    try {
+      requestItem = await getRequestItem(project.request_item_id);
+    } catch {
+      requestItem = undefined;
+    }
+  }
+
+  const requestItemDemandFields = requestItem
+    ? [
+        { label: "Titel / Bedarf", value: requestItem.title },
+        { label: "Artikel / Service", value: requestItem.article_name },
+        { label: "Kategorie", value: requestItem.category },
+        { label: "Menge", value: [requestItem.requested_quantity, requestItem.unit].filter(Boolean).join(" ") },
+        { label: "Liefertermin", value: requestItem.required_delivery_date || requestItem.target_delivery_time },
+        { label: "Zielpreis", value: [requestItem.target_price, requestItem.currency].filter(Boolean).join(" ") },
+        { label: "Budgetrahmen", value: [requestItem.rough_price_expectation, requestItem.currency].filter(Boolean).join(" ") },
+        { label: "Zielregion", value: requestItem.target_region },
+        { label: "Prioritaet", value: requestItem.priority },
+        { label: "Status", value: requestItem.status },
+      ].filter((item) => hasDisplayValue(item.value))
+    : [];
+  const requestItemContextFields = requestItem
+    ? [
+        { label: "Beschreibung", value: requestItem.article_description },
+        { label: "Spezifikation", value: requestItem.specification },
+        { label: "Notizen", value: requestItem.comment },
+      ].filter((item) => hasDisplayValue(item.value))
+    : [];
   const projectDemandFields = [
     { label: "Artikel / Leistung", value: project.article_or_service },
     { label: "Kategorie", value: project.category },
@@ -61,7 +91,8 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
     { label: "Prioritaet", value: project.priority },
   ].filter((item) => hasDisplayValue(item.value));
   const hasProjectDemandContext = hasDisplayValue(project.context);
-  const hasProjectDemandSummary = requestItem || projectDemandFields.length > 0 || hasProjectDemandContext;
+  const hasProjectDemandSummary =
+    requestItem || project.request_item_id || projectDemandFields.length > 0 || hasProjectDemandContext;
 
   return (
     <>
@@ -76,11 +107,13 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         <section className="rounded-md border border-border bg-card p-5">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <h2 className="text-base font-semibold">Bedarfsdaten</h2>
+              <h2 className="text-base font-semibold">Anfrageposition / Bedarfskontext</h2>
               <p className="mt-2 text-sm leading-6 text-muted-foreground">
                 {requestItem
-                  ? "Aus der Anfrageposition uebernommene Projektdaten fuer die fachliche Pruefung vor Analyse und Strategie."
-                  : "Projektbezogene Bedarfsdaten fuer die fachliche Pruefung vor Analyse und Strategie."}
+                  ? "Verknuepfte Anfrageposition und zentrale Bedarfsdaten fuer die fachliche Pruefung vor Analyse und Strategie."
+                  : project.request_item_id
+                    ? "Dieses Projekt verweist auf eine Anfrageposition, die aktuell nicht geladen werden konnte. Die Projektbedarfsdaten bleiben sichtbar."
+                    : "Projektbezogene Bedarfsdaten fuer die fachliche Pruefung vor Analyse und Strategie."}
               </p>
             </div>
             {requestItem ? (
@@ -94,7 +127,37 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             ) : null}
           </div>
 
-          {projectDemandFields.length > 0 ? (
+          {requestItemDemandFields.length > 0 ? (
+            <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
+              {requestItemDemandFields.map((item) => (
+                <Meta key={item.label} label={item.label} value={item.value} />
+              ))}
+            </dl>
+          ) : null}
+
+          {requestItemContextFields.length > 0 ? (
+            <div className="mt-4 grid gap-3 border-t border-border pt-4 md:grid-cols-3">
+              {requestItemContextFields.map((item) => (
+                <div key={item.label}>
+                  <h3 className="text-sm font-medium">{item.label}</h3>
+                  <p className="mt-2 whitespace-pre-line text-sm leading-6 text-muted-foreground">{item.value}</p>
+                </div>
+              ))}
+            </div>
+          ) : null}
+
+          {requestItem && projectDemandFields.length > 0 ? (
+            <div className="mt-4 border-t border-border pt-4">
+              <h3 className="text-sm font-medium">In das Projekt uebernommen</h3>
+              <dl className="mt-3 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
+                {projectDemandFields.map((item) => (
+                  <Meta key={item.label} label={item.label} value={item.value} />
+                ))}
+              </dl>
+            </div>
+          ) : null}
+
+          {!requestItem && projectDemandFields.length > 0 ? (
             <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
               {projectDemandFields.map((item) => (
                 <Meta key={item.label} label={item.label} value={item.value} />
@@ -104,7 +167,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
 
           {hasProjectDemandContext ? (
             <div className="mt-4 border-t border-border pt-4">
-              <h3 className="text-sm font-medium">Kontext</h3>
+              <h3 className="text-sm font-medium">Projektkontext</h3>
               <p className="mt-2 whitespace-pre-line text-sm leading-6 text-muted-foreground">{project.context}</p>
             </div>
           ) : null}

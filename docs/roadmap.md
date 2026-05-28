@@ -198,7 +198,7 @@ Frontend-nutzbar sind derzeit:
 - `/suppliers` und `/suppliers/[id]` fuer strukturierte Lieferantenprofile.
 - `/projects` und `/projects/[id]` fuer manuelle Anlage und Bearbeitung von Verhandlungsprojekten inklusive Auswahl vorhandener SupplierProfiles und RequestItems.
 - `/request-items/[id]` kann aus einer bestehenden Anfrageposition direkt ein neues, vorausgefuelltes Verhandlungsprojekt starten.
-- `/projects/[id]` macht bei verknuepften Anfragepositionen den Ursprung sowie zentrale Bedarfsdaten wie Artikel, Kategorie, Menge, Zielregion, Lieferzeit, Preisannahme, Waehrung, Prioritaet und Kontext lesbar sichtbar.
+- `/projects/[id]` macht bei verknuepften Anfragepositionen den Ursprung sowie zentrale RequestItem-Bedarfsdaten wie Titel, Artikel, Kategorie, Menge, Liefertermin, Zielpreis, Budgetrahmen, Zielregion, Prioritaet, Beschreibung, Spezifikation und Notizen lesbar sichtbar.
 - Projektbezogene Einstiege in Datenbasis, Analyse, Strategie, Simulation und Trainerreview.
 
 Mapping in C23:
@@ -221,9 +221,9 @@ Bewusste Grenzen in C23:
 
 Glaettung in C24:
 
-- Die Project-Detailseite stellt uebernommene Bedarfsdaten zusaetzlich zum Bearbeitungsformular als lesbare Zusammenfassung dar.
-- Der RequestItem-Bezug bleibt verlinkt, wenn eine verknuepfte Anfrageposition vorhanden ist.
-- Der Kontext aus Beschreibung, Spezifikation, Lieferdatum, Einheit und Kommentar wird mit Zeilenumbruechen lesbar angezeigt.
+- Die Project-Detailseite stellt die verknuepfte Anfrageposition im Abschnitt `Anfrageposition / Bedarfskontext` zusaetzlich zum Bearbeitungsformular als lesbare Zusammenfassung dar.
+- Der RequestItem-Bezug bleibt verlinkt, wenn eine verknuepfte Anfrageposition vorhanden ist; falls die Listenansicht den Datensatz nicht enthaelt, wird der verknuepfte RequestItem direkt nachgeladen.
+- Beschreibung, Spezifikation, Notizen und der Projektkontext werden mit Zeilenumbruechen lesbar angezeigt.
 - Bewusst unveraendert bleiben die RequestItem-zu-Project-Erzeugungslogik, automatische Supplier-Zuordnung sowie Analyse-, Strategie-, ZOPA-, BATNA- oder WAP-Erzeugung.
 
 Noch fehlende fachliche Luecken:

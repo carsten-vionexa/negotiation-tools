@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { mapImportJob, parseImportJob, validateImportJob } from "@/lib/api/import-jobs";
+import { createImportJobTargets, mapImportJob, parseImportJob, validateImportJob } from "@/lib/api/import-jobs";
 
 export type ImportParseActionState = {
   error: string;
@@ -14,6 +14,10 @@ export type ImportMappingActionState = {
 } | null;
 
 export type ImportValidationActionState = {
+  error: string;
+} | null;
+
+export type ImportCreateTargetsActionState = {
   error: string;
 } | null;
 
@@ -75,6 +79,24 @@ export async function validateImportJobAction(
   } catch (error) {
     return {
       error: error instanceof Error ? error.message : "Der ImportJob konnte nicht validiert werden.",
+    };
+  }
+
+  revalidatePath("/imports");
+  revalidatePath(`/imports/${id}`);
+  redirect(`/imports/${id}`);
+}
+
+export async function createImportJobTargetsAction(
+  id: string,
+  _previousState: ImportCreateTargetsActionState,
+  _formData: FormData,
+): Promise<ImportCreateTargetsActionState> {
+  try {
+    await createImportJobTargets(id);
+  } catch (error) {
+    return {
+      error: error instanceof Error ? error.message : "Die Zielobjekte konnten nicht erzeugt werden.",
     };
   }
 

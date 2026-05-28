@@ -9,6 +9,7 @@ import { getImportJob } from "@/lib/api/import-jobs";
 import { listImportRows, type ImportRowSummary } from "@/lib/api/import-rows";
 import { getNegotiationProject } from "@/lib/api/negotiation-projects";
 
+import { ImportCreateTargetsForm } from "./create-targets-form";
 import { ImportMappingForm } from "./mapping-form";
 import { ImportParseForm } from "./parse-form";
 import { ImportValidateForm } from "./validate-form";
@@ -142,6 +143,17 @@ export default async function ImportDetailPage({ params }: { params: Promise<{ i
         </section>
       )}
 
+      {importJob.status === "validated" ? (
+        <ImportCreateTargetsForm importJobId={importJob.id} />
+      ) : (
+        <section className="rounded-md border border-border bg-card p-5">
+          <h2 className="text-base font-semibold">Zielobjekte erzeugen</h2>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            Zielobjekte koennen nur fuer ImportJobs im Status validated erzeugt werden. Dieser Job hat den Status {importJob.status}.
+          </p>
+        </section>
+      )}
+
       <section className="grid gap-4 lg:grid-cols-2">
         <JsonPanel title="Mapping-Konfiguration" value={importJob.mapping_json} />
         <JsonPanel title="Validation Summary" value={importJob.validation_summary_json} />
@@ -181,7 +193,7 @@ function ImportRowCard({ row }: { row: ImportRowSummary }) {
       <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
         <Meta label="Sheet" value={row.sheet_name || "Nicht gesetzt"} />
         <Meta label="Target Entity" value={row.target_entity || "Nicht gesetzt"} />
-        <Meta label="Target Record ID" value={row.target_record_id || "Nicht gesetzt"} />
+        <Meta label="Target Record ID" value={getTargetRecordValue(row)} />
         <Meta label="Validation Status" value={row.validation_status} />
       </dl>
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
@@ -194,6 +206,22 @@ function ImportRowCard({ row }: { row: ImportRowSummary }) {
       </dl>
     </article>
   );
+}
+
+function getTargetRecordValue(row: ImportRowSummary) {
+  if (!row.target_record_id) {
+    return "Nicht gesetzt";
+  }
+
+  if (row.target_entity === "request_item") {
+    return (
+      <Link href={`/request-items/${row.target_record_id}`} className="text-primary hover:underline">
+        {row.target_record_id}
+      </Link>
+    );
+  }
+
+  return row.target_record_id;
 }
 
 function JsonPanel({ title, value, compact = false }: { title: string; value?: Record<string, unknown>; compact?: boolean }) {

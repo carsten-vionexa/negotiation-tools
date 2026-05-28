@@ -9,6 +9,8 @@ import { listNegotiationProjects } from "@/lib/api/negotiation-projects";
 import { getRequestItem, updateRequestItem } from "@/lib/api/request-items";
 import { optionalFormString, requiredFormString } from "@/lib/form-data";
 
+import { CreateProjectFromRequestItemForm } from "./create-project-form";
+
 export default async function RequestItemDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
@@ -44,6 +46,23 @@ export default async function RequestItemDetailPage({ params }: { params: Promis
         description="Strukturierter Bedarf und verknuepfte Verhandlungsprojekte."
         actions={<BackLink href="/request-items" label="Zurueck" />}
       />
+
+      <section className="rounded-md border border-border bg-card p-5">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h2 className="text-base font-semibold">Verhandlungsprojekt starten</h2>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              Erstellt ein neues Projekt aus dieser Anfrageposition und uebernimmt vorhandene Bedarfsdaten als Startkontext.
+            </p>
+          </div>
+          {projects.length > 0 ? (
+            <span className="rounded-md border border-border px-3 py-1 text-xs font-medium text-muted-foreground">
+              {projects.length} verknuepft
+            </span>
+          ) : null}
+        </div>
+        <CreateProjectFromRequestItemForm requestItemId={requestItem.id} />
+      </section>
 
       <section className="rounded-md border border-border bg-card p-5">
         <h2 className="text-base font-semibold">Anfrageposition bearbeiten</h2>

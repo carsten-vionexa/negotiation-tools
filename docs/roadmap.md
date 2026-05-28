@@ -45,6 +45,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase C19: Completed-Hinweis bei `Zielobjekte erzeugen` verbessert und erzeugte Zielreferenzen fachlich klarer eingeordnet
 - Phase C20: ImportJob-Detailseite als Stepper-Flow geglaettet, damit Parse, Mapping, Validierung, Zielobjekte und Ergebnis als Prozess sichtbar sind
 - Phase C21: Frontend-Lint-Script stabilisiert und auf konkrete App-/Config-Pfade begrenzt
+- Phase C23: Aus einer `RequestItem`-Detailseite kann ein vorausgefuelltes `NegotiationProject` erzeugt und direkt geoeffnet werden
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
@@ -136,7 +137,7 @@ Diese Punkte bleiben spaetere Ausbaustufen und duerfen nicht als bereits geliefe
 
 ## 8. Phase C: Upload und Import
 
-Status: Fortgeschritten und fuer den begrenzten MVP-Importflow fachlich nutzbar. C1 bis C21, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 sind umgesetzt. Der C17-Browser-Smoke-Test ist bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert.
+Status: Fortgeschritten und fuer den begrenzten MVP-Importflow fachlich nutzbar. C1 bis C21, C23, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 sind umgesetzt. Der C17-Browser-Smoke-Test ist bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert.
 
 Ziel: Die Datenbasis des MVP praktisch befuellbar machen. Dabei sollen Upload, Dateiablage, ImportJobs, Parsing, Mapping, Validierung und Zielobjekt-Erzeugung schrittweise umgesetzt werden.
 
@@ -166,6 +167,7 @@ Schritte:
 22. Frontend Issue #66 abgeschlossen: `/suppliers` und `/suppliers/[id]` bilden SupplierProfile-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen den strukturierten Lieferantenbezug erreichbar und sichtbar.
 23. Frontend Issue #69 abgeschlossen: `/request-items` und `/request-items/[id]` bilden RequestItem-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen die strukturierte Anfrageposition erreichbar und sichtbar.
 24. Frontend Issue #73 abgeschlossen: Ein gemeinsamer `FormData`-Helper trimmt Formularstrings und bricht Pflichtfelder in Server Actions bei fehlenden oder leeren Werten mit feldbezogenem Fehler ab.
+25. C23 abgeschlossen: `/request-items/[id]` bietet die Aktion `Verhandlungsprojekt erstellen`; die Server Action erzeugt ein `NegotiationProject` aus der Anfrageposition und leitet nach erfolgreicher Erstellung auf `/projects/[id]` weiter.
 
 Wichtige Hinweise aus der MVP-Abnahme fuer Phase C:
 
@@ -176,7 +178,7 @@ Wichtige Hinweise aus der MVP-Abnahme fuer Phase C:
 - Die nicht-blockierenden UX-Follow-ups aus dem C17-Browser-Smoke-Test sind mit C18 bis C20 abgeschlossen.
 - C21 stabilisiert den Frontend-Lint-Lauf nach den beobachteten lokalen Google-Drive-Duplikaten, ohne generierte Dateien einzubeziehen oder neue Artefakte zu erzeugen.
 
-### Aktueller fachlicher Stand nach C21
+### Aktueller fachlicher Stand nach C23
 
 Der Import-/Zielobjekt-Workflow ist als begrenzte, manuell ausgeloeste Phase-C-Strecke nutzbar:
 
@@ -193,48 +195,33 @@ Frontend-nutzbar sind derzeit:
 - `/request-items` und `/request-items/[id]` fuer Anlage, Bearbeitung und Sichtung strukturierter Anfragepositionen.
 - `/suppliers` und `/suppliers/[id]` fuer strukturierte Lieferantenprofile.
 - `/projects` und `/projects/[id]` fuer manuelle Anlage und Bearbeitung von Verhandlungsprojekten inklusive Auswahl vorhandener SupplierProfiles und RequestItems.
+- `/request-items/[id]` kann aus einer bestehenden Anfrageposition direkt ein neues, vorausgefuelltes Verhandlungsprojekt starten.
 - Projektbezogene Einstiege in Datenbasis, Analyse, Strategie, Simulation und Trainerreview.
+
+Mapping in C23:
+
+- `company_id` wird aus dem `RequestItem` uebernommen.
+- `request_item_id` referenziert die Ausgangs-Anfrageposition.
+- `title` wird als `Verhandlung: <article_name|title>` abgeleitet.
+- `category`, `quantity`, `target_region`, `currency` und `priority` werden aus gleichwertigen RequestItem-Feldern uebernommen.
+- `article_or_service` nutzt `article_name` oder faellt auf den RequestItem-Titel zurueck.
+- `desired_delivery_time` nutzt `target_delivery_time` oder alternativ `required_delivery_date`.
+- `internal_price_expectation` nutzt `target_price` oder alternativ `rough_price_expectation`.
+- `context` sammelt vorhandene Beschreibung, Spezifikation, benoetigtes Lieferdatum, Einheit und Kommentar.
+- `status` bleibt der bestehende Projekt-Default `draft`; zusaetzlich dokumentiert `metadata_json` die Initialisierung aus einem RequestItem.
+
+Bewusste Grenzen in C23:
+
+- Keine Backend-Migration, weil `request_item_id` und die benoetigten Projektfelder bereits existieren.
+- Keine automatische Supplier-, Owner-, Strategie-, Analyse- oder Simulationsanlage.
+- Der manuelle Projektanlage- und Bearbeitungsflow unter `/projects` bleibt unveraendert.
 
 Noch fehlende fachliche Luecken:
 
-- Aus einem erzeugten oder manuell gepflegten `RequestItem` kann noch kein initiales `NegotiationProject` direkt gestartet werden.
 - Das Projektformular erlaubt zwar die Auswahl eines `RequestItem`, uebernimmt aber keine Bedarfsdaten automatisch in Projektfelder wie Titel, Artikel, Menge, Zielregion, Lieferzeit, Preisannahme oder Waehrung.
 - Es gibt weiterhin keine Detailroute fuer `ProcurementHistoryItem`; deshalb bleiben Einkaufshistorie-Zielreferenzen in ImportRows bewusst unverlinkt.
 - Mapping-Zielfeldlisten sind im Frontend weiterhin statisch und sollten spaeter zentralisiert oder aus Backend-/Contract-Metadaten abgeleitet werden.
 - KI-Mapping, PDF/OCR, automatische Analyse- oder Strategieerzeugung bleiben Nicht-MVP beziehungsweise spaetere Phasen.
-
-Bewertung der naechsten Feature-Luecke:
-
-Der naechste fachlich sinnvollste kleine Schritt ist `RequestItem -> NegotiationProject initialisieren/erzeugen`. Die Importstrecke kann inzwischen RequestItems erzeugen und diese sind im Frontend pflegbar. Der operative Anschluss in den Verhandlungsflow ist jedoch noch manuell: Nutzer muessen zur Projektanlage wechseln, das RequestItem suchen und zentrale Bedarfsdaten erneut oder aus Erinnerung in Projektfelder uebertragen. Ein kleiner Initialisierungsflow schliesst genau diese Luecke, ohne neue Importlogik, Migrationen oder grosse Produktfunktionen zu bauen.
-
-### Vorschlag C23
-
-Titel:
-
-`C23: NegotiationProject aus RequestItem initialisieren`
-
-Ziel:
-
-Aus einer bestehenden Anfrageposition soll ein neues Verhandlungsprojekt mit vorausgefuelltem RequestItem-Bezug und sinnvoll uebernommenen Projektdaten angelegt werden koennen.
-
-Kurzer Scope:
-
-- Auf `/request-items/[id]` eine Aktion zum Starten eines neuen Projekts aus der Anfrageposition anbieten.
-- Eine schlanke Server-Action oder vorhandene Projektanlage nutzen, um ein `NegotiationProject` mit `company_id`, `request_item_id`, `title`, `article_or_service`, `quantity`, `target_region`, `desired_delivery_time`, `internal_price_expectation`, `currency`, `category` und optionalem Kontext aus dem `RequestItem` vorzubelegen.
-- Nach erfolgreicher Anlage auf `/projects/[id]` weiterleiten.
-- Keine Backend-Migration, keine Importlogik, keine automatische Supplier-Zuordnung, keine KI-Analyse und keine Strategieerzeugung.
-
-Akzeptanzkriterien:
-
-- Auf einer RequestItem-Detailseite ist eine klare Aktion sichtbar, um daraus ein neues Verhandlungsprojekt zu erstellen.
-- Das erzeugte Projekt gehoert zur gleichen Company und referenziert das urspruengliche `RequestItem`.
-- Zentrale Bedarfsdaten aus dem RequestItem sind im Projekt initial vorbelegt und anschliessend in `/projects/[id]` bearbeitbar.
-- Der bestehende manuelle Projektanlage-Flow unter `/projects` bleibt unveraendert nutzbar.
-- Frontend-Lint laeuft erfolgreich.
-
-Naechster sinnvoller Schritt:
-
-1. C23 als kleines Implementierungs-Issue anlegen und umsetzen: `NegotiationProject aus RequestItem initialisieren`.
 
 ### Manuelle Pruefhilfe C13
 

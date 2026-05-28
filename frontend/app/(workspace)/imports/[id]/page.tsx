@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { ArrowLeft, Building2, BriefcaseBusiness, PackageCheck } from "lucide-react";
+import { AlertTriangle, ArrowLeft, Building2, BriefcaseBusiness, CheckCircle2, Circle, Dot, PackageCheck } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { PageHeader } from "@/components/page-header";
 import { EmptyState, ErrorState } from "@/components/state-patterns";
 import { getCompany } from "@/lib/api/companies";
-import { getImportJob } from "@/lib/api/import-jobs";
+import { getImportJob, type ImportJobRead } from "@/lib/api/import-jobs";
 import { listImportRows, type ImportRowSummary } from "@/lib/api/import-rows";
 import { getNegotiationProject } from "@/lib/api/negotiation-projects";
 
@@ -49,6 +49,8 @@ export default async function ImportDetailPage({ params }: { params: Promise<{ i
         description="ImportJob-Status, Verarbeitungsmetadaten und reviewbare ImportRows."
         actions={<BackLink />}
       />
+
+      <ImportProcessStepper importJob={importJob} rows={rows} />
 
       <section className="grid gap-4 lg:grid-cols-[1fr_22rem]">
         <div className="rounded-md border border-border bg-card p-5">
@@ -189,6 +191,77 @@ export default async function ImportDetailPage({ params }: { params: Promise<{ i
   );
 }
 
+const IMPORT_PROCESS_STEPS = [
+  {
+    key: "created",
+    title: "ImportJob angelegt",
+    description: "Datei ist hochgeladen und der Job ist sichtbar.",
+  },
+  {
+    key: "parsed",
+    title: "Datei pruefen / Preview",
+    description: "Rohzeilen werden geparst und als ImportRows angezeigt.",
+  },
+  {
+    key: "mapped",
+    title: "Mapping pruefen",
+    description: "Quellspalten werden den Zielfeldern zugeordnet.",
+  },
+  {
+    key: "validated",
+    title: "Validierung",
+    description: "Gemappte Rows werden regelbasiert geprueft.",
+  },
+  {
+    key: "targets",
+    title: "Zielobjekte erzeugen",
+    description: "Gueltige Rows erhalten fachliche Zielreferenzen.",
+  },
+  {
+    key: "result",
+    title: "Abschluss / Ergebnis",
+    description: "Importierte Zielobjekte und Fehler sind nachvollziehbar.",
+  },
+] as const;
+
+type ImportProcessStepState = "done" | "current" | "open" | "error";
+
+function ImportProcessStepper({ importJob, rows }: { importJob: ImportJobRead; rows: ImportRowSummary[] }) {
+  const stepStates = getImportProcessStepStates(importJob, rows);
+
+  return (
+    <section className="rounded-md border border-border bg-card p-5">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h2 className="text-base font-semibold">Importprozess</h2>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">{getImportProcessHint(importJob.status, importJob.error_rows)}</p>
+        </div>
+        <Status value={importJob.status} />
+      </div>
+      <ol className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        {IMPORT_PROCESS_STEPS.map((step, index) => {
+          const state = stepStates[index];
+
+          return (
+            <li key={step.key} className={getStepContainerClassName(state)}>
+              <div className="flex items-start gap-3">
+                <StepIcon state={state} />
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="text-sm font-semibold">{step.title}</h3>
+                    <span className={getStepBadgeClassName(state)}>{getStepStateLabel(state)}</span>
+                  </div>
+                  <p className="mt-1 text-xs leading-5 text-muted-foreground">{step.description}</p>
+                </div>
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    </section>
+  );
+}
+
 function ImportRowCard({ row }: { row: ImportRowSummary }) {
   return (
     <article className="rounded-md border border-border bg-card p-5">
@@ -267,6 +340,178 @@ function getTargetRecordValue(row: ImportRowSummary) {
 
 function isCompletedTargetCreationStatus(status: string) {
   return status === "completed" || status === "completed_with_errors";
+}
+
+function getImportProcessStepStates(importJob: ImportJobRead, rows: ImportRowSummary[]) {
+  if (importJob.status === "failed") {
+    const lastDoneStepIndex = getLastDoneStepIndexForFailedJob(importJob, rows);
+
+    return IMPORT_PROCESS_STEPS.map((_step, index): ImportProcessStepState => {
+      if (index <= lastDoneStepIndex) {
+        return "done";
+      }
+
+      if (index === IMPORT_PROCESS_STEPS.length - 1) {
+        return "error";
+      }
+
+      return "open";
+    });
+  }
+
+  const activeStepIndex = getActiveImportStepIndex(importJob.status);
+
+  return IMPORT_PROCESS_STEPS.map((_step, index) => getImportStepState(index, activeStepIndex));
+}
+
+function getActiveImportStepIndex(status: string) {
+  if (status === "completed" || status === "completed_with_errors") {
+    return 5;
+  }
+
+  const statusToStepIndex: Record<string, number> = {
+    pending: 1,
+    parsing: 1,
+    parsed: 2,
+    mapping: 2,
+    mapped: 3,
+    validating: 3,
+    validated: 4,
+    processing: 4,
+  };
+
+  return statusToStepIndex[status] ?? 0;
+}
+
+function getImportStepState(index: number, activeStepIndex: number): ImportProcessStepState {
+  if (index < activeStepIndex) {
+    return "done";
+  }
+
+  if (index === activeStepIndex) {
+    return "current";
+  }
+
+  return "open";
+}
+
+function getLastDoneStepIndexForFailedJob(importJob: ImportJobRead, rows: ImportRowSummary[]) {
+  if (rows.some((row) => row.target_record_id)) {
+    return 4;
+  }
+
+  if (hasObjectEntries(importJob.validation_summary_json) || rows.some((row) => ["valid", "invalid", "imported", "error"].includes(row.validation_status))) {
+    return 3;
+  }
+
+  if (hasObjectEntries(importJob.mapping_json) || rows.some((row) => hasObjectEntries(row.mapped_data_json))) {
+    return 2;
+  }
+
+  if (rows.length > 0) {
+    return 1;
+  }
+
+  return 0;
+}
+
+function hasObjectEntries(value?: Record<string, unknown>) {
+  return Boolean(value && Object.keys(value).length > 0);
+}
+
+function getImportProcessHint(status: string, errorRows: number) {
+  if (status === "completed") {
+    return "Der Import ist abgeschlossen. Zielreferenzen findest du in den ImportRows.";
+  }
+
+  if (status === "completed_with_errors") {
+    return `${formatErrorRowCount(errorRows)} mit Fehlern. Der Abschluss-Hinweis und die betroffenen Rows zeigen die Details.`;
+  }
+
+  if (status === "failed") {
+    return "Der ImportJob ist fehlgeschlagen. Job-Level-Fehler und Row-Hinweise bleiben unten sichtbar.";
+  }
+
+  if (status === "processing" || status === "parsing" || status === "mapping" || status === "validating") {
+    return "Ein Verarbeitungsschritt laeuft oder wurde zuletzt gestartet. Nach Abschluss zeigt die Seite den naechsten Schritt.";
+  }
+
+  const nextStepByStatus: Record<string, string> = {
+    pending: "Naechster Schritt: Datei parsen und ImportRows erzeugen.",
+    parsed: "Naechster Schritt: Mapping pruefen und anwenden.",
+    mapped: "Naechster Schritt: gemappte Rows validieren.",
+    validated: "Naechster Schritt: Zielobjekte aus gueltigen Rows erzeugen.",
+  };
+
+  return nextStepByStatus[status] ?? "Der aktuelle ImportJob-Status bestimmt, welche Aktion als naechstes verfuegbar ist.";
+}
+
+function StepIcon({ state }: { state: ImportProcessStepState }) {
+  if (state === "done") {
+    return <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-primary" />;
+  }
+
+  if (state === "current") {
+    return <Dot className="mt-0.5 size-5 shrink-0 rounded-full border border-primary text-primary" />;
+  }
+
+  if (state === "error") {
+    return <AlertTriangle className="mt-0.5 size-5 shrink-0 text-accent" />;
+  }
+
+  return <Circle className="mt-0.5 size-5 shrink-0 text-muted-foreground" />;
+}
+
+function getStepContainerClassName(state: ImportProcessStepState) {
+  const baseClassName = "rounded-md border p-4";
+
+  if (state === "done") {
+    return `${baseClassName} border-primary/30 bg-primary/5`;
+  }
+
+  if (state === "current") {
+    return `${baseClassName} border-primary bg-primary/10`;
+  }
+
+  if (state === "error") {
+    return `${baseClassName} border-accent/40 bg-accent/10`;
+  }
+
+  return `${baseClassName} border-border bg-muted/30`;
+}
+
+function getStepBadgeClassName(state: ImportProcessStepState) {
+  const baseClassName = "rounded-full border px-2 py-0.5 text-xs font-medium";
+
+  if (state === "done") {
+    return `${baseClassName} border-primary/30 text-primary`;
+  }
+
+  if (state === "current") {
+    return `${baseClassName} border-primary text-primary`;
+  }
+
+  if (state === "error") {
+    return `${baseClassName} border-accent/40 text-accent`;
+  }
+
+  return `${baseClassName} border-border text-muted-foreground`;
+}
+
+function getStepStateLabel(state: ImportProcessStepState) {
+  if (state === "done") {
+    return "Erledigt";
+  }
+
+  if (state === "current") {
+    return "Aktuell";
+  }
+
+  if (state === "error") {
+    return "Fehler";
+  }
+
+  return "Offen";
 }
 
 function getCreatedTargetCount(rows: ImportRowSummary[], validRows: number) {

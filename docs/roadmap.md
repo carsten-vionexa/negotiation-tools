@@ -41,6 +41,10 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase C15: Explizite Mapping-Aktion fuer parsed ImportJobs in `/imports/[id]` mit sichtbarer Mapping-Konfiguration und gemappten Row-Daten umgesetzt
 - Phase C16: Validate-Aktion fuer mapped ImportJobs in `/imports/[id]` mit sichtbarer Summary und Row-Validierung umgesetzt
 - Phase C17: Create-Targets-Aktion fuer validated ImportJobs in `/imports/[id]` mit sichtbaren Zielreferenzen umgesetzt
+- Phase C18: ImportJob-Liste nach `updated_at DESC` sortiert, damit zuletzt bearbeitete Jobs oben erscheinen
+- Phase C19: Completed-Hinweis bei `Zielobjekte erzeugen` verbessert und erzeugte Zielreferenzen fachlich klarer eingeordnet
+- Phase C20: ImportJob-Detailseite als Stepper-Flow geglaettet, damit Parse, Mapping, Validierung, Zielobjekte und Ergebnis als Prozess sichtbar sind
+- Phase C21: Frontend-Lint-Script stabilisiert und auf konkrete App-/Config-Pfade begrenzt
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
@@ -132,7 +136,7 @@ Diese Punkte bleiben spaetere Ausbaustufen und duerfen nicht als bereits geliefe
 
 ## 8. Phase C: Upload und Import
 
-Status: Begonnen. C1 bis C17, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 sind umgesetzt. Der C17-Browser-Smoke-Test ist bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert.
+Status: Fortgeschritten und fuer den begrenzten MVP-Importflow fachlich nutzbar. C1 bis C21, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 sind umgesetzt. Der C17-Browser-Smoke-Test ist bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert.
 
 Ziel: Die Datenbasis des MVP praktisch befuellbar machen. Dabei sollen Upload, Dateiablage, ImportJobs, Parsing, Mapping, Validierung und Zielobjekt-Erzeugung schrittweise umgesetzt werden.
 
@@ -155,9 +159,13 @@ Schritte:
 15. C15 abgeschlossen: `/imports/[id]` bietet fuer `parsed`-Jobs ein explizites Zielfeld-zu-Quellspalte-Mapping aus den geparsten Raw-Feldern an, startet `POST /api/import-jobs/{id}/map` und zeigt anschliessend `mapping_json` sowie `mapped_data_json` im bestehenden Review.
 16. C16 abgeschlossen: `/imports/[id]` bietet fuer `mapped`-Jobs `POST /api/import-jobs/{id}/validate` als explizite Aktion an und zeigt nach Erfolg `validation_summary_json`, Row-Validierungsstatus sowie Row-Fehler-/Warnmeldungen im bestehenden Review; Create-Targets wird nicht angeboten.
 17. C17 abgeschlossen: `/imports/[id]` bietet fuer `validated`-Jobs `POST /api/import-jobs/{id}/create-targets` als explizite Aktion an, aktualisiert nach Erfolg Status, Zaehler und ImportRows und verlinkt erzeugte `request_item`-Zielreferenzen auf `/request-items/{id}`; fuer `procurement_history_item` wird ohne vorhandene Detailroute kein Link erzeugt.
-18. Frontend Issue #66 abgeschlossen: `/suppliers` und `/suppliers/[id]` bilden SupplierProfile-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen den strukturierten Lieferantenbezug erreichbar und sichtbar.
-19. Frontend Issue #69 abgeschlossen: `/request-items` und `/request-items/[id]` bilden RequestItem-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen die strukturierte Anfrageposition erreichbar und sichtbar.
-20. Frontend Issue #73 abgeschlossen: Ein gemeinsamer `FormData`-Helper trimmt Formularstrings und bricht Pflichtfelder in Server Actions bei fehlenden oder leeren Werten mit feldbezogenem Fehler ab.
+18. C18 abgeschlossen: `/imports` listet ImportJobs nach `updated_at DESC`, damit neu angelegte oder zuletzt verarbeitete Jobs zuerst sichtbar sind.
+19. C19 abgeschlossen: `/imports/[id]` zeigt bei `completed` und `completed_with_errors` einen klareren Abschluss-Hinweis fuer `Zielobjekte erzeugen`; erzeugte Zielreferenzen bleiben in den ImportRows nachvollziehbar.
+20. C20 abgeschlossen: `/imports/[id]` fuehrt einen Stepper fuer den Importprozess ein und macht aktuellen Schritt, erledigte Schritte, offene Schritte sowie Fehlerzustand sichtbar.
+21. C21 abgeschlossen: Das Frontend-Lint-Script wurde auf konkrete Quell- und Config-Pfade stabilisiert, damit generierte oder lokale Duplikatdateien nicht versehentlich den Lint-Lauf stoeren.
+22. Frontend Issue #66 abgeschlossen: `/suppliers` und `/suppliers/[id]` bilden SupplierProfile-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen den strukturierten Lieferantenbezug erreichbar und sichtbar.
+23. Frontend Issue #69 abgeschlossen: `/request-items` und `/request-items/[id]` bilden RequestItem-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen die strukturierte Anfrageposition erreichbar und sichtbar.
+24. Frontend Issue #73 abgeschlossen: Ein gemeinsamer `FormData`-Helper trimmt Formularstrings und bricht Pflichtfelder in Server Actions bei fehlenden oder leeren Werten mit feldbezogenem Fehler ab.
 
 Wichtige Hinweise aus der MVP-Abnahme fuer Phase C:
 
@@ -165,12 +173,68 @@ Wichtige Hinweise aus der MVP-Abnahme fuer Phase C:
 - RequestItem-Frontend-Flow wurde mit Issue #69 ergaenzt, damit importierte Anfragenkataloge als strukturierte Projektbezuege im Frontend nutzbar sind.
 - Die Importlogik soll nicht als grosser Block umgesetzt werden, sondern in klar getrennten Schritten: Upload, Storage, ImportJob, Parsing, Mapping, Validierung, Zielobjekt-Erzeugung.
 - Die derzeit statischen Mapping-Zielfeldlisten im Frontend sollten mittelfristig zentralisiert oder aus Backend-/Contract-Metadaten abgeleitet werden, damit Frontend und Backend nicht auseinanderlaufen. Dies ist kein Refactoring-Bestandteil von C16.
-- Nach Abschluss von Create-Targets sollte die ImportJob-Detailseite gegebenenfalls als klarer Prozessschritt-/Stepper-Flow geglaettet werden. Dies ist kein Refactoring-Bestandteil von C17.
-- Nicht-blockierende UX-Follow-ups aus dem C17-Browser-Smoke-Test: ImportJob-Liste nach `updated_at DESC` sortieren; Completed-Hinweis im Abschnitt `Zielobjekte erzeugen` klarer formulieren; ImportJob-Detailseite spaeter als Stepper-Flow glaetten.
+- Die nicht-blockierenden UX-Follow-ups aus dem C17-Browser-Smoke-Test sind mit C18 bis C20 abgeschlossen.
+- C21 stabilisiert den Frontend-Lint-Lauf nach den beobachteten lokalen Google-Drive-Duplikaten, ohne generierte Dateien einzubeziehen oder neue Artefakte zu erzeugen.
+
+### Aktueller fachlicher Stand nach C21
+
+Der Import-/Zielobjekt-Workflow ist als begrenzte, manuell ausgeloeste Phase-C-Strecke nutzbar:
+
+- CSV- und XLSX-Dateien koennen als ImportJob hochgeladen werden.
+- Die Verarbeitung bleibt bewusst in getrennten Schritten: Parse, Mapping, Validierung und Zielobjekt-Erzeugung.
+- Validierte `procurement_history_item`-Rows erzeugen echte `ProcurementHistoryItem`-Datensaetze.
+- Validierte `request_item`-Rows erzeugen echte `RequestItem`-Datensaetze.
+- ImportRows zeigen Zieltyp und Ziel-ID; `request_item`-Zielreferenzen verlinken in das Frontend.
+- ImportJob-Liste und ImportJob-Detailseite sind fuer Review und Prozesssteuerung ausreichend nutzbar.
+
+Frontend-nutzbar sind derzeit:
+
+- `/imports`, `/imports/new` und `/imports/[id]` fuer Upload, Review und manuelle Verarbeitung.
+- `/request-items` und `/request-items/[id]` fuer Anlage, Bearbeitung und Sichtung strukturierter Anfragepositionen.
+- `/suppliers` und `/suppliers/[id]` fuer strukturierte Lieferantenprofile.
+- `/projects` und `/projects/[id]` fuer manuelle Anlage und Bearbeitung von Verhandlungsprojekten inklusive Auswahl vorhandener SupplierProfiles und RequestItems.
+- Projektbezogene Einstiege in Datenbasis, Analyse, Strategie, Simulation und Trainerreview.
+
+Noch fehlende fachliche Luecken:
+
+- Aus einem erzeugten oder manuell gepflegten `RequestItem` kann noch kein initiales `NegotiationProject` direkt gestartet werden.
+- Das Projektformular erlaubt zwar die Auswahl eines `RequestItem`, uebernimmt aber keine Bedarfsdaten automatisch in Projektfelder wie Titel, Artikel, Menge, Zielregion, Lieferzeit, Preisannahme oder Waehrung.
+- Es gibt weiterhin keine Detailroute fuer `ProcurementHistoryItem`; deshalb bleiben Einkaufshistorie-Zielreferenzen in ImportRows bewusst unverlinkt.
+- Mapping-Zielfeldlisten sind im Frontend weiterhin statisch und sollten spaeter zentralisiert oder aus Backend-/Contract-Metadaten abgeleitet werden.
+- KI-Mapping, PDF/OCR, automatische Analyse- oder Strategieerzeugung bleiben Nicht-MVP beziehungsweise spaetere Phasen.
+
+Bewertung der naechsten Feature-Luecke:
+
+Der naechste fachlich sinnvollste kleine Schritt ist `RequestItem -> NegotiationProject initialisieren/erzeugen`. Die Importstrecke kann inzwischen RequestItems erzeugen und diese sind im Frontend pflegbar. Der operative Anschluss in den Verhandlungsflow ist jedoch noch manuell: Nutzer muessen zur Projektanlage wechseln, das RequestItem suchen und zentrale Bedarfsdaten erneut oder aus Erinnerung in Projektfelder uebertragen. Ein kleiner Initialisierungsflow schliesst genau diese Luecke, ohne neue Importlogik, Migrationen oder grosse Produktfunktionen zu bauen.
+
+### Vorschlag C23
+
+Titel:
+
+`C23: NegotiationProject aus RequestItem initialisieren`
+
+Ziel:
+
+Aus einer bestehenden Anfrageposition soll ein neues Verhandlungsprojekt mit vorausgefuelltem RequestItem-Bezug und sinnvoll uebernommenen Projektdaten angelegt werden koennen.
+
+Kurzer Scope:
+
+- Auf `/request-items/[id]` eine Aktion zum Starten eines neuen Projekts aus der Anfrageposition anbieten.
+- Eine schlanke Server-Action oder vorhandene Projektanlage nutzen, um ein `NegotiationProject` mit `company_id`, `request_item_id`, `title`, `article_or_service`, `quantity`, `target_region`, `desired_delivery_time`, `internal_price_expectation`, `currency`, `category` und optionalem Kontext aus dem `RequestItem` vorzubelegen.
+- Nach erfolgreicher Anlage auf `/projects/[id]` weiterleiten.
+- Keine Backend-Migration, keine Importlogik, keine automatische Supplier-Zuordnung, keine KI-Analyse und keine Strategieerzeugung.
+
+Akzeptanzkriterien:
+
+- Auf einer RequestItem-Detailseite ist eine klare Aktion sichtbar, um daraus ein neues Verhandlungsprojekt zu erstellen.
+- Das erzeugte Projekt gehoert zur gleichen Company und referenziert das urspruengliche `RequestItem`.
+- Zentrale Bedarfsdaten aus dem RequestItem sind im Projekt initial vorbelegt und anschliessend in `/projects/[id]` bearbeitbar.
+- Der bestehende manuelle Projektanlage-Flow unter `/projects` bleibt unveraendert nutzbar.
+- Frontend-Lint laeuft erfolgreich.
 
 Naechster sinnvoller Schritt:
 
-1. Naechsten fachlichen Schritt separat priorisieren.
+1. C23 als kleines Implementierungs-Issue anlegen und umsetzen: `NegotiationProject aus RequestItem initialisieren`.
 
 ### Manuelle Pruefhilfe C13
 

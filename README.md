@@ -29,8 +29,10 @@ docker compose up --build
 - Backend Healthcheck: http://localhost:8000/api/health
 - Backend Docs: http://localhost:8000/docs
 
-Das Frontend verwendet `NEXT_PUBLIC_API_URL` als Base URL fuer API-Aufrufe. Lokal ist in `.env.example`
-`http://localhost:8000` voreingestellt.
+Das Frontend verwendet im Browser `NEXT_PUBLIC_API_URL` als Base URL fuer API-Aufrufe. Lokal ist in
+`.env.example` `http://localhost:8000` voreingestellt. Im Docker-Setup verwendet Next.js serverseitig
+`SERVER_API_URL=http://backend:8000`, weil `localhost` im Container den Frontend-Container meint,
+waehrend der Browser vom Host aus weiterhin `http://localhost:8000` nutzt.
 
 ## Lokale Datenbankmigrationen
 

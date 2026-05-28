@@ -17,7 +17,14 @@ export class ApiError extends Error {
 const DEFAULT_API_BASE_URL = "http://localhost:8000";
 
 export function getApiBaseUrl() {
-  return (process.env.NEXT_PUBLIC_API_URL ?? DEFAULT_API_BASE_URL).replace(/\/$/, "");
+  const serverApiUrl = process.env.SERVER_API_URL;
+  const publicApiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  if (typeof window === "undefined" && serverApiUrl) {
+    return serverApiUrl.replace(/\/$/, "");
+  }
+
+  return (publicApiUrl ?? DEFAULT_API_BASE_URL).replace(/\/$/, "");
 }
 
 export async function apiGet<TResponse>(path: string, options?: ApiClientOptions) {

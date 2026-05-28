@@ -75,6 +75,7 @@ def list_import_jobs(
         query = query.where(ImportJob.source_type == source_type)
     if target_entity:
         query = query.where(ImportJob.target_entity == target_entity)
+    query = query.order_by(ImportJob.updated_at.desc().nulls_last())
     return list(db.scalars(query.offset(skip).limit(limit)).all())
 
 

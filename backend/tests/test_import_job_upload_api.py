@@ -1,11 +1,16 @@
 import hashlib
+from collections.abc import Generator
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 from fastapi.testclient import TestClient
+from sqlalchemy.orm import Session
 
+from app.api.deps import get_db
 from app.api.routes.import_jobs import get_storage_service
 from app.core.config import Settings
+from app.models.import_job import ImportJob
 from app.services.storage import LocalStorageService, UploadType
 
 
@@ -39,6 +44,23 @@ def configure_storage(client: TestClient, tmp_path: Path, max_upload_size_mb: in
     storage_service = LocalStorageService(configuration=configuration)
     client.app.dependency_overrides[get_storage_service] = lambda: storage_service
     return storage_service
+
+
+def database_session(client: TestClient) -> Generator[Session, None, None]:
+    dependency = client.app.dependency_overrides[get_db]
+    return dependency()
+
+
+def set_import_job_updated_at(client: TestClient, import_job_id: object, updated_at: datetime) -> None:
+    db_generator = database_session(client)
+    db = next(db_generator)
+    try:
+        import_job = db.get(ImportJob, UUID(str(import_job_id)))
+        assert import_job is not None
+        import_job.updated_at = updated_at
+        db.commit()
+    finally:
+        db_generator.close()
 
 
 def test_upload_csv_creates_pending_import_job_with_metadata_and_no_rows(
@@ -124,6 +146,43 @@ def test_upload_xlsx_creates_import_job_in_import_storage(client: TestClient, tm
     assert import_job["target_entity"] == "request_item"
     assert import_job["status"] == "pending"
     assert storage_service.local_path_for_key(import_job["storage_key"]).read_bytes() == content
+
+
+def test_list_import_jobs_orders_by_updated_at_desc(client: TestClient, tmp_path: Path) -> None:
+    configure_storage(client, tmp_path)
+    company = create_company(client)
+
+    older_response = client.post(
+        "/api/import-jobs/upload",
+        data={
+            "company_id": company["id"],
+            "source_type": "csv",
+            "target_entity": "request_item",
+        },
+        files={"file": ("older.csv", b"article_name,quantity\nBearing,10\n", "text/csv")},
+    )
+    newer_response = client.post(
+        "/api/import-jobs/upload",
+        data={
+            "company_id": company["id"],
+            "source_type": "csv",
+            "target_entity": "request_item",
+        },
+        files={"file": ("newer.csv", b"article_name,quantity\nBolt,20\n", "text/csv")},
+    )
+    assert older_response.status_code == 201
+    assert newer_response.status_code == 201
+    older_job = older_response.json()
+    newer_job = newer_response.json()
+    base_time = datetime(2026, 5, 28, 12, 0, tzinfo=timezone.utc)
+    set_import_job_updated_at(client, older_job["id"], base_time)
+    set_import_job_updated_at(client, newer_job["id"], base_time + timedelta(minutes=5))
+
+    response = client.get("/api/import-jobs", params={"company_id": company["id"]})
+
+    assert response.status_code == 200
+    import_jobs = response.json()
+    assert [import_job["id"] for import_job in import_jobs] == [newer_job["id"], older_job["id"]]
 
 
 def test_upload_rejects_missing_file(client: TestClient, tmp_path: Path) -> None:

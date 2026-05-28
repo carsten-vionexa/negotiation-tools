@@ -46,6 +46,71 @@ git branch
 git log --oneline --decorate -10
 ```
 
+### 1a. Issue- und PR-Hygiene vor dem nächsten Schritt prüfen
+
+Bevor ein neuer Entwicklungsschritt gestartet oder ein neues C-Issue formuliert wird, muss der aktuelle GitHub-Stand kurz geprüft werden.
+
+Ziel ist nicht, alle offenen Issues oder Pull Requests automatisch zu schließen. Ziel ist, vor dem nächsten Schritt bewusst zu klären, ob offene Arbeiten noch relevant, bereits erledigt, überholt oder blockierend sind.
+
+Pflichtprüfung vor einem neuen Schritt:
+
+* Welche Issues sind aktuell offen?
+* Welche Pull Requests sind aktuell offen?
+* Sind offene Issues durch bereits gemergte Commits faktisch erledigt?
+* Sind offene Issues durch spätere Roadmap-, Dokumentations- oder Codeänderungen überholt?
+* Blockiert eines der offenen Issues den geplanten nächsten Schritt?
+* Gibt es offene Pull Requests, die zuerst gemergt, aktualisiert oder geschlossen werden sollten?
+
+Offene Issues dürfen nicht blind geschlossen werden. Ein Issue gilt erst dann als erledigt, wenn die relevante Änderung auf `main` vorhanden ist. Eine reine Absicht, Planung oder Roadmap-Formulierung reicht nicht.
+
+Ein Issue darf geschlossen werden, wenn alle folgenden Punkte erfüllt sind:
+
+* der aktuelle Code- oder Dokumentationsstand erfüllt die Akzeptanzkriterien,
+* die Umsetzung liegt auf `main`,
+* der Sachverhalt ist in Code, Dokumentation oder Roadmap nachvollziehbar,
+* es gibt keinen offenen Rest-Scope, der ausdrücklich in diesem Issue bleiben soll.
+
+Beim Schließen eines Issues soll ein kurzer Kommentar ergänzt werden, zum Beispiel:
+
+```text
+Completed. Erledigt durch <Commit/Komponente/Dokumentation>. Akzeptanzkriterien sind durch den aktuellen main-Stand erfüllt.
+```
+
+Wenn ein Issue weiterhin relevant ist, aber nicht zum nächsten Schritt gehört, bleibt es offen und wird kurz eingeordnet, zum Beispiel:
+
+* späteres Konzeptissue
+* technisches Stabilitätsissue
+* blockierend
+* nicht blockierend
+* bewusst außerhalb des aktuellen Scopes
+
+Offene Pull Requests müssen vor einem neuen Schritt geprüft werden:
+
+* Wenn ein PR fertig und geprüft ist, soll er vor dem nächsten Schritt gemergt werden.
+* Wenn ein PR veraltet oder ersetzt ist, soll er geschlossen oder aktualisiert werden.
+* Wenn ein PR den nächsten Schritt beeinflusst, darf nicht parallel auf `main` weitergearbeitet werden, ohne den Konflikt bewusst zu klären.
+* Wenn ein PR unabhängig ist, darf der nächste Schritt fortgesetzt werden, aber der PR muss im Statusbericht erwähnt werden.
+
+Vor Beginn eines neuen Schritts kurz berichten:
+
+* Anzahl offener Issues
+* Anzahl offener Pull Requests
+* welche davon erledigt, überholt oder blockierend sind
+* welche offen bleiben und warum
+* ob der nächste Schritt sicher gestartet werden kann
+
+Beispiel:
+
+```text
+Issue-/PR-Prüfung:
+- Offene Issues: 2
+- Offene PRs: 0
+- #55 bleibt offen als späteres PDF-Konzeptissue.
+- #90 bleibt offen als separates Docker-/Turbopack-Stabilitätsissue.
+- Keine offenen PRs.
+- Der nächste Schritt C23 kann gestartet werden.
+```
+
 ### 2. Nächsten sinnvollen Schritt festlegen
 
 Den nächsten Schritt als kleines C-Issue formulieren, zum Beispiel:

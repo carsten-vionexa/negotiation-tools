@@ -2,6 +2,13 @@
 
 KI-gestuetztes Verhandlungs-Cockpit fuer Vorbereitung, Strategieentwicklung, Simulation und Auswertung von Verhandlungen.
 
+## Development Workflow
+
+For the project-specific development workflow, see:
+
+`docs/skills/negotiation-tools-dev-workflow/SKILL.md`
+
+
 ## Stack
 
 - Frontend: Next.js, React, TypeScript, Tailwind CSS, shadcn/ui-kompatible Struktur

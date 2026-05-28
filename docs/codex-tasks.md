@@ -106,7 +106,7 @@ Ergebnis der C0.7-Abnahme:
 
 ## Phase C: Upload und Import
 
-Status: Phase C1 bis C17, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 umgesetzt.
+Status: Phase C1 bis C17, C23, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 umgesetzt.
 
 Umgesetzte Schritte:
 
@@ -130,10 +130,11 @@ Umgesetzte Schritte:
 18. Frontend Issue #66: SupplierProfiles als pflegbare Lieferantenstammdaten unter `/suppliers` bereitgestellt und fuer die Projektzuordnung sowie Projektanzeige erreichbar gemacht.
 19. Frontend Issue #69: RequestItems als pflegbare Anfragepositionen unter `/request-items` bereitgestellt und fuer die Projektzuordnung sowie strukturierte Projektanzeige erreichbar gemacht.
 20. Frontend Issue #73: Pflichtfelder in Frontend-Server-Actions ueber einen gemeinsamen `FormData`-Helper gegen fehlende oder leere Posts abgesichert; statt leerer Strings entsteht ein feldbezogener Fehler.
+21. C23: In `/request-items/[id]` die Aktion `Verhandlungsprojekt erstellen` bereitgestellt; die Server Action liest die bestehende Anfrageposition, erzeugt ein `NegotiationProject` mit `request_item_id` sowie passenden Bedarfsdaten und leitet nach Erfolg auf `/projects/[id]` weiter.
 
 Naechster Schritt:
 
-1. Naechsten fachlichen Schritt separat priorisieren.
+1. Project-Detail-Orientierung und weitere fachliche Folgeglaettung separat priorisieren.
 
 C1 definiert getrennte Zielvertraege fuer Knowledge-Uploads und Import-Uploads,
 Request-/Response-Metadaten, Startstatus, Sicherheitsregeln,
@@ -158,6 +159,9 @@ Frontend nutzbar und zeigt erzeugte Zielreferenzen an.
 PDF-Verarbeitung bleibt separat vorgemerkt. Die Issues #66 und #69 machen die strukturierten
 SupplierProfile- und RequestItem-Bezuege anschliessend im Frontend pflegbar
 und in Projekten zuordenbar.
+C23 startet daraus ein vorausgefuelltes Verhandlungsprojekt direkt aus der
+RequestItem-Detailseite, ohne neue Backendmodelle, Migrationen, Importlogik,
+PDF/OCR, KI-Funktionen oder automatische Analyse- und Strategieobjekte.
 
 Vorgemerkte Folgehinweise aus C15 bis C17:
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, Building2, BriefcaseBusiness } from "lucide-react";
+import { ArrowLeft, Building2, BriefcaseBusiness, PackageCheck } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { PageHeader } from "@/components/page-header";
@@ -145,6 +145,12 @@ export default async function ImportDetailPage({ params }: { params: Promise<{ i
 
       {importJob.status === "validated" ? (
         <ImportCreateTargetsForm importJobId={importJob.id} />
+      ) : isCompletedTargetCreationStatus(importJob.status) ? (
+        <ImportCreateTargetsCompletedNotice
+          status={importJob.status}
+          createdTargetCount={getCreatedTargetCount(rows, importJob.valid_rows)}
+          errorRows={importJob.error_rows}
+        />
       ) : (
         <section className="rounded-md border border-border bg-card p-5">
           <h2 className="text-base font-semibold">Zielobjekte erzeugen</h2>
@@ -208,6 +214,41 @@ function ImportRowCard({ row }: { row: ImportRowSummary }) {
   );
 }
 
+function ImportCreateTargetsCompletedNotice({
+  status,
+  createdTargetCount,
+  errorRows,
+}: {
+  status: string;
+  createdTargetCount: number;
+  errorRows: number;
+}) {
+  const targetObjectLabel = formatTargetObjectCount(createdTargetCount);
+  const targetObjectVerb = createdTargetCount === 1 ? "wurde" : "wurden";
+  const errorRowVerb = errorRows === 1 ? "konnte" : "konnten";
+
+  return (
+    <section className="rounded-md border border-border bg-card p-5">
+      <div className="flex items-start gap-3">
+        <PackageCheck className="mt-0.5 size-5 text-primary" />
+        <div>
+          <h2 className="text-base font-semibold">Zielobjekte erzeugen abgeschlossen</h2>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            {createdTargetCount > 0
+              ? `Die Aktion ist abgeschlossen. ${targetObjectLabel} ${targetObjectVerb} erzeugt und in den ImportRows als Zielreferenz hinterlegt.`
+              : "Die Aktion ist abgeschlossen. Es wurden keine Zielobjekte erzeugt."}
+          </p>
+          {status === "completed_with_errors" ? (
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              {formatErrorRowCount(errorRows)} {errorRowVerb} nicht importiert werden. Details stehen in den betroffenen ImportRows.
+            </p>
+          ) : null}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function getTargetRecordValue(row: ImportRowSummary) {
   if (!row.target_record_id) {
     return "Nicht gesetzt";
@@ -222,6 +263,24 @@ function getTargetRecordValue(row: ImportRowSummary) {
   }
 
   return row.target_record_id;
+}
+
+function isCompletedTargetCreationStatus(status: string) {
+  return status === "completed" || status === "completed_with_errors";
+}
+
+function getCreatedTargetCount(rows: ImportRowSummary[], validRows: number) {
+  const rowsWithTargetRecord = rows.filter((row) => row.target_record_id).length;
+
+  return rowsWithTargetRecord || validRows;
+}
+
+function formatTargetObjectCount(count: number) {
+  return count === 1 ? "1 Zielobjekt" : `${new Intl.NumberFormat("de-DE").format(count)} Zielobjekte`;
+}
+
+function formatErrorRowCount(count: number) {
+  return count === 1 ? "1 Zeile" : `${new Intl.NumberFormat("de-DE").format(count)} Zeilen`;
 }
 
 function JsonPanel({ title, value, compact = false }: { title: string; value?: Record<string, unknown>; compact?: boolean }) {

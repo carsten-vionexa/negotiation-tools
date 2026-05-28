@@ -79,6 +79,7 @@
 - Frontend-Nutzbarkeitsflow Issue #66 umgesetzt: SupplierProfile-Liste sowie Create/Edit-Detailflow unter `/suppliers` ergaenzt, in die Navigation aufgenommen und den strukturierten Lieferantenbezug in Projektanlage und Projektdetail nutzbar gemacht, ohne Backend-, Import- oder Migrationslogik
 - Frontend-Nutzbarkeitsflow Issue #69 umgesetzt: RequestItem-Liste sowie Create/Edit-Detailflow unter `/request-items` ergaenzt, in die Navigation aufgenommen und die strukturierte Anfrageposition in Projektanlage und Projektdetail nutzbar gemacht, ohne Backend-, Import- oder Migrationslogik
 - Frontend-Hardening Issue #73 umgesetzt: Gemeinsamen `FormData`-Helper fuer getrimmte optionale Werte und explizite Pflichtfeldfehler eingefuehrt sowie die bestehenden Frontend-Server-Actions darauf umgestellt, ohne Backend-, Import- oder Migrationslogik
+- Phase D0 umgesetzt: Hostinger-VPS-Staging-Vorbereitung mit `docker-compose.staging.yml`, `.env.staging.example`, `.gitignore`-Schutz fuer echte Staging-/Production-Env-Dateien und `docs/staging-deployment-prep.md` dokumentiert, ohne echtes Deployment, Serverzugriff, Produktlogik oder Secrets
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -135,7 +136,7 @@ Umgesetzte Schritte:
 
 Naechster Schritt:
 
-1. C24 fachlich abnehmen und Issue #101 nach erfolgreicher Pruefung schliessen.
+1. D0 fachlich abnehmen und Issue #104 nach erfolgreicher Pruefung schliessen.
 
 C1 definiert getrennte Zielvertraege fuer Knowledge-Uploads und Import-Uploads,
 Request-/Response-Metadaten, Startstatus, Sicherheitsregeln,
@@ -167,6 +168,22 @@ C24 macht diesen Ursprung auf der Project-Detailseite sichtbar: Der Abschnitt
 `Anfrageposition / Bedarfskontext` zeigt den verknuepften RequestItem, zentrale
 Bedarfsdaten und gepflegte Kontexttexte; Projekte ohne verknuepften RequestItem
 bleiben weiterhin ueber die bestehenden Projektdaten darstellbar.
+
+## Phase D: Staging und Demo-Betrieb
+
+Status: D0 umgesetzt, D1 offen.
+
+D0 bereitet nur Repository, Docker-/Compose-Strategie, Env-Beispiele und Dokumentation fuer einen spaeteren Hostinger-VPS-Staging-Deploy vor. Es wurde kein echter Server angesprochen und es wurden keine echten Secrets, Domains, IPs oder Tokens ergaenzt.
+
+Umgesetzte D0-Punkte:
+
+1. Bestehendes `docker-compose.yml` als lokales Development-Setup bewertet.
+2. Separates `docker-compose.staging.yml` ergaenzt, weil Staging ohne Hot Reload, ohne Code-Bind-Mounts, ohne offenen DB-Port und mit localhost-gebundenen App-Ports laufen soll.
+3. `.env.staging.example` als secretsfreie Vorlage fuer Serverwerte ergaenzt.
+4. `.env.staging` und `.env.production` in `.gitignore` aufgenommen.
+5. `docs/staging-deployment-prep.md` mit Staging-Strategie, Env-Variablen, Frontend-/Backend-URL-Konfiguration, Caddy-Empfehlung, persistenten Volumes, Backup-Grundidee und D1-Schritten erstellt.
+
+D1 mit echtem Server soll anschliessend Hostinger VPS, Docker, echte `.env.staging`, Compose-Start, Migrationen, Caddy/HTTPS, optional Basic Auth und Backup-/Restore-Test umsetzen.
 
 Vorgemerkte Folgehinweise aus C15 bis C17:
 

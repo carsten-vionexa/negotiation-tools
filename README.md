@@ -41,6 +41,23 @@ Das Frontend verwendet im Browser `NEXT_PUBLIC_API_URL` als Base URL fuer API-Au
 `SERVER_API_URL=http://backend:8000`, weil `localhost` im Container den Frontend-Container meint,
 waehrend der Browser vom Host aus weiterhin `http://localhost:8000` nutzt.
 
+## Staging-Vorbereitung
+
+Fuer eine spaetere Hostinger-VPS-Staging-/Demo-Instanz gibt es ein separates
+`docker-compose.staging.yml` und eine Beispielkonfiguration `.env.staging.example`.
+Echte Staging-Werte gehoeren nur in eine lokale `.env.staging` auf dem Server und
+werden nicht committed.
+
+Grundstart auf dem spaeteren VPS:
+
+```bash
+cp .env.staging.example .env.staging
+docker compose --env-file .env.staging -f docker-compose.staging.yml up -d --build
+```
+
+Details zu Env-Variablen, Reverse Proxy, HTTPS, Volumes und Backup stehen in
+`docs/staging-deployment-prep.md`.
+
 ## Lokale Datenbankmigrationen
 
 Die PostgreSQL-Datenbank laeuft per Docker Compose mit persistentem Volume `postgres_data`.

@@ -47,6 +47,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase C21: Frontend-Lint-Script stabilisiert und auf konkrete App-/Config-Pfade begrenzt
 - Phase C23: Aus einer `RequestItem`-Detailseite kann ein vorausgefuelltes `NegotiationProject` erzeugt und direkt geoeffnet werden
 - Phase C24: Project-Detailseite zeigt nach RequestItem-Initialisierung den Bezug, uebernommene Bedarfsdaten und den naechsten sinnvollen Arbeitsschritt klarer an
+- Phase D0: Hostinger-VPS-Staging-Deployment ist repo-seitig vorbereitet: separates Staging-Compose, Beispiel-Env, Reverse-Proxy-Empfehlung, persistente Volumes und Backup-Grundidee sind in `docs/staging-deployment-prep.md` dokumentiert
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
@@ -133,6 +134,7 @@ Nicht Teil des aktuellen MVP sind:
 - Relationship Memory als eigenes Modul
 - Stakeholder-Graph
 - automatische Angebotsanalyse
+- produktiver Betrieb, echte Serverprovisionierung, Domain-/DNS-Konfiguration, CI/CD und produktive Authentifizierung; D0 dokumentiert nur die Staging-Vorbereitung ohne echtes Deployment
 
 Diese Punkte bleiben spaetere Ausbaustufen und duerfen nicht als bereits gelieferte MVP-Funktionen bewertet werden.
 
@@ -232,6 +234,24 @@ Noch fehlende fachliche Luecken:
 - Es gibt weiterhin keine Detailroute fuer `ProcurementHistoryItem`; deshalb bleiben Einkaufshistorie-Zielreferenzen in ImportRows bewusst unverlinkt.
 - Mapping-Zielfeldlisten sind im Frontend weiterhin statisch und sollten spaeter zentralisiert oder aus Backend-/Contract-Metadaten abgeleitet werden.
 - KI-Mapping, PDF/OCR, automatische Analyse- oder Strategieerzeugung bleiben Nicht-MVP beziehungsweise spaetere Phasen.
+
+## 9. Phase D: Staging und Demo-Betrieb
+
+Status: D0 abgeschlossen, D1 offen.
+
+Ziel: Den vorzeigbaren Demo-Flow aus Phase C auf eine geschuetzte Staging-/Demo-Instanz vorbereiten und spaeter auf einem Hostinger VPS KVM 2 betreiben.
+
+Umgesetzte D0-Vorbereitung:
+
+1. Das lokale `docker-compose.yml` wurde als Development-Setup eingeordnet.
+2. Ein separates `docker-compose.staging.yml` wurde ergaenzt, weil Staging andere Startkommandos, keine Code-Bind-Mounts, intern gehaltene DB und nur lokal gebundene App-Ports braucht.
+3. `.env.staging.example` dokumentiert die benoetigten Staging-Env-Werte ohne echte Secrets.
+4. `.env.staging` und `.env.production` sind in `.gitignore` ausgeschlossen.
+5. `docs/staging-deployment-prep.md` dokumentiert URL-Konfiguration, Caddy-Empfehlung, PostgreSQL-/Upload-Volumes, Backup-Grundidee und D1-Folgeschritte.
+
+Naechster D1-Schritt:
+
+Mit echtem Hostinger-VPS Server bereitstellen, Docker installieren, echte `.env.staging` setzen, Compose-Stack starten, Migrationen ausfuehren, Caddy/HTTPS und optional Basic Auth konfigurieren sowie Backup/Restore pruefen.
 
 ### Manuelle Pruefhilfe C13
 

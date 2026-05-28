@@ -41,6 +41,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase C15: Explizite Mapping-Aktion fuer parsed ImportJobs in `/imports/[id]` mit sichtbarer Mapping-Konfiguration und gemappten Row-Daten umgesetzt
 - Phase C16: Validate-Aktion fuer mapped ImportJobs in `/imports/[id]` mit sichtbarer Summary und Row-Validierung umgesetzt
 - Phase C17: Create-Targets-Aktion fuer validated ImportJobs in `/imports/[id]` mit sichtbaren Zielreferenzen umgesetzt
+- C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
 - Frontend-Hardening Issue #73: Frontend-Server-Actions weisen fehlende oder leere Pflichtfelder ueber einen gemeinsamen `FormData`-Helper mit nachvollziehbarer Meldung zurueck
@@ -131,7 +132,7 @@ Diese Punkte bleiben spaetere Ausbaustufen und duerfen nicht als bereits geliefe
 
 ## 8. Phase C: Upload und Import
 
-Status: Begonnen. C1 bis C17, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 sind umgesetzt.
+Status: Begonnen. C1 bis C17, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 sind umgesetzt. Der C17-Browser-Smoke-Test ist bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert.
 
 Ziel: Die Datenbasis des MVP praktisch befuellbar machen. Dabei sollen Upload, Dateiablage, ImportJobs, Parsing, Mapping, Validierung und Zielobjekt-Erzeugung schrittweise umgesetzt werden.
 
@@ -165,6 +166,7 @@ Wichtige Hinweise aus der MVP-Abnahme fuer Phase C:
 - Die Importlogik soll nicht als grosser Block umgesetzt werden, sondern in klar getrennten Schritten: Upload, Storage, ImportJob, Parsing, Mapping, Validierung, Zielobjekt-Erzeugung.
 - Die derzeit statischen Mapping-Zielfeldlisten im Frontend sollten mittelfristig zentralisiert oder aus Backend-/Contract-Metadaten abgeleitet werden, damit Frontend und Backend nicht auseinanderlaufen. Dies ist kein Refactoring-Bestandteil von C16.
 - Nach Abschluss von Create-Targets sollte die ImportJob-Detailseite gegebenenfalls als klarer Prozessschritt-/Stepper-Flow geglaettet werden. Dies ist kein Refactoring-Bestandteil von C17.
+- Nicht-blockierende UX-Follow-ups aus dem C17-Browser-Smoke-Test: ImportJob-Liste nach `updated_at DESC` sortieren; Completed-Hinweis im Abschnitt `Zielobjekte erzeugen` klarer formulieren; ImportJob-Detailseite spaeter als Stepper-Flow glaetten.
 
 Naechster sinnvoller Schritt:
 

@@ -356,3 +356,46 @@ Nicht Bestandteil dieses Plans sind:
 - Frontend-Refactoring.
 
 Diese Punkte bleiben Folge- oder Zielbildthemen und duerfen in diesem Smoke-Test nicht als fehlgeschlagene MVP-Funktion bewertet werden.
+
+## 10. C17-Browser-Smoke-Test-Ergebnis
+
+Durchgefuehrt nach den Infrastruktur-Fixes aus Issues #88 und #90.
+
+Gesamtergebnis: bestanden mit nicht-blockierenden UX-Follow-ups. Es wurden keine Backendlogik, keine Migration, keine PDF-/OCR-Logik, kein KI-Mapping und keine automatische Analyse eingefuehrt oder vorausgesetzt.
+
+### 10.1 `request_item`-Import
+
+Testdatei: `c17-request-items-test.csv`
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Upload | bestanden | ImportJob wurde erfolgreich angelegt |
+| Parse | bestanden | Rohdaten wurden erzeugt |
+| Mapping | bestanden | Mapping wurde erfolgreich angewendet |
+| Validate | bestanden | Validierung wurde erfolgreich abgeschlossen |
+| Create Targets | bestanden | Zielobjekte wurden erzeugt |
+| Job-Status | bestanden | Status danach: `completed` |
+| ImportRows | bestanden | Rows zeigen `validation_status=imported`, `target_entity=request_item` und `target_record_id` |
+| Zielreferenz-Link | bestanden | `target_record_id` ist klickbar und fuehrt auf `/request-items/{id}` |
+
+Beispiel-Link aus dem Test: `/request-items/92ddf582-1fc5-47d6-8f36-f5f13ee2279a`
+
+### 10.2 `procurement_history_item`-Import
+
+Testdatei: `c15-mapping-smoke.csv`
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Create Targets | bestanden | Zielobjekte wurden erzeugt |
+| Job-Status | bestanden | Status danach: `completed` |
+| Row-Zaehler | bestanden | Total Rows: 2, Processed Rows: 2, Valid Rows: 2, Error Rows: 0 |
+| ImportRows | bestanden | Rows zeigen `target_entity=procurement_history_item` und `target_record_id` |
+| Zielreferenz ohne Detailroute | bestanden | `target_record_id` ist bewusst nicht klickbar; es wird kein kaputter Link auf eine nicht vorhandene Detailroute erzeugt |
+
+### 10.3 Nicht-blockierende UX-Follow-ups
+
+Diese Punkte blockieren C17 nicht und bleiben Folgearbeiten:
+
+- Die ImportJob-Liste sollte nach `updated_at DESC` sortieren, damit zuletzt angelegte oder bearbeitete Jobs oben stehen.
+- Der Hinweis im Abschnitt `Zielobjekte erzeugen` ist bei `completed` missverstaendlich; besser waere ein Hinweis, dass Zielobjekte bereits erzeugt wurden und die Zielreferenzen in den ImportRows sichtbar sind.
+- Die ImportJob-Detailseite sollte spaeter als klarer Stepper-Flow geglaettet werden.

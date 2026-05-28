@@ -41,6 +41,7 @@ services:
     build:
       context: ./frontend
     container_name: negotiation-tools-frontend
+    command: npm run dev:docker
     restart: unless-stopped
     environment:
       SERVER_API_URL: ${SERVER_API_URL:-http://backend:8000}

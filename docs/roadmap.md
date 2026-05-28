@@ -40,6 +40,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase C14: Parse-Aktion fuer pending CSV-/XLSX-ImportJobs in `/imports/[id]` mit anschliessender Row-Reviewanzeige umgesetzt
 - Phase C15: Explizite Mapping-Aktion fuer parsed ImportJobs in `/imports/[id]` mit sichtbarer Mapping-Konfiguration und gemappten Row-Daten umgesetzt
 - Phase C16: Validate-Aktion fuer mapped ImportJobs in `/imports/[id]` mit sichtbarer Summary und Row-Validierung umgesetzt
+- Phase C17: Create-Targets-Aktion fuer validated ImportJobs in `/imports/[id]` mit sichtbaren Zielreferenzen umgesetzt
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
 - Frontend-Hardening Issue #73: Frontend-Server-Actions weisen fehlende oder leere Pflichtfelder ueber einen gemeinsamen `FormData`-Helper mit nachvollziehbarer Meldung zurueck
@@ -109,8 +110,7 @@ Ergebnis der MVP-Abnahme:
 
 Nicht Teil des aktuellen MVP sind:
 
-- vollstaendig produktiver Dateiimport inklusive kompletter Processing-/Review-Automation; CSV-/XLSX-Upload, manueller Parse-Start, explizites Mapping und Validierung fuer ImportJobs sind als begrenzte Phase-C-Strecke vorhanden
-- Create-Targets-UI fuer ImportJobs
+- vollstaendig produktiver Dateiimport inklusive kompletter Processing-/Review-Automation; CSV-/XLSX-Upload, manueller Parse-Start, explizites Mapping, Validierung und explizite Create-Targets-Aktion fuer ImportJobs sind als begrenzte Phase-C-Strecke vorhanden
 - PDF-/OCR-Parsing und semantische Dokumentverarbeitung; technisches CSV-/XLSX-Parsing fuer ImportJobs ist bereits vorhanden
 - KI-gestuetztes Mapping
 - automatische Analyse oder Strategieerzeugung
@@ -131,7 +131,7 @@ Diese Punkte bleiben spaetere Ausbaustufen und duerfen nicht als bereits geliefe
 
 ## 8. Phase C: Upload und Import
 
-Status: Begonnen. C1 bis C16, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 sind umgesetzt.
+Status: Begonnen. C1 bis C17, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 sind umgesetzt.
 
 Ziel: Die Datenbasis des MVP praktisch befuellbar machen. Dabei sollen Upload, Dateiablage, ImportJobs, Parsing, Mapping, Validierung und Zielobjekt-Erzeugung schrittweise umgesetzt werden.
 
@@ -153,9 +153,10 @@ Schritte:
 14. C14 abgeschlossen: `/imports/[id]` bietet fuer `pending`-Jobs ausschliesslich den Parse-Start an, aktualisiert nach Erfolg Status, Zaehler und vorhandene ImportRows fuer Review und zeigt API-Fehler nachvollziehbar an.
 15. C15 abgeschlossen: `/imports/[id]` bietet fuer `parsed`-Jobs ein explizites Zielfeld-zu-Quellspalte-Mapping aus den geparsten Raw-Feldern an, startet `POST /api/import-jobs/{id}/map` und zeigt anschliessend `mapping_json` sowie `mapped_data_json` im bestehenden Review.
 16. C16 abgeschlossen: `/imports/[id]` bietet fuer `mapped`-Jobs `POST /api/import-jobs/{id}/validate` als explizite Aktion an und zeigt nach Erfolg `validation_summary_json`, Row-Validierungsstatus sowie Row-Fehler-/Warnmeldungen im bestehenden Review; Create-Targets wird nicht angeboten.
-17. Frontend Issue #66 abgeschlossen: `/suppliers` und `/suppliers/[id]` bilden SupplierProfile-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen den strukturierten Lieferantenbezug erreichbar und sichtbar.
-18. Frontend Issue #69 abgeschlossen: `/request-items` und `/request-items/[id]` bilden RequestItem-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen die strukturierte Anfrageposition erreichbar und sichtbar.
-19. Frontend Issue #73 abgeschlossen: Ein gemeinsamer `FormData`-Helper trimmt Formularstrings und bricht Pflichtfelder in Server Actions bei fehlenden oder leeren Werten mit feldbezogenem Fehler ab.
+17. C17 abgeschlossen: `/imports/[id]` bietet fuer `validated`-Jobs `POST /api/import-jobs/{id}/create-targets` als explizite Aktion an, aktualisiert nach Erfolg Status, Zaehler und ImportRows und verlinkt erzeugte `request_item`-Zielreferenzen auf `/request-items/{id}`; fuer `procurement_history_item` wird ohne vorhandene Detailroute kein Link erzeugt.
+18. Frontend Issue #66 abgeschlossen: `/suppliers` und `/suppliers/[id]` bilden SupplierProfile-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen den strukturierten Lieferantenbezug erreichbar und sichtbar.
+19. Frontend Issue #69 abgeschlossen: `/request-items` und `/request-items/[id]` bilden RequestItem-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen die strukturierte Anfrageposition erreichbar und sichtbar.
+20. Frontend Issue #73 abgeschlossen: Ein gemeinsamer `FormData`-Helper trimmt Formularstrings und bricht Pflichtfelder in Server Actions bei fehlenden oder leeren Werten mit feldbezogenem Fehler ab.
 
 Wichtige Hinweise aus der MVP-Abnahme fuer Phase C:
 
@@ -163,7 +164,7 @@ Wichtige Hinweise aus der MVP-Abnahme fuer Phase C:
 - RequestItem-Frontend-Flow wurde mit Issue #69 ergaenzt, damit importierte Anfragenkataloge als strukturierte Projektbezuege im Frontend nutzbar sind.
 - Die Importlogik soll nicht als grosser Block umgesetzt werden, sondern in klar getrennten Schritten: Upload, Storage, ImportJob, Parsing, Mapping, Validierung, Zielobjekt-Erzeugung.
 - Die derzeit statischen Mapping-Zielfeldlisten im Frontend sollten mittelfristig zentralisiert oder aus Backend-/Contract-Metadaten abgeleitet werden, damit Frontend und Backend nicht auseinanderlaufen. Dies ist kein Refactoring-Bestandteil von C16.
-- Nach Abschluss von Validate und einer spaeteren Create-Targets-UI sollte die ImportJob-Detailseite gegebenenfalls als klarer Prozessschritt-/Stepper-Flow geglaettet werden. Dies ist kein Refactoring-Bestandteil von C16.
+- Nach Abschluss von Create-Targets sollte die ImportJob-Detailseite gegebenenfalls als klarer Prozessschritt-/Stepper-Flow geglaettet werden. Dies ist kein Refactoring-Bestandteil von C17.
 
 Naechster sinnvoller Schritt:
 
@@ -205,7 +206,22 @@ Naechster sinnvoller Schritt:
 - Nach Erfolg pruefen, ob Status `validated`, `validation_summary_json`, Row-Validierungsstatus sowie Row-Fehler-/Warnhinweise sichtbar beziehungsweise aktualisiert sind; Raw- und Mapped-Daten bleiben sichtbar.
 - Einen `request_item`-Import beziehungsweise XLSX-Import mit derselben Upload-, Parse-, Mapping- und Validate-Strecke pruefen, soweit Testdaten vorhanden sind.
 - Bei einem nicht `mapped` Job pruefen, dass keine Validate-Aktion angeboten wird und stattdessen eine Statusinformation erscheint.
-- Sicherstellen, dass kein Create-Targets-Button sichtbar ist.
+- Sicherstellen, dass vor Status `validated` kein Create-Targets-Button sichtbar ist.
+
+### Manuelle Pruefhilfe C17
+
+- Einen CSV- oder XLSX-Import ueber `/imports/new` anlegen.
+- ImportJob parsen.
+- Mapping fuer `target_entity=request_item` durchfuehren.
+- ImportJob validieren.
+- Bei Status `validated` pruefen, ob die Create-Targets-Aktion sichtbar ist.
+- Aktion ausloesen.
+- Pruefen, ob die Detailseite danach aktualisiert ist und der Job `completed` oder `completed_with_errors` zeigt.
+- Pruefen, ob valide Rows als importiert erscheinen und `target_entity` sowie `target_record_id` sichtbar sind.
+- Bei `request_item` pruefen, ob der Link zum erzeugten RequestItem funktioniert.
+- Einen Import mit `target_entity=procurement_history_item` analog pruefen; falls keine Detailroute existiert, darf keine kaputte Verlinkung entstehen.
+- Sicherstellen, dass bei nicht validierten Jobs keine Create-Targets-Aktion sichtbar ist.
+- Sicherstellen, dass C17 keine Backendlogik, keine Migration, keine PDF-/OCR-Logik, kein KI-Mapping und keine automatische Analyse eingefuehrt hat.
 
 ## 9. Phase D: Analyse und Strategieunterstuetzung
 
@@ -231,4 +247,4 @@ Spaetere Themen:
 - CRM-/ERP-Anbindung
 - Audit Trail
 - Management-Reporting
-- deutsche und englische Menüs 
+- deutsche und englische Menüs

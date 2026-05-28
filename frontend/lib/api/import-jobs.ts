@@ -84,3 +84,7 @@ export function mapImportJob(id: string, payload: ImportJobMapRequest) {
 export function validateImportJob(id: string) {
   return apiPost<ImportJobRead>(`/api/import-jobs/${id}/validate`, undefined);
 }
+
+export function createImportJobTargets(id: string) {
+  return apiPost<ImportJobRead>(`/api/import-jobs/${id}/create-targets`, undefined);
+}

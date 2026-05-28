@@ -15,13 +15,13 @@ Geprueft werden die vorhandenen MVP-Routen und die wichtigsten Query-Parameter-F
 - Profile-Flow
 - Project-Flow
 - Knowledge-Base-Flow
-- ImportJob-Upload- und Parse-Review-Flow
+- ImportJob-Upload-, Parse-, Mapping-, Validate- und Create-Targets-Review-Flow
 - Analysis-Flow
 - Strategy-Flow
 - Simulation-Scenario-Flow
 - Trainerreview-Flow
 
-Geprueft wird die begrenzte ImportJob-Strecke aus CSV-/XLSX-Upload, manuellem Parse-Start und explizitem Mapping geparster Rows. Nicht geprueft werden eine vollstaendige Import-Processing-Automation, Validate-/Create-Targets-UI, RAG, PDF-/OCR-Verarbeitung, Voice, Chat, Streaming oder automatische Auswertung, weil diese bewusst nicht Teil des aktuellen MVP sind.
+Geprueft wird die begrenzte ImportJob-Strecke aus CSV-/XLSX-Upload, manuellem Parse-Start, explizitem Mapping geparster Rows, Validierung und expliziter Create-Targets-Aktion fuer validierte Jobs. Nicht geprueft werden eine vollstaendige Import-Processing-Automation, Backend-Importlogik-Aenderungen, Migrationen, RAG, PDF-/OCR-Verarbeitung, KI-Mapping, Voice, Chat, Streaming oder automatische Auswertung, weil diese bewusst nicht Teil des aktuellen MVP sind.
 
 ## 3. Voraussetzungen
 
@@ -163,8 +163,12 @@ Empfohlene Testdaten:
 | Statusgrenze | Bei einem nicht mehr `pending` Job wird keine Parse-Aktion angeboten | offen |  |
 | Mapping | Bei `parsed` werden Raw-Quellfelder und zum Target Entity passende Zielfelder angeboten; nach Mapping sind `mapping_json` und `mapped_data_json` sichtbar | offen |  |
 | Mapping-Statusgrenze | Bei einem nicht `parsed` Job wird keine Mapping-Aktion angeboten | offen |  |
-| Processing-Grenze | Keine Validate-/Create-Targets-Aktion wird angeboten | offen |  |
-| Error State | Upload-, Parse- oder Mapping-API-Fehler wird verstaendlich sichtbar statt einer leeren Seite | offen |  |
+| Validate | Bei `mapped` wird die Validierungsaktion angeboten; nach Validierung sind `validation_summary_json`, Row-Status und Fehler-/Warnhinweise sichtbar | offen |  |
+| Create Targets | Bei `validated` wird die Create-Targets-Aktion angeboten; nach Erfolg zeigt der Job `completed` oder `completed_with_errors` und Rows zeigen Zielreferenzen | offen |  |
+| RequestItem-Ziellink | `request_item`-Rows mit `target_record_id` verlinken auf `/request-items/{id}` | offen |  |
+| Procurement-Zielreferenz | `procurement_history_item`-Rows zeigen die ID als Text, solange keine Detailroute existiert; es entsteht kein kaputter Link | offen |  |
+| Processing-Grenze | Bei nicht passenden Status wird keine Parse-, Mapping-, Validate- oder Create-Targets-Aktion angeboten | offen |  |
+| Error State | Upload-, Parse-, Mapping-, Validate- oder Create-Targets-API-Fehler wird verstaendlich sichtbar statt einer leeren Seite | offen |  |
 
 ### 5.11 `/analysis`
 
@@ -277,7 +281,7 @@ Empfohlene Testdaten:
 | Error States | Backend-/API-Fehler werden sichtbar angezeigt | offen |  |
 | Query-Parameter | gueltige IDs laden Kontext; ungueltige IDs erzeugen Error State | offen |  |
 | Workflow-Kette | Project -> Knowledge Base -> Imports -> Analysis -> Strategy -> Simulation -> Trainerreview ist klickbar | offen |  |
-| Nicht-MVP-Grenzen | keine vollstaendige Importautomation, Validate-/Create-Targets-UI, PDF-/OCR- oder semantische Dokumentverarbeitung, RAG-, Voice-, Chat- oder produktive Simulationsfunktion wird suggeriert | offen |  |
+| Nicht-MVP-Grenzen | keine vollstaendige Importautomation, keine Backend-Importlogik-Aenderung, keine Migration, keine PDF-/OCR- oder semantische Dokumentverarbeitung, kein KI-Mapping, keine RAG-, Voice-, Chat- oder produktive Simulationsfunktion wird suggeriert | offen |  |
 
 ## 7. Backend-nicht-erreichbar-Test
 
@@ -336,8 +340,11 @@ Nicht Bestandteil dieses Plans sind:
 - Unit-Tests,
 - API-Contract-Tests,
 - vollstaendig produktiver Import inklusive Processing-/Review-Automation,
-- Validate-/Create-Targets-UI,
+- Backend-Importlogik-Aenderungen,
+- Migrationen,
+- neue Zielobjekttypen,
 - PDF-/OCR-Parsing oder semantische Dokumentverarbeitung,
+- KI-Mapping,
 - RAG,
 - Embeddings,
 - Chat,

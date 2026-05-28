@@ -46,6 +46,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase C20: ImportJob-Detailseite als Stepper-Flow geglaettet, damit Parse, Mapping, Validierung, Zielobjekte und Ergebnis als Prozess sichtbar sind
 - Phase C21: Frontend-Lint-Script stabilisiert und auf konkrete App-/Config-Pfade begrenzt
 - Phase C23: Aus einer `RequestItem`-Detailseite kann ein vorausgefuelltes `NegotiationProject` erzeugt und direkt geoeffnet werden
+- Phase C24: Project-Detailseite zeigt nach RequestItem-Initialisierung den Bezug, uebernommene Bedarfsdaten und den naechsten sinnvollen Arbeitsschritt klarer an
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
@@ -137,7 +138,7 @@ Diese Punkte bleiben spaetere Ausbaustufen und duerfen nicht als bereits geliefe
 
 ## 8. Phase C: Upload und Import
 
-Status: Fortgeschritten und fuer den begrenzten MVP-Importflow fachlich nutzbar. C1 bis C21, C23, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 sind umgesetzt. Der C17-Browser-Smoke-Test ist bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert.
+Status: Fortgeschritten und fuer den begrenzten MVP-Importflow fachlich nutzbar. C1 bis C21, C23, C24, die Frontend-Nutzbarkeitsflows aus Issues #66 und #69 sowie die Frontend-Hardening-Nacharbeit aus Issue #73 sind umgesetzt. Der C17-Browser-Smoke-Test ist bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert.
 
 Ziel: Die Datenbasis des MVP praktisch befuellbar machen. Dabei sollen Upload, Dateiablage, ImportJobs, Parsing, Mapping, Validierung und Zielobjekt-Erzeugung schrittweise umgesetzt werden.
 
@@ -168,6 +169,7 @@ Schritte:
 23. Frontend Issue #69 abgeschlossen: `/request-items` und `/request-items/[id]` bilden RequestItem-Liste sowie Create/Edit-Flow ab; Projektformular und Projektdetail machen die strukturierte Anfrageposition erreichbar und sichtbar.
 24. Frontend Issue #73 abgeschlossen: Ein gemeinsamer `FormData`-Helper trimmt Formularstrings und bricht Pflichtfelder in Server Actions bei fehlenden oder leeren Werten mit feldbezogenem Fehler ab.
 25. C23 abgeschlossen: `/request-items/[id]` bietet die Aktion `Verhandlungsprojekt erstellen`; die Server Action erzeugt ein `NegotiationProject` aus der Anfrageposition und leitet nach erfolgreicher Erstellung auf `/projects/[id]` weiter.
+26. C24 abgeschlossen: `/projects/[id]` zeigt den RequestItem-Bezug, zentrale uebernommene Bedarfsdaten und den Kontext als lesbare Zusammenfassung; eine kleine Orientierung benennt als naechsten Schritt die Pruefung der Projektdaten und anschliessende Analyse- oder Strategievorbereitung.
 
 Wichtige Hinweise aus der MVP-Abnahme fuer Phase C:
 
@@ -196,6 +198,7 @@ Frontend-nutzbar sind derzeit:
 - `/suppliers` und `/suppliers/[id]` fuer strukturierte Lieferantenprofile.
 - `/projects` und `/projects/[id]` fuer manuelle Anlage und Bearbeitung von Verhandlungsprojekten inklusive Auswahl vorhandener SupplierProfiles und RequestItems.
 - `/request-items/[id]` kann aus einer bestehenden Anfrageposition direkt ein neues, vorausgefuelltes Verhandlungsprojekt starten.
+- `/projects/[id]` macht bei verknuepften Anfragepositionen den Ursprung sowie zentrale Bedarfsdaten wie Artikel, Kategorie, Menge, Zielregion, Lieferzeit, Preisannahme, Waehrung, Prioritaet und Kontext lesbar sichtbar.
 - Projektbezogene Einstiege in Datenbasis, Analyse, Strategie, Simulation und Trainerreview.
 
 Mapping in C23:
@@ -215,6 +218,13 @@ Bewusste Grenzen in C23:
 - Keine Backend-Migration, weil `request_item_id` und die benoetigten Projektfelder bereits existieren.
 - Keine automatische Supplier-, Owner-, Strategie-, Analyse- oder Simulationsanlage.
 - Der manuelle Projektanlage- und Bearbeitungsflow unter `/projects` bleibt unveraendert.
+
+Glaettung in C24:
+
+- Die Project-Detailseite stellt uebernommene Bedarfsdaten zusaetzlich zum Bearbeitungsformular als lesbare Zusammenfassung dar.
+- Der RequestItem-Bezug bleibt verlinkt, wenn eine verknuepfte Anfrageposition vorhanden ist.
+- Der Kontext aus Beschreibung, Spezifikation, Lieferdatum, Einheit und Kommentar wird mit Zeilenumbruechen lesbar angezeigt.
+- Bewusst unveraendert bleiben die RequestItem-zu-Project-Erzeugungslogik, automatische Supplier-Zuordnung sowie Analyse-, Strategie-, ZOPA-, BATNA- oder WAP-Erzeugung.
 
 Noch fehlende fachliche Luecken:
 

@@ -50,6 +50,18 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   const company = companyById.get(project.company_id);
   const supplier = supplierById.get(project.supplier_profile_id ?? "");
   const requestItem = requestById.get(project.request_item_id ?? "");
+  const projectDemandFields = [
+    { label: "Artikel / Leistung", value: project.article_or_service },
+    { label: "Kategorie", value: project.category },
+    { label: "Menge", value: project.quantity },
+    { label: "Zielregion", value: project.target_region },
+    { label: "Gewuenschte Lieferzeit", value: project.desired_delivery_time },
+    { label: "Interne Preisannahme", value: project.internal_price_expectation },
+    { label: "Waehrung", value: project.currency },
+    { label: "Prioritaet", value: project.priority },
+  ].filter((item) => hasDisplayValue(item.value));
+  const hasProjectDemandContext = hasDisplayValue(project.context);
+  const hasProjectDemandSummary = requestItem || projectDemandFields.length > 0 || hasProjectDemandContext;
 
   return (
     <>
@@ -59,6 +71,45 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         description="Projektkontext, Beziehungen und operative Stammdaten."
         actions={<BackLink href="/projects" label="Zurueck" />}
       />
+
+      {hasProjectDemandSummary ? (
+        <section className="rounded-md border border-border bg-card p-5">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h2 className="text-base font-semibold">Bedarfsdaten</h2>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                {requestItem
+                  ? "Aus der Anfrageposition uebernommene Projektdaten fuer die fachliche Pruefung vor Analyse und Strategie."
+                  : "Projektbezogene Bedarfsdaten fuer die fachliche Pruefung vor Analyse und Strategie."}
+              </p>
+            </div>
+            {requestItem ? (
+              <Link
+                href={`/request-items/${requestItem.id}`}
+                className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm font-medium text-primary hover:bg-muted"
+              >
+                <ClipboardList className="size-4" />
+                Anfrageposition oeffnen
+              </Link>
+            ) : null}
+          </div>
+
+          {projectDemandFields.length > 0 ? (
+            <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
+              {projectDemandFields.map((item) => (
+                <Meta key={item.label} label={item.label} value={item.value} />
+              ))}
+            </dl>
+          ) : null}
+
+          {hasProjectDemandContext ? (
+            <div className="mt-4 border-t border-border pt-4">
+              <h3 className="text-sm font-medium">Kontext</h3>
+              <p className="mt-2 whitespace-pre-line text-sm leading-6 text-muted-foreground">{project.context}</p>
+            </div>
+          ) : null}
+        </section>
+      ) : null}
 
       <section className="grid gap-4 lg:grid-cols-[1fr_22rem]">
         <div className="rounded-md border border-border bg-card p-5">
@@ -218,6 +269,10 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             <Meta label="Kategorie" value={project.category || "Nicht gesetzt"} />
             <Meta label="Prioritaet" value={project.priority || "Nicht gesetzt"} />
           </dl>
+          <div className="mt-5 rounded-md border border-border bg-muted/40 p-3 text-sm leading-6">
+            <p className="font-medium">Naechster Schritt</p>
+            <p className="mt-1 text-muted-foreground">Projektdaten pruefen und anschliessend Analyse oder Strategie vorbereiten.</p>
+          </div>
           <div className="mt-5 grid gap-2 border-t border-border pt-4">
             <FlowLink href={`/knowledge-base?projectId=${project.id}`} label="Datenbasis anzeigen" icon={<Database className="size-4" />} />
             <FlowLink href={`/analysis?projectId=${project.id}`} label="Analyse vorbereiten" icon={<Sparkles className="size-4" />} />
@@ -348,6 +403,10 @@ function Meta({ label, value }: { label: string; value: ReactNode }) {
       <dd className="mt-1 font-medium">{value}</dd>
     </div>
   );
+}
+
+function hasDisplayValue(value?: string | null) {
+  return Boolean(value?.trim());
 }
 
 function getErrorDescription(error: unknown) {

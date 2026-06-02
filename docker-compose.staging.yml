@@ -36,11 +36,12 @@ services:
   frontend:
     build:
       context: ./frontend
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:?Set NEXT_PUBLIC_API_URL}
     restart: unless-stopped
     environment:
       SERVER_API_URL: ${SERVER_API_URL:?Set SERVER_API_URL}
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:?Set NEXT_PUBLIC_API_URL}
-    command: sh -c "npm run build && npm run start -- --hostname 0.0.0.0"
     ports:
       - "127.0.0.1:${FRONTEND_HOST_PORT:-3000}:3000"
     depends_on:

@@ -59,7 +59,7 @@ Compose-Services:
 
 - `db`: PostgreSQL mit `pgvector/pgvector:pg16`, Healthcheck aktiv
 - `backend`: FastAPI-App, intern auf Port `8000`
-- `frontend`: Next.js-App, intern auf Port `3000`
+- `frontend`: Next.js-App als Production-Standalone-Server, intern auf Port `3000`
 
 Persistente Volumes aus `docker-compose.staging.yml`:
 
@@ -90,6 +90,30 @@ docker compose --env-file .env.staging -f docker-compose.staging.yml logs -f db
 ```
 
 Wichtig: `docker compose down -v` darf auf Staging nur bei bewusstem Datenreset verwendet werden, weil dadurch persistente Volumes entfernt werden koennen.
+
+## Frontend-Production-Image
+
+D1.4 hat den bisherigen Frontend-Docker-Start geprueft und gehaertet:
+
+- `frontend/next.config.ts` nutzt bereits `output: "standalone"`.
+- Das Staging-Compose-File verwendet kein Dev-Startkommando und baut den Next.js-Production-Build jetzt beim Image-Build.
+- Das Runtime-Image startet den von Next.js erzeugten Standalone-Server mit `node server.js`.
+- `.next/static` und `public/` werden explizit in das Runtime-Image kopiert, damit statische Assets im Standalone-Betrieb verfuegbar bleiben.
+- `NEXT_PUBLIC_API_URL` wird fuer clientseitig gebaute Werte als Build-Arg in das Frontend-Image gereicht. Serverseitige API-Aufrufe bleiben zur Laufzeit ueber `SERVER_API_URL` auf `http://backend:8000` vorgesehen.
+
+Relevante lokale oder staging-nahe Pruefkommandos:
+
+```bash
+docker compose --env-file .env.staging -f docker-compose.staging.yml build frontend
+docker compose --env-file .env.staging -f docker-compose.staging.yml up -d frontend
+curl -I http://127.0.0.1:3000
+```
+
+Falls `frontend` wegen fehlender Abhaengigkeiten oder leerer Datenbank nicht sinnvoll alleine gestartet werden kann, den Staging-Stack vollstaendig starten:
+
+```bash
+docker compose --env-file .env.staging -f docker-compose.staging.yml up -d --build
+```
 
 ## `.env.staging`
 
@@ -201,6 +225,6 @@ curl -s https://negotiation.tools.hawkins-consulting.de/api/health
 ## Known follow-ups
 
 - Backend Docker image: D1.3 hat `alembic.ini` und `alembic/` ins Image aufgenommen, damit Migrationen im Container sauber verfuegbar sind.
-- Frontend Docker/Startkommando wegen Next.js `output: standalone` pruefen.
+- Frontend Docker image: D1.4 hat den Next.js-Standalone-Production-Start geprueft und das Staging-Image darauf umgestellt.
 - Optional `favicon.ico` ergaenzen.
 - Optional Staging-Demo-Daten/Seed-Strategie definieren.

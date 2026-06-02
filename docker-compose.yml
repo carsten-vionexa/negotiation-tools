@@ -40,6 +40,7 @@ services:
   frontend:
     build:
       context: ./frontend
+      target: development
     container_name: negotiation-tools-frontend
     command: npm run dev:docker
     restart: unless-stopped

@@ -48,6 +48,8 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase C23: Aus einer `RequestItem`-Detailseite kann ein vorausgefuelltes `NegotiationProject` erzeugt und direkt geoeffnet werden
 - Phase C24: Project-Detailseite zeigt nach RequestItem-Initialisierung den Bezug, uebernommene Bedarfsdaten und den naechsten sinnvollen Arbeitsschritt klarer an
 - Phase D0: Hostinger-VPS-Staging-Deployment ist repo-seitig vorbereitet: separates Staging-Compose, Beispiel-Env, Reverse-Proxy-Empfehlung, persistente Volumes und Backup-Grundidee sind in `docs/staging-deployment-prep.md` dokumentiert
+- Phase D1.1: Hostinger-Staging ist serverseitig erfolgreich bereitgestellt und unter `https://negotiation.tools.hawkins-consulting.de` ueber Caddy/Authelia geschuetzt erreichbar
+- Phase D1.2: Der erfolgreiche Hostinger-Staging-Stand ist in `docs/deployment/hostinger-staging.md` ohne serverlokale Secrets dokumentiert
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
@@ -237,7 +239,7 @@ Noch fehlende fachliche Luecken:
 
 ## 9. Phase D: Staging und Demo-Betrieb
 
-Status: D0 abgeschlossen, D1 offen.
+Status: D0 abgeschlossen, D1.1 abgeschlossen, D1.2 umgesetzt.
 
 Ziel: Den vorzeigbaren Demo-Flow aus Phase C auf eine geschuetzte Staging-/Demo-Instanz vorbereiten und spaeter auf einem Hostinger VPS KVM 2 betreiben.
 
@@ -249,9 +251,10 @@ Umgesetzte D0-Vorbereitung:
 4. `.env.staging` und `.env.production` sind in `.gitignore` ausgeschlossen.
 5. `docs/staging-deployment-prep.md` dokumentiert URL-Konfiguration, Caddy-Empfehlung, PostgreSQL-/Upload-Volumes, Backup-Grundidee und D1-Folgeschritte.
 
-Naechster D1-Schritt:
+Umgesetzte D1-Schritte:
 
-Mit echtem Hostinger-VPS Server bereitstellen, Docker installieren, echte `.env.staging` setzen, Compose-Stack starten, Migrationen ausfuehren, Caddy/HTTPS und optional Basic Auth konfigurieren sowie Backup/Restore pruefen.
+1. D1.1 abgeschlossen: Hostinger VPS KVM 2 mit Ubuntu 24.04 LTS ist bereitgestellt, Docker/Compose laufen, Caddy HTTPS und Authelia Login sind aktiv, die App ist unter `https://negotiation.tools.hawkins-consulting.de` erreichbar und der Demo-Flow `RequestItem -> NegotiationProject -> Project-Detailseite` wurde erfolgreich getestet.
+2. D1.2 umgesetzt: `docs/deployment/hostinger-staging.md` dokumentiert den erfolgreichen Staging-Stand, Serverpfade, Compose-Nutzung, Caddy-/Authelia-Einbindung, Migrationen, Smoke-Test, Redeploy-Checkliste und bekannte Follow-ups ohne echte `.env.staging`-Werte.
 
 ### Manuelle Pruefhilfe C13
 

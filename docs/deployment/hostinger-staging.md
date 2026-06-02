@@ -8,7 +8,6 @@ Nicht Bestandteil dieses Dokuments:
 
 - keine Aenderung an Caddy, Authelia oder Server-Konfiguration
 - keine Aenderung an laufenden Containern
-- keine neue Seed-Logik
 - keine technischen Docker-Fixes
 - keine Secrets, Tokens, Passwoerter oder echten `.env.staging`-Werte
 
@@ -159,6 +158,26 @@ Migrationen werden bei Bedarf manuell gegen die Compose-Datenbank ausgefuehrt:
 docker compose --env-file .env.staging -f docker-compose.staging.yml run --rm backend alembic upgrade head
 ```
 
+## Staging-Demo-Daten
+
+D1.5 definiert einen kleinen synthetischen Rheinwerk-Robotics-Demo-Datensatz fuer die
+geschuetzte Staging-/Trainer-Demo-Instanz. Details zu Scope, IDs, Demo-Markern und
+Aktualisierungsstrategie stehen in `docs/deployment/staging-demo-data.md`.
+
+Der minimale idempotente Seed-Befehl laeuft im Backend-Container:
+
+```bash
+docker compose --env-file .env.staging -f docker-compose.staging.yml run --rm backend python -m app.seeds.staging_demo --confirm-staging-demo
+```
+
+Der Seed legt beziehungsweise aktualisiert ausschliesslich:
+
+- `Rheinwerk Robotics GmbH` als Demo-Company
+- eine strategische Demo-Anfrageposition
+- ein daraus vorbereitetes Demo-Verhandlungsprojekt
+
+Der Seed loescht keine Daten und ersetzt keinen Datenbankreset.
+
 ## Smoke-Test
 
 Der erfolgreiche Staging-Smoke-Test umfasst:
@@ -211,13 +230,19 @@ docker compose --env-file .env.staging -f docker-compose.staging.yml ps
 ```
 
 8. Falls neue Backend-Migrationen enthalten sind, Alembic im Backend-Container gegen Staging ausfuehren und den Head dokumentieren.
-9. Healthcheck pruefen:
+9. Optional den idempotenten Demo-Seed aktualisieren:
+
+```bash
+docker compose --env-file .env.staging -f docker-compose.staging.yml run --rm backend python -m app.seeds.staging_demo --confirm-staging-demo
+```
+
+10. Healthcheck pruefen:
 
 ```bash
 curl -s https://negotiation.tools.hawkins-consulting.de/api/health
 ```
 
-10. Browser-Smoke-Test ausfuehren:
+11. Browser-Smoke-Test ausfuehren:
     - Authelia Login
     - App sichtbar
     - `RequestItem -> NegotiationProject -> Project-Detailseite`
@@ -226,5 +251,5 @@ curl -s https://negotiation.tools.hawkins-consulting.de/api/health
 
 - Backend Docker image: D1.3 hat `alembic.ini` und `alembic/` ins Image aufgenommen, damit Migrationen im Container sauber verfuegbar sind.
 - Frontend Docker image: D1.4 hat den Next.js-Standalone-Production-Start geprueft und das Staging-Image darauf umgestellt.
+- Staging-Demo-Daten: D1.5 hat die Seed-Strategie und einen minimalen idempotenten Seed-Befehl definiert.
 - Optional `favicon.ico` ergaenzen.
-- Optional Staging-Demo-Daten/Seed-Strategie definieren.

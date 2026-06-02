@@ -52,6 +52,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase D1.2: Der erfolgreiche Hostinger-Staging-Stand ist in `docs/deployment/hostinger-staging.md` ohne serverlokale Secrets dokumentiert
 - Phase D1.3: Das Backend-Docker-Image enthaelt `alembic.ini` und `alembic/`, damit Migrationen im Backend-Container reproduzierbar ohne hostseitige Alembic-Bind-Mounts laufen
 - Phase D1.4: Das Frontend-Docker-Image baut Next.js reproduzierbar als `output: "standalone"`-Production-Image und startet in Staging den Standalone-Server statt eines Dev- oder Runtime-Build-Kommandos
+- Phase D1.5: Eine kleine Staging-Demo-Datenstrategie ist in `docs/deployment/staging-demo-data.md` dokumentiert; ein idempotenter Backend-Seed stellt Company, RequestItem und NegotiationProject fuer den Rheinwerk-Robotics-Demo-Flow bereit
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
@@ -241,7 +242,7 @@ Noch fehlende fachliche Luecken:
 
 ## 9. Phase D: Staging und Demo-Betrieb
 
-Status: D0 abgeschlossen, D1.1 abgeschlossen, D1.2 umgesetzt, D1.3 umgesetzt, D1.4 umgesetzt.
+Status: D0 abgeschlossen, D1.1 abgeschlossen, D1.2 umgesetzt, D1.3 umgesetzt, D1.4 umgesetzt, D1.5 umgesetzt.
 
 Ziel: Den vorzeigbaren Demo-Flow aus Phase C auf eine geschuetzte Staging-/Demo-Instanz vorbereiten und spaeter auf einem Hostinger VPS KVM 2 betreiben.
 
@@ -259,6 +260,7 @@ Umgesetzte D1-Schritte:
 2. D1.2 umgesetzt: `docs/deployment/hostinger-staging.md` dokumentiert den erfolgreichen Staging-Stand, Serverpfade, Compose-Nutzung, Caddy-/Authelia-Einbindung, Migrationen, Smoke-Test, Redeploy-Checkliste und bekannte Follow-ups ohne echte `.env.staging`-Werte.
 3. D1.3 umgesetzt: Das Backend-Docker-Image kopiert `alembic.ini` und `alembic/` in `/app`, sodass `docker compose ... run --rm backend alembic upgrade head` ohne hostseitig gemountete Alembic-Dateien ausfuehrbar ist.
 4. D1.4 umgesetzt: Das Frontend-Docker-Image nutzt einen Multi-Stage-Build fuer Next.js `output: "standalone"`, kopiert `.next/static` und `public/` in das Runtime-Image und startet in Staging den Standalone-Server mit `node server.js`.
+5. D1.5 umgesetzt: `docs/deployment/staging-demo-data.md` definiert Scope, Demo-IDs, Marker, Idempotenz und Aktualisierungsstrategie fuer synthetische Staging-Demo-Daten. `python -m app.seeds.staging_demo --confirm-staging-demo` stellt im Backend-Container die Demo-Company, ein RequestItem und ein verknuepftes NegotiationProject sicher, ohne vorhandene Daten zu loeschen.
 
 ### Manuelle Pruefhilfe C13
 

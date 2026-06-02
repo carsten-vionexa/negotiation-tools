@@ -127,6 +127,14 @@ Alembic-Migrationen wurden erfolgreich bis zum Head ausgefuehrt:
 
 Der verifizierte Datenbankstand umfasst 21 Tabellen.
 
+Das Backend-Image enthaelt `alembic.ini` und `alembic/`, sodass Alembic-Kommandos im Backend-Container ohne hostseitigen Bind-Mount dieser Dateien ausgefuehrt werden koennen.
+
+Migrationen werden bei Bedarf manuell gegen die Compose-Datenbank ausgefuehrt:
+
+```bash
+docker compose --env-file .env.staging -f docker-compose.staging.yml run --rm backend alembic upgrade head
+```
+
 ## Smoke-Test
 
 Der erfolgreiche Staging-Smoke-Test umfasst:
@@ -178,7 +186,7 @@ docker compose --env-file .env.staging -f docker-compose.staging.yml up -d --bui
 docker compose --env-file .env.staging -f docker-compose.staging.yml ps
 ```
 
-8. Falls neue Backend-Migrationen enthalten sind, Alembic gegen Staging ausfuehren und den Head dokumentieren.
+8. Falls neue Backend-Migrationen enthalten sind, Alembic im Backend-Container gegen Staging ausfuehren und den Head dokumentieren.
 9. Healthcheck pruefen:
 
 ```bash
@@ -192,7 +200,7 @@ curl -s https://negotiation.tools.hawkins-consulting.de/api/health
 
 ## Known follow-ups
 
-- Backend Docker image: `alembic.ini` und `alembic/` ins Image kopieren, damit Migrationen im Container sauber verfuegbar sind.
+- Backend Docker image: D1.3 hat `alembic.ini` und `alembic/` ins Image aufgenommen, damit Migrationen im Container sauber verfuegbar sind.
 - Frontend Docker/Startkommando wegen Next.js `output: standalone` pruefen.
 - Optional `favicon.ico` ergaenzen.
 - Optional Staging-Demo-Daten/Seed-Strategie definieren.

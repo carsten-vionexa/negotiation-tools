@@ -50,6 +50,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase D0: Hostinger-VPS-Staging-Deployment ist repo-seitig vorbereitet: separates Staging-Compose, Beispiel-Env, Reverse-Proxy-Empfehlung, persistente Volumes und Backup-Grundidee sind in `docs/staging-deployment-prep.md` dokumentiert
 - Phase D1.1: Hostinger-Staging ist serverseitig erfolgreich bereitgestellt und unter `https://negotiation.tools.hawkins-consulting.de` ueber Caddy/Authelia geschuetzt erreichbar
 - Phase D1.2: Der erfolgreiche Hostinger-Staging-Stand ist in `docs/deployment/hostinger-staging.md` ohne serverlokale Secrets dokumentiert
+- Phase D1.3: Das Backend-Docker-Image enthaelt `alembic.ini` und `alembic/`, damit Migrationen im Backend-Container reproduzierbar ohne hostseitige Alembic-Bind-Mounts laufen
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
@@ -239,7 +240,7 @@ Noch fehlende fachliche Luecken:
 
 ## 9. Phase D: Staging und Demo-Betrieb
 
-Status: D0 abgeschlossen, D1.1 abgeschlossen, D1.2 umgesetzt.
+Status: D0 abgeschlossen, D1.1 abgeschlossen, D1.2 umgesetzt, D1.3 umgesetzt.
 
 Ziel: Den vorzeigbaren Demo-Flow aus Phase C auf eine geschuetzte Staging-/Demo-Instanz vorbereiten und spaeter auf einem Hostinger VPS KVM 2 betreiben.
 
@@ -255,6 +256,7 @@ Umgesetzte D1-Schritte:
 
 1. D1.1 abgeschlossen: Hostinger VPS KVM 2 mit Ubuntu 24.04 LTS ist bereitgestellt, Docker/Compose laufen, Caddy HTTPS und Authelia Login sind aktiv, die App ist unter `https://negotiation.tools.hawkins-consulting.de` erreichbar und der Demo-Flow `RequestItem -> NegotiationProject -> Project-Detailseite` wurde erfolgreich getestet.
 2. D1.2 umgesetzt: `docs/deployment/hostinger-staging.md` dokumentiert den erfolgreichen Staging-Stand, Serverpfade, Compose-Nutzung, Caddy-/Authelia-Einbindung, Migrationen, Smoke-Test, Redeploy-Checkliste und bekannte Follow-ups ohne echte `.env.staging`-Werte.
+3. D1.3 umgesetzt: Das Backend-Docker-Image kopiert `alembic.ini` und `alembic/` in `/app`, sodass `docker compose ... run --rm backend alembic upgrade head` ohne hostseitig gemountete Alembic-Dateien ausfuehrbar ist.
 
 ### Manuelle Pruefhilfe C13
 

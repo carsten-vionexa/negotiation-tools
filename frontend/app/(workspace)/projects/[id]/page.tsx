@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 
 import { ErrorState } from "@/components/state-patterns";
 import { PageHeader } from "@/components/page-header";
+import { ProjectNextActionGuidance } from "@/components/projects/project-next-action-guidance";
 import { ProjectPreparationOverview } from "@/components/projects/project-preparation-overview";
 import { ProjectPreparationReadiness } from "@/components/projects/project-preparation-readiness";
 import { ProjectStrategySnapshot } from "@/components/projects/project-strategy-snapshot";
@@ -238,10 +239,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
             <Meta label="Kategorie" value={project.category || "Nicht gesetzt"} />
             <Meta label="Prioritaet" value={project.priority || "Nicht gesetzt"} />
           </dl>
-          <div className="mt-5 rounded-md border border-border bg-muted/40 p-3 text-sm leading-6">
-            <p className="font-medium">Naechster Schritt</p>
-            <p className="mt-1 text-muted-foreground">Projektdaten pruefen und anschliessend Analyse oder Strategie vorbereiten.</p>
-          </div>
+          <ProjectNextActionGuidance project={project} requestItem={requestItem} />
           <div className="mt-5 grid gap-2 border-t border-border pt-4">
             <FlowLink href={`/knowledge-base?projectId=${project.id}`} label="Datenbasis anzeigen" icon={<Database className="size-4" />} />
             <FlowLink href={`/analysis?projectId=${project.id}`} label="Analyse vorbereiten" icon={<Sparkles className="size-4" />} />

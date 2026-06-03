@@ -5,9 +5,11 @@ import type { ReactNode } from "react";
 
 import { ErrorState } from "@/components/state-patterns";
 import { PageHeader } from "@/components/page-header";
+import { ProjectPreparationOverview } from "@/components/projects/project-preparation-overview";
+import { ProjectStrategySnapshot } from "@/components/projects/project-strategy-snapshot";
 import { listCompanies } from "@/lib/api/companies";
-import { getNegotiationProject, updateNegotiationProject, type NegotiationProjectRead } from "@/lib/api/negotiation-projects";
-import { getRequestItem, listRequestItems, type RequestItemRead } from "@/lib/api/request-items";
+import { getNegotiationProject, updateNegotiationProject } from "@/lib/api/negotiation-projects";
+import { getRequestItem, listRequestItems } from "@/lib/api/request-items";
 import { listSupplierProfiles } from "@/lib/api/supplier-profiles";
 import { listUserProfiles } from "@/lib/api/user-profiles";
 import { optionalFormString, requiredFormString } from "@/lib/form-data";
@@ -60,35 +62,6 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
     }
   }
 
-  const preparationOverviewFields = [
-    { label: "Projekttitel", value: displayValue(project.title) },
-    { label: "Verhandlungsart", value: displayValue(project.negotiation_type) },
-    { label: "Warengruppe", value: displayValue(project.category ?? requestItem?.category) },
-    { label: "Artikel / Leistung", value: displayValue(project.article_or_service ?? requestItem?.article_name ?? requestItem?.title) },
-    { label: "Menge", value: displayValue(formatQuantity(project.quantity ?? requestItem?.requested_quantity, requestItem?.unit)) },
-    { label: "Zielregion", value: displayValue(project.target_region ?? requestItem?.target_region) },
-    { label: "Gewuenschte Lieferzeit", value: displayValue(project.desired_delivery_time ?? requestItem?.target_delivery_time ?? requestItem?.required_delivery_date) },
-    {
-      label: "Grobe Preisvorstellung",
-      value: displayValue(
-        formatMoney(project.internal_price_expectation ?? requestItem?.target_price ?? requestItem?.rough_price_expectation, project.currency ?? requestItem?.currency),
-      ),
-    },
-    { label: "Projektprioritaet", value: displayValue(project.priority ?? requestItem?.priority) },
-    { label: "Status", value: displayValue(project.status) },
-    { label: "Interne Stakeholder", value: displayValue(owner?.display_name) },
-  ];
-  const requestItemContext = requestItem
-    ? [
-        requestItem.article_description ? `Beschreibung: ${requestItem.article_description}` : null,
-        requestItem.specification ? `Spezifikation: ${requestItem.specification}` : null,
-        requestItem.comment ? `Kommentar: ${requestItem.comment}` : null,
-      ]
-        .filter(Boolean)
-        .join("\n")
-    : null;
-  const strategySnapshotFields = buildStrategySnapshotFields(project, requestItem);
-
   return (
     <>
       <PageHeader
@@ -98,82 +71,9 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         actions={<BackLink href="/projects" label="Zurueck" />}
       />
 
-      <section className="rounded-md border border-border bg-card p-5">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h2 className="text-base font-semibold">Verhandlungsvorbereitung</h2>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              Diese Uebersicht bildet die Ausgangslage fuer die spaetere Strategieentwicklung, ZOPA-/BATNA-Arbeit und Simulation.
-            </p>
-          </div>
-          {requestItem ? (
-            <Link
-              href={`/request-items/${requestItem.id}`}
-              className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm font-medium text-primary hover:bg-muted"
-            >
-              <ClipboardList className="size-4" />
-              Anfrageposition oeffnen
-            </Link>
-          ) : null}
-        </div>
+      <ProjectPreparationOverview project={project} requestItem={requestItem} ownerDisplayName={owner?.display_name} />
 
-        <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
-          {preparationOverviewFields.map((item) => (
-            <Meta key={item.label} label={item.label} value={item.value} />
-          ))}
-        </dl>
-
-        <div className="mt-4 grid gap-4 border-t border-border pt-4 md:grid-cols-2">
-          <div>
-            <h3 className="text-sm font-medium">Verknuepfter RequestItem-Kontext</h3>
-            <dl className="mt-3 grid gap-3 text-sm">
-              <Meta
-                label="Anfrageposition"
-                value={
-                  requestItem ? (
-                    <Link href={`/request-items/${requestItem.id}`} className="inline-flex items-center gap-2 text-primary">
-                      <ClipboardList className="size-4" />
-                      {requestItem.title}
-                    </Link>
-                  ) : project.request_item_id ? (
-                    "RequestItem konnte nicht geladen werden"
-                  ) : (
-                    "Noch nicht angegeben"
-                  )
-                }
-              />
-              <Meta label="RequestItem-Status" value={displayValue(requestItem?.status)} />
-            </dl>
-            <p className="mt-3 whitespace-pre-line text-sm leading-6 text-muted-foreground">{requestItemContext || "Noch nicht angegeben"}</p>
-          </div>
-          <div>
-            <h3 className="text-sm font-medium">Projektkontext</h3>
-            <p className="mt-3 whitespace-pre-line text-sm leading-6 text-muted-foreground">{displayValue(project.context)}</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="rounded-md border border-border bg-card p-5">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h2 className="text-base font-semibold">Strategie-Snapshot</h2>
-            <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              Vorbereitende Demo-Struktur fuer Strategiebausteine. Diese Werte sind nicht KI-generiert und enthalten keine automatische ZOPA-,
-              BATNA- oder Preisanker-Berechnung.
-            </p>
-          </div>
-          <span className="rounded-md border border-border bg-muted/40 px-3 py-2 text-xs font-medium text-muted-foreground">Statisch vorbereitet</span>
-        </div>
-
-        <dl className="mt-4 grid gap-4 text-sm md:grid-cols-2">
-          {strategySnapshotFields.map((item) => (
-            <div key={item.label} className="rounded-md border border-border bg-background p-4">
-              <dt className="font-medium">{item.label}</dt>
-              <dd className="mt-2 leading-6 text-muted-foreground">{item.value}</dd>
-            </div>
-          ))}
-        </dl>
-      </section>
+      <ProjectStrategySnapshot project={project} requestItem={requestItem} />
 
       <section className="grid gap-4 lg:grid-cols-[1fr_22rem]">
         <div className="rounded-md border border-border bg-card p-5">
@@ -467,74 +367,6 @@ function Meta({ label, value }: { label: string; value: ReactNode }) {
       <dd className="mt-1 font-medium">{value}</dd>
     </div>
   );
-}
-
-function buildStrategySnapshotFields(project: NegotiationProjectRead, requestItem?: RequestItemRead) {
-  const priceExpectation = formatMoney(
-    project.internal_price_expectation ?? requestItem?.target_price ?? requestItem?.rough_price_expectation,
-    project.currency ?? requestItem?.currency,
-  );
-  const riskSignals = [
-    project.risk_level ? `Risikostufe: ${project.risk_level}` : null,
-    project.business_pressure ? `Business Pressure: ${project.business_pressure}` : null,
-    project.technical_dependency_level ? `Technische Abhaengigkeit: ${project.technical_dependency_level}` : null,
-    project.supplier_power_level ? `Supplier Power: ${project.supplier_power_level}` : null,
-    project.desired_delivery_time ?? requestItem?.target_delivery_time ?? requestItem?.required_delivery_date
-      ? `Lieferzeit: ${project.desired_delivery_time ?? requestItem?.target_delivery_time ?? requestItem?.required_delivery_date}`
-      : null,
-  ].filter(Boolean);
-
-  return [
-    {
-      label: "Verhandlungsziel",
-      value: project.objective?.trim() || "Noch nicht definiert. Dieses Ziel sollte vor der Simulation konkretisiert werden.",
-    },
-    {
-      label: "Preisanker",
-      value: priceExpectation
-        ? `Preisvorstellung als Ausgangswert vorhanden: ${priceExpectation}. Ein konkreter Preisanker ist noch nicht berechnet.`
-        : "Noch nicht berechnet. Kann spaeter aus Preisvorstellung, Einkaufshistorie und Marktvergleich abgeleitet werden.",
-    },
-    {
-      label: "WAP / Walk-away Point",
-      value: "Noch nicht definiert. Der Walk-away Point sollte vor der Verhandlung festgelegt werden.",
-    },
-    {
-      label: "BATNA",
-      value: "Noch nicht definiert. Moegliche Alternativen sollten vor der Verhandlung geprueft werden.",
-    },
-    {
-      label: "Hauptrisiken",
-      value:
-        riskSignals.length > 0
-          ? `${riskSignals.join("; ")}. Diese Hinweise sind noch keine bewertete Risikoanalyse.`
-          : "Noch keine Risiken bewertet. Relevante Risiken koennen aus Lieferzeit, Warengruppe, Lieferantenmacht und Abhaengigkeiten entstehen.",
-    },
-    {
-      label: "Moegliche Konzessionen",
-      value: "Noch nicht definiert. Konzessionen sollten nur gegen Gegenleistung geplant werden.",
-    },
-    {
-      label: "Empfohlene Argumentationslinie",
-      value: "Noch nicht ausgearbeitet. Spaeter koennen TCO, Lieferfaehigkeit, Qualitaet, Risiko und Beziehung als Argumentationsachsen genutzt werden.",
-    },
-    {
-      label: "Offene Fragen vor der Verhandlung",
-      value: "Welche Informationen fehlen noch, um Ziel, WAP, BATNA und Konzessionslogik belastbar zu definieren?",
-    },
-  ];
-}
-
-function displayValue(value?: string | null) {
-  return value?.trim() || "Noch nicht angegeben";
-}
-
-function formatQuantity(quantity?: string | null, unit?: string | null) {
-  return [quantity, unit].filter(Boolean).join(" ");
-}
-
-function formatMoney(amount?: string | null, currency?: string | null) {
-  return [amount, currency].filter(Boolean).join(" ");
 }
 
 function getErrorDescription(error: unknown) {

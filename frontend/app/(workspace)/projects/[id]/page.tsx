@@ -48,6 +48,7 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
   const supplierById = new Map(suppliers.map((supplier) => [supplier.id, supplier]));
   const requestById = new Map(requestItems.map((item) => [item.id, item]));
   const company = companyById.get(project.company_id);
+  const owner = profileById.get(project.owner_id ?? "");
   const supplier = supplierById.get(project.supplier_profile_id ?? "");
   let requestItem = requestById.get(project.request_item_id ?? "");
 
@@ -59,40 +60,33 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
     }
   }
 
-  const requestItemDemandFields = requestItem
+  const preparationOverviewFields = [
+    { label: "Projekttitel", value: displayValue(project.title) },
+    { label: "Verhandlungsart", value: displayValue(project.negotiation_type) },
+    { label: "Warengruppe", value: displayValue(project.category ?? requestItem?.category) },
+    { label: "Artikel / Leistung", value: displayValue(project.article_or_service ?? requestItem?.article_name ?? requestItem?.title) },
+    { label: "Menge", value: displayValue(formatQuantity(project.quantity ?? requestItem?.requested_quantity, requestItem?.unit)) },
+    { label: "Zielregion", value: displayValue(project.target_region ?? requestItem?.target_region) },
+    { label: "Gewuenschte Lieferzeit", value: displayValue(project.desired_delivery_time ?? requestItem?.target_delivery_time ?? requestItem?.required_delivery_date) },
+    {
+      label: "Grobe Preisvorstellung",
+      value: displayValue(
+        formatMoney(project.internal_price_expectation ?? requestItem?.target_price ?? requestItem?.rough_price_expectation, project.currency ?? requestItem?.currency),
+      ),
+    },
+    { label: "Projektprioritaet", value: displayValue(project.priority ?? requestItem?.priority) },
+    { label: "Status", value: displayValue(project.status) },
+    { label: "Interne Stakeholder", value: displayValue(owner?.display_name) },
+  ];
+  const requestItemContext = requestItem
     ? [
-        { label: "Titel / Bedarf", value: requestItem.title },
-        { label: "Artikel / Service", value: requestItem.article_name },
-        { label: "Kategorie", value: requestItem.category },
-        { label: "Menge", value: [requestItem.requested_quantity, requestItem.unit].filter(Boolean).join(" ") },
-        { label: "Liefertermin", value: requestItem.required_delivery_date || requestItem.target_delivery_time },
-        { label: "Zielpreis", value: [requestItem.target_price, requestItem.currency].filter(Boolean).join(" ") },
-        { label: "Budgetrahmen", value: [requestItem.rough_price_expectation, requestItem.currency].filter(Boolean).join(" ") },
-        { label: "Zielregion", value: requestItem.target_region },
-        { label: "Prioritaet", value: requestItem.priority },
-        { label: "Status", value: requestItem.status },
-      ].filter((item) => hasDisplayValue(item.value))
-    : [];
-  const requestItemContextFields = requestItem
-    ? [
-        { label: "Beschreibung", value: requestItem.article_description },
-        { label: "Spezifikation", value: requestItem.specification },
-        { label: "Notizen", value: requestItem.comment },
-      ].filter((item) => hasDisplayValue(item.value))
-    : [];
-  const projectDemandFields = [
-    { label: "Artikel / Leistung", value: project.article_or_service },
-    { label: "Kategorie", value: project.category },
-    { label: "Menge", value: project.quantity },
-    { label: "Zielregion", value: project.target_region },
-    { label: "Gewuenschte Lieferzeit", value: project.desired_delivery_time },
-    { label: "Interne Preisannahme", value: project.internal_price_expectation },
-    { label: "Waehrung", value: project.currency },
-    { label: "Prioritaet", value: project.priority },
-  ].filter((item) => hasDisplayValue(item.value));
-  const hasProjectDemandContext = hasDisplayValue(project.context);
-  const hasProjectDemandSummary =
-    requestItem || project.request_item_id || projectDemandFields.length > 0 || hasProjectDemandContext;
+        requestItem.article_description ? `Beschreibung: ${requestItem.article_description}` : null,
+        requestItem.specification ? `Spezifikation: ${requestItem.specification}` : null,
+        requestItem.comment ? `Kommentar: ${requestItem.comment}` : null,
+      ]
+        .filter(Boolean)
+        .join("\n")
+    : null;
 
   return (
     <>
@@ -103,76 +97,60 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         actions={<BackLink href="/projects" label="Zurueck" />}
       />
 
-      {hasProjectDemandSummary ? (
-        <section className="rounded-md border border-border bg-card p-5">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div>
-              <h2 className="text-base font-semibold">Anfrageposition / Bedarfskontext</h2>
-              <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                {requestItem
-                  ? "Verknuepfte Anfrageposition und zentrale Bedarfsdaten fuer die fachliche Pruefung vor Analyse und Strategie."
-                  : project.request_item_id
-                    ? "Dieses Projekt verweist auf eine Anfrageposition, die aktuell nicht geladen werden konnte. Die Projektbedarfsdaten bleiben sichtbar."
-                    : "Projektbezogene Bedarfsdaten fuer die fachliche Pruefung vor Analyse und Strategie."}
-              </p>
-            </div>
-            {requestItem ? (
-              <Link
-                href={`/request-items/${requestItem.id}`}
-                className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm font-medium text-primary hover:bg-muted"
-              >
-                <ClipboardList className="size-4" />
-                Anfrageposition oeffnen
-              </Link>
-            ) : null}
+      <section className="rounded-md border border-border bg-card p-5">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h2 className="text-base font-semibold">Verhandlungsvorbereitung</h2>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">
+              Diese Uebersicht bildet die Ausgangslage fuer die spaetere Strategieentwicklung, ZOPA-/BATNA-Arbeit und Simulation.
+            </p>
           </div>
+          {requestItem ? (
+            <Link
+              href={`/request-items/${requestItem.id}`}
+              className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm font-medium text-primary hover:bg-muted"
+            >
+              <ClipboardList className="size-4" />
+              Anfrageposition oeffnen
+            </Link>
+          ) : null}
+        </div>
 
-          {requestItemDemandFields.length > 0 ? (
-            <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
-              {requestItemDemandFields.map((item) => (
-                <Meta key={item.label} label={item.label} value={item.value} />
-              ))}
+        <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
+          {preparationOverviewFields.map((item) => (
+            <Meta key={item.label} label={item.label} value={item.value} />
+          ))}
+        </dl>
+
+        <div className="mt-4 grid gap-4 border-t border-border pt-4 md:grid-cols-2">
+          <div>
+            <h3 className="text-sm font-medium">Verknuepfter RequestItem-Kontext</h3>
+            <dl className="mt-3 grid gap-3 text-sm">
+              <Meta
+                label="Anfrageposition"
+                value={
+                  requestItem ? (
+                    <Link href={`/request-items/${requestItem.id}`} className="inline-flex items-center gap-2 text-primary">
+                      <ClipboardList className="size-4" />
+                      {requestItem.title}
+                    </Link>
+                  ) : project.request_item_id ? (
+                    "RequestItem konnte nicht geladen werden"
+                  ) : (
+                    "Noch nicht angegeben"
+                  )
+                }
+              />
+              <Meta label="RequestItem-Status" value={displayValue(requestItem?.status)} />
             </dl>
-          ) : null}
-
-          {requestItemContextFields.length > 0 ? (
-            <div className="mt-4 grid gap-3 border-t border-border pt-4 md:grid-cols-3">
-              {requestItemContextFields.map((item) => (
-                <div key={item.label}>
-                  <h3 className="text-sm font-medium">{item.label}</h3>
-                  <p className="mt-2 whitespace-pre-line text-sm leading-6 text-muted-foreground">{item.value}</p>
-                </div>
-              ))}
-            </div>
-          ) : null}
-
-          {requestItem && projectDemandFields.length > 0 ? (
-            <div className="mt-4 border-t border-border pt-4">
-              <h3 className="text-sm font-medium">In das Projekt uebernommen</h3>
-              <dl className="mt-3 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
-                {projectDemandFields.map((item) => (
-                  <Meta key={item.label} label={item.label} value={item.value} />
-                ))}
-              </dl>
-            </div>
-          ) : null}
-
-          {!requestItem && projectDemandFields.length > 0 ? (
-            <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
-              {projectDemandFields.map((item) => (
-                <Meta key={item.label} label={item.label} value={item.value} />
-              ))}
-            </dl>
-          ) : null}
-
-          {hasProjectDemandContext ? (
-            <div className="mt-4 border-t border-border pt-4">
-              <h3 className="text-sm font-medium">Projektkontext</h3>
-              <p className="mt-2 whitespace-pre-line text-sm leading-6 text-muted-foreground">{project.context}</p>
-            </div>
-          ) : null}
-        </section>
-      ) : null}
+            <p className="mt-3 whitespace-pre-line text-sm leading-6 text-muted-foreground">{requestItemContext || "Noch nicht angegeben"}</p>
+          </div>
+          <div>
+            <h3 className="text-sm font-medium">Projektkontext</h3>
+            <p className="mt-3 whitespace-pre-line text-sm leading-6 text-muted-foreground">{displayValue(project.context)}</p>
+          </div>
+        </div>
+      </section>
 
       <section className="grid gap-4 lg:grid-cols-[1fr_22rem]">
         <div className="rounded-md border border-border bg-card p-5">
@@ -468,8 +446,16 @@ function Meta({ label, value }: { label: string; value: ReactNode }) {
   );
 }
 
-function hasDisplayValue(value?: string | null) {
-  return Boolean(value?.trim());
+function displayValue(value?: string | null) {
+  return value?.trim() || "Noch nicht angegeben";
+}
+
+function formatQuantity(quantity?: string | null, unit?: string | null) {
+  return [quantity, unit].filter(Boolean).join(" ");
+}
+
+function formatMoney(amount?: string | null, currency?: string | null) {
+  return [amount, currency].filter(Boolean).join(" ");
 }
 
 function getErrorDescription(error: unknown) {

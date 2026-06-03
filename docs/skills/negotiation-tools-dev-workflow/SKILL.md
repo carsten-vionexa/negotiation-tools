@@ -217,6 +217,14 @@ git diff --stat
 git log --oneline -5
 ```
 
+Lokaler Codex-Arbeitsmodus:
+
+* Wenn Codex im Modus `Lokal arbeiten` genutzt wird, entstehen Änderungen zunächst nur im lokalen Working Tree des ausgewählten Repositorys und Branches.
+* Ein `git commit` versioniert diese Änderungen nur lokal.
+* Erst `git push origin main` beziehungsweise der Push des jeweils verwendeten Branches macht den Commit auf GitHub sichtbar.
+* Der Hinweis `Your branch is ahead of 'origin/main' by 1 commit` bedeutet: lokal committed, aber noch nicht zu GitHub gepusht.
+* Ein Issue darf erst als abgeschlossen bewertet werden, wenn die relevante Änderung auf `main` und, bei direkter Main-Arbeit, auch auf `origin/main` sichtbar ist.
+
 Bewerten:
 
 * Ist der Working Tree sauber?
@@ -346,6 +354,7 @@ carsten-vionexa/negotiation-tools
 Ausgangslage:
 - Branch: main oder Feature Branch
 - Working Tree soll vor Beginn sauber sein
+- Bei lokalem Codex-Arbeiten entstehen Änderungen zunächst im lokalen Working Tree; sie sind erst nach Commit lokal versioniert und erst nach Push auf GitHub sichtbar.
 - Kurzkontext
 
 Aufgabe:

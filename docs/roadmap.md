@@ -54,6 +54,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase D1.3: Das Backend-Docker-Image enthaelt `alembic.ini` und `alembic/`, damit Migrationen im Backend-Container reproduzierbar ohne hostseitige Alembic-Bind-Mounts laufen
 - Phase D1.4: Das Frontend-Docker-Image baut Next.js reproduzierbar als `output: "standalone"`-Production-Image und startet in Staging den Standalone-Server statt eines Dev- oder Runtime-Build-Kommandos
 - Phase D1.5: Eine kleine Staging-Demo-Datenstrategie ist in `docs/deployment/staging-demo-data.md` dokumentiert; ein idempotenter Backend-Seed stellt Company, RequestItem und NegotiationProject fuer den Rheinwerk-Robotics-Demo-Flow bereit
+- Phase D3.2: Dokumentations-Guardrails fuer Roadmap- und Codex-Task-Pruefung sind im Issue-Template, in `docs/codex-tasks.md` und als nicht-blockierende PR-Warnung ergaenzt
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar

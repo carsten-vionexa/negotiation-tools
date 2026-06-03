@@ -1,0 +1,44 @@
+name: Documentation guardrails
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+jobs:
+  warn-missing-roadmap-update:
+    name: Warn when code changes lack roadmap/task updates
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check documentation touchpoints
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          base_sha="${{ github.event.pull_request.base.sha }}"
+          head_sha="${{ github.event.pull_request.head.sha }}"
+          changed_files="$(git diff --name-only "$base_sha" "$head_sha")"
+
+          echo "Changed files:"
+          printf '%s\n' "$changed_files"
+
+          code_pattern='^((backend|frontend|alembic|scripts|tests|\.github/workflows)/|docker-compose.*\.ya?ml$|Dockerfile$|.*\.Dockerfile$|package(-lock)?\.json$|pyproject\.toml$|requirements.*\.txt$)'
+
+          if ! printf '%s\n' "$changed_files" | grep -Eq "$code_pattern"; then
+            echo "No code-relevant changes detected."
+            exit 0
+          fi
+
+          if printf '%s\n' "$changed_files" | grep -Eq '^(docs/roadmap\.md|docs/codex-tasks\.md)$'; then
+            echo "Roadmap/task documentation was updated."
+            exit 0
+          fi
+
+          echo "::warning title=Documentation guardrail::Code-relevant files changed, but neither docs/roadmap.md nor docs/codex-tasks.md was updated. If no documentation change is needed, explain that in the PR or closing comment."

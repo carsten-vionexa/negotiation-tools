@@ -1,5 +1,11 @@
 # Codex Tasks
 
+## Definition of Done
+
+- `docs/roadmap.md` pruefen und aktualisieren oder bewusst unveraendert lassen.
+- `docs/codex-tasks.md` pruefen und aktualisieren oder bewusst unveraendert lassen.
+- Wenn keine Dokumentationsaenderung noetig ist, die Begruendung im Abschlusskommentar dokumentieren.
+
 ## Bereits erledigt
 
 - Docker Compose fuer frontend/backend/db
@@ -80,6 +86,7 @@
 - Frontend-Nutzbarkeitsflow Issue #69 umgesetzt: RequestItem-Liste sowie Create/Edit-Detailflow unter `/request-items` ergaenzt, in die Navigation aufgenommen und die strukturierte Anfrageposition in Projektanlage und Projektdetail nutzbar gemacht, ohne Backend-, Import- oder Migrationslogik
 - Frontend-Hardening Issue #73 umgesetzt: Gemeinsamen `FormData`-Helper fuer getrimmte optionale Werte und explizite Pflichtfeldfehler eingefuehrt sowie die bestehenden Frontend-Server-Actions darauf umgestellt, ohne Backend-, Import- oder Migrationslogik
 - Phase D0 umgesetzt: Hostinger-VPS-Staging-Vorbereitung mit `docker-compose.staging.yml`, `.env.staging.example`, `.gitignore`-Schutz fuer echte Staging-/Production-Env-Dateien und `docs/staging-deployment-prep.md` dokumentiert, ohne echtes Deployment, Serverzugriff, Produktlogik oder Secrets
+- Phase D3.2 umgesetzt: Dokumentations-Guardrails ergaenzt mit Feature-/Task-Issue-Template, Documentation-/Roadmap-Checkliste, Definition-of-Done-Regel und nicht-blockierendem PR-Warning, ohne Produktlogik
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 

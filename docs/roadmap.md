@@ -57,6 +57,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase D3.2: Dokumentations-Guardrails fuer Roadmap- und Codex-Task-Pruefung sind im Issue-Template, in `docs/codex-tasks.md` und als nicht-blockierende PR-Warnung ergaenzt
 - Phase D3.4: Der Staging-Demo-Seed stellt ein synthetisches SupplierProfile fuer `Aurum Motion Systems K.K.` sicher und verknuepft das Rheinwerk-Robotics-Demo-Projekt damit, sodass die Supplier Context Card inklusive Profil-Link demonstrierbar ist
 - Phase D3.6: Die Supplier Context Card zeigt kompakte Readiness-/Missing-Information-Hints aus vorhandenen `SupplierProfile`-Daten, ohne Scoring, KI, Backend- oder Seed-Aenderungen
+- Phase D3.8: Die Supplier Context Card zeigt bei verknuepftem `SupplierProfile` einen ruhigen Edit-Guidance-CTA zum bestehenden Lieferantenprofil, damit fehlende Vorbereitungsinformationen gezielt nachgepflegt werden koennen
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
@@ -212,7 +213,7 @@ Frontend-nutzbar sind derzeit:
 - `/projects` und `/projects/[id]` fuer manuelle Anlage und Bearbeitung von Verhandlungsprojekten inklusive Auswahl vorhandener SupplierProfiles und RequestItems.
 - `/request-items/[id]` kann aus einer bestehenden Anfrageposition direkt ein neues, vorausgefuelltes Verhandlungsprojekt starten.
 - `/projects/[id]` macht bei verknuepften Anfragepositionen den Ursprung sowie zentrale RequestItem-Bedarfsdaten wie Titel, Artikel, Kategorie, Menge, Liefertermin, Zielpreis, Budgetrahmen, Zielregion, Prioritaet, Beschreibung, Spezifikation und Notizen lesbar sichtbar.
-- `/projects/[id]` zeigt bei verknuepftem SupplierProfile eine kompakte Supplier Context Card mit Lieferant, Land/Region, Branche/Kategorie, Beziehung, Verhandlungssignalen, kulturellem Kontext, vorbereitungsorientierten Readiness-/Missing-Information-Hints und Link zum vollstaendigen Profil; ohne verknuepftes SupplierProfile erscheint ein ruhiger Empty State.
+- `/projects/[id]` zeigt bei verknuepftem SupplierProfile eine kompakte Supplier Context Card mit Lieferant, Land/Region, Branche/Kategorie, Beziehung, Verhandlungssignalen, kulturellem Kontext, vorbereitungsorientierten Readiness-/Missing-Information-Hints sowie einem ruhigen Edit-Guidance-CTA und Link zum vollstaendigen Profil; ohne verknuepftes SupplierProfile erscheint ein ruhiger Empty State.
 - Projektbezogene Einstiege in Datenbasis, Analyse, Strategie, Simulation und Trainerreview.
 
 Mapping in C23:
@@ -333,7 +334,7 @@ Umgesetzte D1-Schritte:
 
 ## 10. Phase D3: Supplier Context / Lieferantenkontext
 
-Status: D3.1 abgeschlossen, D3.4 Demo-Readiness umgesetzt, D3.6 umgesetzt.
+Status: D3.1 abgeschlossen, D3.4 Demo-Readiness umgesetzt, D3.6 umgesetzt, D3.8 umgesetzt.
 
 Ziel: Lieferantenkontext auf der Project-Detailseite und spaeter in Analyse, Strategie, Kulturbriefing und Simulation verhandlungsnah nutzbar machen, ohne automatisch zu bewerten oder neue Datenmodelle vorzuziehen.
 
@@ -342,6 +343,7 @@ Umgesetzte D3-Schritte:
 1. D3.1 abgeschlossen: `/projects/[id]` zeigt eine kompakte Supplier Context Card aus dem verknuepften `SupplierProfile`, inklusive Empty State ohne SupplierProfile und Link zum vollstaendigen Profil.
 2. D3.4 umgesetzt: Der Staging-Demo-Seed erzeugt idempotent ein synthetisches Demo-SupplierProfile fuer `Aurum Motion Systems K.K.` und verknuepft das bestehende Rheinwerk-Robotics-Demo-Projekt ueber `supplier_profile_id`, ohne Migration, neue API oder Frontend-Aenderung.
 3. D3.6 umgesetzt: Die bestehende Supplier Context Card zeigt eine kleine Sektion `Vorbereitungsstand Lieferant` mit maximal fuenf ruhigen Hints zu gepflegten oder gezielt nachpflegbaren Profilinformationen wie Region, Kategorie, Beziehung, Verhandlungssignalen und kulturellem Kontext.
+4. D3.8 umgesetzt: Die Readiness-Sektion enthaelt bei verknuepftem `SupplierProfile` einen kompakten Edit-Guidance-CTA zum bestehenden Lieferantenprofil, damit fehlende Angaben dort nachgepflegt werden koennen.
 
 Naechste sinnvolle D3-Follow-ups:
 

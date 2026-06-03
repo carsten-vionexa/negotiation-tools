@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, CircleDashed, Handshake } from "lucide-react";
+import { ArrowRight, CheckCircle2, CircleDashed, Handshake, PencilLine } from "lucide-react";
 import type { ReactNode } from "react";
 
 import type { SupplierProfileSummary } from "@/lib/api/supplier-profiles";
@@ -94,6 +94,19 @@ export function ProjectSupplierContextCard({ supplier }: { supplier?: SupplierPr
             </li>
           ))}
         </ul>
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2 rounded-md border border-border bg-muted/20 px-3 py-2">
+          <p className="text-xs leading-5 text-muted-foreground">
+            Fehlende Angaben wie Beziehungserfahrung, kultureller Kontext oder Verhandlungssignale koennen im Lieferantenprofil ergaenzt werden.
+          </p>
+          <Link
+            href={`/suppliers/${supplier.id}`}
+            className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
+          >
+            <PencilLine className="size-4" aria-hidden="true" />
+            Lieferantenprofil ergaenzen
+            <ArrowRight className="size-4" aria-hidden="true" />
+          </Link>
+        </div>
       </div>
     </section>
   );

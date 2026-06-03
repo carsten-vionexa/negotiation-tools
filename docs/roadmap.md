@@ -47,6 +47,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase C21: Frontend-Lint-Script stabilisiert und auf konkrete App-/Config-Pfade begrenzt
 - Phase C23: Aus einer `RequestItem`-Detailseite kann ein vorausgefuelltes `NegotiationProject` erzeugt und direkt geoeffnet werden
 - Phase C24: Project-Detailseite zeigt nach RequestItem-Initialisierung den Bezug, uebernommene Bedarfsdaten und den naechsten sinnvollen Arbeitsschritt klarer an
+- Phase D3.1: Project-Detailseite zeigt eine kompakte Supplier Context Card aus dem verknuepften `SupplierProfile` mit Empty State und Link zum vollstaendigen Lieferantenprofil
 - Phase D0: Hostinger-VPS-Staging-Deployment ist repo-seitig vorbereitet: separates Staging-Compose, Beispiel-Env, Reverse-Proxy-Empfehlung, persistente Volumes und Backup-Grundidee sind in `docs/staging-deployment-prep.md` dokumentiert
 - Phase D1.1: Hostinger-Staging ist serverseitig erfolgreich bereitgestellt und unter `https://negotiation.tools.hawkins-consulting.de` ueber Caddy/Authelia geschuetzt erreichbar
 - Phase D1.2: Der erfolgreiche Hostinger-Staging-Stand ist in `docs/deployment/hostinger-staging.md` ohne serverlokale Secrets dokumentiert
@@ -70,6 +71,7 @@ Der aktuelle MVP-Workflow lautet:
 - Vor neuen Feature-Phasen den bestehenden MVP fachlich und technisch abnehmen.
 - Upload/Import, Knowledge Intelligence und produktive Simulation erst nach sauberer C0-Konsolidierung starten.
 - Phase C Upload/Import schrittweise starten und nicht direkt grosse Importlogik bauen.
+- Supplier Context schrittweise im Project-Detail und anschliessenden Analyse-, Strategie-, Briefing- und Simulationsflows ausbauen, ohne automatische Analyse oder neues Datenmodell vorzuziehen.
 
 ## 4. Phase A: Produkt- und MVP-Scope
 
@@ -139,6 +141,7 @@ Nicht Teil des aktuellen MVP sind:
 - Relationship Memory als eigenes Modul
 - Stakeholder-Graph
 - automatische Angebotsanalyse
+- Supplier Scoring, automatische Lieferantenanalyse oder KI-generierte Supplier-Context-Bewertung; D3.1 zeigt nur vorhandene `SupplierProfile`-Daten kompakt an
 - produktiver Betrieb, echte Serverprovisionierung, Domain-/DNS-Konfiguration, CI/CD und produktive Authentifizierung; D0 dokumentiert nur die Staging-Vorbereitung ohne echtes Deployment
 
 Diese Punkte bleiben spaetere Ausbaustufen und duerfen nicht als bereits gelieferte MVP-Funktionen bewertet werden.
@@ -206,6 +209,7 @@ Frontend-nutzbar sind derzeit:
 - `/projects` und `/projects/[id]` fuer manuelle Anlage und Bearbeitung von Verhandlungsprojekten inklusive Auswahl vorhandener SupplierProfiles und RequestItems.
 - `/request-items/[id]` kann aus einer bestehenden Anfrageposition direkt ein neues, vorausgefuelltes Verhandlungsprojekt starten.
 - `/projects/[id]` macht bei verknuepften Anfragepositionen den Ursprung sowie zentrale RequestItem-Bedarfsdaten wie Titel, Artikel, Kategorie, Menge, Liefertermin, Zielpreis, Budgetrahmen, Zielregion, Prioritaet, Beschreibung, Spezifikation und Notizen lesbar sichtbar.
+- `/projects/[id]` zeigt bei verknuepftem SupplierProfile eine kompakte Supplier Context Card mit Lieferant, Land/Region, Branche/Kategorie, Beziehung, Verhandlungssignalen, kulturellem Kontext und Link zum vollstaendigen Profil; ohne verknuepftes SupplierProfile erscheint ein ruhiger Empty State.
 - Projektbezogene Einstiege in Datenbasis, Analyse, Strategie, Simulation und Trainerreview.
 
 Mapping in C23:
@@ -233,12 +237,21 @@ Glaettung in C24:
 - Beschreibung, Spezifikation, Notizen und der Projektkontext werden mit Zeilenumbruechen lesbar angezeigt.
 - Bewusst unveraendert bleiben die RequestItem-zu-Project-Erzeugungslogik, automatische Supplier-Zuordnung sowie Analyse-, Strategie-, ZOPA-, BATNA- oder WAP-Erzeugung.
 
+D3.1 Supplier Context:
+
+- Die Project-Detailseite stellt den verknuepften SupplierProfile-Kontext als eigene Supplier Context Card zwischen Verhandlungsvorbereitung und Strategie-Snapshot dar.
+- Die Karte nutzt ausschliesslich vorhandene Project- und SupplierProfile-Daten und fuehrt keine automatische Lieferantenanalyse, kein Supplier Scoring, keine KI-Generierung und kein neues Datenmodell ein.
+- Bei verknuepftem SupplierProfile zeigt sie Lieferant, Land/Region, Branche/Kategorie, Beziehung, Verhandlungssignale und kulturellen Kontext, soweit gepflegt.
+- Bei fehlendem SupplierProfile zeigt sie einen ruhigen Empty State, damit fehlender Lieferantenkontext nicht wie ein Fehler wirkt.
+- Der Link zum vollstaendigen SupplierProfile bleibt auf `/suppliers/[id]` verfuegbar.
+
 Noch fehlende fachliche Luecken:
 
 - Das Projektformular erlaubt zwar die Auswahl eines `RequestItem`, uebernimmt aber keine Bedarfsdaten automatisch in Projektfelder wie Titel, Artikel, Menge, Zielregion, Lieferzeit, Preisannahme oder Waehrung.
 - Es gibt weiterhin keine Detailroute fuer `ProcurementHistoryItem`; deshalb bleiben Einkaufshistorie-Zielreferenzen in ImportRows bewusst unverlinkt.
 - Mapping-Zielfeldlisten sind im Frontend weiterhin statisch und sollten spaeter zentralisiert oder aus Backend-/Contract-Metadaten abgeleitet werden.
 - KI-Mapping, PDF/OCR, automatische Analyse- oder Strategieerzeugung bleiben Nicht-MVP beziehungsweise spaetere Phasen.
+- Supplier Context Readiness, fehlende Lieferanteninformationen, automatische Lieferantenhypothesen und Supplier Scoring bleiben spaetere D3-Follow-ups.
 
 ## 9. Phase D: Staging und Demo-Betrieb
 
@@ -315,21 +328,49 @@ Umgesetzte D1-Schritte:
 - Sicherstellen, dass bei nicht validierten Jobs keine Create-Targets-Aktion sichtbar ist.
 - Sicherstellen, dass C17 keine Backendlogik, keine Migration, keine PDF-/OCR-Logik, kein KI-Mapping und keine automatische Analyse eingefuehrt hat.
 
-## 9. Phase D: Analyse und Strategieunterstuetzung
+## 10. Phase D3: Supplier Context / Lieferantenkontext
+
+Status: D3.1 abgeschlossen, Staging-Smoke-Test noch offen.
+
+Ziel: Lieferantenkontext auf der Project-Detailseite und spaeter in Analyse, Strategie, Kulturbriefing und Simulation verhandlungsnah nutzbar machen, ohne automatisch zu bewerten oder neue Datenmodelle vorzuziehen.
+
+Umgesetzte D3-Schritte:
+
+1. D3.1 abgeschlossen: `/projects/[id]` zeigt eine kompakte Supplier Context Card aus dem verknuepften `SupplierProfile`, inklusive Empty State ohne SupplierProfile und Link zum vollstaendigen Profil.
+
+Naechste sinnvolle D3-Follow-ups:
+
+1. D3.2: Staging Update and Smoke Test for Supplier Context Card.
+2. D3.3: Supplier Context Readiness / Missing Information Hints.
+3. Spaeter: Supplier Context in Analyse, Strategie, Kulturbriefing und Simulation gezielt wiederverwenden.
+
+Bewusste Grenzen von D3.1:
+
+- Keine Backendaenderung.
+- Keine Migration.
+- Keine neuen API-Endpunkte.
+- Keine neuen SupplierProfile-Felder.
+- Keine automatische Analyse.
+- Kein Supplier Scoring.
+- Keine KI-Generierung.
+- Keine RAG-/Knowledge-Auswertung.
+- Keine Import-/PDF-Themen.
+
+## 11. Phase D4: Analyse und Strategieunterstuetzung
 
 Ziel: Aus Daten strukturierte Analyse- und Strategievorschlaege erzeugen.
 
-## 10. Phase E: Knowledge Intelligence
+## 12. Phase E: Knowledge Intelligence
 
 Ziel: Dokumentwissen semantisch nutzbar machen.
 
 Nicht starten, bevor der MVP abgenommen und Phase C sauber priorisiert ist.
 
-## 11. Phase F: Simulation und Auswertung
+## 13. Phase F: Simulation und Auswertung
 
 Ziel: Trainings- und Simulationsnutzen produktiv machen.
 
-## 12. Phase G: Enterprise-Ausbau
+## 14. Phase G: Enterprise-Ausbau
 
 Spaetere Themen:
 

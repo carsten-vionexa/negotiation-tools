@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Handshake } from "lucide-react";
+import { ArrowRight, CheckCircle2, CircleDashed, Handshake } from "lucide-react";
 import type { ReactNode } from "react";
 
 import type { SupplierProfileSummary } from "@/lib/api/supplier-profiles";
@@ -34,6 +34,7 @@ export function ProjectSupplierContextCard({ supplier }: { supplier?: SupplierPr
     summarizeRecord("Interessen", supplier.interests_json),
     summarizeRecord("Constraints", supplier.constraints_json),
   ].filter(Boolean);
+  const readinessHints = buildReadinessHints(supplier);
 
   return (
     <section className="rounded-md border border-border bg-card p-4">
@@ -72,6 +73,28 @@ export function ProjectSupplierContextCard({ supplier }: { supplier?: SupplierPr
           <p className="mt-2 whitespace-pre-line text-sm leading-5 text-muted-foreground">{displayValue(firstValue(supplier.cultural_context, supplier.notes))}</p>
         </div>
       </div>
+
+      <div className="mt-3 border-t border-border pt-3">
+        <h3 className="text-sm font-medium">Vorbereitungsstand Lieferant</h3>
+        <p className="mt-1 text-xs leading-5 text-muted-foreground">
+          Kurze Orientierung, welche Profilinformationen fuer die weitere Vorbereitung bereits nutzbar sind und welche sich gezielt nachpflegen lassen.
+        </p>
+        <ul className="mt-2 grid gap-2 text-sm sm:grid-cols-2">
+          {readinessHints.map((hint) => (
+            <li key={hint.label} className="flex gap-2 rounded-md border border-border bg-muted/20 px-3 py-2">
+              {hint.isReady ? (
+                <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
+              ) : (
+                <CircleDashed className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+              )}
+              <span className="leading-5 text-muted-foreground">
+                <span className="font-medium text-foreground">{hint.label}: </span>
+                {hint.text}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
   );
 }
@@ -91,6 +114,67 @@ function displayValue(value?: string | null) {
 
 function firstValue(...values: Array<string | null | undefined>) {
   return values.find((value) => Boolean(value?.trim())) ?? null;
+}
+
+function buildReadinessHints(supplier: SupplierProfileSummary) {
+  const hints = [
+    {
+      label: "Region",
+      isReady: hasAnyText(supplier.country, supplier.region),
+      readyText: "Land oder Region sind fuer die Vorbereitung eingeordnet.",
+      missingText: "Land oder Region ergaenzen, damit regionale Rahmenbedingungen schneller greifbar sind.",
+    },
+    {
+      label: "Kategorie",
+      isReady: hasAnyText(supplier.industry, supplier.supplier_type),
+      readyText: "Branche oder Lieferantentyp sind als Kontext verfuegbar.",
+      missingText: "Branche oder Lieferantentyp nachpflegen, um Vergleich und Einordnung zu erleichtern.",
+    },
+    {
+      label: "Beziehung",
+      isReady: hasAnyText(supplier.relationship_status),
+      readyText: "Der Beziehungsstand ist fuer die Gespraechsvorbereitung sichtbar.",
+      missingText: "Beziehungsstand ergaenzen, damit Vorerfahrung und Naehe klarer werden.",
+    },
+    {
+      label: "Verhandlungssignale",
+      isReady:
+        hasAnyText(supplier.power_level, supplier.risk_level) ||
+        hasRecordValues(supplier.interests_json) ||
+        hasRecordValues(supplier.constraints_json) ||
+        hasRecordValues(supplier.likely_tactics_json),
+      readyText: "Macht-, Risiko-, Interessen- oder Constraint-Hinweise sind vorhanden.",
+      missingText: "Macht-, Risiko-, Interessen- oder Constraint-Hinweise sammeln, falls sie fuer die Vorbereitung relevant sind.",
+    },
+    {
+      label: "Kultureller Kontext",
+      isReady: hasAnyText(supplier.cultural_context),
+      readyText: "Kulturelle Hinweise sind als Vorbereitungskontext gepflegt.",
+      missingText: "Kulturellen Kontext ergaenzen, wenn Gespraechsstil oder Erwartungshaltung wichtig sind.",
+    },
+  ];
+
+  return [...hints.filter((hint) => !hint.isReady), ...hints.filter((hint) => hint.isReady)]
+    .slice(0, 5)
+    .map((hint) => ({
+      label: hint.label,
+      isReady: hint.isReady,
+      text: hint.isReady ? hint.readyText : hint.missingText,
+    }));
+}
+
+function hasAnyText(...values: Array<string | null | undefined>) {
+  return values.some((value) => Boolean(value?.trim()));
+}
+
+function hasRecordValues(record?: Record<string, unknown>) {
+  if (!record || Object.keys(record).length === 0) {
+    return false;
+  }
+
+  return Object.values(record)
+    .flatMap((value) => (Array.isArray(value) ? value : [value]))
+    .some((value) => (typeof value === "string" ? Boolean(value.trim()) : value != null));
 }
 
 function summarizeRecord(label: string, record?: Record<string, unknown>) {

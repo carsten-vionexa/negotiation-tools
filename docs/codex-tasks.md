@@ -88,6 +88,7 @@
 - Phase D0 umgesetzt: Hostinger-VPS-Staging-Vorbereitung mit `docker-compose.staging.yml`, `.env.staging.example`, `.gitignore`-Schutz fuer echte Staging-/Production-Env-Dateien und `docs/staging-deployment-prep.md` dokumentiert, ohne echtes Deployment, Serverzugriff, Produktlogik oder Secrets
 - Phase D3.2 umgesetzt: Dokumentations-Guardrails ergaenzt mit Feature-/Task-Issue-Template, Documentation-/Roadmap-Checkliste, Definition-of-Done-Regel und nicht-blockierendem PR-Warning, ohne Produktlogik
 - Phase D3.4 umgesetzt: Staging-Demo-Seed um ein synthetisches SupplierProfile fuer `Aurum Motion Systems K.K.` erweitert und das Rheinwerk-Robotics-Demo-Projekt idempotent ueber `supplier_profile_id` damit verknuepft, ohne Migration, Backend-API-, Frontend- oder Produktfunktionsaenderung
+- Phase D3.6 umgesetzt: Supplier Context Card um kompakte Readiness-/Missing-Information-Hints aus vorhandenen `SupplierProfile`-Feldern erweitert, ohne Backend, Migration, API, KI, Scoring oder Seed-Aenderung
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -195,19 +196,21 @@ D1 mit echtem Server soll anschliessend Hostinger VPS, Docker, echte `.env.stagi
 
 ## Phase D3: Supplier Context / Lieferantenkontext
 
-Status: D3.1 umgesetzt, D3.4 Demo-Readiness umgesetzt.
+Status: D3.1 umgesetzt, D3.4 Demo-Readiness umgesetzt, D3.6 umgesetzt.
 
 Umgesetzte Schritte:
 
 1. D3.1: Die Project-Detailseite zeigt bei verknuepftem `SupplierProfile` eine kompakte Supplier Context Card mit vorhandenen Stammdaten, Beziehungshinweisen, Verhandlungssignalen, kulturellem Kontext und Link zum vollstaendigen Profil; ohne SupplierProfile bleibt ein ruhiger Empty State sichtbar.
 2. D3.4: Der Staging-Demo-Seed stellt idempotent ein synthetisches SupplierProfile fuer `Aurum Motion Systems K.K.` bereit und verknuepft das bestehende Rheinwerk-Robotics-Demo-Projekt mit diesem Profil. Dadurch ist der Nicht-Empty-State der Supplier Context Card auf Staging demonstrierbar.
+3. D3.6: Die bestehende Supplier Context Card zeigt eine kleine Sektion `Vorbereitungsstand Lieferant` mit maximal fuenf ruhigen Hints zu vorhandenen oder gezielt nachpflegbaren Informationen wie Region, Kategorie, Beziehung, Verhandlungssignalen und kulturellem Kontext.
 
-Bewusste Grenzen von D3.4:
+Bewusste Grenzen von D3.6:
 
 - keine Migration
 - keine neuen API-Endpunkte
-- keine Frontend-Aenderung
+- keine neuen SupplierProfile-Felder
 - keine echte Kunden- oder Lieferantendaten
+- keine Seed-Aenderung
 - keine automatische Lieferantenanalyse, kein Supplier Scoring, keine KI-Integration und kein RAG
 
 Vorgemerkte Folgehinweise aus C15 bis C17:

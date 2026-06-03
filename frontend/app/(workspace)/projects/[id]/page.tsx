@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 import { ErrorState } from "@/components/state-patterns";
 import { PageHeader } from "@/components/page-header";
 import { ProjectPreparationOverview } from "@/components/projects/project-preparation-overview";
+import { ProjectPreparationReadiness } from "@/components/projects/project-preparation-readiness";
 import { ProjectStrategySnapshot } from "@/components/projects/project-strategy-snapshot";
 import { listCompanies } from "@/lib/api/companies";
 import { getNegotiationProject, updateNegotiationProject } from "@/lib/api/negotiation-projects";
@@ -72,6 +73,8 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
       />
 
       <ProjectPreparationOverview project={project} requestItem={requestItem} ownerDisplayName={owner?.display_name} />
+
+      <ProjectPreparationReadiness project={project} requestItem={requestItem} />
 
       <ProjectStrategySnapshot project={project} requestItem={requestItem} />
 

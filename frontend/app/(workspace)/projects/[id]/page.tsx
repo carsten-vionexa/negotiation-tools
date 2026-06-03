@@ -72,11 +72,13 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         actions={<BackLink href="/projects" label="Zurueck" />}
       />
 
-      <ProjectPreparationOverview project={project} requestItem={requestItem} ownerDisplayName={owner?.display_name} />
+      <div className="grid gap-4">
+        <ProjectPreparationReadiness project={project} requestItem={requestItem} />
 
-      <ProjectPreparationReadiness project={project} requestItem={requestItem} />
+        <ProjectPreparationOverview project={project} requestItem={requestItem} ownerDisplayName={owner?.display_name} />
 
-      <ProjectStrategySnapshot project={project} requestItem={requestItem} />
+        <ProjectStrategySnapshot project={project} requestItem={requestItem} />
+      </div>
 
       <section className="grid gap-4 lg:grid-cols-[1fr_22rem]">
         <div className="rounded-md border border-border bg-card p-5">

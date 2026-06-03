@@ -20,16 +20,16 @@ export function ProjectPreparationReadiness({ project, requestItem }: { project:
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="text-base font-semibold">Vorbereitungs-Check</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Welche Grundlagen fuer die naechste Verhandlungsphase bereits vorliegen.</p>
+          <p className="mt-0.5 text-xs leading-5 text-muted-foreground">Welche Grundlagen fuer die naechste Verhandlungsphase bereits vorliegen.</p>
         </div>
-        <span className="rounded-md border border-border bg-muted/40 px-3 py-1.5 text-xs font-medium text-muted-foreground">
+        <span className="rounded-md border border-border bg-muted/40 px-3 py-1 text-xs font-medium text-muted-foreground">
           {presentCount}/{measurableItems.length} Grundlagen
         </span>
       </div>
 
-      <ul className="mt-4 grid gap-2 text-sm sm:grid-cols-2 2xl:grid-cols-4">
+      <ul className="mt-3 grid gap-2 text-sm sm:grid-cols-2 xl:grid-cols-4">
         {items.map((item) => (
-          <li key={item.label} className="flex min-w-0 items-center gap-2 rounded-md border border-border bg-background px-3 py-2">
+          <li key={item.label} className="flex min-w-0 items-center gap-2 rounded-md border border-border bg-background px-3 py-1.5">
             <StatusIcon status={item.status} />
             <span className="min-w-0 flex-1">{item.label}</span>
             <span className={statusLabelClassName(item.status)}>{statusLabel(item.status)}</span>

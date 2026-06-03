@@ -43,18 +43,18 @@ export function ProjectPreparationOverview({
     : null;
 
   return (
-    <section className="rounded-md border border-border bg-card p-5">
+    <section className="rounded-md border border-border bg-card p-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
+        <div className="max-w-3xl">
           <h2 className="text-base font-semibold">Verhandlungsvorbereitung</h2>
-          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+          <p className="mt-1 text-xs leading-5 text-muted-foreground">
             Diese Uebersicht bildet die Ausgangslage fuer die spaetere Strategieentwicklung, ZOPA-/BATNA-Arbeit und Simulation.
           </p>
         </div>
         {requestItem ? (
           <Link
             href={`/request-items/${requestItem.id}`}
-            className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-sm font-medium text-primary hover:bg-muted"
+            className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-1.5 text-sm font-medium text-primary hover:bg-muted"
           >
             <ClipboardList className="size-4" />
             Anfrageposition oeffnen
@@ -62,16 +62,16 @@ export function ProjectPreparationOverview({
         ) : null}
       </div>
 
-      <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
+      <dl className="mt-3 grid gap-x-4 gap-y-3 text-sm sm:grid-cols-2 lg:grid-cols-4">
         {preparationOverviewFields.map((item) => (
           <Meta key={item.label} label={item.label} value={item.value} />
         ))}
       </dl>
 
-      <div className="mt-4 grid gap-4 border-t border-border pt-4 md:grid-cols-2">
+      <div className="mt-3 grid gap-4 border-t border-border pt-3 md:grid-cols-2">
         <div>
           <h3 className="text-sm font-medium">Verknuepfter RequestItem-Kontext</h3>
-          <dl className="mt-3 grid gap-3 text-sm">
+          <dl className="mt-2 grid gap-2 text-sm">
             <Meta
               label="Anfrageposition"
               value={
@@ -89,11 +89,11 @@ export function ProjectPreparationOverview({
             />
             <Meta label="RequestItem-Status" value={displayValue(requestItem?.status)} />
           </dl>
-          <p className="mt-3 whitespace-pre-line text-sm leading-6 text-muted-foreground">{requestItemContext || "Noch nicht angegeben"}</p>
+          <p className="mt-2 whitespace-pre-line text-sm leading-5 text-muted-foreground">{requestItemContext || "Noch nicht angegeben"}</p>
         </div>
         <div>
           <h3 className="text-sm font-medium">Projektkontext</h3>
-          <p className="mt-3 whitespace-pre-line text-sm leading-6 text-muted-foreground">{displayValue(project.context)}</p>
+          <p className="mt-2 whitespace-pre-line text-sm leading-5 text-muted-foreground">{displayValue(project.context)}</p>
         </div>
       </div>
     </section>
@@ -103,8 +103,8 @@ export function ProjectPreparationOverview({
 function Meta({ label, value }: { label: string; value: ReactNode }) {
   return (
     <div>
-      <dt className="text-muted-foreground">{label}</dt>
-      <dd className="mt-1 font-medium">{value}</dd>
+      <dt className="text-xs text-muted-foreground">{label}</dt>
+      <dd className="mt-0.5 font-medium">{value}</dd>
     </div>
   );
 }

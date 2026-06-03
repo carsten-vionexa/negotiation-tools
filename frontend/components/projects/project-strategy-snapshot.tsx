@@ -5,23 +5,23 @@ export function ProjectStrategySnapshot({ project, requestItem }: { project: Neg
   const strategySnapshotFields = buildStrategySnapshotFields(project, requestItem);
 
   return (
-    <section className="rounded-md border border-border bg-card p-5">
+    <section className="rounded-md border border-border bg-card p-4">
       <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
+        <div className="max-w-3xl">
           <h2 className="text-base font-semibold">Strategie-Snapshot</h2>
-          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+          <p className="mt-1 text-xs leading-5 text-muted-foreground">
             Vorbereitende Demo-Struktur fuer Strategiebausteine. Diese Werte sind nicht KI-generiert und enthalten keine automatische ZOPA-, BATNA-
             oder Preisanker-Berechnung.
           </p>
         </div>
-        <span className="rounded-md border border-border bg-muted/40 px-3 py-2 text-xs font-medium text-muted-foreground">Statisch vorbereitet</span>
+        <span className="rounded-md border border-border bg-muted/40 px-3 py-1 text-xs font-medium text-muted-foreground">Statisch vorbereitet</span>
       </div>
 
-      <dl className="mt-4 grid gap-4 text-sm md:grid-cols-2">
+      <dl className="mt-3 grid gap-3 text-sm md:grid-cols-2 xl:grid-cols-4">
         {strategySnapshotFields.map((item) => (
-          <div key={item.label} className="rounded-md border border-border bg-background p-4">
+          <div key={item.label} className="rounded-md border border-border bg-background p-3">
             <dt className="font-medium">{item.label}</dt>
-            <dd className="mt-2 leading-6 text-muted-foreground">{item.value}</dd>
+            <dd className="mt-1.5 text-xs leading-5 text-muted-foreground">{item.value}</dd>
           </div>
         ))}
       </dl>

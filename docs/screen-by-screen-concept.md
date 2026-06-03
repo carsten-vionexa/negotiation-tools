@@ -313,12 +313,15 @@ Die Folgeissues #15, #16, #17 und #18 sollten auf Basis dieser Abgrenzung als na
 - Technische Abhaengigkeit.
 - Supplier Power oder Lieferantenmacht.
 - Risikoindikatoren.
+- Kompakter Supplier Context aus einem verknuepften `SupplierProfile`, inklusive Land oder Region, Branche, Machtverhaeltnis, Risiken, Beziehung und kulturellem Kontext, sofern gepflegt.
 - Einfache Lieferantenbeziehungsnotiz.
 - Einfache Stakeholdernotiz.
 
 **Im MVP editierbar:** Die wichtigsten Projekt- und Kontextfelder sollen trainerseitig manuell pflegbar sein: Titel, Company-Bezug, Rolle oder Trainee, Verhandlungsart, Warengruppe, Artikel oder Leistung, Menge, Region, Lieferzeit, interne Zielgroesse, Lieferant, Prioritaet, Status, Business Pressure, technische Abhaengigkeit, Supplier Power, Risikoindikatoren und einfache Kontextnotizen. Eine automatische Projektanlage aus Importdaten ist keine MVP-Pflicht.
 
 **Einfache Lieferantenbeziehungsnotiz:** Diese Notiz beschreibt im MVP nur die qualitative Beziehung zum Lieferanten im Kontext dieses Projekts. Moegliche Inhalte sind Beziehungslage wie neu, etabliert, belastet, partnerschaftlich oder eskaliert, bisherige Erfahrungen, bekannte Konflikte, bekannte Argumentationsmuster, technische oder kommerzielle Abhaengigkeit, persoenliche Beziehungsebene, offene Spannungen sowie bisherige Zugestaendnisse oder Eskalationen. Sie ist ausdruecklich kein Relationship-Memory-Modul, keine vollstaendige Beziehungshistorie und keine automatische Dokumentenauswertung.
+
+**Supplier Context Card:** Auf der Project-Detailseite kann der vorhandene `SupplierProfile`-Kontext kompakt sichtbar gemacht werden. Die Karte nutzt ausschliesslich bestehende Project- und SupplierProfile-Daten, zeigt bei fehlender Verknuepfung einen ruhigen Empty State und verlinkt bei vorhandener ID auf das vollstaendige Lieferantenprofil. Sie ist ein Lesebaustein fuer Vorbereitung, Strategie, Kulturbriefing und Simulation, aber keine automatische Analyse, kein Supplier Scoring und keine Erweiterung des SupplierProfile-Datenmodells.
 
 **Einfache Stakeholdernotiz:** Diese Notiz macht interne oder externe Stakeholderinteressen sichtbar, ohne ein eigenes Stakeholder-System zu bauen. Moegliche Inhalte sind Stakeholder oder Bereich, Rolle wie Entscheider, Einflussnehmer, Betroffener, Blockierer oder Unterstuetzer, Interesse, Haltung, Einfluss, Notiz, Quelle, Confidence und Sichtbarkeit als trainerintern oder trainee-sichtbar. Sie ist keine Rechte- oder Freigabelogik und kein politisches Mapping.
 

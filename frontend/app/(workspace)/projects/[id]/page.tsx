@@ -9,6 +9,7 @@ import { ProjectNextActionGuidance } from "@/components/projects/project-next-ac
 import { ProjectPreparationOverview } from "@/components/projects/project-preparation-overview";
 import { ProjectPreparationReadiness } from "@/components/projects/project-preparation-readiness";
 import { ProjectStrategySnapshot } from "@/components/projects/project-strategy-snapshot";
+import { ProjectSupplierContextCard } from "@/components/projects/project-supplier-context-card";
 import { listCompanies } from "@/lib/api/companies";
 import { getNegotiationProject, updateNegotiationProject } from "@/lib/api/negotiation-projects";
 import { getRequestItem, listRequestItems } from "@/lib/api/request-items";
@@ -77,6 +78,8 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         <ProjectPreparationReadiness project={project} requestItem={requestItem} />
 
         <ProjectPreparationOverview project={project} requestItem={requestItem} ownerDisplayName={owner?.display_name} />
+
+        <ProjectSupplierContextCard supplier={supplier} />
 
         <ProjectStrategySnapshot project={project} requestItem={requestItem} />
       </div>

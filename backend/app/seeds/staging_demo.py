@@ -12,12 +12,14 @@ from app.db.session import SessionLocal
 from app.models.company import Company
 from app.models.negotiation_project import NegotiationProject
 from app.models.request_item import RequestItem
+from app.models.supplier_profile import SupplierProfile
 
 
 DEMO_TAG = "staging-demo-rheinwerk-robotics-v1"
 DEMO_COMPANY_ID = UUID("0bcb61e7-f15c-5d7d-8c52-c4f45b53d3a0")
 DEMO_REQUEST_ITEM_ID = UUID("7a7b65e3-94fa-5f59-9101-6f7ad8f33e5d")
 DEMO_PROJECT_ID = UUID("01d9d55b-87c3-5a5a-876a-b55a3ce2db33")
+DEMO_SUPPLIER_PROFILE_ID = UUID("d5470daa-5772-4c10-bd77-b7aaef3f4a1d")
 
 
 def _merge_metadata(current: dict[str, Any] | None) -> dict[str, Any]:
@@ -100,6 +102,71 @@ def _upsert_request_item(session: Session) -> RequestItem:
     return request_item
 
 
+def _upsert_supplier_profile(session: Session) -> SupplierProfile:
+    supplier = session.get(SupplierProfile, DEMO_SUPPLIER_PROFILE_ID)
+    if supplier is None:
+        supplier = SupplierProfile(id=DEMO_SUPPLIER_PROFILE_ID)
+        session.add(supplier)
+
+    supplier.company_id = DEMO_COMPANY_ID
+    supplier.name = "Aurum Motion Systems K.K."
+    supplier.country = "Japan"
+    supplier.region = "Kansai"
+    supplier.industry = "Precision motion control and automation components"
+    supplier.supplier_type = "strategic_component_supplier"
+    supplier.power_level = "medium"
+    supplier.risk_level = "medium"
+    supplier.website = "https://example.invalid/aurum-motion-systems"
+    supplier.contact_name = "Demo Procurement Contact"
+    supplier.contact_email = "demo-procurement@example.invalid"
+    supplier.relationship_status = "Bestehender Serienlieferant mit laufender Kapazitaetsabstimmung"
+    supplier.cultural_context = (
+        "Demo-Kontext: strukturierte Vorbereitung, klare Spezifikationen und "
+        "verbindliche Eskalationswege sind in der Verhandlung besonders hilfreich."
+    )
+    supplier.notes = (
+        "Synthetischer Lieferant fuer Praezisions-Servoantriebe. Der Demo-Fall "
+        "zeigt Preis-, Liefertermin- und Ersatzteilrisiken ohne echte Kundendaten."
+    )
+    supplier.assumptions = {
+        **(supplier.assumptions or {}),
+        "demo_relationship": "Rheinwerk ist Referenzkunde fuer eine neue Automationszelle.",
+        "capacity_signal": "Lieferant signalisiert begrenzte Produktionsfenster im dritten Quartal.",
+    }
+    supplier.interests_json = {
+        **(supplier.interests_json or {}),
+        "likely_supplier_interests": [
+            "stabile Forecasts",
+            "technisch klare Freigabeprozesse",
+            "preisliche Absicherung bei Materialschwankungen",
+        ],
+    }
+    supplier.likely_tactics_json = {
+        **(supplier.likely_tactics_json or {}),
+        "negotiation_signals": [
+            "Kapazitaet als Argument fuer fruehe Bestellung",
+            "Rabatt nur bei verbindlichem Abrufplan",
+        ],
+    }
+    supplier.constraints_json = {
+        **(supplier.constraints_json or {}),
+        "demo_constraints": [
+            "begrenzte Encoder-Verfuegbarkeit",
+            "Qualifizierung alternativer Lieferanten dauert laenger",
+        ],
+    }
+    supplier.is_ai_generated = False
+    supplier.confidence_level = "demo"
+    supplier.metadata_json = _merge_metadata(
+        {
+            **(supplier.metadata_json or {}),
+            "natural_key": "rheinwerk-robotics/suppliers/aurum-motion-systems",
+            "demo_flow": "supplier-context-card",
+        }
+    )
+    return supplier
+
+
 def _upsert_project(session: Session) -> NegotiationProject:
     project = session.get(NegotiationProject, DEMO_PROJECT_ID)
     if project is None:
@@ -108,6 +175,7 @@ def _upsert_project(session: Session) -> NegotiationProject:
 
     project.company_id = DEMO_COMPANY_ID
     project.request_item_id = DEMO_REQUEST_ITEM_ID
+    project.supplier_profile_id = DEMO_SUPPLIER_PROFILE_ID
     project.title = "Verhandlung: Praezisions-Servoantrieb RX-42"
     project.status = "draft"
     project.negotiation_type = "supplier_negotiation"
@@ -161,12 +229,14 @@ def _upsert_project(session: Session) -> NegotiationProject:
 def seed_staging_demo_data(session: Session) -> dict[str, str]:
     _upsert_company(session)
     _upsert_request_item(session)
+    _upsert_supplier_profile(session)
     _upsert_project(session)
     session.commit()
 
     return {
         "company_id": str(DEMO_COMPANY_ID),
         "request_item_id": str(DEMO_REQUEST_ITEM_ID),
+        "supplier_profile_id": str(DEMO_SUPPLIER_PROFILE_ID),
         "negotiation_project_id": str(DEMO_PROJECT_ID),
     }
 

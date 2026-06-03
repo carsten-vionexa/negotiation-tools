@@ -55,6 +55,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase D1.4: Das Frontend-Docker-Image baut Next.js reproduzierbar als `output: "standalone"`-Production-Image und startet in Staging den Standalone-Server statt eines Dev- oder Runtime-Build-Kommandos
 - Phase D1.5: Eine kleine Staging-Demo-Datenstrategie ist in `docs/deployment/staging-demo-data.md` dokumentiert; ein idempotenter Backend-Seed stellt Company, RequestItem und NegotiationProject fuer den Rheinwerk-Robotics-Demo-Flow bereit
 - Phase D3.2: Dokumentations-Guardrails fuer Roadmap- und Codex-Task-Pruefung sind im Issue-Template, in `docs/codex-tasks.md` und als nicht-blockierende PR-Warnung ergaenzt
+- Phase D3.4: Der Staging-Demo-Seed stellt ein synthetisches SupplierProfile fuer `Aurum Motion Systems K.K.` sicher und verknuepft das Rheinwerk-Robotics-Demo-Projekt damit, sodass die Supplier Context Card inklusive Profil-Link demonstrierbar ist
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
@@ -331,19 +332,19 @@ Umgesetzte D1-Schritte:
 
 ## 10. Phase D3: Supplier Context / Lieferantenkontext
 
-Status: D3.1 abgeschlossen, Staging-Smoke-Test noch offen.
+Status: D3.1 abgeschlossen, D3.4 Demo-Readiness umgesetzt.
 
 Ziel: Lieferantenkontext auf der Project-Detailseite und spaeter in Analyse, Strategie, Kulturbriefing und Simulation verhandlungsnah nutzbar machen, ohne automatisch zu bewerten oder neue Datenmodelle vorzuziehen.
 
 Umgesetzte D3-Schritte:
 
 1. D3.1 abgeschlossen: `/projects/[id]` zeigt eine kompakte Supplier Context Card aus dem verknuepften `SupplierProfile`, inklusive Empty State ohne SupplierProfile und Link zum vollstaendigen Profil.
+2. D3.4 umgesetzt: Der Staging-Demo-Seed erzeugt idempotent ein synthetisches Demo-SupplierProfile fuer `Aurum Motion Systems K.K.` und verknuepft das bestehende Rheinwerk-Robotics-Demo-Projekt ueber `supplier_profile_id`, ohne Migration, neue API oder Frontend-Aenderung.
 
 Naechste sinnvolle D3-Follow-ups:
 
-1. D3.2: Staging Update and Smoke Test for Supplier Context Card.
-2. D3.3: Supplier Context Readiness / Missing Information Hints.
-3. Spaeter: Supplier Context in Analyse, Strategie, Kulturbriefing und Simulation gezielt wiederverwenden.
+1. Supplier Context in Analyse, Strategie, Kulturbriefing und Simulation gezielt wiederverwenden.
+2. Optional weitere Demo-Daten fuer Knowledge- oder Simulationskontext ergaenzen, sobald ein eigener Testfall dafuer definiert ist.
 
 Bewusste Grenzen von D3.1:
 
@@ -356,6 +357,15 @@ Bewusste Grenzen von D3.1:
 - Keine KI-Generierung.
 - Keine RAG-/Knowledge-Auswertung.
 - Keine Import-/PDF-Themen.
+
+Bewusste Grenzen von D3.4:
+
+- Keine neue Produktfunktion.
+- Keine Migration.
+- Keine neuen API-Endpunkte.
+- Keine Frontend-Aenderung.
+- Keine echten Kundendaten.
+- Keine automatische Lieferantenanalyse, kein Supplier Scoring und keine KI- oder RAG-Funktion.
 
 ## 11. Phase D4: Analyse und Strategieunterstuetzung
 

@@ -7,10 +7,10 @@ Demo-Datensatz vorfuehrbar bleiben. Der Datensatz ist synthetisch, gehoert nicht
 echten Kunden- oder Produktivdaten und stuetzt den aktuell getesteten Flow:
 
 ```text
-RequestItem -> NegotiationProject -> Project-Detailseite
+RequestItem -> NegotiationProject -> Project-Detailseite -> Supplier Context Card
 ```
 
-## Minimaler Demo-Scope fuer D1.5
+## Minimaler Demo-Scope fuer D1.5 und D3.4
 
 Der D1.5-MVP-Datensatz orientiert sich am Rheinwerk-Robotics-Trainingskontext und
 enthaelt:
@@ -19,11 +19,15 @@ enthaelt:
 - ein Demo-RequestItem: strategische Beschaffung von Praezisions-Servoantrieben
 - ein damit verknuepftes Demo-NegotiationProject
 
+D3.4 ergaenzt denselben reproduzierbaren Datensatz um:
+
+- ein Demo-SupplierProfile: `Aurum Motion Systems K.K.`
+- eine direkte Verknuepfung des Demo-NegotiationProject mit diesem SupplierProfile
+
 Bewusst noch nicht enthalten sind:
 
 - UserProfile/Trainee
 - ProcurementHistoryItems
-- SupplierProfile
 - KnowledgeDocuments, DocumentChunks oder KnowledgeClaims
 - Strategien, BATNA-/ZOPA-/Concession-Detailobjekte
 - Simulationsszenarien oder Trainerkommentare
@@ -42,6 +46,7 @@ Aktuelle D1.5-IDs:
 | --- | --- |
 | Company | `0bcb61e7-f15c-5d7d-8c52-c4f45b53d3a0` |
 | RequestItem | `7a7b65e3-94fa-5f59-9101-6f7ad8f33e5d` |
+| SupplierProfile | `d5470daa-5772-4c10-bd77-b7aaef3f4a1d` |
 | NegotiationProject | `01d9d55b-87c3-5a5a-876a-b55a3ce2db33` |
 
 Demo-Marker:
@@ -62,8 +67,9 @@ Referenzen und werden vom Seed nicht weiterverwendet:
 Der Seed ist ein idempotenter Ensure-Mechanismus:
 
 - vorhandene Demo-Datensaetze mit den festen IDs werden auf den dokumentierten
-  D1.5-Demostand aktualisiert
+  Demo-Stand aktualisiert
 - fehlende Demo-Datensaetze werden angelegt
+- das Demo-NegotiationProject wird mit dem Demo-SupplierProfile verknuepft
 - der Seed loescht nichts
 - der Seed setzt keine Datenbank zurueck
 - der Seed greift nicht in Auth, Caddy, Authelia oder Docker-Gateway ein
@@ -97,11 +103,15 @@ Kleine Text-, Preis- oder Kontextanpassungen am Demo-Datensatz erfolgen im Seed-
 `backend/app/seeds/staging_demo.py` und werden danach erneut mit demselben Befehl
 eingespielt. Damit bleibt der Staging-Datensatz reproduzierbar und reviewbar.
 
+D3.4 dient ausschliesslich der Demo-Readiness fuer die bereits vorhandene Supplier
+Context Card. Der Seed nutzt nur bestehende SupplierProfile- und
+NegotiationProject-Felder, erzeugt keine Migration und fuehrt keine neue
+Produktfunktion ein.
+
 Wenn spaeter groessere Demo-Szenarien noetig werden, sollte ein Folge-Issue die
 Erweiterung auf optionale Demo-Objekte definieren, insbesondere:
 
 - UserProfile/Trainee fuer Trainer- oder Teilnehmerkontext
-- SupplierProfile fuer strukturierte Lieferantenauswahl
 - ProcurementHistoryItems fuer Import- und Historienbezug
 - KnowledgeDocuments fuer Analyse- und Strategievorbereitung
 - Simulationsszenarien fuer Trainerreview

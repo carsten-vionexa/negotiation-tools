@@ -87,6 +87,7 @@
 - Frontend-Hardening Issue #73 umgesetzt: Gemeinsamen `FormData`-Helper fuer getrimmte optionale Werte und explizite Pflichtfeldfehler eingefuehrt sowie die bestehenden Frontend-Server-Actions darauf umgestellt, ohne Backend-, Import- oder Migrationslogik
 - Phase D0 umgesetzt: Hostinger-VPS-Staging-Vorbereitung mit `docker-compose.staging.yml`, `.env.staging.example`, `.gitignore`-Schutz fuer echte Staging-/Production-Env-Dateien und `docs/staging-deployment-prep.md` dokumentiert, ohne echtes Deployment, Serverzugriff, Produktlogik oder Secrets
 - Phase D3.2 umgesetzt: Dokumentations-Guardrails ergaenzt mit Feature-/Task-Issue-Template, Documentation-/Roadmap-Checkliste, Definition-of-Done-Regel und nicht-blockierendem PR-Warning, ohne Produktlogik
+- Phase D3.4 umgesetzt: Staging-Demo-Seed um ein synthetisches SupplierProfile fuer `Aurum Motion Systems K.K.` erweitert und das Rheinwerk-Robotics-Demo-Projekt idempotent ueber `supplier_profile_id` damit verknuepft, ohne Migration, Backend-API-, Frontend- oder Produktfunktionsaenderung
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -191,6 +192,23 @@ Umgesetzte D0-Punkte:
 5. `docs/staging-deployment-prep.md` mit Staging-Strategie, Env-Variablen, Frontend-/Backend-URL-Konfiguration, Caddy-Empfehlung, persistenten Volumes, Backup-Grundidee und D1-Schritten erstellt.
 
 D1 mit echtem Server soll anschliessend Hostinger VPS, Docker, echte `.env.staging`, Compose-Start, Migrationen, Caddy/HTTPS, optional Basic Auth und Backup-/Restore-Test umsetzen.
+
+## Phase D3: Supplier Context / Lieferantenkontext
+
+Status: D3.1 umgesetzt, D3.4 Demo-Readiness umgesetzt.
+
+Umgesetzte Schritte:
+
+1. D3.1: Die Project-Detailseite zeigt bei verknuepftem `SupplierProfile` eine kompakte Supplier Context Card mit vorhandenen Stammdaten, Beziehungshinweisen, Verhandlungssignalen, kulturellem Kontext und Link zum vollstaendigen Profil; ohne SupplierProfile bleibt ein ruhiger Empty State sichtbar.
+2. D3.4: Der Staging-Demo-Seed stellt idempotent ein synthetisches SupplierProfile fuer `Aurum Motion Systems K.K.` bereit und verknuepft das bestehende Rheinwerk-Robotics-Demo-Projekt mit diesem Profil. Dadurch ist der Nicht-Empty-State der Supplier Context Card auf Staging demonstrierbar.
+
+Bewusste Grenzen von D3.4:
+
+- keine Migration
+- keine neuen API-Endpunkte
+- keine Frontend-Aenderung
+- keine echte Kunden- oder Lieferantendaten
+- keine automatische Lieferantenanalyse, kein Supplier Scoring, keine KI-Integration und kein RAG
 
 Vorgemerkte Folgehinweise aus C15 bis C17:
 

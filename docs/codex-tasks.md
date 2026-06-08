@@ -109,6 +109,7 @@
 - Phase D6.2 umgesetzt: Lokaler Browser-Smoke-Test fuer D6.1 mit laufendem Backend, Frontend und DB bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert; Project Detail, `/strategy?projectId=...`, `/strategy`, Pflichtfeldverhalten, Placeholder, Hilfetexte, Save-Verhalten, Rueckweg und Mobile-Spotcheck wurden geprueft, ohne Produktcode, Backend, Migration, neue UI-Funktionalitaet, KI, Scoring oder RAG zu aendern
 - Phase D6.3 umgesetzt: Hostinger-Staging auf `59e293d` aktualisiert und D6.1/D6.2-Strategy-Field-Guidance browserseitig auf Staging bestanden dokumentiert, ohne Produktcode-, Backend-, Migrations-, Seed-, KI-, Scoring- oder RAG-Aenderung
 - Phase D7.1 umgesetzt: Strategy-Seite zeigt eine regelbasierte Completion-/Readiness-Guidance fuer Strategy Objectives, ZOPA, BATNA, WAP, Konzessionen und Argumente mit verbalem Status und fachlichen Warnhinweisen, ohne Score, KI, Backend, Migration, neue Persistenz oder Staging-Deployment
+- Phase D7.2 umgesetzt: Lokaler Browser-Smoke-Test fuer die D7.1-Strategy-Readiness-Guidance bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert; `/strategy`, `/strategy?projectId=...`, drei Readiness-Zustaende, fachliche Warnhinweise, vorhandene Anker, fehlende Bausteine, Mobile-Spotcheck und Console-Check wurden geprueft, ohne Produktcode, Backend, Migration, Seed-Datei, KI, Scoring, Simulation oder RAG zu aendern
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -484,6 +485,20 @@ Vorgemerkte Folgehinweise aus C15 bis C17:
 - Browser-Smoke-Test auf `https://negotiation.tools.hawkins-consulting.de` mit authentifizierter Session ausfuehren: Project Detail, Strategy-Einstieg, `/strategy?projectId=...`, `/strategy`, Strategy Objectives, ZOPA, BATNA, WAP, Konzessionen, Argumente, Pflichtfeldverhalten der ZOPA-Dimension, Hilfetexte/Placeholder, Save-Verhalten soweit ohne Datenverfaelschung sinnvoll, Rueckweg und kleine Breite.
 - Keine Seed-Aenderung ausfuehren, keine Migration anwenden, sofern Alembic keine echte Abweichung zeigt.
 - Sicherstellen, dass D6.3 keine Produktcodeaenderung, keine Backend-Aenderung, keine Migration, keine Seed-Aenderung und keine KI-, Scoring- oder RAG-Logik einfuehrt.
+
+## Manuelle Pruefhilfe D7.2
+
+- Lokal vor Beginn `README.md`, `docs/skills/negotiation-tools-dev-workflow/SKILL.md`, offene Issues/PRs, `docs/roadmap.md` und `docs/codex-tasks.md` pruefen.
+- `git status --short --branch` und `git log --oneline -5` pruefen und sicherstellen, dass D7.1 committed ist.
+- Lokalen Stack mit DB, Backend und Frontend starten oder bestehenden laufenden Stack pruefen; Backend-Healthcheck und Frontend-Erreichbarkeit dokumentieren.
+- `/strategy` ohne `projectId` oeffnen und pruefen, dass die allgemeine Projektauswahl sichtbar ist und keine projektbezogene Readiness-Box erscheint.
+- `/strategy?projectId=<demo-project-id>` fuer mindestens drei lokale Testzustaende pruefen: leer/stark unvollstaendig, teilweise gefuellt und vollstaendig gefuellt.
+- Erwartete Status pruefen: `Unvollstaendig`, `Grundlage vorhanden` und `Bereit fuer Briefing / Simulation`.
+- Vorhandene Anker, fehlende Bausteine, positive Hinweise und fachliche Warnhinweise pruefen.
+- Fachlich insbesondere ZOPA als Einigungskorridor, BATNA als externe Alternative, WAP als Walk-away-Grenze und Konzessionen als Tauschlogik abgrenzen.
+- Mobile Breite und Browser-Console pruefen.
+- Ergebnis in `docs/browser-smoke-test-plan.md`, `docs/codex-tasks.md` und bei Bedarf `docs/roadmap.md` dokumentieren.
+- Sicherstellen, dass D7.2 keine Produktlogik, keine UI-Funktionalitaet, keine Backend-Aenderung, keine Migration, keine Seed-Datei und keine KI-, Scoring-, Simulations- oder RAG-Logik einfuehrt.
 
 ## Manuelle Pruefhilfe Phase B7
 

@@ -842,3 +842,57 @@ Gesamtergebnis: bestanden ohne Blocker. Die Pruefung nutzte den bereits laufende
 | Desktop-Layout | bestanden | Kein horizontaler Overflow bei normalem Browser-Viewport |
 | Mobile Spotcheck | bestanden | Bei `390px` Breite bleibt `Completion / Readiness` sichtbar; kein horizontaler Overflow |
 | Browser-Console | bestanden | Keine Console-Errors beobachtet |
+
+## 17. D7.2 Lokaler Browser-Smoke-Test fuer Strategy Readiness Guidance
+
+Durchgefuehrt am 2026-06-08 lokal gegen `http://localhost:3000` mit laufendem Docker-Stack:
+
+- DB: `negotiation-tools-db`, healthy, Host-Port `5433`
+- Backend: `negotiation-tools-backend`, Port `8000`, `/api/health` mit `200 OK`
+- Frontend: `negotiation-tools-frontend`, Port `3000`, `/strategy` mit `200 OK`
+
+Gepruefter Repository-Stand:
+
+- Branch: `main`
+- Working Tree vor Beginn: sauber
+- HEAD: `26d7414 Add strategy readiness guidance`
+- D7.1 ist damit committed.
+- Offene Issues vor Beginn: `#144`, `#113`, `#55`
+- Offene PRs vor Beginn: keine
+
+Gesamtergebnis: bestanden ohne Blocker. Fuer die drei Readiness-Zustaende wurden klar markierte lokale Smoke-Testdatensaetze in der laufenden Entwicklungsdatenbank angelegt. Es wurden keine Produktdateien, keine Backendlogik, keine Migrationen, keine Seed-Dateien, keine KI-, Scoring-, Simulations- oder RAG-Logik geaendert.
+
+### 17.1 Testdaten
+
+| Zustand | Project ID | Erwarteter Status |
+|---|---|---|
+| leer / stark unvollstaendig | `b4298d16-3212-4d97-8fc6-a245dc94fc2f` | `Unvollstaendig` |
+| teilweise gefuellt | `7edc2c1b-2c07-4613-b4bb-1c38f085c3c0` | `Grundlage vorhanden` |
+| vollstaendig gefuellt | `daaf8090-10d3-4f54-987e-51d1df4e5d2b` | `Bereit fuer Briefing / Simulation` |
+
+### 17.2 Browser-Ergebnis
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| `/strategy` ohne `projectId` | bestanden | Allgemeine Projektauswahl sichtbar; keine projektbezogene `Completion / Readiness`-Box sichtbar |
+| Einstieg aus `/strategy` | bestanden | Sichtbarer Klick auf `D7.2 Smoke Partial Readiness 2026-06-08` fuehrte zu `/strategy?projectId=7edc2c1b-2c07-4613-b4bb-1c38f085c3c0` |
+| Leerer Zustand | bestanden | Status `Unvollstaendig`; alle Kernbausteine als offen sichtbar |
+| Teilzustand | bestanden | Status `Grundlage vorhanden`; Strategy Objectives, ZOPA und Konzessionen als vorhandene Anker sichtbar; BATNA, WAP und Argumente als Luecken sichtbar |
+| Vollstaendiger Zustand | bestanden | Status `Bereit fuer Briefing / Simulation`; Strategy Objectives, ZOPA, BATNA, WAP, Konzessionen und Argumente jeweils als vorhanden sichtbar |
+| Vorhandene Anker | bestanden | Positive Hinweise zeigen Zielrichtung, Einigungskorridor, externe Alternative, Walk-away-Grenze, Tauschlogik und Gespraechslogik, sofern vorhanden |
+| Fehlende Bausteine | bestanden | `Gezielt ergaenzen` zeigt die jeweils offenen Bausteine nachvollziehbar |
+| Fachliche Warnhinweise | bestanden | Teilzustand zeigt `ZOPA ist vorhanden, aber keine BATNA dokumentiert`, `WAP fehlt` und `Argumente fehlen` |
+| ZOPA-Abgrenzung | bestanden | ZOPA wird als moeglicher Einigungskorridor beziehungsweise Ueberschneidung der Grenzen beschrieben |
+| BATNA-Abgrenzung | bestanden | BATNA wird als externe Alternative ausserhalb dieser Verhandlung beschrieben |
+| WAP-Abgrenzung | bestanden | WAP wird als Walk-away-Grenze beziehungsweise minimale akzeptable Grenze beschrieben |
+| Konzessionslogik | bestanden | Konzessionen werden als Tauschlogik und Gegenleistungen beschrieben, nicht als einseitiges Nachgeben |
+| Desktop-Layout | bestanden | Kein horizontaler Overflow bei normalem Browser-Viewport |
+| Mobile Spotcheck | bestanden | Bei `390px` Browserbreite / effektiv `375px` Dokumentbreite ist die Readiness-Box sichtbar; kein horizontaler Overflow |
+| Browser-Console | bestanden | Keine relevanten Console-Errors oder Warnings beobachtet |
+| Framework-Overlay | bestanden | Kein Next.js-/Framework-Error-Overlay sichtbar |
+
+### 17.3 Offene Punkte
+
+- Keine Blocker gefunden.
+- Die lokalen D7.2-Smoke-Datensaetze bleiben in der Entwicklungsdatenbank als nachvollziehbare Testdaten stehen.
+- Staging-Deployment war ausdruecklich ausserhalb des Scopes.

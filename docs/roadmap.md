@@ -76,6 +76,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase D6.2: Lokaler Browser-Smoke-Test fuer die D6.1-Strategy-Field-Guidance mit laufendem Backend, Frontend und DB bestanden dokumentiert
 - Phase D6.3: Hostinger-Staging auf `59e293d` aktualisiert und D6.1/D6.2-Strategy-Field-Guidance browserseitig auf Staging bestanden dokumentiert
 - Phase D7.1: Die Strategy-Seite zeigt eine regelbasierte Completion-/Readiness-Guidance fuer Strategy Objectives, ZOPA, BATNA, WAP, Konzessionen und Argumente, ohne Score, KI, Backend, Migration oder neue Persistenz
+- Phase D7.2: Lokaler Browser-Smoke-Test fuer die D7.1-Strategy-Readiness-Guidance mit drei Fuellstaenden, `/strategy`, `/strategy?projectId=...`, Mobile-Spotcheck und Console-Check bestanden dokumentiert
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
@@ -397,7 +398,7 @@ Offene Nicht-Blocker:
 
 ## 11. Phase D4: Project Preparation / Preparation Gaps
 
-Status: D4.1 bis D4.3 umgesetzt; D4.4 dokumentiert den aktuellen Zwischenstand und den manuellen Smoke-Test. D5.1 bis D5.4 sind umgesetzt; D5.5 dokumentiert den bestandenen lokalen Strategy-Guidance-Smoke-Test, D5.6 den bestandenen Staging-Update- und Smoke-Test. D6.1 schaerft die manuelle Strategy-Erfassung mit kleinen UI-/Text-/Validation-Verbesserungen. D6.2 bestaetigt diese Feldfuehrung lokal browserseitig mit laufendem Backend, Frontend und DB. D7.1 ergaenzt eine regelbasierte Strategy-Completion-/Readiness-Guidance.
+Status: D4.1 bis D4.3 umgesetzt; D4.4 dokumentiert den aktuellen Zwischenstand und den manuellen Smoke-Test. D5.1 bis D5.4 sind umgesetzt; D5.5 dokumentiert den bestandenen lokalen Strategy-Guidance-Smoke-Test, D5.6 den bestandenen Staging-Update- und Smoke-Test. D6.1 schaerft die manuelle Strategy-Erfassung mit kleinen UI-/Text-/Validation-Verbesserungen. D6.2 bestaetigt diese Feldfuehrung lokal browserseitig mit laufendem Backend, Frontend und DB. D7.1 ergaenzt eine regelbasierte Strategy-Completion-/Readiness-Guidance. D7.2 bestaetigt diese Guidance lokal browserseitig mit drei Fuellstaenden.
 
 Ziel: Project-Detail-/Preparation-UX ausbauen, ohne automatische Bewertung oder neue Datenmodelle vorzuziehen.
 
@@ -417,6 +418,7 @@ Umgesetzte Schritte:
 12. D6.2: Lokalen Browser-Smoke-Test fuer die D6.1-Strategy-Field-Guidance mit laufendem Backend, Frontend und DB dokumentiert.
 13. D6.3: Hostinger-Staging auf aktuellen `origin/main`-Stand gebracht und die D6.1/D6.2-Strategy-Field-Guidance dort browserseitig geprueft.
 14. D7.1: Strategy-Completion-/Readiness-Guidance fuer zentrale Strategiebausteine ergaenzt.
+15. D7.2: Lokalen Browser-Smoke-Test fuer Strategy Readiness Guidance mit drei Fuellstaenden dokumentiert.
 
 D4.1 macht Vorbereitungsluecken ausschliesslich aus vorhandenen Objekten und bestehenden API-Listen sichtbar: Bedarfskontext, SupplierProfile, Supplier Context, Strategy, Strategiebausteine aus ZOPA/BATNA/Argumentation/Konzession, SimulationScenario und Trainerreview. Die Card bleibt eine ruhige Vorhanden-/Offen-/Spaeter-Sicht mit kurzem naechstem Schritt und fuehrt keine KI-Integration, kein Supplier Scoring, kein RAG, keine automatische Lieferantenanalyse und keine neue Datenstruktur ein.
 
@@ -446,7 +448,9 @@ D6.3 aktualisiert Hostinger-Staging in `/opt/negotiation-tools` per Fast-Forward
 
 D7.1 ergaenzt auf `/strategy?projectId=...` bei vorhandener Strategie eine kleine Completion-/Readiness-Box. Die Box prueft transparent aus vorhandenen Strategy-Feldern und bestehenden ZOPA-, BATNA-, Concession- und Argumentation-Listen, ob Strategy Objectives, ZOPA, BATNA, WAP / Walk-away Point, Konzessionen und Argumente vorhanden sind. Der Status bleibt verbal (`Unvollstaendig`, `Grundlage vorhanden`, `Bereit fuer Briefing / Simulation`) und ist kein numerischer Score. Fachliche Warnhinweise unterscheiden ZOPA, BATNA und WAP, markieren fehlende Walk-away-Grenzen, fehlende Tauschlogik bei Konzessionen und fehlende Gespraechsfuehrung bei Argumenten. D7.1 fuehrt keine KI, keine Simulation, keine neue Persistenz, keine Backend-Aenderung, keine Migration und kein Staging-Deployment ein. `/strategy` ohne `projectId` bleibt die allgemeine Projektauswahl.
 
-Offene Nicht-Blocker nach D7.1:
+D7.2 bestaetigt diese Guidance lokal im Browser mit drei klar markierten Entwicklungsdaten-Zustaenden: leer/stark unvollstaendig, teilweise gefuellt und vollstaendig gefuellt. Geprueft wurden `/strategy` ohne Projektkontext, `/strategy?projectId=...`, die erwarteten Statuswerte, vorhandene Anker, fehlende Bausteine, fachliche Warnhinweise, Mobile-Breite und Browser-Console. Das Ergebnis steht in `docs/browser-smoke-test-plan.md`. D7.2 aendert keine Produktlogik, keine UI-Funktionalitaet, keine Backendlogik, keine Migration, keine Seed-Datei und fuehrt keine KI-, Scoring-, Simulations- oder RAG-Logik ein.
+
+Offene Nicht-Blocker nach D7.2:
 
 - Issue #55: PDF-/Upload-/Parsing-Folgearbeit bleibt offen und blockiert den D4-Preparation-UX-Zwischenstand nicht.
 - Issue #113: Next/PostCSS-audit-Finding bleibt zur Beobachtung offen und blockiert den D5-Strategy-Guidance-Zwischenstand nicht.

@@ -67,6 +67,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase D4.3: Der bestehende Strategy-Einstieg mit `projectId` zeigt bei Projekten ohne Strategie einen ruhigen Empty State und fuehrt zur manuellen Strategieanlage, ohne automatische Strategieerzeugung
 - Phase D4.4: D4.1 bis D4.3 sind als D4-Preparation-UX-Zwischenstand inklusive kompaktem Smoke-Test-Plan dokumentiert
 - Phase D5.1: Nach manueller Strategieanlage aus `/strategy?projectId=...` zeigt der bestehende Strategy-Flow eine Success Guidance mit Rueckweg zum Projekt und ordnet ZOPA, BATNA, Argumente und Konzessionen als nachgelagerte Schritte ein
+- Phase D5.2: Bei vorhandener Strategie zeigt der bestehende Strategy-Flow eine kompakte Building-Blocks-Guidance fuer ZOPA, BATNA, Argumente und Konzessionen mit Status aus vorhandenen Bausteinen, ohne automatische Erzeugung
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar

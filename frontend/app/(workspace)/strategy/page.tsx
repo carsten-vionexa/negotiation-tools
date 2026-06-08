@@ -149,6 +149,12 @@ export default async function StrategyPage({ searchParams }: { searchParams: Pro
       ) : (
         <>
           {showCreatedGuidance ? <StrategyCreatedGuidance projectId={project.id} /> : null}
+          <StrategyBuildingBlocksGuidance
+            zopaItems={zopaItems}
+            batnaOptions={batnaOptions}
+            argumentationLines={argumentationLines}
+            concessionItems={concessionItems}
+          />
           <StrategyHeadSection strategy={strategy} projectId={project.id} />
           <ZopaSection strategyId={strategy.id} projectId={project.id} items={zopaItems} />
           <BatnaSection strategyId={strategy.id} projectId={project.id} items={batnaOptions} />
@@ -201,6 +207,47 @@ async function ProjectSelection() {
         </section>
       )}
     </>
+  );
+}
+
+function StrategyBuildingBlocksGuidance({
+  zopaItems,
+  batnaOptions,
+  argumentationLines,
+  concessionItems,
+}: {
+  zopaItems: ZopaItemRead[];
+  batnaOptions: BatnaOptionRead[];
+  argumentationLines: ArgumentationLineRead[];
+  concessionItems: ConcessionItemRead[];
+}) {
+  const blocks = [
+    { label: "ZOPA", count: zopaItems.length, hint: "Einigungskorridore klaeren." },
+    { label: "BATNA", count: batnaOptions.length, hint: "Alternativen beschreiben." },
+    { label: "Argumente", count: argumentationLines.length, hint: "Claims und Belege sammeln." },
+    { label: "Konzessionen", count: concessionItems.length, hint: "Tauschobjekte vorbereiten." },
+  ];
+
+  return (
+    <section className="rounded-md border border-border bg-card p-5">
+      <SectionTitle icon={<CheckCircle2 className="size-4" />} title="Strategiebausteine vorbereiten" />
+      <p className="mt-3 text-sm leading-6 text-muted-foreground">
+        Der Strategie-Kopf ist vorhanden. ZOPA, BATNA, Argumente und Konzessionen sind die naechsten Vorbereitungselemente.
+      </p>
+      <p className="mt-2 text-sm leading-6 text-muted-foreground">
+        Fehlende Bausteine sind normale naechste Arbeitsschritte. Diese Seite erzeugt nichts automatisch.
+      </p>
+      <dl className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {blocks.map((block) => (
+          <div key={block.label} className="rounded-md border border-border p-3">
+            <dt className="text-sm font-semibold">{block.label}</dt>
+            <dd className="mt-1 text-sm leading-6 text-muted-foreground">
+              {block.count > 0 ? `${block.count} vorhanden` : "Noch offen"} - {block.hint}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </section>
   );
 }
 

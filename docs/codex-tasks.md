@@ -100,6 +100,7 @@
 - Phase D4.3 umgesetzt: Der bestehende Strategy-Einstieg `/strategy?projectId=...` zeigt fuer Projekte ohne Strategie einen klareren projektbezogenen Empty State, nutzt weiter den vorhandenen Strategie-Anlage-Workflow und stellt ZOPA, BATNA, Argumente und Konzessionen als nachgelagerte Schritte dar, ohne automatische Strategieerzeugung, Backend, Migration, neue Route oder Datenmodell-Aenderung
 - Phase D4.4 umgesetzt: D4.1 bis D4.3 als aktueller D4-Preparation-UX-Zwischenstand dokumentiert und kompakten Smoke-Test-Plan fuer Project Detail -> Preparation Gaps Card -> Strategie vorbereiten -> Strategy Empty State -> Strategie manuell anlegen ergaenzt, ohne Produkt-, Frontend-, Backend-, Migrations-, Seed-, Env- oder Staging-Aenderung
 - Phase D5.1 umgesetzt: Nach manueller Strategieanlage aus `/strategy?projectId=...` zeigt der bestehende Strategy-Flow eine Success Guidance mit Rueckweg zu `/projects/<projectId>` und ordnet ZOPA, BATNA, Argumente und Konzessionen als nachgelagerte Schritte ein, ohne neue Route, Backend, Migration, KI, Scoring oder automatische Strategieerzeugung
+- Phase D5.2 umgesetzt: Bei vorhandener Strategie zeigt `/strategy?projectId=...` eine kompakte Building-Blocks-Guidance fuer ZOPA, BATNA, Argumente und Konzessionen mit Status aus vorhandenen Bausteinen, ohne automatische Baustein-Erzeugung, Backend, Migration, KI, Scoring, RAG, neue Route oder Datenmodell-Aenderung
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -276,6 +277,13 @@ Phase D5.1:
 - ZOPA, BATNA, Argumente und Konzessionen werden als nachgelagerte naechste Schritte eingeordnet.
 - `/strategy` ohne `projectId` bleibt die allgemeine Projektauswahl.
 - D5.1 erzeugt keine Strategie automatisch, baut keine neue Route und fuehrt keine Backend-, Migrations-, KI-, Scoring-, RAG- oder Datenmodell-Aenderung ein.
+
+Phase D5.2:
+
+- D5.2 verbessert gezielt die Orientierung bei vorhandener Strategie im bestehenden Strategy-Flow.
+- Die Seite zeigt eine kompakte Building-Blocks-Guidance fuer ZOPA, BATNA, Argumente und Konzessionen.
+- Bereits vorhandene Bausteine werden aus den geladenen Listen als vorhanden angezeigt; leere Kategorien bleiben normale naechste Arbeitsschritte.
+- D5.2 erzeugt keine Bausteine automatisch, baut keine neue Route und fuehrt keine Backend-, Migrations-, KI-, Scoring-, RAG- oder Datenmodell-Aenderung ein.
 
 Vorgemerkte Folgehinweise aus C15 bis C17:
 

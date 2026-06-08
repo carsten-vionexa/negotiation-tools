@@ -106,6 +106,7 @@
 - Phase D5.5 umgesetzt: Lokaler Browser-Smoke-Test fuer den D5.1-D5.4-Strategy-Guidance-Flow bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert, ohne Produkt-, UI-Logik-, Backend-, Migrations-, Seed-, KI-, Scoring- oder RAG-Aenderung
 - Phase D5.6 umgesetzt: Hostinger-Staging per Fast-Forward auf `46b045f` aktualisiert, Staging-Stack neu gebaut/gestartet und D5-Strategy-Guidance-Flow browserseitig bestanden dokumentiert, ohne Produktcode-, Backend-, Migrations-, Seed-, KI-, Scoring- oder RAG-Aenderung
 - Phase D6.1 umgesetzt: Strategy-Formularfelder, Pflichtfeldsignale, Placeholder und Hilfetexte fuer Strategy Objectives, ZOPA, BATNA, WAP, Konzessionen und Argumente fachlich geschaerft; ZOPA-Dimension wird nun als minimaler Pflichtanker validiert, ohne Backend, Migration, neue Datenstruktur, KI, Scoring, RAG oder automatische Strategieerzeugung
+- Phase D6.2 umgesetzt: Lokaler Browser-Smoke-Test fuer D6.1 mit laufendem Backend, Frontend und DB bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert; Project Detail, `/strategy?projectId=...`, `/strategy`, Pflichtfeldverhalten, Placeholder, Hilfetexte, Save-Verhalten, Rueckweg und Mobile-Spotcheck wurden geprueft, ohne Produktcode, Backend, Migration, neue UI-Funktionalitaet, KI, Scoring oder RAG zu aendern
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -430,6 +431,19 @@ Vorgemerkte Folgehinweise aus C15 bis C17:
 - Konzession pruefen: Hilfetexte sollen Tauschlogik zeigen (`Wir geben` nur gegen Gegenleistung), nicht einseitiges Nachgeben.
 - Argumentationslinie pruefen: Hilfetext/Placeholder sollen fakten-, TCO-, risiko-, qualitaets- oder beziehungsbezogene Argumente mit Belegen nahelegen.
 - Sicherstellen, dass keine neue Strategie, keine Bausteine und keine Bewertungen automatisch erzeugt werden und dass D5-Guidance sichtbar bleibt.
+
+## Manuelle Pruefhilfe D6.2
+
+- Lokalen Stack mit DB, Backend und Frontend starten und Healthchecks dokumentieren.
+- Demo-Projekt `01d9d55b-87c3-5a5a-876a-b55a3ce2db33` sicherstellen und `/projects/01d9d55b-87c3-5a5a-876a-b55a3ce2db33` oeffnen.
+- Project Detail, Preparation Gaps Card und Strategy-Einstieg pruefen.
+- `/strategy?projectId=01d9d55b-87c3-5a5a-876a-b55a3ce2db33` oeffnen und Projektkontext, Strategy-Kopf, D5-Guidance, WAP-Abgrenzung und Rueckweg zum Projekt pruefen.
+- Strategy-Kopf speichern und pruefen, ob Strategy Objectives, Zielergebnis, Minimum, WAP, ZOPA, BATNA, Konzessionsstrategie und Argumentationssummary erhalten bleiben.
+- ZOPA-Dimension ohne Dimension absenden und Pflichtfeldverhalten pruefen; anschliessend mit Dimension speichern.
+- BATNA, Konzession und Argumentationslinie mit fachlich passenden Smoke-Werten speichern.
+- `/strategy` ohne `projectId` pruefen: allgemeine Projektauswahl sichtbar, keine projektbezogene Guidance faelschlich sichtbar.
+- Mobile Spotcheck fuer Project Detail und Strategy mit Projektkontext durchfuehren.
+- Sicherstellen, dass D6.2 keine Produktlogik, keine neue UI-Funktionalitaet, keine Backend-Aenderung, keine Migration, keine Seed-Aenderung ausser idempotenter lokaler Demo-Datensatz-Sicherstellung und keine KI-, Scoring- oder RAG-Logik einfuehrt.
 
 ## Manuelle Pruefhilfe Phase B7
 

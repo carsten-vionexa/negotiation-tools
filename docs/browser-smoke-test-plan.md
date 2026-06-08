@@ -654,3 +654,75 @@ Gepruefte Breite: kleine Browserbreite mit effektiv `360px` Dokumentbreite.
 
 - Keine Blocker gefunden.
 - Nicht-Blocker: Staging hatte vor D5.6 noch keine Strategie fuer das Demo-Projekt. Fuer den Success-Guidance-Test wurde deshalb genau ein manueller Strategie-Kopf ueber den bestehenden UI-Flow angelegt.
+
+## 14. D6.2 Lokaler Strategy-Field-Guidance-Smoke-Test
+
+Durchgefuehrt am 2026-06-08 lokal gegen `http://localhost:3000` und `http://localhost:8000` fuer das Demo-Projekt `01d9d55b-87c3-5a5a-876a-b55a3ce2db33`.
+
+Gesamtergebnis: bestanden ohne Blocker. Backend, Frontend und DB liefen per Docker Compose; die DB war `healthy`, der Backend-Healthcheck meldete `{"status":"ok","service":"negotiation-tools-api"}` und das Frontend lief mit `Next.js 16.2.6 (webpack)`. Der synthetische Rheinwerk-Demo-Datensatz wurde idempotent mit `python -m app.seeds.staging_demo --confirm-staging-demo` sichergestellt. Es wurden keine Produktcodeaenderungen, keine Backendlogik, keine Migration, keine neue UI-Funktionalitaet, keine KI-, Scoring- oder RAG-Logik eingefuehrt.
+
+### 14.1 Project Detail und Strategy-Einstieg
+
+Route: `/projects/01d9d55b-87c3-5a5a-876a-b55a3ce2db33`
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Project-Detailseite rendert | bestanden | Seite zeigt `Verhandlung: Praezisions-Servoantrieb RX-42` nach kurzem Ladezustand |
+| Preparation Gaps Card sichtbar | bestanden | Abschnitt `Vorbereitungsluecken` sichtbar |
+| Strategy-Einstieg funktioniert | bestanden | Links `Strategie oeffnen`, `Bausteine ergaenzen` und `Strategie vorbereiten` fuehren zu `/strategy?projectId=01d9d55b-87c3-5a5a-876a-b55a3ce2db33` |
+| Rueckweg vom Strategy-Flow | bestanden | `Zum Projekt` navigiert zurueck auf die Project-Detailroute; nach dem Ladezustand sind Projekt, Preparation Gaps und Strategy-Einstieg sichtbar |
+
+### 14.2 Strategy mit Projektkontext
+
+Route: `/strategy?projectId=01d9d55b-87c3-5a5a-876a-b55a3ce2db33`
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Projektkontext laedt | bestanden | Projekt, Company, Status, Prioritaet, Kategorie, Supplier, Zielregion und Artikel/Service werden angezeigt |
+| Strategy-Kopf sichtbar | bestanden | Bestehende aktive Strategie `5be27bf1-4600-4e47-8ff5-f208527fb5d6` wird geladen |
+| D5-Guidance sichtbar | bestanden | `Strategiebausteine vorbereiten`, WAP-Abgrenzung und Hinweis auf keine automatische Erzeugung bleiben sichtbar |
+| Titel-Pflichtfeld sichtbar | bestanden | `Titel` ist als Pflichtfeld markiert |
+| Strategy Objective | bestanden | Placeholder und Hilfetext trennen Erfolgsziel von Abbruchgrenze |
+| Zielergebnis und Minimum | bestanden | Placeholder/Hilfetexte unterscheiden realistisches Zielbild, Mindestpaket und WAP |
+| WAP / Walk-away Point | bestanden | WAP wird als minimale akzeptable Grenze beschrieben, nicht als BATNA |
+| ZOPA-Zusammenfassung | bestanden | ZOPA wird als moeglicher Einigungskorridor beschrieben, nicht als BATNA |
+| BATNA-Zusammenfassung | bestanden | BATNA wird als externe Alternative beschrieben; WAP leitet ab, wann sie vorzuziehen ist |
+| Konzessionsstrategie | bestanden | Placeholder `Wenn wir X geben, erwarten wir Y als Gegenleistung.` fuehrt zu Tauschlogik |
+| Argumentationssummary | bestanden | Placeholder fordert fakten-, TCO-, risiko-, qualitaets- oder beziehungsbezogene Argumente mit Belegen |
+| Risiken und Notizen | bestanden | Hypothesen und offene Datenpunkte bleiben als Arbeitsnotizen eingeordnet |
+
+### 14.3 Pflichtfeld-, Validierungs- und Save-Verhalten
+
+| Bereich | Ergebnis | Notiz |
+|---|---|---|
+| Strategy-Kopf speichern | bestanden | D6.2-Smoke-Werte fuer Zielergebnis, Minimum, WAP, ZOPA, BATNA, Konzessionsstrategie und Argumentationssummary wurden ueber den Browser gespeichert und per API wieder ausgelesen |
+| ZOPA ohne Dimension | bestanden | Leere Create-Form blieb auf derselben URL; `Dimension` ist `required` und meldete `valueMissing`/Pflichtfeldvalidierung |
+| ZOPA mit Dimension | bestanden | `D6.2 Smoke Preis-/Lieferzeitkorridor` wurde ueber den Browser angelegt und erschien anschliessend sichtbar |
+| BATNA-Option | bestanden | `D6.2 Smoke Alternativlieferant` wurde angelegt; Titel-Pflichtfeld, Beschreibung und Impact bleiben fachlich auf externe Alternative ausgerichtet |
+| Konzession | bestanden | `D6.2 Smoke Forecast gegen Lieferprioritaet` wurde angelegt; `Wir geben / ermoeglichen` und `Nur wenn die Gegenseite liefert` bilden konditionierte Tauschlogik ab |
+| Argumentationslinie | bestanden | `D6.2 Smoke TCO-Risikoargument` wurde angelegt; Claim und Evidence bleiben belegorientiert |
+| Server-/Frontend-Logs | bestanden | POSTs fuer Strategy, ZOPA, BATNA, Konzession und Argumentation liefen mit Redirect/201-Erfolg; keine Browser-Console-Errors beobachtet |
+
+### 14.4 Allgemeiner Strategy Entry
+
+Route: `/strategy`
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Allgemeine Projektauswahl erscheint | bestanden | Seite zeigt `Waehle ein Projekt` und das Demo-Projekt |
+| Keine projektbezogene Guidance faelschlich sichtbar | bestanden | Ohne `projectId` erscheinen weder `Strategiebausteine vorbereiten` noch `Strategie-Kopf` |
+| Navigation funktionsfaehig | bestanden | Sidebar und Projektlinks bleiben erreichbar |
+
+### 14.5 Mobile Spotcheck
+
+Gepruefte Breite: `360px`.
+
+| Route | Ergebnis | Notiz |
+|---|---|---|
+| `/strategy?projectId=01d9d55b-87c3-5a5a-876a-b55a3ce2db33` | bestanden | `documentElement.scrollWidth` blieb kleiner als `innerWidth`; Strategy-Kopf lesbar |
+| `/projects/01d9d55b-87c3-5a5a-876a-b55a3ce2db33` | bestanden | Nach kurzem Ladezustand Projekt, Preparation Gaps und Strategy-Einstieg sichtbar; keine horizontale Ueberbreite beobachtet |
+
+### 14.6 Offene Punkte
+
+- Keine Blocker gefunden.
+- Die lokale synthetische Demo-DB enthaelt nun klar markierte `D6.2 Smoke`-Werte und Bausteine. Das ist fuer den lokalen Browser-Smoke-Test bewusst in Kauf genommen und betrifft keine produktiven Daten.

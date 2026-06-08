@@ -73,6 +73,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase D5.5: Lokaler Browser-Smoke-Test fuer D5.1 bis D5.4 bestanden und als Strategy-Guidance-Zwischenabschluss dokumentiert
 - Phase D5.6: Hostinger-Staging auf `46b045f` aktualisiert und D5-Strategy-Guidance-Flow browserseitig auf Staging bestanden dokumentiert
 - Phase D6.1: Strategy-Formularfelder, Pflichtfeldsignale, Placeholder und Hilfetexte fuer Strategy Objectives, ZOPA, BATNA, WAP, Konzessionen und Argumente fachlich geschaerft
+- Phase D6.2: Lokaler Browser-Smoke-Test fuer die D6.1-Strategy-Field-Guidance mit laufendem Backend, Frontend und DB bestanden dokumentiert
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
@@ -394,7 +395,7 @@ Offene Nicht-Blocker:
 
 ## 11. Phase D4: Project Preparation / Preparation Gaps
 
-Status: D4.1 bis D4.3 umgesetzt; D4.4 dokumentiert den aktuellen Zwischenstand und den manuellen Smoke-Test. D5.1 bis D5.4 sind umgesetzt; D5.5 dokumentiert den bestandenen lokalen Strategy-Guidance-Smoke-Test, D5.6 den bestandenen Staging-Update- und Smoke-Test. D6.1 schaerft die manuelle Strategy-Erfassung mit kleinen UI-/Text-/Validation-Verbesserungen.
+Status: D4.1 bis D4.3 umgesetzt; D4.4 dokumentiert den aktuellen Zwischenstand und den manuellen Smoke-Test. D5.1 bis D5.4 sind umgesetzt; D5.5 dokumentiert den bestandenen lokalen Strategy-Guidance-Smoke-Test, D5.6 den bestandenen Staging-Update- und Smoke-Test. D6.1 schaerft die manuelle Strategy-Erfassung mit kleinen UI-/Text-/Validation-Verbesserungen. D6.2 bestaetigt diese Feldfuehrung lokal browserseitig mit laufendem Backend, Frontend und DB.
 
 Ziel: Project-Detail-/Preparation-UX ausbauen, ohne automatische Bewertung oder neue Datenmodelle vorzuziehen.
 
@@ -411,6 +412,7 @@ Umgesetzte Schritte:
 9. D5.5: Lokalen Browser-Smoke-Test fuer den D5.1-D5.4-Flow dokumentiert.
 10. D5.6: Hostinger-Staging auf aktuellen `origin/main`-Stand gebracht und denselben Strategy-Guidance-Flow dort browserseitig geprueft.
 11. D6.1: Strategy-Felder, Pflichtfeldsignale, Placeholder und Hilfetexte fachlich geschaerft.
+12. D6.2: Lokalen Browser-Smoke-Test fuer die D6.1-Strategy-Field-Guidance mit laufendem Backend, Frontend und DB dokumentiert.
 
 D4.1 macht Vorbereitungsluecken ausschliesslich aus vorhandenen Objekten und bestehenden API-Listen sichtbar: Bedarfskontext, SupplierProfile, Supplier Context, Strategy, Strategiebausteine aus ZOPA/BATNA/Argumentation/Konzession, SimulationScenario und Trainerreview. Die Card bleibt eine ruhige Vorhanden-/Offen-/Spaeter-Sicht mit kurzem naechstem Schritt und fuehrt keine KI-Integration, kein Supplier Scoring, kein RAG, keine automatische Lieferantenanalyse und keine neue Datenstruktur ein.
 
@@ -434,7 +436,9 @@ D5.6 aktualisiert Hostinger-Staging in `/opt/negotiation-tools` per Fast-Forward
 
 D6.1 verbessert gezielt die manuelle Strategy-Erfassung im bestehenden `/strategy?projectId=...`-Flow. Der Strategie-Kopf markiert Titel sichtbar als Pflichtfeld und erklaert Strategy Objectives, Zielergebnis, Minimum, WAP, ZOPA, BATNA, Konzessionsstrategie, Argumentationssummary, Risiken und Notizen mit fachlich abgegrenzten Placeholdern und Hilfetexten. ZOPA-Dimensionen nutzen nun `Dimension` als minimalen Pflichtanker, waehrend BATNA als beste externe Alternative, WAP als minimale akzeptable Grenze und ZOPA als moeglicher Einigungskorridor getrennt bleiben. Konzessionen werden als Tauschlogik und Argumente als moeglichst fakten-, TCO-, risiko-, qualitaets- oder beziehungsbezogene Claims gefuehrt. Es gibt keine neue Route, keine Backend-Aenderung, keine Migration, keine neue Datenstruktur und keine automatische Strategie-, WAP-, ZOPA-, BATNA-, Scoring-, KI- oder RAG-Logik.
 
-Offene Nicht-Blocker nach D6.1:
+D6.2 bestaetigt D6.1 lokal im Browser fuer das Demo-Projekt `01d9d55b-87c3-5a5a-876a-b55a3ce2db33`: Project Detail und Strategy-Einstieg, `/strategy?projectId=...`, `/strategy` ohne Projektkontext, Strategy-Kopf, ZOPA, BATNA, WAP, Konzessionen, Argumente, Pflichtfeldverhalten der ZOPA-Dimension, Placeholder/Hilfetexte, Save-Verhalten, Rueckweg zum Projekt und kleiner Browser-Viewport sind bestanden. Das Ergebnis steht in `docs/browser-smoke-test-plan.md`. Fuer den lokalen Test wurden nur klar markierte `D6.2 Smoke`-Werte in der synthetischen Demo-DB gespeichert; Produktcode, Backend, Migrationen, Seed-Dateien, neue UI-Funktionalitaet, KI, Scoring und RAG blieben unveraendert.
+
+Offene Nicht-Blocker nach D6.2:
 
 - Issue #55: PDF-/Upload-/Parsing-Folgearbeit bleibt offen und blockiert den D4-Preparation-UX-Zwischenstand nicht.
 - Issue #113: Next/PostCSS-audit-Finding bleibt zur Beobachtung offen und blockiert den D5-Strategy-Guidance-Zwischenstand nicht.

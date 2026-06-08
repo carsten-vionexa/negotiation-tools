@@ -557,3 +557,100 @@ Gepruefte Breite: kleine Browserbreite mit effektiv `375px` Dokumentbreite.
 
 - Keine Blocker gefunden.
 - Die projektbezogene Success-Guidance wurde nicht durch eine neue zweite Strategie reproduziert, weil fuer das Demo-Projekt bereits eine Strategie vorhanden ist. Das ist ein bewusster Nicht-Blocker fuer D5.5.
+
+## 13. D5.6 Staging-Strategy-Guidance-Smoke-Test-Ergebnis
+
+Durchgefuehrt am 2026-06-08 auf Hostinger-Staging unter `https://negotiation.tools.hawkins-consulting.de` fuer das Demo-Projekt `01d9d55b-87c3-5a5a-876a-b55a3ce2db33`.
+
+Gesamtergebnis: bestanden ohne Blocker. Es wurden keine Produktcodeaenderungen, keine Backendlogik, keine Migration, keine Seed-Aenderung, keine KI-, Scoring- oder RAG-Logik eingefuehrt.
+
+### 13.1 Staging-Update
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Lokaler Ausgangsstand | bestanden | `main` war sauber und entsprach `origin/main` auf `46b045f` |
+| Staging-Ausgangsstand | bestanden | `/opt/negotiation-tools` war sauber und stand vor dem Update auf `21028cb` |
+| Staging-Zielcommit | bestanden | Fast-Forward auf `46b045f Document D5.5 strategy guidance smoke test` |
+| Update-Schritte | bestanden | `git fetch origin`, `git merge --ff-only origin/main` |
+| Deployment-Schritt | bestanden | `docker compose --env-file .env.staging -f docker-compose.staging.yml up -d --build` |
+| Migrationen | bestanden | Keine Migration angewendet; `alembic current` meldete `2f4b7c8d9e0a (head)` |
+| Seed | bestanden | Kein Seed-Befehl ausgefuehrt |
+
+### 13.2 Health Checks
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Compose-Status | bestanden | `db`, `backend` und `frontend` liefen nach Rebuild/Restart |
+| DB-Health | bestanden | `db` war `healthy`; `pg_isready` meldete `accepting connections` |
+| Backend Health intern | bestanden | `GET http://127.0.0.1:8000/api/health` antwortete `{"status":"ok","service":"negotiation-tools-api"}` |
+| Frontend intern | bestanden | `curl -I http://127.0.0.1:3000` antwortete mit Next.js-Redirect auf `/dashboard` |
+| HTTPS extern | bestanden | Unauthentifizierte `curl`-Checks wurden erwartungsgemaess zu Authelia weitergeleitet |
+| Browser-Session | bestanden | Authentifizierte Browser-Session erreichte die Staging-App und die geprueften Routen |
+
+### 13.3 Project Detail
+
+Route: `/projects/01d9d55b-87c3-5a5a-876a-b55a3ce2db33`
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Project-Detailseite rendert | bestanden | Seite zeigt `Verhandlung: Praezisions-Servoantrieb RX-42` |
+| Preparation Gaps Card sichtbar | bestanden | Abschnitt `Vorbereitungsluecken` sichtbar |
+| Strategy-Status plausibel | bestanden | Vor Strategieanlage war Strategie `Noch offen`; nach Anlage `Vorhanden`, Strategiebausteine blieben `Noch offen` |
+| Strategy-Einstieg funktioniert | bestanden | `Strategie vorbereiten` beziehungsweise `Strategie oeffnen` fuehrt zu `/strategy?projectId=01d9d55b-87c3-5a5a-876a-b55a3ce2db33` |
+
+### 13.4 Strategy mit Projektkontext
+
+Route: `/strategy?projectId=01d9d55b-87c3-5a5a-876a-b55a3ce2db33`
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Strategy-Seite rendert | bestanden | Seite zeigt `Strategie bauen` mit Projektkontext |
+| Initialer Empty State | bestanden | Staging hatte vor D5.6 noch keine Strategie; Empty State betonte manuelle Anlage und keine automatische Erzeugung |
+| Projektbezogene Strategieanlage | bestanden | Ein Strategie-Kopf wurde ueber den bestehenden UI-Flow manuell angelegt |
+| Success Guidance | bestanden | Nach Anlage erschien `Strategie wurde angelegt` mit Rueckweg zum Projekt |
+| Rueckweg zum Projekt | bestanden | `Zum Projekt` fuehrte zurueck zu `/projects/01d9d55b-87c3-5a5a-876a-b55a3ce2db33` |
+| Strategy-Kopf sichtbar | bestanden | Nach Anlage wurde das Formular `Strategie-Kopf` angezeigt |
+| Building-Blocks-Guidance sichtbar | bestanden | Abschnitt `Strategiebausteine vorbereiten` sichtbar |
+| ZOPA fachlich eingeordnet | bestanden | ZOPA wird als Ueberschneidung der Grenzen beschrieben |
+| BATNA fachlich eingeordnet | bestanden | BATNA bleibt als beste Alternative beschrieben |
+| WAP fachlich eingeordnet | bestanden | WAP / Walk-away Point wird als Abbruchgrenze erklaert |
+| WAP nicht mit Konzessionen verwechselt | bestanden | Konzessionen werden als Tauschobjekte/Zugestaendnisse abgegrenzt und nicht als Walk-away Point behandelt |
+| Argumente fachlich eingeordnet | bestanden | Argumente werden als Claims und Belege beschrieben |
+| Keine automatische WAP-Berechnung | bestanden | `Strategie-Kopf` erklaert, dass der Walk-away Point manuell gepflegt und nicht berechnet wird |
+| Keine automatische Baustein-Erzeugung | bestanden | Guidance sagt: `Diese Seite erzeugt nichts automatisch`; ZOPA, BATNA, Argumente und Konzessionen blieben offen |
+
+### 13.5 Sidebar
+
+Gepruefte Menuepunkte: Analyse, Strategie, Briefing, Simulation und Trainerreview.
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Strategie-Beschreibung enthaelt WAP | bestanden | Sidebar zeigt `ZOPA, BATNA, WAP, Konzessionen und Argumente` |
+| Active-State lesbar | bestanden | Alle fuenf Workflow-Routen zeigten bei aktiver Route lesbare Icon-, Titel- und Unterzeilenfarben |
+| Hover-State lesbar | bestanden | Browser-/DOM-Pruefung bestaetigte die vorhandenen Hover-Klassen fuer lesbare Link-Zustaende |
+| Icon, Titel und Unterzeile lesbar | bestanden | Normal- und Active-State blieben lesbar |
+
+### 13.6 Allgemeiner Strategy Entry
+
+Route: `/strategy`
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Allgemeine Projektauswahl erscheint | bestanden | Seite zeigt `Waehle ein Projekt` |
+| Keine projektbezogene Guidance faelschlich sichtbar | bestanden | Ohne `projectId` keine `Strategiebausteine vorbereiten`-Guidance und kein `Strategie-Kopf` |
+| Navigation funktionsfaehig | bestanden | Sidebar und Projektlinks blieben erreichbar |
+
+### 13.7 Mobile Spotcheck
+
+Gepruefte Breite: kleine Browserbreite mit effektiv `360px` Dokumentbreite.
+
+| Route | Ergebnis | Notiz |
+|---|---|---|
+| `/projects/01d9d55b-87c3-5a5a-876a-b55a3ce2db33` | bestanden | Keine horizontale Ueberbreite; Preparation Gaps Card und relevante Cards lesbar |
+| `/strategy?projectId=01d9d55b-87c3-5a5a-876a-b55a3ce2db33` | bestanden | Keine horizontale Ueberbreite; Building-Blocks-Guidance, WAP und Strategy-Kopf lesbar |
+| `/strategy` | bestanden | Keine horizontale Ueberbreite; allgemeine Projektauswahl nutzbar |
+
+### 13.8 Offene Punkte
+
+- Keine Blocker gefunden.
+- Nicht-Blocker: Staging hatte vor D5.6 noch keine Strategie fuer das Demo-Projekt. Fuer den Success-Guidance-Test wurde deshalb genau ein manueller Strategie-Kopf ueber den bestehenden UI-Flow angelegt.

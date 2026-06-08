@@ -71,6 +71,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase D5.3: Die bestehende Strategy-Guidance ordnet WAP / Walk-away Point als manuelle Abbruchgrenze zwischen BATNA, ZOPA und Konzessionen ein, ohne Berechnung, Backend, Migration oder Datenmodell-Aenderung
 - Phase D5.4: Die MVP-Workflow-Sidebar nennt WAP im Strategie-Menuepunkt und nutzt konsistente lesbare Normal-, Hover- und Active-States fuer die Navigation
 - Phase D5.5: Lokaler Browser-Smoke-Test fuer D5.1 bis D5.4 bestanden und als Strategy-Guidance-Zwischenabschluss dokumentiert
+- Phase D5.6: Hostinger-Staging auf `46b045f` aktualisiert und D5-Strategy-Guidance-Flow browserseitig auf Staging bestanden dokumentiert
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
@@ -392,7 +393,7 @@ Offene Nicht-Blocker:
 
 ## 11. Phase D4: Project Preparation / Preparation Gaps
 
-Status: D4.1 bis D4.3 umgesetzt; D4.4 dokumentiert den aktuellen Zwischenstand und den manuellen Smoke-Test. D5.1 bis D5.4 sind umgesetzt; D5.5 dokumentiert den bestandenen lokalen Strategy-Guidance-Smoke-Test als Zwischenabschluss.
+Status: D4.1 bis D4.3 umgesetzt; D4.4 dokumentiert den aktuellen Zwischenstand und den manuellen Smoke-Test. D5.1 bis D5.4 sind umgesetzt; D5.5 dokumentiert den bestandenen lokalen Strategy-Guidance-Smoke-Test, D5.6 den bestandenen Staging-Update- und Smoke-Test.
 
 Ziel: Project-Detail-/Preparation-UX ausbauen, ohne automatische Bewertung oder neue Datenmodelle vorzuziehen.
 
@@ -407,6 +408,7 @@ Umgesetzte Schritte:
 7. D5.3: WAP / Walk-away Point als manuelle Abbruchgrenze fachlich eingeordnet.
 8. D5.4: Sidebar-Beschreibung und Navigation-Kontrast fuer Strategie/WAP geglaettet.
 9. D5.5: Lokalen Browser-Smoke-Test fuer den D5.1-D5.4-Flow dokumentiert.
+10. D5.6: Hostinger-Staging auf aktuellen `origin/main`-Stand gebracht und denselben Strategy-Guidance-Flow dort browserseitig geprueft.
 
 D4.1 macht Vorbereitungsluecken ausschliesslich aus vorhandenen Objekten und bestehenden API-Listen sichtbar: Bedarfskontext, SupplierProfile, Supplier Context, Strategy, Strategiebausteine aus ZOPA/BATNA/Argumentation/Konzession, SimulationScenario und Trainerreview. Die Card bleibt eine ruhige Vorhanden-/Offen-/Spaeter-Sicht mit kurzem naechstem Schritt und fuehrt keine KI-Integration, kein Supplier Scoring, kein RAG, keine automatische Lieferantenanalyse und keine neue Datenstruktur ein.
 
@@ -426,7 +428,9 @@ D5.4 passt nur die bestehende MVP-Workflow-Sidebar an: Der Strategie-Menuepunkt 
 
 D5.5 bestaetigt den D5.1-D5.4-Flow lokal im Browser fuer das Demo-Projekt `01d9d55b-87c3-5a5a-876a-b55a3ce2db33`: Project Detail mit Preparation Gaps, Strategy-Einstieg, vorhandener Strategy-Kopf, Building-Blocks-Guidance inklusive WAP-Abgrenzung, Rueckweg zum Projekt, Sidebar-Zustaende, allgemeines `/strategy` ohne `projectId` und kleine Browserbreite sind bestanden. Das Ergebnis steht in `docs/browser-smoke-test-plan.md`; weil bereits eine Strategie vorhanden ist, wurde keine zweite Strategie angelegt. Es gibt keine Produkt-, Backend-, Migrations-, Seed-, KI-, Scoring- oder RAG-Aenderung.
 
-Offene Nicht-Blocker nach D5.5:
+D5.6 aktualisiert Hostinger-Staging in `/opt/negotiation-tools` per Fast-Forward von `21028cb` auf `46b045f` und startet den bestehenden Compose-Stack neu. Healthchecks fuer Backend, Frontend, DB und Alembic Head sind bestanden. Der D5-Strategy-Guidance-Flow wurde browserseitig auf Staging geprueft: Project Detail, Preparation Gaps Card, Strategy-Einstieg, manuelle Strategieanlage, Success Guidance, Building-Blocks-Guidance, WAP-Abgrenzung, Sidebar, `/strategy` ohne `projectId` und kleine Breite sind bestanden. Auf Staging existierte vor D5.6 noch keine Strategie fuer das Demo-Projekt; fuer den Success-Guidance-Test wurde genau ein manueller Strategie-Kopf ueber den bestehenden UI-Flow angelegt. Es gibt keine Produktcode-, Backend-, Migrations-, Seed-, KI-, Scoring- oder RAG-Aenderung.
+
+Offene Nicht-Blocker nach D5.6:
 
 - Issue #55: PDF-/Upload-/Parsing-Folgearbeit bleibt offen und blockiert den D4-Preparation-UX-Zwischenstand nicht.
 - Issue #113: Next/PostCSS-audit-Finding bleibt zur Beobachtung offen und blockiert den D5-Strategy-Guidance-Zwischenstand nicht.

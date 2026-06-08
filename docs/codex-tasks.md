@@ -104,6 +104,7 @@
 - Phase D5.3 umgesetzt: Die bestehende Strategy-Guidance erklaert WAP / Walk-away Point als manuelle Abbruchgrenze aus Ziel, Risiko, Kosten/Nutzen und BATNA und grenzt ihn von Konzessionen und ZOPA ab, ohne automatische Berechnung, Backend, Migration, KI, Scoring, neue Route oder Datenmodell-Aenderung
 - Phase D5.4 umgesetzt: Die MVP-Workflow-Sidebar nennt WAP im Strategie-Menuepunkt und nutzt konsistente lesbare Normal-, Hover- und Active-States fuer Icon, Titel und Beschreibung, ohne Menuestruktur, Routen, Backend, Migration, KI, Scoring oder Datenmodell-Aenderung
 - Phase D5.5 umgesetzt: Lokaler Browser-Smoke-Test fuer den D5.1-D5.4-Strategy-Guidance-Flow bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert, ohne Produkt-, UI-Logik-, Backend-, Migrations-, Seed-, KI-, Scoring- oder RAG-Aenderung
+- Phase D5.6 umgesetzt: Hostinger-Staging per Fast-Forward auf `46b045f` aktualisiert, Staging-Stack neu gebaut/gestartet und D5-Strategy-Guidance-Flow browserseitig bestanden dokumentiert, ohne Produktcode-, Backend-, Migrations-, Seed-, KI-, Scoring- oder RAG-Aenderung
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -313,6 +314,18 @@ Phase D5.5:
 - Ergebnis und Nicht-Blocker sind in `docs/browser-smoke-test-plan.md` dokumentiert.
 - D5.5 fuehrt keine Produktfunktion, keine UI-Logik, keine Backend-Aenderung, keine Migration, keine Seed-Aenderung und keine KI-, Scoring- oder RAG-Logik ein.
 
+Phase D5.6:
+
+- D5.6 ist als Staging-Update mit Smoke-Test und Dokumentationsabschluss fuer den D5-Strategy-Guidance-Flow umgesetzt.
+- Lokal war `main` vor Beginn sauber und entsprach `origin/main` auf `46b045f`.
+- Staging stand vor dem Update sauber auf `21028cb` und wurde in `/opt/negotiation-tools` mit `git fetch origin` und `git merge --ff-only origin/main` auf `46b045f` aktualisiert.
+- Der Staging-Stack wurde mit `docker compose --env-file .env.staging -f docker-compose.staging.yml up -d --build` neu gebaut und gestartet.
+- Healthchecks: Compose-Services `db`, `backend` und `frontend` liefen; DB war `healthy`; internes Backend `GET http://127.0.0.1:8000/api/health` antwortete `{"status":"ok","service":"negotiation-tools-api"}`; internes Frontend antwortete mit Next.js-Redirect auf `/dashboard`; Alembic `current` stand auf `2f4b7c8d9e0a (head)`.
+- Oeffentliche HTTPS-Checks ohne Browser-Session fuehrten erwartungsgemaess zuerst zu Authelia-Redirects; der browserseitige Smoke-Test lief mit authentifizierter Session unter `https://negotiation.tools.hawkins-consulting.de`.
+- Browserseitig geprueft wurden Project Detail, Preparation Gaps Card, Strategy-Einstieg mit Projektkontext, manuelle Strategieanlage, Success Guidance, Rueckweg zum Projekt, Building-Blocks-Guidance, WAP-Abgrenzung, allgemeines `/strategy` ohne `projectId`, Sidebar-Zustaende und kleine Breite.
+- Auf Staging existierte fuer das Demo-Projekt vor D5.6 noch keine Strategie; deshalb wurde ueber den bestehenden UI-Flow genau ein manueller Strategie-Kopf mit Smoke-Test-Notiz angelegt. Das ist der dokumentierte Nicht-Blocker beziehungsweise Testdateneffekt von D5.6.
+- D5.6 fuehrt keine Produktfunktion, keine Produktcodeaenderung, keine Backend-Aenderung, keine Migration, keine Seed-Aenderung und keine KI-, Scoring- oder RAG-Logik ein.
+
 Vorgemerkte Folgehinweise aus C15 bis C17:
 
 - Die statischen Mapping-Zielfeldlisten sollten mittelfristig zentralisiert oder aus Backend-/Contract-Metadaten abgeleitet werden, damit Frontend und Backend nicht auseinanderlaufen; C17 fuehrt dieses Refactoring nicht durch.
@@ -395,6 +408,17 @@ Vorgemerkte Folgehinweise aus C15 bis C17:
 - `/strategy` ohne `projectId` oeffnen und allgemeine Projektauswahl, fehlende projektbezogene Guidance und funktionsfaehige Navigation pruefen.
 - Mobile Spotcheck fuer Project Detail, Strategy mit Projektkontext und `/strategy` ohne `projectId` durchfuehren.
 - Sicherstellen, dass D5.5 keine Produktfunktion, keine UI-Logik, keine Backend-Aenderung, keine Migration, keine Seed-Aenderung und keine KI-, Scoring- oder RAG-Logik einfuehrt.
+
+## Manuelle Pruefhilfe D5.6
+
+- Lokal vor Beginn `git status --short --branch` und `git log --oneline -5` pruefen; erwartet wird ein sauberer `main` auf `46b045f` oder neuer.
+- Auf Staging in `/opt/negotiation-tools` `git status --short --branch` und `git log --oneline -5` pruefen.
+- Staging mit `git fetch origin` und `git merge --ff-only origin/main` auf aktuellen `origin/main` bringen.
+- Staging-Stack mit `docker compose --env-file .env.staging -f docker-compose.staging.yml up -d --build` neu bauen/starten.
+- Healthchecks dokumentieren: `docker compose ... ps`, interner Backend-Healthcheck, interne Frontend-Erreichbarkeit, `pg_isready` und Alembic `current`.
+- Browser-Smoke-Test auf `https://negotiation.tools.hawkins-consulting.de` mit authentifizierter Session ausfuehren: Project Detail, Preparation Gaps Card, Strategy-Einstieg, Strategy-Guidance, WAP-Abgrenzung, Success Guidance beziehungsweise Nicht-Blocker, Rueckweg, Sidebar, `/strategy` ohne `projectId` und kleine Breite.
+- Keine neuen Env-/Secret-Werte einfuehren, keine Seed-Aenderung ausfuehren und Migrationen nur anwenden, falls der aktualisierte Stand sie erfordert.
+- Sicherstellen, dass D5.6 keine Produktcodeaenderung, keine Backend-Aenderung, keine Migration, keine Seed-Aenderung und keine KI-, Scoring- oder RAG-Logik einfuehrt.
 
 ## Manuelle Pruefhilfe Phase B7
 

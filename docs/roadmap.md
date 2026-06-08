@@ -62,6 +62,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase D3.8: Die Supplier Context Card zeigt bei verknuepftem `SupplierProfile` einen ruhigen Edit-Guidance-CTA zum bestehenden Lieferantenprofil, damit fehlende Vorbereitungsinformationen gezielt nachgepflegt werden koennen
 - Phase D3.9: Staging-Smoke-Test fuer Edit Guidance bestanden
 - Phase D3.10: D3 Supplier Context ist als erster UX-Strang vorlaeufig dokumentarisch abgeschlossen; D4 ist nur als moegliche spaetere Project-Preparation-/Preparation-Gaps-Richtung abgegrenzt
+- Phase D4.1: Project-Detailseite zeigt eine kompakte Preparation Gaps Card aus vorhandenen Project-, RequestItem-, SupplierProfile-, Strategy-, SimulationScenario- und TrainerComment-Daten, ohne Backend, Migration, KI, Scoring oder neues Datenmodell
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
@@ -218,6 +219,7 @@ Frontend-nutzbar sind derzeit:
 - `/request-items/[id]` kann aus einer bestehenden Anfrageposition direkt ein neues, vorausgefuelltes Verhandlungsprojekt starten.
 - `/projects/[id]` macht bei verknuepften Anfragepositionen den Ursprung sowie zentrale RequestItem-Bedarfsdaten wie Titel, Artikel, Kategorie, Menge, Liefertermin, Zielpreis, Budgetrahmen, Zielregion, Prioritaet, Beschreibung, Spezifikation und Notizen lesbar sichtbar.
 - `/projects/[id]` zeigt bei verknuepftem SupplierProfile eine kompakte Supplier Context Card mit Lieferant, Land/Region, Branche/Kategorie, Beziehung, Verhandlungssignalen, kulturellem Kontext, vorbereitungsorientierten Readiness-/Missing-Information-Hints sowie einem ruhigen Edit-Guidance-CTA und Link zum vollstaendigen Profil; ohne verknuepftes SupplierProfile erscheint ein ruhiger Empty State.
+- `/projects/[id]` zeigt zusaetzlich eine kompakte Preparation Gaps Card, die Bedarfskontext, Lieferantenprofil, Supplier Context, Strategie, Strategiebausteine, Simulation und Trainerreview als vorhanden, offen oder optional spaeter pruefbar einordnet.
 - Projektbezogene Einstiege in Datenbasis, Analyse, Strategie, Simulation und Trainerreview.
 
 Mapping in C23:
@@ -382,15 +384,15 @@ Offene Nicht-Blocker:
 
 ## 11. Phase D4: Project Preparation / Preparation Gaps
 
-Status: Nicht begonnen, nicht umgesetzt.
+Status: D4.1 umgesetzt.
 
-Moegliche spaetere Richtung: Project-Detail-/Preparation-UX ausbauen, ohne automatische Bewertung oder neue Datenmodelle vorzuziehen.
+Ziel: Project-Detail-/Preparation-UX ausbauen, ohne automatische Bewertung oder neue Datenmodelle vorzuziehen.
 
-Moeglicher erster Schritt:
+Umgesetzter erster Schritt:
 
 1. D4.1: Preparation Gaps Card auf der Project-Detailseite.
 
-Eine spaetere D4.1-Idee duerfte nur Vorbereitungsluecken aus vorhandenen Objekten sichtbar machen, zum Beispiel Bedarfskontext, SupplierProfile, Strategy, ZOPA/BATNA/WAP, SimulationScenario oder Trainerreview. D4.1 ist noch kein gestartetes Arbeitspaket und wuerde keine KI-Integration, kein Supplier Scoring, kein RAG, keine automatische Lieferantenanalyse und keine neue Datenstruktur implizieren.
+D4.1 macht Vorbereitungsluecken ausschliesslich aus vorhandenen Objekten und bestehenden API-Listen sichtbar: Bedarfskontext, SupplierProfile, Supplier Context, Strategy, Strategiebausteine aus ZOPA/BATNA/Argumentation/Konzession, SimulationScenario und Trainerreview. Die Card bleibt eine ruhige Vorhanden-/Offen-/Spaeter-Sicht mit kurzem naechstem Schritt und fuehrt keine KI-Integration, kein Supplier Scoring, kein RAG, keine automatische Lieferantenanalyse und keine neue Datenstruktur ein.
 
 ## 12. Phase E: Knowledge Intelligence
 

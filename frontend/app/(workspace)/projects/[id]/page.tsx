@@ -6,16 +6,24 @@ import type { ReactNode } from "react";
 import { ErrorState } from "@/components/state-patterns";
 import { PageHeader } from "@/components/page-header";
 import { ProjectNextActionGuidance } from "@/components/projects/project-next-action-guidance";
+import { ProjectPreparationGapsCard } from "@/components/projects/project-preparation-gaps-card";
 import { ProjectPreparationOverview } from "@/components/projects/project-preparation-overview";
 import { ProjectPreparationReadiness } from "@/components/projects/project-preparation-readiness";
 import { ProjectStrategySnapshot } from "@/components/projects/project-strategy-snapshot";
 import { ProjectSupplierContextCard } from "@/components/projects/project-supplier-context-card";
+import { listArgumentationLines } from "@/lib/api/argumentation-lines";
+import { listBatnaOptions } from "@/lib/api/batna-options";
 import { listCompanies } from "@/lib/api/companies";
+import { listConcessionItems } from "@/lib/api/concession-items";
 import { getNegotiationProject, updateNegotiationProject } from "@/lib/api/negotiation-projects";
 import { getRequestItem, listRequestItems } from "@/lib/api/request-items";
+import { listSimulationScenarios } from "@/lib/api/simulation-scenarios";
+import { listStrategies } from "@/lib/api/strategies";
 import { listSupplierProfiles } from "@/lib/api/supplier-profiles";
+import { listTrainerComments } from "@/lib/api/trainer-comments";
 import { listUserProfiles } from "@/lib/api/user-profiles";
 import { optionalFormString, requiredFormString } from "@/lib/form-data";
+import { listZopaItems } from "@/lib/api/zopa-items";
 
 export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -65,6 +73,23 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
     }
   }
 
+  const strategies = await loadOptionalPreparationData(() => listStrategies({ negotiation_project_id: project.id, limit: 5 }));
+  const primaryStrategy = strategies?.find((strategy) => strategy.is_active) ?? strategies?.[0];
+  const strategyBuildingBlocks = primaryStrategy
+    ? await Promise.all([
+        loadOptionalPreparationData(() => listZopaItems({ strategy_id: primaryStrategy.id, limit: 1 })),
+        loadOptionalPreparationData(() => listBatnaOptions({ strategy_id: primaryStrategy.id, limit: 1 })),
+        loadOptionalPreparationData(() => listArgumentationLines({ strategy_id: primaryStrategy.id, limit: 1 })),
+        loadOptionalPreparationData(() => listConcessionItems({ strategy_id: primaryStrategy.id, limit: 1 })),
+      ])
+    : undefined;
+  const simulationScenarios = await loadOptionalPreparationData(() => listSimulationScenarios({ negotiation_project_id: project.id, limit: 5 }));
+  const trainerCommentChecks = simulationScenarios?.length
+    ? await Promise.all(
+        simulationScenarios.map((scenario) => loadOptionalPreparationData(() => listTrainerComments({ simulation_scenario_id: scenario.id, limit: 1 }))),
+      )
+    : undefined;
+
   return (
     <>
       <PageHeader
@@ -80,6 +105,16 @@ export default async function ProjectDetailPage({ params }: { params: Promise<{ 
         <ProjectPreparationOverview project={project} requestItem={requestItem} ownerDisplayName={owner?.display_name} />
 
         <ProjectSupplierContextCard supplier={supplier} />
+
+        <ProjectPreparationGapsCard
+          project={project}
+          requestItem={requestItem}
+          supplier={supplier}
+          strategyCount={strategies?.length}
+          strategyBuildingBlockCount={strategyBuildingBlocks ? sumLoadedCounts(strategyBuildingBlocks) : strategies ? 0 : undefined}
+          simulationScenarioCount={simulationScenarios?.length}
+          trainerCommentCount={trainerCommentChecks ? sumLoadedCounts(trainerCommentChecks) : simulationScenarios?.length === 0 ? 0 : undefined}
+        />
 
         <ProjectStrategySnapshot project={project} requestItem={requestItem} />
       </div>
@@ -377,4 +412,26 @@ function Meta({ label, value }: { label: string; value: ReactNode }) {
 
 function getErrorDescription(error: unknown) {
   return error instanceof Error ? error.message : "Bitte pruefe, ob das Backend erreichbar ist.";
+}
+
+async function loadOptionalPreparationData<T>(loader: () => Promise<T>) {
+  try {
+    return await loader();
+  } catch {
+    return undefined;
+  }
+}
+
+function sumLoadedCounts(items: Array<unknown[] | undefined>) {
+  let count = 0;
+
+  for (const item of items) {
+    if (item === undefined) {
+      return undefined;
+    }
+
+    count += item.length;
+  }
+
+  return count;
 }

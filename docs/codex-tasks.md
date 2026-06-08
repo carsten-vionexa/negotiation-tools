@@ -95,6 +95,7 @@
 - Phase D3.8 umgesetzt: Supplier Context Card um einen ruhigen Edit-Guidance-CTA zum bestehenden `SupplierProfile` erweitert, ohne Backend, Migration, API, neue Edit-Seite, Inline-Editing, KI oder Scoring
 - Phase D3.9 umgesetzt: Staging-Smoke-Test fuer Edit Guidance bestanden, ohne Produkt-, Seed-, API- oder Migrationsaenderung
 - Phase D3.10 umgesetzt: D3 Supplier Context als erster UX-Strang vorlaeufig dokumentarisch abgeschlossen und D4 als moegliche spaetere Project-Preparation-/Preparation-Gaps-Richtung abgegrenzt, ohne Code-, Staging-, Seed-, API-, Migrations- oder Produktfunktionsaenderung
+- Phase D4.1 umgesetzt: Project-Detailseite zeigt eine kompakte Preparation Gaps Card fuer Bedarfskontext, SupplierProfile, Supplier Context, Strategy, Strategiebausteine, SimulationScenario und Trainerreview aus vorhandenen Daten und bestehenden API-Listen, ohne Backend, Migration, KI, Scoring, RAG oder neues Datenmodell
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -234,13 +235,13 @@ Offene Nicht-Blocker nach D3:
 - Issue #55 bleibt als spaetere PDF-/Upload-/Parsing-Strecke offen und blockiert D3 nicht.
 - Issue #113 bleibt als Next/PostCSS-audit-Finding zur Beobachtung offen und blockiert D3 nicht.
 
-Moegliche D4-Abgrenzung:
+Phase D4.1:
 
-- D4 ist noch nicht begonnen und nicht umgesetzt.
-- Eine moegliche spaetere Richtung ist `D4: Project Preparation / Preparation Gaps`.
-- Ein moeglicher erster Schritt waere `D4.1: Preparation Gaps Card auf Project-Detailseite`.
-- D4.1 duerfte nur Vorbereitungsluecken aus vorhandenen Objekten sichtbar machen, zum Beispiel Bedarfskontext, SupplierProfile, Strategy, ZOPA/BATNA/WAP, SimulationScenario oder Trainerreview.
-- D4.1 waere keine automatische Bewertung, keine KI-Integration, kein Supplier Scoring, kein RAG und kein neues Datenmodell.
+- D4.1 ist als kleiner Project-Preparation-Schritt umgesetzt.
+- Die Project-Detailseite zeigt eine kompakte Preparation Gaps Card.
+- Die Card nutzt vorhandene Project-, RequestItem-, SupplierProfile-, Strategy-, ZOPA-, BATNA-, ArgumentationLine-, ConcessionItem-, SimulationScenario- und TrainerComment-Daten ueber bestehende Frontend-API-Helper.
+- Dargestellt werden nur vorhandene oder offene Vorbereitungselemente sowie ein ruhiger naechster sinnvoller Schritt.
+- D4.1 ist keine automatische Bewertung, keine KI-Integration, kein Supplier Scoring, kein RAG und kein neues Datenmodell.
 
 Vorgemerkte Folgehinweise aus C15 bis C17:
 

@@ -99,6 +99,7 @@
 - Phase D4.2 umgesetzt: Die Preparation Gaps Card fuehrt bei fehlender Strategie klarer zum bestehenden Strategie-Einstieg, stellt Strategiebausteine nachgelagert zur Strategieanlage dar und betont, dass keine Strategie automatisch erzeugt wird
 - Phase D4.3 umgesetzt: Der bestehende Strategy-Einstieg `/strategy?projectId=...` zeigt fuer Projekte ohne Strategie einen klareren projektbezogenen Empty State, nutzt weiter den vorhandenen Strategie-Anlage-Workflow und stellt ZOPA, BATNA, Argumente und Konzessionen als nachgelagerte Schritte dar, ohne automatische Strategieerzeugung, Backend, Migration, neue Route oder Datenmodell-Aenderung
 - Phase D4.4 umgesetzt: D4.1 bis D4.3 als aktueller D4-Preparation-UX-Zwischenstand dokumentiert und kompakten Smoke-Test-Plan fuer Project Detail -> Preparation Gaps Card -> Strategie vorbereiten -> Strategy Empty State -> Strategie manuell anlegen ergaenzt, ohne Produkt-, Frontend-, Backend-, Migrations-, Seed-, Env- oder Staging-Aenderung
+- Phase D5.1 umgesetzt: Nach manueller Strategieanlage aus `/strategy?projectId=...` zeigt der bestehende Strategy-Flow eine Success Guidance mit Rueckweg zu `/projects/<projectId>` und ordnet ZOPA, BATNA, Argumente und Konzessionen als nachgelagerte Schritte ein, ohne neue Route, Backend, Migration, KI, Scoring oder automatische Strategieerzeugung
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -266,6 +267,15 @@ Phase D4.4:
 - Der kompakte Smoke-Test-Plan fuer den Flow Project Detail -> Preparation Gaps Card -> Strategie vorbereiten -> Strategy Empty State -> Strategie manuell anlegen ist in `docs/browser-smoke-test-plan.md` ergaenzt.
 - Weiterhin bewusst ausserhalb des Scopes bleiben automatische Strategieerzeugung, KI-Analyse, Scoring, RAG, neue Datenmodelle, neue APIs, Migrationen, Seed-Aenderungen, Env-/Secret-Werte und Staging-Deployment.
 - Issue #55 und Issue #113 bleiben offene Nicht-Blocker fuer diesen D4-Zwischenstand.
+
+Phase D5.1:
+
+- D5.1 verbessert gezielt die Success Guidance nach manueller Strategieanlage im bestehenden Strategy-Create-Flow.
+- Nach dem Create bleibt der projektbezogene Einstieg `/strategy?projectId=...` erhalten und zeigt eine klare Meldung, dass die Strategie angelegt wurde.
+- Ein sichtbarer CTA fuehrt zurueck zu `/projects/<projectId>`, damit die Vorbereitung im Projektkontext fortgesetzt werden kann.
+- ZOPA, BATNA, Argumente und Konzessionen werden als nachgelagerte naechste Schritte eingeordnet.
+- `/strategy` ohne `projectId` bleibt die allgemeine Projektauswahl.
+- D5.1 erzeugt keine Strategie automatisch, baut keine neue Route und fuehrt keine Backend-, Migrations-, KI-, Scoring-, RAG- oder Datenmodell-Aenderung ein.
 
 Vorgemerkte Folgehinweise aus C15 bis C17:
 

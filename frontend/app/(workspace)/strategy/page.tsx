@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { ArrowLeft, ArrowRight, FileText, Handshake, Save, Scale, ShieldCheck, Target } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, FileText, Handshake, Save, Scale, ShieldCheck, Target } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { EmptyState, ErrorState } from "@/components/state-patterns";
@@ -19,10 +19,11 @@ import { optionalFormString, requiredFormString } from "@/lib/form-data";
 
 type StrategySearchParams = {
   projectId?: string;
+  created?: string;
 };
 
 export default async function StrategyPage({ searchParams }: { searchParams: Promise<StrategySearchParams> }) {
-  const { projectId } = await searchParams;
+  const { projectId, created } = await searchParams;
 
   if (!projectId) {
     return <ProjectSelection />;
@@ -56,6 +57,7 @@ export default async function StrategyPage({ searchParams }: { searchParams: Pro
   }
 
   const strategy = strategies[0];
+  const showCreatedGuidance = Boolean(strategy && created === "1");
 
   let zopaItems: ZopaItemRead[] = [];
   let batnaOptions: BatnaOptionRead[] = [];
@@ -146,6 +148,7 @@ export default async function StrategyPage({ searchParams }: { searchParams: Pro
         </section>
       ) : (
         <>
+          {showCreatedGuidance ? <StrategyCreatedGuidance projectId={project.id} /> : null}
           <StrategyHeadSection strategy={strategy} projectId={project.id} />
           <ZopaSection strategyId={strategy.id} projectId={project.id} items={zopaItems} />
           <BatnaSection strategyId={strategy.id} projectId={project.id} items={batnaOptions} />
@@ -198,6 +201,26 @@ async function ProjectSelection() {
         </section>
       )}
     </>
+  );
+}
+
+function StrategyCreatedGuidance({ projectId }: { projectId: string }) {
+  return (
+    <section className="rounded-md border border-border bg-card p-5">
+      <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+        <div className="min-w-0">
+          <SectionTitle icon={<CheckCircle2 className="size-4" />} title="Strategie wurde angelegt" />
+          <p className="mt-3 text-sm leading-6 text-muted-foreground">
+            Der Strategie-Kopf ist gespeichert. Kehre zum Projekt zurueck, um die Vorbereitung fortzusetzen und die naechsten offenen Schritte im Projektkontext zu
+            pruefen.
+          </p>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            ZOPA, BATNA, Argumente oder Konzessionen sind nachgelagerte naechste Schritte und koennen anschliessend hier gepflegt werden.
+          </p>
+        </div>
+        <ActionLink href={`/projects/${projectId}`} label="Zurueck zum Projekt" icon={<ArrowLeft className="size-4" />} />
+      </div>
+    </section>
   );
 }
 
@@ -458,7 +481,7 @@ async function createStrategyAction(projectId: string, companyId: string, formDa
     overall_objective: optionalFormString(formData, "overall_objective"),
     notes: optionalFormString(formData, "notes"),
   });
-  refreshStrategy(projectId);
+  refreshStrategy(projectId, { created: true });
 }
 
 async function updateStrategyAction(id: string, projectId: string, formData: FormData) {
@@ -528,10 +551,10 @@ async function updateArgumentationLineAction(id: string, projectId: string, form
   refreshStrategy(projectId);
 }
 
-function refreshStrategy(projectId: string): never {
+function refreshStrategy(projectId: string, options?: { created?: boolean }): never {
   revalidatePath("/strategy");
   revalidatePath(`/projects/${projectId}`);
-  redirect(`/strategy?projectId=${projectId}`);
+  redirect(`/strategy?projectId=${projectId}${options?.created ? "&created=1" : ""}`);
 }
 
 function zopaPayload(formData: FormData) {

@@ -66,6 +66,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase D4.2: Die Preparation Gaps Card fuehrt klarer zum bestehenden Strategie-Einstieg, priorisiert bei fehlender Strategie den Strategie-Kopf vor Strategiebausteinen und betont, dass keine Strategie automatisch erzeugt wird
 - Phase D4.3: Der bestehende Strategy-Einstieg mit `projectId` zeigt bei Projekten ohne Strategie einen ruhigen Empty State und fuehrt zur manuellen Strategieanlage, ohne automatische Strategieerzeugung
 - Phase D4.4: D4.1 bis D4.3 sind als D4-Preparation-UX-Zwischenstand inklusive kompaktem Smoke-Test-Plan dokumentiert
+- Phase D5.1: Nach manueller Strategieanlage aus `/strategy?projectId=...` zeigt der bestehende Strategy-Flow eine Success Guidance mit Rueckweg zum Projekt und ordnet ZOPA, BATNA, Argumente und Konzessionen als nachgelagerte Schritte ein
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
@@ -387,7 +388,7 @@ Offene Nicht-Blocker:
 
 ## 11. Phase D4: Project Preparation / Preparation Gaps
 
-Status: D4.1 bis D4.3 umgesetzt; D4.4 dokumentiert den aktuellen Zwischenstand und den manuellen Smoke-Test.
+Status: D4.1 bis D4.3 umgesetzt; D4.4 dokumentiert den aktuellen Zwischenstand und den manuellen Smoke-Test. D5.1 ergaenzt den Rueckweg nach manueller Strategieanlage.
 
 Ziel: Project-Detail-/Preparation-UX ausbauen, ohne automatische Bewertung oder neue Datenmodelle vorzuziehen.
 
@@ -397,6 +398,7 @@ Umgesetzte Schritte:
 2. D4.2: Strategy Entry Guidance in der Preparation Gaps Card geschaerft.
 3. D4.3: Strategy Entry Page fuer Projekte ohne Strategie geglaettet.
 4. D4.4: D4-Preparation-UX-Zwischenabschluss und Smoke-Test-Plan dokumentiert.
+5. D5.1: Success Guidance nach manueller Strategieanlage mit Rueckweg zum Projekt ergaenzt.
 
 D4.1 macht Vorbereitungsluecken ausschliesslich aus vorhandenen Objekten und bestehenden API-Listen sichtbar: Bedarfskontext, SupplierProfile, Supplier Context, Strategy, Strategiebausteine aus ZOPA/BATNA/Argumentation/Konzession, SimulationScenario und Trainerreview. Die Card bleibt eine ruhige Vorhanden-/Offen-/Spaeter-Sicht mit kurzem naechstem Schritt und fuehrt keine KI-Integration, kein Supplier Scoring, kein RAG, keine automatische Lieferantenanalyse und keine neue Datenstruktur ein.
 
@@ -405,6 +407,8 @@ D4.2 nutzt weiterhin den bestehenden Einstieg `/strategy?projectId=...`. Wenn no
 D4.3 verbessert denselben bestehenden Strategy-Einstieg fuer Projekte ohne Strategie. `/strategy?projectId=...` zeigt nun einen ruhigen, projektbezogenen Empty State, erklaert die manuelle Strategieanlage, betont die fehlende automatische Erzeugung und ordnet ZOPA, BATNA, Argumente und Konzessionen als nachgelagerte Schritte ein. Der bestehende Anlage-Workflow bleibt unveraendert; es gibt keine neue Route, keine Backend-Aenderung, keine Migration und keine automatische Datenveraenderung.
 
 D4.4 haelt diesen Zwischenstand als dokumentierten Preparation-UX-Flow fest: Project Detail -> Preparation Gaps Card -> Strategie vorbereiten -> Strategy Empty State -> Strategie manuell anlegen. Der Smoke-Test-Plan steht in `docs/browser-smoke-test-plan.md`. D4 bleibt weiterhin begrenzt auf Orientierung aus vorhandenen Daten; es gibt keine automatische Strategieerzeugung, keine KI-Analyse, kein Scoring, kein RAG, keine neuen Datenmodelle und keine Seed- oder Deployment-Aenderung.
+
+D5.1 nutzt weiterhin den bestehenden Strategy-Create-Flow und die Route `/strategy?projectId=...`. Nach der manuellen Anlage redirectet der Flow auf dieselbe Strategy-Seite mit Success-Hinweis, macht klar, dass die Strategie angelegt wurde, bietet einen Rueckweg zu `/projects/<projectId>` und ordnet ZOPA, BATNA, Argumente und Konzessionen als nachgelagerte naechste Schritte ein. `/strategy` ohne `projectId` bleibt die allgemeine Projektauswahl; es gibt keine neue Route, keine Backend-Aenderung, keine Migration und keine automatische Strategieerzeugung.
 
 Offene Nicht-Blocker nach D4.4:
 

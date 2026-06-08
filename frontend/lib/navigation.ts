@@ -99,7 +99,7 @@ export const navigationGroups: NavigationGroup[] = [
       {
         label: "Strategie",
         href: "/strategy",
-        description: "ZOPA, BATNA, Konzessionen und Argumente",
+        description: "ZOPA, BATNA, WAP, Konzessionen und Argumente",
         icon: Target,
       },
       {

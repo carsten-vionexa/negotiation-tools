@@ -42,19 +42,24 @@ export function AppShell({ children }: { children: ReactNode }) {
                         key={item.href}
                         href={item.href}
                         className={cn(
-                          "flex items-start gap-3 rounded-md px-3 py-2.5 text-sm transition",
+                          "group flex items-start gap-3 rounded-md border border-transparent px-3 py-2.5 text-sm transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
                           isActive
-                            ? "bg-primary text-primary-foreground"
-                            : "text-foreground hover:bg-muted",
+                            ? "border-primary/40 bg-primary/10 text-foreground shadow-sm"
+                            : "text-foreground hover:border-primary/20 hover:bg-muted hover:text-foreground",
                         )}
                       >
-                        <Icon className="mt-0.5 size-4 shrink-0" />
+                        <Icon
+                          className={cn(
+                            "mt-0.5 size-4 shrink-0 transition-colors",
+                            isActive ? "text-primary" : "text-muted-foreground group-hover:text-primary",
+                          )}
+                        />
                         <span className="min-w-0">
                           <span className="block font-medium">{item.label}</span>
                           <span
                             className={cn(
-                              "block text-xs leading-5",
-                              isActive ? "text-primary-foreground/75" : "text-muted-foreground",
+                              "block text-xs leading-5 transition-colors",
+                              isActive ? "text-foreground/75" : "text-muted-foreground group-hover:text-foreground/75",
                             )}
                           >
                             {item.description}

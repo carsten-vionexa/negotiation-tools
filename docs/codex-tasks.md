@@ -105,6 +105,7 @@
 - Phase D5.4 umgesetzt: Die MVP-Workflow-Sidebar nennt WAP im Strategie-Menuepunkt und nutzt konsistente lesbare Normal-, Hover- und Active-States fuer Icon, Titel und Beschreibung, ohne Menuestruktur, Routen, Backend, Migration, KI, Scoring oder Datenmodell-Aenderung
 - Phase D5.5 umgesetzt: Lokaler Browser-Smoke-Test fuer den D5.1-D5.4-Strategy-Guidance-Flow bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert, ohne Produkt-, UI-Logik-, Backend-, Migrations-, Seed-, KI-, Scoring- oder RAG-Aenderung
 - Phase D5.6 umgesetzt: Hostinger-Staging per Fast-Forward auf `46b045f` aktualisiert, Staging-Stack neu gebaut/gestartet und D5-Strategy-Guidance-Flow browserseitig bestanden dokumentiert, ohne Produktcode-, Backend-, Migrations-, Seed-, KI-, Scoring- oder RAG-Aenderung
+- Phase D6.1 umgesetzt: Strategy-Formularfelder, Pflichtfeldsignale, Placeholder und Hilfetexte fuer Strategy Objectives, ZOPA, BATNA, WAP, Konzessionen und Argumente fachlich geschaerft; ZOPA-Dimension wird nun als minimaler Pflichtanker validiert, ohne Backend, Migration, neue Datenstruktur, KI, Scoring, RAG oder automatische Strategieerzeugung
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -419,6 +420,16 @@ Vorgemerkte Folgehinweise aus C15 bis C17:
 - Browser-Smoke-Test auf `https://negotiation.tools.hawkins-consulting.de` mit authentifizierter Session ausfuehren: Project Detail, Preparation Gaps Card, Strategy-Einstieg, Strategy-Guidance, WAP-Abgrenzung, Success Guidance beziehungsweise Nicht-Blocker, Rueckweg, Sidebar, `/strategy` ohne `projectId` und kleine Breite.
 - Keine neuen Env-/Secret-Werte einfuehren, keine Seed-Aenderung ausfuehren und Migrationen nur anwenden, falls der aktualisierte Stand sie erfordert.
 - Sicherstellen, dass D5.6 keine Produktcodeaenderung, keine Backend-Aenderung, keine Migration, keine Seed-Aenderung und keine KI-, Scoring- oder RAG-Logik einfuehrt.
+
+## Manuelle Pruefhilfe D6.1
+
+- `/strategy?projectId=<bestehende Projekt-ID>` oeffnen und den Strategy-Kopf pruefen: Titel ist sichtbar Pflichtfeld; Strategy Objective, Zielergebnis, Minimum, WAP, ZOPA, BATNA, Konzessionsstrategie, Argumentationssummary, Risiken und Notizen haben fachlich eindeutige Placeholder/Hilfetexte.
+- Sicherstellen, dass WAP als minimale akzeptable Grenze beschrieben wird, BATNA als externe Alternative und ZOPA als moeglicher Einigungskorridor.
+- ZOPA-Dimension anlegen: Ohne Dimension soll die UI beziehungsweise Server Action ein Pflichtfeld verlangen; mit Dimension bleibt die Anlage wie bisher moeglich.
+- BATNA-Option pruefen: Titel bleibt Pflichtfeld; Beschreibung und Impact machen klar, dass es um eine Alternative ausserhalb der Verhandlung geht.
+- Konzession pruefen: Hilfetexte sollen Tauschlogik zeigen (`Wir geben` nur gegen Gegenleistung), nicht einseitiges Nachgeben.
+- Argumentationslinie pruefen: Hilfetext/Placeholder sollen fakten-, TCO-, risiko-, qualitaets- oder beziehungsbezogene Argumente mit Belegen nahelegen.
+- Sicherstellen, dass keine neue Strategie, keine Bausteine und keine Bewertungen automatisch erzeugt werden und dass D5-Guidance sichtbar bleibt.
 
 ## Manuelle Pruefhilfe Phase B7
 

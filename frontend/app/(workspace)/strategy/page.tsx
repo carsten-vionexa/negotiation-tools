@@ -128,7 +128,8 @@ export default async function StrategyPage({ searchParams }: { searchParams: Pro
                 bevor du das Formular speicherst.
               </p>
               <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                Danach kannst du Strategiebausteine wie ZOPA, BATNA, Argumente und Konzessionen ergaenzen.
+                Danach kannst du Strategiebausteine wie ZOPA, BATNA, WAP, Argumente und Konzessionen ergaenzen. Der Strategie-Kopf braucht nur einen Titel;
+                die fachlichen Felder duerfen schrittweise wachsen.
               </p>
             </div>
             <div className="rounded-md border border-dashed border-border bg-muted/40 p-4">
@@ -139,10 +140,21 @@ export default async function StrategyPage({ searchParams }: { searchParams: Pro
             </div>
           </div>
           <form action={createStrategyAction.bind(null, project.id, project.company_id)} className="mt-5 grid gap-3 md:grid-cols-2">
-            <Field label="Titel" name="title" defaultValue={`${project.title} - Strategie`} required />
-            <Field label="Status" name="status" defaultValue="draft" />
-            <TextArea label="Gesamtziel" name="overall_objective" defaultValue={project.objective} />
-            <TextArea label="Notizen / offene Fragen" name="notes" placeholder="Hypothese: ... / Offene Frage: ..." />
+            <Field label="Titel" name="title" defaultValue={`${project.title} - Strategie`} required hint="Pflichtfeld: kurzer Name fuer diesen Strategie-Stand." />
+            <Field label="Status" name="status" defaultValue="draft" hint="Optional, z. B. draft, reviewed oder active." />
+            <TextArea
+              label="Gesamtziel / Strategy Objective"
+              name="overall_objective"
+              defaultValue={project.objective}
+              placeholder="Was soll diese Verhandlung erreichen, z. B. Preisziel, Lieferfaehigkeit, Risikoabbau oder Beziehungssicherung?"
+              hint="Optionaler Startpunkt fuer Erfolgsziele; Zielergebnis, WAP, BATNA und ZOPA werden danach getrennt geschaerft."
+            />
+            <TextArea
+              label="Notizen / offene Fragen"
+              name="notes"
+              placeholder="Hypothese: ... / Offene Frage: ..."
+              hint="Optional: Annahmen, Datenluecken oder Punkte fuer Analyse und Gespraechsvorbereitung."
+            />
             <SubmitButton label="Strategie-Kopf anlegen" />
           </form>
         </section>
@@ -318,18 +330,78 @@ function StrategyHeadSection({ strategy, projectId }: { strategy: StrategyRead; 
         Pflege den Walk-away Point als manuelle Abbruchgrenze. Er wird nicht berechnet und ersetzt keine Konzessionsplanung.
       </p>
       <form action={updateStrategyAction.bind(null, strategy.id, projectId)} className="mt-4 grid gap-3 md:grid-cols-2">
-        <Field label="Titel" name="title" defaultValue={strategy.title} required />
-        <Field label="Status" name="status" defaultValue={strategy.status} />
-        <TextArea label="Gesamtziel" name="overall_objective" defaultValue={strategy.overall_objective} />
-        <TextArea label="Zielergebnis" name="target_outcome" defaultValue={strategy.target_outcome} />
-        <TextArea label="Minimum akzeptables Ergebnis" name="minimum_acceptable_outcome" defaultValue={strategy.minimum_acceptable_outcome} />
-        <TextArea label="Walk-away Point" name="walk_away_point" defaultValue={strategy.walk_away_point} />
-        <TextArea label="ZOPA-Zusammenfassung" name="zopa_summary" defaultValue={strategy.zopa_summary} />
-        <TextArea label="BATNA-Zusammenfassung" name="batna_summary" defaultValue={strategy.batna_summary} />
-        <TextArea label="Konzessionsstrategie" name="concession_strategy" defaultValue={strategy.concession_strategy} />
-        <TextArea label="Argumentationssummary" name="argumentation_summary" defaultValue={strategy.argumentation_summary} />
-        <TextArea label="Risikoannahmen / Hypothesen" name="risk_assessment" defaultValue={strategy.risk_assessment} />
-        <TextArea label="Notizen / offene Fragen" name="notes" defaultValue={strategy.notes} />
+        <Field label="Titel" name="title" defaultValue={strategy.title} required hint="Pflichtfeld: kurzer Name fuer diesen Strategie-Stand." />
+        <Field label="Status" name="status" defaultValue={strategy.status} hint="Optional, z. B. draft, reviewed oder active." />
+        <TextArea
+          label="Gesamtziel / Strategy Objective"
+          name="overall_objective"
+          defaultValue={strategy.overall_objective}
+          placeholder="Erfolgsziel dieser Verhandlung, z. B. Zielpreis, Liefertermin, Risikoabbau oder Beziehungssicherung."
+          hint="Optional: beschreibt den gewuenschten Erfolg, nicht die Abbruchgrenze."
+        />
+        <TextArea
+          label="Zielergebnis"
+          name="target_outcome"
+          defaultValue={strategy.target_outcome}
+          placeholder="Welches konkrete Ergebnis waere gut, aber noch realistisch?"
+          hint="Optional: Zielbild oberhalb des Minimums und getrennt vom WAP formulieren."
+        />
+        <TextArea
+          label="Minimum akzeptables Ergebnis"
+          name="minimum_acceptable_outcome"
+          defaultValue={strategy.minimum_acceptable_outcome}
+          placeholder="Welche Mindestbedingungen muessen fuer einen Abschluss erfuellt sein?"
+          hint="Optional: Mindestpaket beschreiben; der WAP ist die klare Grenze, ab der kein Abschluss sinnvoll ist."
+        />
+        <TextArea
+          label="WAP / Walk-away Point"
+          name="walk_away_point"
+          defaultValue={strategy.walk_away_point}
+          placeholder="Ab welcher Preis-, Risiko-, Leistungs- oder Zeitgrenze ist die BATNA besser als ein Abschluss?"
+          hint="Optional: WAP ist die minimale akzeptable Grenze, nicht die Alternative selbst."
+        />
+        <TextArea
+          label="ZOPA-Zusammenfassung"
+          name="zopa_summary"
+          defaultValue={strategy.zopa_summary}
+          placeholder="Moeglicher Einigungskorridor zwischen eigener Grenze und angenommener Grenze der Gegenseite."
+          hint="Optional: ZOPA beschreibt den moeglichen Ueberschneidungsbereich, nicht die BATNA."
+        />
+        <TextArea
+          label="BATNA-Zusammenfassung"
+          name="batna_summary"
+          defaultValue={strategy.batna_summary}
+          placeholder="Beste Alternative ausserhalb dieser Verhandlung, falls kein akzeptabler Abschluss entsteht."
+          hint="Optional: BATNA ist die externe Alternative; der WAP leitet ab, wann sie vorzuziehen ist."
+        />
+        <TextArea
+          label="Konzessionsstrategie"
+          name="concession_strategy"
+          defaultValue={strategy.concession_strategy}
+          placeholder="Wenn wir X geben, erwarten wir Y als Gegenleistung."
+          hint="Optional: Konzessionen als Tauschlogik formulieren, nicht als einseitiges Nachgeben."
+        />
+        <TextArea
+          label="Argumentationssummary"
+          name="argumentation_summary"
+          defaultValue={strategy.argumentation_summary}
+          placeholder="Fakten-, TCO-, Risiko-, Qualitaets- oder Beziehungsargumente mit Belegen skizzieren."
+          hint="Optional: Argumente moeglichst belegbar und bezogen auf Wert, Risiko oder Beziehung formulieren."
+        />
+        <TextArea
+          label="Risikoannahmen / Hypothesen"
+          name="risk_assessment"
+          defaultValue={strategy.risk_assessment}
+          placeholder="Welche Annahmen sind unsicher und koennen WAP, ZOPA, BATNA oder Konzessionen beeinflussen?"
+          hint="Optional: Hypothesen sichtbar machen, damit sie nicht mit Fakten verwechselt werden."
+        />
+        <TextArea
+          label="Notizen / offene Fragen"
+          name="notes"
+          defaultValue={strategy.notes}
+          placeholder="Offene Datenpunkte, Gespraechsfragen oder Pruefauftraege."
+          hint="Optional: Arbeitsnotizen fuer die weitere Vorbereitung."
+        />
         <SubmitButton label="Strategie-Kopf speichern" />
       </form>
     </section>
@@ -341,7 +413,8 @@ function ZopaSection({ strategyId, projectId, items }: { strategyId: string; pro
     <section className="rounded-md border border-border bg-card p-5">
       <SectionTitle icon={<Scale className="size-4" />} title="ZOPA-Dimensionen" />
       <p className="mt-2 text-sm leading-6 text-muted-foreground">
-        Manuell gepflegte Einigungskorridore zwischen eigener Grenze und angenommener Grenze der Gegenseite. Es findet keine automatische ZOPA-Berechnung statt.
+        Manuell gepflegte Einigungskorridore zwischen eigener Grenze und angenommener Grenze der Gegenseite. ZOPA ist nicht die BATNA und nicht der WAP.
+        Es findet keine automatische ZOPA-Berechnung statt.
       </p>
       <div className="mt-4 grid gap-4">
         {items.length === 0 ? <InlineEmpty text="Noch keine ZOPA-Dimensionen gepflegt." /> : null}
@@ -373,7 +446,10 @@ function BatnaSection({ strategyId, projectId, items }: { strategyId: string; pr
   return (
     <section className="rounded-md border border-border bg-card p-5">
       <SectionTitle icon={<ShieldCheck className="size-4" />} title="BATNA-Optionen" />
-      <p className="mt-2 text-sm leading-6 text-muted-foreground">Alternativen werden manuell beschrieben. Es gibt keine automatische BATNA-Bewertung.</p>
+      <p className="mt-2 text-sm leading-6 text-muted-foreground">
+        BATNA beschreibt die beste Alternative ausserhalb dieser Verhandlung. Sie ist nicht der Walk-away Point; der WAP markiert nur, ab wann diese Alternative
+        vorzuziehen ist. Es gibt keine automatische BATNA-Bewertung.
+      </p>
       <div className="mt-4 grid gap-4">
         {items.length === 0 ? <InlineEmpty text="Noch keine BATNA-Optionen gepflegt." /> : null}
         {items.map((item) => (
@@ -439,6 +515,9 @@ function ArgumentationSection({ strategyId, projectId, items }: { strategyId: st
   return (
     <section className="rounded-md border border-border bg-card p-5">
       <SectionTitle icon={<FileText className="size-4" />} title="Argumentationslinien" />
+      <p className="mt-2 text-sm leading-6 text-muted-foreground">
+        Argumente sollten moeglichst fakten-, TCO-, risiko-, qualitaets- oder beziehungsbezogen sein und erwartete Gegenargumente mitdenken.
+      </p>
       <div className="mt-4 grid gap-4">
         {items.length === 0 ? <InlineEmpty text="Noch keine Argumentationslinien gepflegt." /> : null}
         {items.map((item) => (
@@ -467,14 +546,26 @@ function ArgumentationSection({ strategyId, projectId, items }: { strategyId: st
 function ZopaForm({ action, item }: { action: (formData: FormData) => Promise<void>; item?: ZopaItemRead }) {
   return (
     <form action={action} className="mt-3 grid gap-3 md:grid-cols-2">
-      <Field label="Dimension" name="dimension" defaultValue={item?.dimension} />
-      <Field label="Prioritaet" name="priority" defaultValue={item?.priority} />
-      <TextArea label="Beschreibung" name="description" defaultValue={item?.description} />
-      <Field label="Buyer Target Value" name="buyer_target_value" defaultValue={item?.buyer_target_value} />
-      <Field label="Buyer Walk-away Value" name="buyer_walk_away_value" defaultValue={item?.buyer_walk_away_value} />
-      <Field label="Supplier Expected Target" name="supplier_expected_target_value" defaultValue={item?.supplier_expected_target_value} />
-      <Field label="Supplier Estimated Walk-away" name="supplier_estimated_walk_away_value" defaultValue={item?.supplier_estimated_walk_away_value} />
-      <Field label="Possible Agreement Range" name="possible_agreement_range" defaultValue={item?.possible_agreement_range} />
+      <Field label="Dimension" name="dimension" defaultValue={item?.dimension} required hint="Pflichtanker im UI, z. B. Preis, Lieferzeit, Volumen oder Service-Level." />
+      <Field label="Prioritaet" name="priority" defaultValue={item?.priority} placeholder="hoch / mittel / niedrig" />
+      <TextArea
+        label="Beschreibung"
+        name="description"
+        defaultValue={item?.description}
+        placeholder="Worum geht es in dieser Einigungsdimension?"
+        hint="Optional: Dimension fachlich einordnen, bevor Ziel- und Grenzwerte geschaetzt werden."
+      />
+      <Field label="Unser Zielwert" name="buyer_target_value" defaultValue={item?.buyer_target_value} placeholder="z. B. 95 EUR" />
+      <Field
+        label="Unser Walk-away-Wert"
+        name="buyer_walk_away_value"
+        defaultValue={item?.buyer_walk_away_value}
+        placeholder="z. B. maximal 105 EUR"
+        hint="Grenzwert in dieser ZOPA-Dimension; nicht die BATNA selbst."
+      />
+      <Field label="Erwarteter Zielwert Gegenseite" name="supplier_expected_target_value" defaultValue={item?.supplier_expected_target_value} />
+      <Field label="Geschaetzter Walk-away Gegenseite" name="supplier_estimated_walk_away_value" defaultValue={item?.supplier_estimated_walk_away_value} />
+      <Field label="Moeglicher Einigungsbereich" name="possible_agreement_range" defaultValue={item?.possible_agreement_range} placeholder="z. B. 98-103 EUR" />
       <Field label="Waehrung" name="currency" defaultValue={item?.currency} />
       <Field label="Einheit" name="unit" defaultValue={item?.unit} />
       <Field label="Confidence" name="confidence_level" defaultValue={item?.confidence_level} />
@@ -488,16 +579,21 @@ function ZopaForm({ action, item }: { action: (formData: FormData) => Promise<vo
 function BatnaForm({ action, item }: { action: (formData: FormData) => Promise<void>; item?: BatnaOptionRead }) {
   return (
     <form action={action} className="mt-3 grid gap-3 md:grid-cols-2">
-      <Field label="Titel" name="title" defaultValue={item?.title} required />
-      <Field label="BATNA-Typ" name="batna_type" defaultValue={item?.batna_type} />
-      <TextArea label="Beschreibung" name="description" defaultValue={item?.description} />
-      <Field label="Machbarkeit" name="feasibility_level" defaultValue={item?.feasibility_level} />
+      <Field label="Titel" name="title" defaultValue={item?.title} required hint="Pflichtfeld: kurze Bezeichnung der externen Alternative." />
+      <Field label="BATNA-Typ" name="batna_type" defaultValue={item?.batna_type} placeholder="z. B. Alternativlieferant, Eigenfertigung, Verschiebung" />
+      <TextArea
+        label="Beschreibung"
+        name="description"
+        defaultValue={item?.description}
+        placeholder="Welche realistische Alternative haben wir ausserhalb dieser Verhandlung?"
+      />
+      <Field label="Machbarkeit" name="feasibility_level" defaultValue={item?.feasibility_level} placeholder="hoch / mittel / niedrig" />
       <Field label="Geschaetzte Kosten" name="estimated_cost" defaultValue={item?.estimated_cost} />
       <Field label="Waehrung" name="currency" defaultValue={item?.currency} />
       <Field label="Lead Time" name="estimated_lead_time" defaultValue={item?.estimated_lead_time} />
       <Field label="Risiko" name="risk_level" defaultValue={item?.risk_level} />
-      <TextArea label="Impact Assessment" name="impact_assessment" defaultValue={item?.impact_assessment} />
-      <TextArea label="Required Actions" name="required_actions" defaultValue={item?.required_actions} />
+      <TextArea label="Impact Assessment" name="impact_assessment" defaultValue={item?.impact_assessment} placeholder="Auswirkung auf Kosten, Risiko, Zeit, Qualitaet oder Beziehung." />
+      <TextArea label="Required Actions" name="required_actions" defaultValue={item?.required_actions} placeholder="Was muss passieren, damit diese Alternative wirklich verfuegbar ist?" />
       <Field label="Ranking" name="ranking" defaultValue={item?.ranking?.toString()} />
       <Field label="Confidence" name="confidence_level" defaultValue={item?.confidence_level} />
       <Checkbox label="Bevorzugte Option" name="is_preferred" defaultChecked={item?.is_preferred} />
@@ -511,9 +607,19 @@ function ConcessionForm({ action, item }: { action: (formData: FormData) => Prom
     <form action={action} className="mt-3 grid gap-3 md:grid-cols-2">
       <Field label="Titel" name="title" defaultValue={item?.title} required />
       <Field label="Typ" name="concession_type" defaultValue={item?.concession_type} />
-      <TextArea label="Beschreibung" name="description" defaultValue={item?.description} />
-      <TextArea label="Wir geben / ermoeglichen" name="give_condition" defaultValue={item?.give_condition} />
-      <TextArea label="Nur wenn die Gegenseite liefert" name="required_counterpart" defaultValue={item?.required_counterpart} />
+      <TextArea label="Beschreibung" name="description" defaultValue={item?.description} placeholder="Warum ist diese Konzession relevant und wann wird sie eingesetzt?" />
+      <TextArea
+        label="Wir geben / ermoeglichen"
+        name="give_condition"
+        defaultValue={item?.give_condition}
+        placeholder="Unser Angebot, z. B. Volumen, Laufzeit, Zahlungsziel oder Flexibilitaet."
+      />
+      <TextArea
+        label="Nur wenn die Gegenseite liefert"
+        name="required_counterpart"
+        defaultValue={item?.required_counterpart}
+        placeholder="Erwartete Gegenleistung, z. B. Preis, Service-Level, Lieferzusage oder Risikoabsicherung."
+      />
       <Field label="Wert fuer uns" name="value_to_us" defaultValue={item?.value_to_us} />
       <Field label="Wert fuer Gegenseite" name="value_to_counterparty" defaultValue={item?.value_to_counterparty} />
       <Field label="Geschaetzte Kosten" name="estimated_cost" defaultValue={item?.estimated_cost} />
@@ -529,10 +635,10 @@ function ConcessionForm({ action, item }: { action: (formData: FormData) => Prom
 function ArgumentationForm({ action, item }: { action: (formData: FormData) => Promise<void>; item?: ArgumentationLineRead }) {
   return (
     <form action={action} className="mt-3 grid gap-3 md:grid-cols-2">
-      <Field label="Titel" name="title" defaultValue={item?.title} required />
-      <Field label="Argumenttyp" name="argument_type" defaultValue={item?.argument_type} />
-      <TextArea label="Claim" name="claim" defaultValue={item?.claim} />
-      <TextArea label="Evidence" name="evidence" defaultValue={item?.evidence} />
+      <Field label="Titel" name="title" defaultValue={item?.title} required hint="Pflichtfeld: kurze Bezeichnung der Argumentationslinie." />
+      <Field label="Argumenttyp" name="argument_type" defaultValue={item?.argument_type} placeholder="z. B. TCO, Risiko, Qualitaet, Beziehung" />
+      <TextArea label="Claim" name="claim" defaultValue={item?.claim} placeholder="Welche fachliche Aussage wollen wir belastbar vertreten?" />
+      <TextArea label="Evidence" name="evidence" defaultValue={item?.evidence} placeholder="Welche Fakten, Daten, Benchmarks oder Erfahrungen stuetzen den Claim?" />
       <Field label="Quelle" name="source_reference" defaultValue={item?.source_reference} />
       <TextArea label="Erwartetes Gegenargument" name="expected_counterargument" defaultValue={item?.expected_counterargument} />
       <TextArea label="Reaktionsstrategie" name="response_strategy" defaultValue={item?.response_strategy} />
@@ -632,7 +738,7 @@ function refreshStrategy(projectId: string, options?: { created?: boolean }): ne
 
 function zopaPayload(formData: FormData) {
   return {
-    dimension: optionalFormString(formData, "dimension"),
+    dimension: requiredFormString(formData, "dimension", "Dimension"),
     description: optionalFormString(formData, "description"),
     buyer_target_value: optionalFormString(formData, "buyer_target_value"),
     buyer_walk_away_value: optionalFormString(formData, "buyer_walk_away_value"),
@@ -782,21 +888,52 @@ function InlineEmpty({ text }: { text: string }) {
   return <p className="rounded-md border border-dashed border-border p-4 text-sm leading-6 text-muted-foreground">{text}</p>;
 }
 
-function Field({ label, name, defaultValue, required = false }: { label: string; name: string; defaultValue?: string | null; required?: boolean }) {
+function Field({
+  label,
+  name,
+  defaultValue,
+  required = false,
+  placeholder,
+  hint,
+}: {
+  label: string;
+  name: string;
+  defaultValue?: string | null;
+  required?: boolean;
+  placeholder?: string;
+  hint?: string;
+}) {
   return (
     <label>
-      <span className="text-sm font-medium">{label}</span>
+      <span className="text-sm font-medium">
+        {label}
+        {required ? <span className="text-muted-foreground"> *</span> : null}
+      </span>
       <input
         name={name}
         required={required}
         defaultValue={defaultValue ?? ""}
+        placeholder={placeholder}
         className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
       />
+      {hint ? <span className="mt-1 block text-xs leading-5 text-muted-foreground">{hint}</span> : null}
     </label>
   );
 }
 
-function TextArea({ label, name, defaultValue, placeholder }: { label: string; name: string; defaultValue?: string | null; placeholder?: string }) {
+function TextArea({
+  label,
+  name,
+  defaultValue,
+  placeholder,
+  hint,
+}: {
+  label: string;
+  name: string;
+  defaultValue?: string | null;
+  placeholder?: string;
+  hint?: string;
+}) {
   return (
     <label className="md:col-span-2">
       <span className="text-sm font-medium">{label}</span>
@@ -807,6 +944,7 @@ function TextArea({ label, name, defaultValue, placeholder }: { label: string; n
         placeholder={placeholder}
         className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm"
       />
+      {hint ? <span className="mt-1 block text-xs leading-5 text-muted-foreground">{hint}</span> : null}
     </label>
   );
 }

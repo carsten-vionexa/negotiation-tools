@@ -13,6 +13,7 @@ type GapItem = {
   text: string;
   href?: string;
   actionLabel?: string;
+  nextStepText?: string;
 };
 
 export function ProjectPreparationGapsCard({
@@ -42,8 +43,7 @@ export function ProjectPreparationGapsCard({
     trainerCommentCount,
   });
   const presentItems = items.filter((item) => item.status === "present");
-  const openItems = items.filter((item) => item.status === "open");
-  const nextStep = openItems[0] ?? items.find((item) => item.status === "later");
+  const nextStep = findNextStep(items);
 
   return (
     <section className="rounded-md border border-border bg-card p-4">
@@ -81,10 +81,18 @@ export function ProjectPreparationGapsCard({
       </ul>
 
       <div className="mt-3 rounded-md border border-border bg-muted/20 px-3 py-2">
-        <p className="text-sm leading-5">
-          <span className="font-medium">Naechster sinnvoller Schritt: </span>
-          <span className="text-muted-foreground">{nextStep ? nextStepText(nextStep) : "Vorbereitung aktualisiert halten."}</span>
-        </p>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <p className="min-w-0 text-sm leading-5">
+            <span className="font-medium">Naechster sinnvoller Schritt: </span>
+            <span className="text-muted-foreground">{nextStep ? nextStepText(nextStep) : "Vorbereitung aktualisiert halten."}</span>
+          </p>
+          {nextStep?.href && nextStep.actionLabel ? (
+            <Link href={nextStep.href} className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-primary hover:underline">
+              {nextStep.actionLabel}
+              <ArrowRight className="size-3.5" aria-hidden="true" />
+            </Link>
+          ) : null}
+        </div>
       </div>
     </section>
   );
@@ -109,6 +117,8 @@ function buildGapItems({
 }): GapItem[] {
   const hasRequestContext = Boolean(project.request_item_id || requestItem);
   const hasSupplierProfile = Boolean(project.supplier_profile_id || supplier);
+  const hasStrategy = strategyCount !== undefined && strategyCount > 0;
+  const strategyLink = `/strategy?projectId=${project.id}`;
   const hasSupplierContext = Boolean(
     supplier &&
       (hasAnyText(supplier.country, supplier.region, supplier.industry, supplier.supplier_type, supplier.relationship_status, supplier.cultural_context) ||
@@ -149,23 +159,29 @@ function buildGapItems({
       text:
         strategyCount === undefined
           ? "Strategiedaten konnten hier noch nicht verlaesslich eingeordnet werden."
-          : strategyCount > 0
+          : hasStrategy
             ? "Mindestens ein Strategieobjekt liegt fuer dieses Projekt vor."
-            : "Eine Strategie kann als naechster Vorbereitungsschritt angelegt werden.",
-      href: `/strategy?projectId=${project.id}`,
-      actionLabel: "Strategie vorbereiten",
+            : "Lege zuerst eine Strategie an. Es wird keine Strategie automatisch erzeugt.",
+      href: strategyLink,
+      actionLabel: hasStrategy ? "Strategie oeffnen" : "Strategie vorbereiten",
+      nextStepText: hasStrategy
+        ? "Strategie oeffnen und die naechsten Bausteine pruefen."
+        : "Strategie vorbereiten. Lege zuerst eine Strategie an, bevor ZOPA, BATNA, Argumente oder Konzessionen ergaenzt werden.",
     },
     {
       label: "Strategiebausteine",
-      status: loadedStatus(strategyBuildingBlockCount),
+      status: hasStrategy ? loadedStatus(strategyBuildingBlockCount) : "later",
       text:
-        strategyBuildingBlockCount === undefined
+        !hasStrategy
+          ? "Erst nach einer Strategie sinnvoll: ZOPA, BATNA, Argumente und Konzessionen."
+          : strategyBuildingBlockCount === undefined
           ? "ZOPA-, BATNA-, Argumentations- oder Konzessionsdaten sind spaeter genauer pruefbar."
           : strategyBuildingBlockCount > 0
             ? "Mindestens ein ZOPA-, BATNA-, Argumentations- oder Konzessionsbaustein ist vorhanden."
-            : "ZOPA, BATNA, Argumentationslinie oder Konzessionen sind noch offen.",
-      href: `/strategy?projectId=${project.id}`,
-      actionLabel: "Bausteine pflegen",
+            : "Ergaenze jetzt ZOPA, BATNA, Argumentationslinie oder Konzessionen zur bestehenden Strategie.",
+      href: hasStrategy ? strategyLink : undefined,
+      actionLabel: hasStrategy ? "Bausteine ergaenzen" : undefined,
+      nextStepText: "Strategiebausteine ergaenzen: ZOPA, BATNA, Argumente oder Konzessionen zur bestehenden Strategie pflegen.",
     },
     {
       label: "Simulation",
@@ -200,6 +216,13 @@ function loadedStatus(count?: number): GapStatus {
   }
 
   return count > 0 ? "present" : "open";
+}
+
+function findNextStep(items: GapItem[]) {
+  const preferredLabels = ["Strategie", "Strategiebausteine", "Simulation", "Trainerreview"];
+  const preferredOpenItem = preferredLabels.map((label) => items.find((item) => item.label === label && item.status === "open")).find(Boolean);
+
+  return preferredOpenItem ?? items.find((item) => item.status === "open") ?? items.find((item) => item.status === "later");
 }
 
 function hasAnyText(...values: Array<string | null | undefined>) {
@@ -255,6 +278,10 @@ function statusLabelClassName(status: GapStatus) {
 }
 
 function nextStepText(item: GapItem) {
+  if (item.nextStepText) {
+    return item.nextStepText;
+  }
+
   if (item.status === "later") {
     return `${item.label} spaeter pruefen.`;
   }

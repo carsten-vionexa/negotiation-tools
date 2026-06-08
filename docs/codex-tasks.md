@@ -96,6 +96,7 @@
 - Phase D3.9 umgesetzt: Staging-Smoke-Test fuer Edit Guidance bestanden, ohne Produkt-, Seed-, API- oder Migrationsaenderung
 - Phase D3.10 umgesetzt: D3 Supplier Context als erster UX-Strang vorlaeufig dokumentarisch abgeschlossen und D4 als moegliche spaetere Project-Preparation-/Preparation-Gaps-Richtung abgegrenzt, ohne Code-, Staging-, Seed-, API-, Migrations- oder Produktfunktionsaenderung
 - Phase D4.1 umgesetzt: Project-Detailseite zeigt eine kompakte Preparation Gaps Card fuer Bedarfskontext, SupplierProfile, Supplier Context, Strategy, Strategiebausteine, SimulationScenario und Trainerreview aus vorhandenen Daten und bestehenden API-Listen, ohne Backend, Migration, KI, Scoring, RAG oder neues Datenmodell
+- Phase D4.2 umgesetzt: Die Preparation Gaps Card fuehrt bei fehlender Strategie klarer zum bestehenden Strategie-Einstieg, stellt Strategiebausteine nachgelagert zur Strategieanlage dar und betont, dass keine Strategie automatisch erzeugt wird
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -242,6 +243,13 @@ Phase D4.1:
 - Die Card nutzt vorhandene Project-, RequestItem-, SupplierProfile-, Strategy-, ZOPA-, BATNA-, ArgumentationLine-, ConcessionItem-, SimulationScenario- und TrainerComment-Daten ueber bestehende Frontend-API-Helper.
 - Dargestellt werden nur vorhandene oder offene Vorbereitungselemente sowie ein ruhiger naechster sinnvoller Schritt.
 - D4.1 ist keine automatische Bewertung, keine KI-Integration, kein Supplier Scoring, kein RAG und kein neues Datenmodell.
+
+Phase D4.2:
+
+- D4.2 ist als gezielte Strategy Entry Guidance in derselben Preparation Gaps Card umgesetzt.
+- Wenn noch keine Strategie vorhanden ist, verweist der naechste sinnvolle Schritt auf den bestehenden Einstieg `/strategy?projectId=...` und macht klar, dass zuerst eine Strategie angelegt wird.
+- Strategiebausteine werden ohne vorhandene Strategie als nachgelagert dargestellt; bei vorhandener Strategie, aber fehlenden Bausteinen, wandert der naechste sinnvolle Schritt zu ZOPA, BATNA, Argumenten oder Konzessionen.
+- D4.2 erzeugt keine Strategie automatisch, aendert keine Daten, baut keine neue Route und fuehrt keine Backend-, Migrations-, KI-, Scoring- oder RAG-Logik ein.
 
 Vorgemerkte Folgehinweise aus C15 bis C17:
 

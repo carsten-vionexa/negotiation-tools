@@ -103,6 +103,7 @@
 - Phase D5.2 umgesetzt: Bei vorhandener Strategie zeigt `/strategy?projectId=...` eine kompakte Building-Blocks-Guidance fuer ZOPA, BATNA, Argumente und Konzessionen mit Status aus vorhandenen Bausteinen, ohne automatische Baustein-Erzeugung, Backend, Migration, KI, Scoring, RAG, neue Route oder Datenmodell-Aenderung
 - Phase D5.3 umgesetzt: Die bestehende Strategy-Guidance erklaert WAP / Walk-away Point als manuelle Abbruchgrenze aus Ziel, Risiko, Kosten/Nutzen und BATNA und grenzt ihn von Konzessionen und ZOPA ab, ohne automatische Berechnung, Backend, Migration, KI, Scoring, neue Route oder Datenmodell-Aenderung
 - Phase D5.4 umgesetzt: Die MVP-Workflow-Sidebar nennt WAP im Strategie-Menuepunkt und nutzt konsistente lesbare Normal-, Hover- und Active-States fuer Icon, Titel und Beschreibung, ohne Menuestruktur, Routen, Backend, Migration, KI, Scoring oder Datenmodell-Aenderung
+- Phase D5.5 umgesetzt: Lokaler Browser-Smoke-Test fuer den D5.1-D5.4-Strategy-Guidance-Flow bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert, ohne Produkt-, UI-Logik-, Backend-, Migrations-, Seed-, KI-, Scoring- oder RAG-Aenderung
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -304,6 +305,14 @@ Phase D5.4:
 - Geprueft wurden die MVP-Workflow-Menuepunkte Analyse, Strategie, Briefing, Simulation und Trainerreview.
 - D5.4 baut keine neue Navigation, keine neue Route und fuehrt keine Backend-, Migrations-, KI-, Scoring-, RAG- oder Datenmodell-Aenderung ein.
 
+Phase D5.5:
+
+- D5.5 ist als Smoke-Test- und Dokumentationsabschluss fuer den D5-Strategy-Guidance-Strang umgesetzt.
+- Lokal geprueft wurden Project Detail, Preparation Gaps Card, Strategy-Einstieg mit Projektkontext, vorhandener Strategy-Kopf, Building-Blocks-Guidance fuer ZOPA, BATNA, WAP, Argumente und Konzessionen, Rueckweg zum Projekt, allgemeiner `/strategy`-Einstieg ohne `projectId`, Sidebar-Zustaende und kleine Browserbreite.
+- Das Demo-Projekt `01d9d55b-87c3-5a5a-876a-b55a3ce2db33` besitzt bereits eine Strategie; deshalb wurde keine zweite Strategie angelegt. D5.1 bleibt ueber den vorhandenen Stand beziehungsweise frueheren Test und den sichtbaren Rueckweg zum Projekt abgedeckt.
+- Ergebnis und Nicht-Blocker sind in `docs/browser-smoke-test-plan.md` dokumentiert.
+- D5.5 fuehrt keine Produktfunktion, keine UI-Logik, keine Backend-Aenderung, keine Migration, keine Seed-Aenderung und keine KI-, Scoring- oder RAG-Logik ein.
+
 Vorgemerkte Folgehinweise aus C15 bis C17:
 
 - Die statischen Mapping-Zielfeldlisten sollten mittelfristig zentralisiert oder aus Backend-/Contract-Metadaten abgeleitet werden, damit Frontend und Backend nicht auseinanderlaufen; C17 fuehrt dieses Refactoring nicht durch.
@@ -375,6 +384,17 @@ Vorgemerkte Folgehinweise aus C15 bis C17:
 - `/strategy` ohne `projectId` oeffnen und pruefen, ob die allgemeine Strategieansicht weiterhin funktioniert und kein projektbezogener Empty State erscheint.
 - Mobile Spotcheck fuer `/projects/<demo-project-id>` und `/strategy?projectId=<demo-project-id>` durchfuehren: keine horizontale Ueberbreite, Card und Empty State lesbar, Buttons und Links bedienbar.
 - Sicherstellen, dass D4.4 keine Produktfunktion, keine Frontend-/Backend-Codeaenderung, keine Migration, keine Seed-Aenderung, keine Env-/Secret-Werte, keine KI-Integration, kein Supplier Scoring, kein Preparation Score und kein RAG eingefuehrt hat.
+
+## Manuelle Pruefhilfe D5.5
+
+- `/projects/01d9d55b-87c3-5a5a-876a-b55a3ce2db33` oeffnen und Project-Detailseite, Preparation Gaps Card, plausiblen Strategy-Status sowie Strategy-Einstieg pruefen.
+- `/strategy?projectId=01d9d55b-87c3-5a5a-876a-b55a3ce2db33` oeffnen und vorhandenen Strategy-Kopf, Building-Blocks-Guidance sowie fachliche Einordnung von ZOPA, BATNA, WAP, Argumenten und Konzessionen pruefen.
+- Sicherstellen, dass WAP als Walk-away Point beziehungsweise Abbruchgrenze erklaert wird, nicht mit Konzessionen verwechselt wird und weder WAP noch Bausteine automatisch berechnet oder erzeugt werden.
+- Success Guidance nur reproduzieren, wenn keine bestehende Strategie ueberschrieben oder dupliziert werden muss; andernfalls vorhandenen Stand und Rueckweg zum Projekt dokumentieren.
+- Sidebar fuer Analyse, Strategie, Briefing, Simulation und Trainerreview pruefen: Strategie-Beschreibung enthaelt WAP, Active-/Hover-State sowie Icon, Titel und Unterzeile bleiben lesbar.
+- `/strategy` ohne `projectId` oeffnen und allgemeine Projektauswahl, fehlende projektbezogene Guidance und funktionsfaehige Navigation pruefen.
+- Mobile Spotcheck fuer Project Detail, Strategy mit Projektkontext und `/strategy` ohne `projectId` durchfuehren.
+- Sicherstellen, dass D5.5 keine Produktfunktion, keine UI-Logik, keine Backend-Aenderung, keine Migration, keine Seed-Aenderung und keine KI-, Scoring- oder RAG-Logik einfuehrt.
 
 ## Manuelle Pruefhilfe Phase B7
 

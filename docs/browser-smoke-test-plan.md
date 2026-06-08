@@ -478,3 +478,82 @@ Erwartung:
 
 - Issue #55 bleibt als spaetere PDF-/Upload-/Parsing-Strecke offen und blockiert den D4-Preparation-UX-Zwischenstand nicht.
 - Issue #113 bleibt als Next/PostCSS-audit-Finding zur Beobachtung offen und blockiert den D4-Preparation-UX-Zwischenstand nicht.
+
+## 12. D5-Strategy-Guidance-Smoke-Test-Ergebnis
+
+Durchgefuehrt am 2026-06-08 lokal gegen `http://localhost:3000` und `http://localhost:8000` fuer das Demo-Projekt `01d9d55b-87c3-5a5a-876a-b55a3ce2db33`.
+
+Gesamtergebnis: bestanden ohne Blocker. Es wurden keine Produktfunktionen, keine UI-Logik, keine Backendlogik, keine Migration, keine Seed-Daten, keine KI-, Scoring- oder RAG-Logik geaendert oder vorausgesetzt.
+
+### 12.1 Project Detail
+
+Route: `/projects/01d9d55b-87c3-5a5a-876a-b55a3ce2db33`
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Project-Detailseite rendert | bestanden | Seite zeigt `Verhandlung: Praezisions-Servoantrieb RX-42` |
+| Preparation Gaps Card sichtbar | bestanden | Abschnitt `Vorbereitungsluecken` sichtbar |
+| Strategy-Status plausibel | bestanden | Strategie und Strategiebausteine werden als vorhanden angezeigt; Simulation und Trainerreview bleiben offen |
+| Strategy-Einstieg funktioniert | bestanden | Link `Strategie oeffnen` fuehrt zu `/strategy?projectId=01d9d55b-87c3-5a5a-876a-b55a3ce2db33` |
+
+### 12.2 Strategy mit Projektkontext
+
+Route: `/strategy?projectId=01d9d55b-87c3-5a5a-876a-b55a3ce2db33`
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Strategy-Seite rendert | bestanden | Seite zeigt `Strategie bauen` mit Projektkontext |
+| Strategy-Kopf sichtbar | bestanden | Bestehende Strategie ist vorhanden; Formular `Strategie-Kopf` wird angezeigt |
+| Building-Blocks-Guidance sichtbar | bestanden | Abschnitt `Strategiebausteine vorbereiten` sichtbar |
+| ZOPA fachlich eingeordnet | bestanden | ZOPA wird als Ueberschneidung der Grenzen beschrieben; ein ZOPA-Baustein ist vorhanden |
+| BATNA fachlich eingeordnet | bestanden | BATNA bleibt als beste Alternative beschrieben und aktuell offen |
+| WAP fachlich eingeordnet | bestanden | WAP / Walk-away Point wird als Abbruchgrenze erklaert |
+| WAP nicht mit Konzessionen verwechselt | bestanden | Konzessionen werden als geplante Tauschobjekte oder Zugestaendnisse abgegrenzt |
+| Argumente fachlich eingeordnet | bestanden | Argumente werden als Claims und Belege beschrieben |
+| Konzessionen fachlich eingeordnet | bestanden | Konzessionen werden als Tauschobjekte vorbereitet |
+| Keine automatische WAP-Berechnung | bestanden | Seite benennt WAP als manuell zu pflegende Grenze |
+| Keine automatische Baustein-Erzeugung | bestanden | Guidance sagt ausdruecklich, dass nichts automatisch erzeugt wird |
+
+### 12.3 Success Guidance
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Projektbezogene Strategieanlage | nicht relevant | Fuer das Demo-Projekt ist bereits eine Strategie vorhanden; es wurde bewusst keine zweite Strategie angelegt |
+| D5.1-Abdeckung | bestanden | D5.1 ist ueber den vorhandenen Stand und frueheren Test abgedeckt; der Rueckweg `Zum Projekt` ist sichtbar |
+| Rueckweg zum Projekt | bestanden | `Zum Projekt` fuehrt zurueck zu `/projects/01d9d55b-87c3-5a5a-876a-b55a3ce2db33` |
+
+### 12.4 Sidebar
+
+Gepruefte Menuepunkte: Analyse, Strategie, Briefing, Simulation und Trainerreview.
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Strategie-Beschreibung enthaelt WAP | bestanden | Sidebar zeigt `ZOPA, BATNA, WAP, Konzessionen und Argumente` |
+| Active-State lesbar | bestanden | Alle fuenf Workflow-Routen zeigen bei aktiver Route lesbare Icon-, Titel- und Unterzeilenfarben |
+| Hover-State lesbar | bestanden | Links verwenden konsistente `hover:border-primary/20`, `hover:bg-muted` und `hover:text-foreground`-States |
+| Icon, Titel und Unterzeile lesbar | bestanden | Normal- und Active-State bleiben in der Browserpruefung lesbar |
+
+### 12.5 Allgemeiner Strategy Entry
+
+Route: `/strategy`
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Allgemeine Projektauswahl erscheint | bestanden | Seite listet vorhandene Projekte als Strategy-Einstiege |
+| Keine projektbezogene Guidance faelschlich sichtbar | bestanden | Ohne `projectId` erscheint keine projektbezogene Building-Blocks-Guidance |
+| Navigation funktionsfaehig | bestanden | Sidebar und Projektlinks bleiben erreichbar |
+
+### 12.6 Mobile Spotcheck
+
+Gepruefte Breite: kleine Browserbreite mit effektiv `375px` Dokumentbreite.
+
+| Route | Ergebnis | Notiz |
+|---|---|---|
+| `/projects/01d9d55b-87c3-5a5a-876a-b55a3ce2db33` | bestanden | Keine horizontale Ueberbreite; relevante Cards bleiben lesbar |
+| `/strategy?projectId=01d9d55b-87c3-5a5a-876a-b55a3ce2db33` | bestanden | Keine horizontale Ueberbreite; Strategy-Guidance bleibt lesbar |
+| `/strategy` | bestanden | Keine horizontale Ueberbreite; allgemeine Projektauswahl bleibt nutzbar |
+
+### 12.7 Offene Punkte
+
+- Keine Blocker gefunden.
+- Die projektbezogene Success-Guidance wurde nicht durch eine neue zweite Strategie reproduziert, weil fuer das Demo-Projekt bereits eine Strategie vorhanden ist. Das ist ein bewusster Nicht-Blocker fuer D5.5.

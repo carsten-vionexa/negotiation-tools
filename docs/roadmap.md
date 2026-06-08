@@ -70,6 +70,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase D5.2: Bei vorhandener Strategie zeigt der bestehende Strategy-Flow eine kompakte Building-Blocks-Guidance fuer ZOPA, BATNA, Argumente und Konzessionen mit Status aus vorhandenen Bausteinen, ohne automatische Erzeugung
 - Phase D5.3: Die bestehende Strategy-Guidance ordnet WAP / Walk-away Point als manuelle Abbruchgrenze zwischen BATNA, ZOPA und Konzessionen ein, ohne Berechnung, Backend, Migration oder Datenmodell-Aenderung
 - Phase D5.4: Die MVP-Workflow-Sidebar nennt WAP im Strategie-Menuepunkt und nutzt konsistente lesbare Normal-, Hover- und Active-States fuer die Navigation
+- Phase D5.5: Lokaler Browser-Smoke-Test fuer D5.1 bis D5.4 bestanden und als Strategy-Guidance-Zwischenabschluss dokumentiert
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
@@ -391,7 +392,7 @@ Offene Nicht-Blocker:
 
 ## 11. Phase D4: Project Preparation / Preparation Gaps
 
-Status: D4.1 bis D4.3 umgesetzt; D4.4 dokumentiert den aktuellen Zwischenstand und den manuellen Smoke-Test. D5.1 ergaenzt den Rueckweg nach manueller Strategieanlage.
+Status: D4.1 bis D4.3 umgesetzt; D4.4 dokumentiert den aktuellen Zwischenstand und den manuellen Smoke-Test. D5.1 bis D5.4 sind umgesetzt; D5.5 dokumentiert den bestandenen lokalen Strategy-Guidance-Smoke-Test als Zwischenabschluss.
 
 Ziel: Project-Detail-/Preparation-UX ausbauen, ohne automatische Bewertung oder neue Datenmodelle vorzuziehen.
 
@@ -402,6 +403,10 @@ Umgesetzte Schritte:
 3. D4.3: Strategy Entry Page fuer Projekte ohne Strategie geglaettet.
 4. D4.4: D4-Preparation-UX-Zwischenabschluss und Smoke-Test-Plan dokumentiert.
 5. D5.1: Success Guidance nach manueller Strategieanlage mit Rueckweg zum Projekt ergaenzt.
+6. D5.2: Building-Blocks-Guidance fuer vorhandene Strategien ergaenzt.
+7. D5.3: WAP / Walk-away Point als manuelle Abbruchgrenze fachlich eingeordnet.
+8. D5.4: Sidebar-Beschreibung und Navigation-Kontrast fuer Strategie/WAP geglaettet.
+9. D5.5: Lokalen Browser-Smoke-Test fuer den D5.1-D5.4-Flow dokumentiert.
 
 D4.1 macht Vorbereitungsluecken ausschliesslich aus vorhandenen Objekten und bestehenden API-Listen sichtbar: Bedarfskontext, SupplierProfile, Supplier Context, Strategy, Strategiebausteine aus ZOPA/BATNA/Argumentation/Konzession, SimulationScenario und Trainerreview. Die Card bleibt eine ruhige Vorhanden-/Offen-/Spaeter-Sicht mit kurzem naechstem Schritt und fuehrt keine KI-Integration, kein Supplier Scoring, kein RAG, keine automatische Lieferantenanalyse und keine neue Datenstruktur ein.
 
@@ -413,14 +418,18 @@ D4.4 haelt diesen Zwischenstand als dokumentierten Preparation-UX-Flow fest: Pro
 
 D5.1 nutzt weiterhin den bestehenden Strategy-Create-Flow und die Route `/strategy?projectId=...`. Nach der manuellen Anlage redirectet der Flow auf dieselbe Strategy-Seite mit Success-Hinweis, macht klar, dass die Strategie angelegt wurde, bietet einen Rueckweg zu `/projects/<projectId>` und ordnet ZOPA, BATNA, Argumente und Konzessionen als nachgelagerte naechste Schritte ein. `/strategy` ohne `projectId` bleibt die allgemeine Projektauswahl; es gibt keine neue Route, keine Backend-Aenderung, keine Migration und keine automatische Strategieerzeugung.
 
+D5.2 zeigt bei vorhandener Strategie eine kompakte Guidance fuer ZOPA, BATNA, Argumente und Konzessionen. Vorhandene Bausteine werden aus bestehenden Listen als vorhanden markiert, fehlende Bausteine bleiben normale naechste Arbeitsschritte. Es gibt keine automatische Baustein-Erzeugung und keine neuen Felder.
+
 D5.3 nutzt die vorhandenen Strategy- und ZOPA-Felder fuer reine Guidance/Microcopy. Der Walk-away Point wird als manuelle Abbruchgrenze erklaert, die aus Ziel, Risiko, Kosten/Nutzen und BATNA abgeleitet wird. ZOPA bleibt der moegliche Ueberschneidungsbereich zwischen eigener Grenze und angenommener Grenze der Gegenseite; Konzessionen bleiben geplante Tauschobjekte oder Zugestaendnisse. Es gibt keine automatische WAP-, ZOPA- oder BATNA-Berechnung und keine neuen Felder.
 
 D5.4 passt nur die bestehende MVP-Workflow-Sidebar an: Der Strategie-Menuepunkt nennt nun ZOPA, BATNA, WAP, Konzessionen und Argumente. Die Navigation nutzt ruhige Normal-States sowie explizit kontrastreiche Hover- und Active-States fuer Icon, Titel und Beschreibung. Routen, Menuestruktur, Backend, Migrationen und Strategy-Daten bleiben unveraendert.
 
-Offene Nicht-Blocker nach D4.4:
+D5.5 bestaetigt den D5.1-D5.4-Flow lokal im Browser fuer das Demo-Projekt `01d9d55b-87c3-5a5a-876a-b55a3ce2db33`: Project Detail mit Preparation Gaps, Strategy-Einstieg, vorhandener Strategy-Kopf, Building-Blocks-Guidance inklusive WAP-Abgrenzung, Rueckweg zum Projekt, Sidebar-Zustaende, allgemeines `/strategy` ohne `projectId` und kleine Browserbreite sind bestanden. Das Ergebnis steht in `docs/browser-smoke-test-plan.md`; weil bereits eine Strategie vorhanden ist, wurde keine zweite Strategie angelegt. Es gibt keine Produkt-, Backend-, Migrations-, Seed-, KI-, Scoring- oder RAG-Aenderung.
+
+Offene Nicht-Blocker nach D5.5:
 
 - Issue #55: PDF-/Upload-/Parsing-Folgearbeit bleibt offen und blockiert den D4-Preparation-UX-Zwischenstand nicht.
-- Issue #113: Next/PostCSS-audit-Finding bleibt zur Beobachtung offen und blockiert den D4-Preparation-UX-Zwischenstand nicht.
+- Issue #113: Next/PostCSS-audit-Finding bleibt zur Beobachtung offen und blockiert den D5-Strategy-Guidance-Zwischenstand nicht.
 
 ## 12. Phase E: Knowledge Intelligence
 

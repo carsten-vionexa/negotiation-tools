@@ -56,8 +56,12 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase D1.5: Eine kleine Staging-Demo-Datenstrategie ist in `docs/deployment/staging-demo-data.md` dokumentiert; ein idempotenter Backend-Seed stellt Company, RequestItem und NegotiationProject fuer den Rheinwerk-Robotics-Demo-Flow bereit
 - Phase D3.2: Dokumentations-Guardrails fuer Roadmap- und Codex-Task-Pruefung sind im Issue-Template, in `docs/codex-tasks.md` und als nicht-blockierende PR-Warnung ergaenzt
 - Phase D3.4: Der Staging-Demo-Seed stellt ein synthetisches SupplierProfile fuer `Aurum Motion Systems K.K.` sicher und verknuepft das Rheinwerk-Robotics-Demo-Projekt damit, sodass die Supplier Context Card inklusive Profil-Link demonstrierbar ist
+- Phase D3.5: Staging-Smoke-Test fuer den verknuepften Supplier Context bestanden
 - Phase D3.6: Die Supplier Context Card zeigt kompakte Readiness-/Missing-Information-Hints aus vorhandenen `SupplierProfile`-Daten, ohne Scoring, KI, Backend- oder Seed-Aenderungen
+- Phase D3.7: Staging-Smoke-Test fuer Supplier Readiness Hints bestanden
 - Phase D3.8: Die Supplier Context Card zeigt bei verknuepftem `SupplierProfile` einen ruhigen Edit-Guidance-CTA zum bestehenden Lieferantenprofil, damit fehlende Vorbereitungsinformationen gezielt nachgepflegt werden koennen
+- Phase D3.9: Staging-Smoke-Test fuer Edit Guidance bestanden
+- Phase D3.10: D3 Supplier Context ist als erster UX-Strang vorlaeufig dokumentarisch abgeschlossen; D4 ist nur als moegliche spaetere Project-Preparation-/Preparation-Gaps-Richtung abgegrenzt
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
@@ -145,7 +149,7 @@ Nicht Teil des aktuellen MVP sind:
 - Relationship Memory als eigenes Modul
 - Stakeholder-Graph
 - automatische Angebotsanalyse
-- Supplier Scoring, automatische Lieferantenanalyse oder KI-generierte Supplier-Context-Bewertung; D3.1 zeigt nur vorhandene `SupplierProfile`-Daten kompakt an
+- Supplier Scoring, automatische Lieferantenanalyse, RAG oder KI-generierte Supplier-Context-Bewertung; D3 zeigt nur vorhandene `SupplierProfile`- und Projektbeziehungen kompakt an und ergaenzt daraus Readiness-Hints sowie Edit-Guidance
 - produktiver Betrieb, echte Serverprovisionierung, Domain-/DNS-Konfiguration, CI/CD und produktive Authentifizierung; D0 dokumentiert nur die Staging-Vorbereitung ohne echtes Deployment
 
 Diese Punkte bleiben spaetere Ausbaustufen und duerfen nicht als bereits gelieferte MVP-Funktionen bewertet werden.
@@ -241,13 +245,17 @@ Glaettung in C24:
 - Beschreibung, Spezifikation, Notizen und der Projektkontext werden mit Zeilenumbruechen lesbar angezeigt.
 - Bewusst unveraendert bleiben die RequestItem-zu-Project-Erzeugungslogik, automatische Supplier-Zuordnung sowie Analyse-, Strategie-, ZOPA-, BATNA- oder WAP-Erzeugung.
 
-D3.1 Supplier Context:
+D3 Supplier Context:
 
 - Die Project-Detailseite stellt den verknuepften SupplierProfile-Kontext als eigene Supplier Context Card zwischen Verhandlungsvorbereitung und Strategie-Snapshot dar.
 - Die Karte nutzt ausschliesslich vorhandene Project- und SupplierProfile-Daten und fuehrt keine automatische Lieferantenanalyse, kein Supplier Scoring, keine KI-Generierung und kein neues Datenmodell ein.
 - Bei verknuepftem SupplierProfile zeigt sie Lieferant, Land/Region, Branche/Kategorie, Beziehung, Verhandlungssignale und kulturellen Kontext, soweit gepflegt.
 - Bei fehlendem SupplierProfile zeigt sie einen ruhigen Empty State, damit fehlender Lieferantenkontext nicht wie ein Fehler wirkt.
 - Der Link zum vollstaendigen SupplierProfile bleibt auf `/suppliers/[id]` verfuegbar.
+- D3.6 ergaenzt Readiness-/Missing-Information-Hints aus vorhandenen Profilfeldern.
+- D3.8 fuehrt mit einem Edit-Guidance-CTA zur Nachpflege im bestehenden Lieferantenprofil.
+- D3.4 stellt die Staging-Demo-Readiness fuer `Aurum Motion Systems K.K.` und das Rheinwerk-Robotics-Demo-Projekt her; D3.5, D3.7 und D3.9 sind als Staging-Smoke-Tests bestanden.
+- D3.10 schliesst diesen ersten Supplier-Context-UX-Strang vorlaeufig dokumentarisch ab.
 
 Noch fehlende fachliche Luecken:
 
@@ -255,7 +263,8 @@ Noch fehlende fachliche Luecken:
 - Es gibt weiterhin keine Detailroute fuer `ProcurementHistoryItem`; deshalb bleiben Einkaufshistorie-Zielreferenzen in ImportRows bewusst unverlinkt.
 - Mapping-Zielfeldlisten sind im Frontend weiterhin statisch und sollten spaeter zentralisiert oder aus Backend-/Contract-Metadaten abgeleitet werden.
 - KI-Mapping, PDF/OCR, automatische Analyse- oder Strategieerzeugung bleiben Nicht-MVP beziehungsweise spaetere Phasen.
-- Automatische Lieferantenhypothesen und Supplier Scoring bleiben spaetere D3-Follow-ups; einfache Supplier Context Readiness-Hints aus vorhandenen Profilfeldern sind mit D3.6 abgedeckt.
+- Issue #55 bleibt fuer eine spaetere PDF-/Upload-/Parsing-Strecke offen und blockiert D3 nicht.
+- Issue #113 bleibt als Next/PostCSS-audit-Finding zur Beobachtung offen und blockiert D3 nicht.
 
 ## 9. Phase D: Staging und Demo-Betrieb
 
@@ -334,9 +343,9 @@ Umgesetzte D1-Schritte:
 
 ## 10. Phase D3: Supplier Context / Lieferantenkontext
 
-Status: D3.1 abgeschlossen, D3.4 Demo-Readiness umgesetzt, D3.6 umgesetzt, D3.8 umgesetzt.
+Status: D3.1 bis D3.10 fuer den ersten Supplier-Context-UX-Strang umgesetzt beziehungsweise geprueft; Strang vorlaeufig abgeschlossen.
 
-Ziel: Lieferantenkontext auf der Project-Detailseite und spaeter in Analyse, Strategie, Kulturbriefing und Simulation verhandlungsnah nutzbar machen, ohne automatisch zu bewerten oder neue Datenmodelle vorzuziehen.
+Ziel: Lieferantenkontext auf der Project-Detailseite verhandlungsnah nutzbar machen, ohne automatisch zu bewerten oder neue Datenmodelle vorzuziehen.
 
 Umgesetzte D3-Schritte:
 
@@ -344,36 +353,44 @@ Umgesetzte D3-Schritte:
 2. D3.4 umgesetzt: Der Staging-Demo-Seed erzeugt idempotent ein synthetisches Demo-SupplierProfile fuer `Aurum Motion Systems K.K.` und verknuepft das bestehende Rheinwerk-Robotics-Demo-Projekt ueber `supplier_profile_id`, ohne Migration, neue API oder Frontend-Aenderung.
 3. D3.6 umgesetzt: Die bestehende Supplier Context Card zeigt eine kleine Sektion `Vorbereitungsstand Lieferant` mit maximal fuenf ruhigen Hints zu gepflegten oder gezielt nachpflegbaren Profilinformationen wie Region, Kategorie, Beziehung, Verhandlungssignalen und kulturellem Kontext.
 4. D3.8 umgesetzt: Die Readiness-Sektion enthaelt bei verknuepftem `SupplierProfile` einen kompakten Edit-Guidance-CTA zum bestehenden Lieferantenprofil, damit fehlende Angaben dort nachgepflegt werden koennen.
+5. D3.10 umgesetzt: Die Projektdokumentation ordnet D3 als vorlaeufig abgeschlossenen Supplier-Context-UX-Strang ein und grenzt D4 als moegliche, noch nicht begonnene Project-Preparation-/Preparation-Gaps-Richtung ab.
 
-Naechste sinnvolle D3-Follow-ups:
+Ergebnis von D3:
 
-1. Supplier Context in Analyse, Strategie, Kulturbriefing und Simulation gezielt wiederverwenden.
-2. Optional weitere Demo-Daten fuer Knowledge- oder Simulationskontext ergaenzen, sobald ein eigener Testfall dafuer definiert ist.
+- Vorhandener Lieferantenkontext wird auf der Project-Detailseite aus bestehenden Daten sichtbar.
+- Readiness-/Missing-Information-Hints zeigen vorbereitungsrelevante Profilstaende ohne Bewertung.
+- Edit-Guidance fuehrt zur Nachpflege im bestehenden SupplierProfile-Flow.
+- Der Rheinwerk-/Aurum-Demo-Fall ist fuer diesen Scope auf Staging demonstrierbar.
 
-Bewusste Grenzen von D3.1:
+Bewusste Grenzen von D3:
 
 - Keine Backendaenderung.
 - Keine Migration.
 - Keine neuen API-Endpunkte.
 - Keine neuen SupplierProfile-Felder.
+- Kein neues Datenmodell.
 - Keine automatische Analyse.
 - Kein Supplier Scoring.
 - Keine KI-Generierung.
 - Keine RAG-/Knowledge-Auswertung.
 - Keine Import-/PDF-Themen.
 
-Bewusste Grenzen von D3.4:
+Offene Nicht-Blocker:
 
-- Keine neue Produktfunktion.
-- Keine Migration.
-- Keine neuen API-Endpunkte.
-- Keine Frontend-Aenderung.
-- Keine echten Kundendaten.
-- Keine automatische Lieferantenanalyse, kein Supplier Scoring und keine KI- oder RAG-Funktion.
+- Issue #55: PDF-Verarbeitung bleibt als spaetere Upload-/Parsing-Strecke offen.
+- Issue #113: Next/PostCSS-audit-Finding bleibt zur Beobachtung offen.
 
-## 11. Phase D4: Analyse und Strategieunterstuetzung
+## 11. Phase D4: Project Preparation / Preparation Gaps
 
-Ziel: Aus Daten strukturierte Analyse- und Strategievorschlaege erzeugen.
+Status: Nicht begonnen, nicht umgesetzt.
+
+Moegliche spaetere Richtung: Project-Detail-/Preparation-UX ausbauen, ohne automatische Bewertung oder neue Datenmodelle vorzuziehen.
+
+Moeglicher erster Schritt:
+
+1. D4.1: Preparation Gaps Card auf der Project-Detailseite.
+
+Eine spaetere D4.1-Idee duerfte nur Vorbereitungsluecken aus vorhandenen Objekten sichtbar machen, zum Beispiel Bedarfskontext, SupplierProfile, Strategy, ZOPA/BATNA/WAP, SimulationScenario oder Trainerreview. D4.1 ist noch kein gestartetes Arbeitspaket und wuerde keine KI-Integration, kein Supplier Scoring, kein RAG, keine automatische Lieferantenanalyse und keine neue Datenstruktur implizieren.
 
 ## 12. Phase E: Knowledge Intelligence
 

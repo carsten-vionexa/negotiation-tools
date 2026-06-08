@@ -86,10 +86,15 @@
 - Frontend-Nutzbarkeitsflow Issue #69 umgesetzt: RequestItem-Liste sowie Create/Edit-Detailflow unter `/request-items` ergaenzt, in die Navigation aufgenommen und die strukturierte Anfrageposition in Projektanlage und Projektdetail nutzbar gemacht, ohne Backend-, Import- oder Migrationslogik
 - Frontend-Hardening Issue #73 umgesetzt: Gemeinsamen `FormData`-Helper fuer getrimmte optionale Werte und explizite Pflichtfeldfehler eingefuehrt sowie die bestehenden Frontend-Server-Actions darauf umgestellt, ohne Backend-, Import- oder Migrationslogik
 - Phase D0 umgesetzt: Hostinger-VPS-Staging-Vorbereitung mit `docker-compose.staging.yml`, `.env.staging.example`, `.gitignore`-Schutz fuer echte Staging-/Production-Env-Dateien und `docs/staging-deployment-prep.md` dokumentiert, ohne echtes Deployment, Serverzugriff, Produktlogik oder Secrets
+- Phase D3.1 umgesetzt: Project-Detailseite zeigt eine kompakte Supplier Context Card aus vorhandenen `SupplierProfile`-Daten, ohne Backend, Migration, KI, Scoring, RAG oder neues Datenmodell
 - Phase D3.2 umgesetzt: Dokumentations-Guardrails ergaenzt mit Feature-/Task-Issue-Template, Documentation-/Roadmap-Checkliste, Definition-of-Done-Regel und nicht-blockierendem PR-Warning, ohne Produktlogik
 - Phase D3.4 umgesetzt: Staging-Demo-Seed um ein synthetisches SupplierProfile fuer `Aurum Motion Systems K.K.` erweitert und das Rheinwerk-Robotics-Demo-Projekt idempotent ueber `supplier_profile_id` damit verknuepft, ohne Migration, Backend-API-, Frontend- oder Produktfunktionsaenderung
+- Phase D3.5 umgesetzt: Staging-Smoke-Test fuer den verknuepften Supplier Context bestanden, ohne Produkt-, Seed-, API- oder Migrationsaenderung
 - Phase D3.6 umgesetzt: Supplier Context Card um kompakte Readiness-/Missing-Information-Hints aus vorhandenen `SupplierProfile`-Feldern erweitert, ohne Backend, Migration, API, KI, Scoring oder Seed-Aenderung
+- Phase D3.7 umgesetzt: Staging-Smoke-Test fuer Supplier Readiness Hints bestanden, ohne Produkt-, Seed-, API- oder Migrationsaenderung
 - Phase D3.8 umgesetzt: Supplier Context Card um einen ruhigen Edit-Guidance-CTA zum bestehenden `SupplierProfile` erweitert, ohne Backend, Migration, API, neue Edit-Seite, Inline-Editing, KI oder Scoring
+- Phase D3.9 umgesetzt: Staging-Smoke-Test fuer Edit Guidance bestanden, ohne Produkt-, Seed-, API- oder Migrationsaenderung
+- Phase D3.10 umgesetzt: D3 Supplier Context als erster UX-Strang vorlaeufig dokumentarisch abgeschlossen und D4 als moegliche spaetere Project-Preparation-/Preparation-Gaps-Richtung abgegrenzt, ohne Code-, Staging-, Seed-, API-, Migrations- oder Produktfunktionsaenderung
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -181,7 +186,7 @@ bleiben weiterhin ueber die bestehenden Projektdaten darstellbar.
 
 ## Phase D: Staging und Demo-Betrieb
 
-Status: D0 umgesetzt, D1 offen.
+Status: D0 umgesetzt, D1.1 bis D1.5 umgesetzt.
 
 D0 bereitet nur Repository, Docker-/Compose-Strategie, Env-Beispiele und Dokumentation fuer einen spaeteren Hostinger-VPS-Staging-Deploy vor. Es wurde kein echter Server angesprochen und es wurden keine echten Secrets, Domains, IPs oder Tokens ergaenzt.
 
@@ -193,11 +198,11 @@ Umgesetzte D0-Punkte:
 4. `.env.staging` und `.env.production` in `.gitignore` aufgenommen.
 5. `docs/staging-deployment-prep.md` mit Staging-Strategie, Env-Variablen, Frontend-/Backend-URL-Konfiguration, Caddy-Empfehlung, persistenten Volumes, Backup-Grundidee und D1-Schritten erstellt.
 
-D1 mit echtem Server soll anschliessend Hostinger VPS, Docker, echte `.env.staging`, Compose-Start, Migrationen, Caddy/HTTPS, optional Basic Auth und Backup-/Restore-Test umsetzen.
+D1.1 bis D1.5 haben den Hostinger-Staging-Stand, die Staging-Dokumentation, reproduzierbare Backend-Migrationen im Container, das Next.js-Standalone-Frontend-Image und die Staging-Demo-Datenstrategie abgeschlossen. D1/D3-Staging ist damit nicht mehr als offener Blocker fuer den Supplier-Context-Strang einzuordnen; echte Secrets, Staging-Werte und serverlokale Env-Dateien bleiben ausserhalb der Repository-Dokumentation.
 
 ## Phase D3: Supplier Context / Lieferantenkontext
 
-Status: D3.1 umgesetzt, D3.4 Demo-Readiness umgesetzt, D3.6 umgesetzt, D3.8 umgesetzt.
+Status: D3.1 bis D3.10 fuer den ersten Supplier-Context-UX-Strang umgesetzt beziehungsweise geprueft; Strang vorlaeufig abgeschlossen.
 
 Umgesetzte Schritte:
 
@@ -205,16 +210,37 @@ Umgesetzte Schritte:
 2. D3.4: Der Staging-Demo-Seed stellt idempotent ein synthetisches SupplierProfile fuer `Aurum Motion Systems K.K.` bereit und verknuepft das bestehende Rheinwerk-Robotics-Demo-Projekt mit diesem Profil. Dadurch ist der Nicht-Empty-State der Supplier Context Card auf Staging demonstrierbar.
 3. D3.6: Die bestehende Supplier Context Card zeigt eine kleine Sektion `Vorbereitungsstand Lieferant` mit maximal fuenf ruhigen Hints zu vorhandenen oder gezielt nachpflegbaren Informationen wie Region, Kategorie, Beziehung, Verhandlungssignalen und kulturellem Kontext.
 4. D3.8: Die Readiness-Sektion fuehrt bei verknuepftem `SupplierProfile` mit einem kompakten Edit-Guidance-CTA zum bestehenden Lieferantenprofil. Ohne verknuepftes SupplierProfile bleibt der Empty State ohne irrefuehrende Profil-CTA.
+5. D3.10: Dieser Dokumentationsabschluss konsolidiert den vorlaeufigen D3-Stand und grenzt moegliche D4-Folgearbeit ab, ohne Produktfunktion, Frontend, Backend, Migration, Seed, Staging-Deployment oder Smoke-Test zu aendern.
 
-Bewusste Grenzen von D3.8:
+Ergebnis von D3:
+
+- D3 liefert vorhandenen Lieferantenkontext aus bestehenden `SupplierProfile`- und Project-Beziehungen auf der Project-Detailseite aus.
+- D3 macht Readiness-/Missing-Information-Hints aus vorhandenen Profilfeldern sichtbar und fuehrt fuer Nachpflege zum bestehenden Lieferantenprofil.
+- D3.4 und die bestandenen Staging-Smoke-Tests D3.5, D3.7 und D3.9 bestaetigen den Demo- und Staging-Stand fuer den verknuepften Rheinwerk-/Aurum-Fall.
+- D3 ist damit als erster Supplier-Context-UX-Strang vorlaeufig abgeschlossen.
+
+Bewusste Grenzen von D3:
 
 - keine Migration
 - keine neuen API-Endpunkte
 - keine neuen SupplierProfile-Felder
 - keine neue Edit-Seite, kein Inline-Editing und keine neue Verknuepfungslogik
 - keine echte Kunden- oder Lieferantendaten
-- keine Seed-Aenderung
+- nach D3.4 keine weitere Seed-Aenderung
 - keine automatische Lieferantenanalyse, kein Supplier Scoring, keine KI-Integration und kein RAG
+
+Offene Nicht-Blocker nach D3:
+
+- Issue #55 bleibt als spaetere PDF-/Upload-/Parsing-Strecke offen und blockiert D3 nicht.
+- Issue #113 bleibt als Next/PostCSS-audit-Finding zur Beobachtung offen und blockiert D3 nicht.
+
+Moegliche D4-Abgrenzung:
+
+- D4 ist noch nicht begonnen und nicht umgesetzt.
+- Eine moegliche spaetere Richtung ist `D4: Project Preparation / Preparation Gaps`.
+- Ein moeglicher erster Schritt waere `D4.1: Preparation Gaps Card auf Project-Detailseite`.
+- D4.1 duerfte nur Vorbereitungsluecken aus vorhandenen Objekten sichtbar machen, zum Beispiel Bedarfskontext, SupplierProfile, Strategy, ZOPA/BATNA/WAP, SimulationScenario oder Trainerreview.
+- D4.1 waere keine automatische Bewertung, keine KI-Integration, kein Supplier Scoring, kein RAG und kein neues Datenmodell.
 
 Vorgemerkte Folgehinweise aus C15 bis C17:
 

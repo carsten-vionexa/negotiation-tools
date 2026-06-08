@@ -108,6 +108,7 @@
 - Phase D6.1 umgesetzt: Strategy-Formularfelder, Pflichtfeldsignale, Placeholder und Hilfetexte fuer Strategy Objectives, ZOPA, BATNA, WAP, Konzessionen und Argumente fachlich geschaerft; ZOPA-Dimension wird nun als minimaler Pflichtanker validiert, ohne Backend, Migration, neue Datenstruktur, KI, Scoring, RAG oder automatische Strategieerzeugung
 - Phase D6.2 umgesetzt: Lokaler Browser-Smoke-Test fuer D6.1 mit laufendem Backend, Frontend und DB bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert; Project Detail, `/strategy?projectId=...`, `/strategy`, Pflichtfeldverhalten, Placeholder, Hilfetexte, Save-Verhalten, Rueckweg und Mobile-Spotcheck wurden geprueft, ohne Produktcode, Backend, Migration, neue UI-Funktionalitaet, KI, Scoring oder RAG zu aendern
 - Phase D6.3 umgesetzt: Hostinger-Staging auf `59e293d` aktualisiert und D6.1/D6.2-Strategy-Field-Guidance browserseitig auf Staging bestanden dokumentiert, ohne Produktcode-, Backend-, Migrations-, Seed-, KI-, Scoring- oder RAG-Aenderung
+- Phase D7.1 umgesetzt: Strategy-Seite zeigt eine regelbasierte Completion-/Readiness-Guidance fuer Strategy Objectives, ZOPA, BATNA, WAP, Konzessionen und Argumente mit verbalem Status und fachlichen Warnhinweisen, ohne Score, KI, Backend, Migration, neue Persistenz oder Staging-Deployment
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -342,6 +343,17 @@ Phase D6.3:
 - Browserseitig geprueft wurden Project Detail, Strategy-Einstieg, `/strategy?projectId=...`, `/strategy` ohne `projectId`, Strategy Objectives, ZOPA, BATNA, WAP, Konzessionen, Argumente, ZOPA-Dimension als Pflichtanker, Hilfetexte/Placeholder, unveraendertes Save-Verhalten, Rueckweg zum Projekt, Browser-Console und kleine Breite.
 - Auf Staging existierte bereits die D5.6-Strategie fuer das Demo-Projekt; deshalb wurde keine neue Strategie angelegt und keine neue Success Guidance reproduziert. Der Rueckweg `Zum Projekt` wurde sichtbar geprueft.
 - D6.3 fuehrt keine Produktfunktion, keine Produktcodeaenderung, keine Backend-Aenderung, keine Migration, keine Seed-Aenderung und keine KI-, Scoring- oder RAG-Logik ein.
+
+Phase D7.1:
+
+- D7.1 verbessert gezielt die Orientierung bei vorhandener Strategie im bestehenden `/strategy?projectId=...`-Flow.
+- Die Strategy-Seite zeigt eine kleine Completion-/Readiness-Box fuer Strategy Objectives, ZOPA, BATNA, WAP / Walk-away Point, Konzessionen und Argumente.
+- Die Guidance nutzt ausschliesslich vorhandene Strategy-Felder und bestehende Bausteinlisten: ZOPA-Items, BATNA-Optionen, ConcessionItems und ArgumentationLines.
+- Der Readiness-Status ist verbal und transparent: `Unvollstaendig`, `Grundlage vorhanden` oder `Bereit fuer Briefing / Simulation`.
+- Fehlende Bausteine werden als konkrete naechste Arbeitshinweise angezeigt; vorhandene Bausteine erscheinen als positive Anker.
+- Fachliche Warnhinweise trennen ZOPA als Einigungskorridor, BATNA als externe Alternative und WAP als Walk-away-Grenze. Fehlende Konzessionen werden als fehlende Tauschlogik und fehlende Argumente als fehlende Gespraechsfuehrung eingeordnet.
+- `/strategy` ohne `projectId` bleibt die allgemeine Projektauswahl und zeigt keine projektbezogene Readiness-Box.
+- D7.1 fuehrt keine automatische Strategieerzeugung, kein numerisches Scoring, keine KI, keine Simulation, keine RAG-Logik, keine Backend-Aenderung, keine Migration, keine neue Persistenz und kein Staging-Deployment ein.
 
 Vorgemerkte Folgehinweise aus C15 bis C17:
 

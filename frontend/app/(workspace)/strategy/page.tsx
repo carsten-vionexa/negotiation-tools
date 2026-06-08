@@ -168,6 +168,13 @@ export default async function StrategyPage({ searchParams }: { searchParams: Pro
             argumentationLines={argumentationLines}
             concessionItems={concessionItems}
           />
+          <StrategyReadinessGuidance
+            strategy={strategy}
+            zopaItems={zopaItems}
+            batnaOptions={batnaOptions}
+            argumentationLines={argumentationLines}
+            concessionItems={concessionItems}
+          />
           <StrategyHeadSection strategy={strategy} projectId={project.id} />
           <ZopaSection strategyId={strategy.id} projectId={project.id} items={zopaItems} />
           <BatnaSection strategyId={strategy.id} projectId={project.id} items={batnaOptions} />
@@ -282,6 +289,159 @@ function StrategyBuildingBlocksGuidance({
       </dl>
     </section>
   );
+}
+
+type ReadinessBlock = {
+  label: string;
+  isPresent: boolean;
+  presentText: string;
+  missingText: string;
+};
+
+function StrategyReadinessGuidance({
+  strategy,
+  zopaItems,
+  batnaOptions,
+  argumentationLines,
+  concessionItems,
+}: {
+  strategy: StrategyRead;
+  zopaItems: ZopaItemRead[];
+  batnaOptions: BatnaOptionRead[];
+  argumentationLines: ArgumentationLineRead[];
+  concessionItems: ConcessionItemRead[];
+}) {
+  const hasObjectives = hasText(strategy.overall_objective) || hasText(strategy.target_outcome);
+  const hasZopa = hasText(strategy.zopa_summary) || zopaItems.length > 0;
+  const hasBatna = hasText(strategy.batna_summary) || batnaOptions.length > 0;
+  const hasExplicitWalkAwayPoint = hasText(strategy.walk_away_point) || hasText(strategy.minimum_acceptable_outcome);
+  const hasZopaWalkAwayHint = zopaItems.some((item) => hasText(item.buyer_walk_away_value));
+  const hasWalkAwayPoint = hasExplicitWalkAwayPoint || hasZopaWalkAwayHint;
+  const hasConcessions = hasText(strategy.concession_strategy) || concessionItems.length > 0;
+  const hasArguments = hasText(strategy.argumentation_summary) || argumentationLines.length > 0;
+
+  const blocks: ReadinessBlock[] = [
+    {
+      label: "Strategy Objectives",
+      isPresent: hasObjectives,
+      presentText: "Zielrichtung ist dokumentiert.",
+      missingText: "Strategy Objectives fehlen; ohne Zielbild bleibt der Verhandlungserfolg unscharf.",
+    },
+    {
+      label: "ZOPA",
+      isPresent: hasZopa,
+      presentText: "Moeglicher Einigungskorridor ist beschrieben.",
+      missingText: "ZOPA fehlt; der moegliche Einigungskorridor ist noch nicht eingegrenzt.",
+    },
+    {
+      label: "BATNA",
+      isPresent: hasBatna,
+      presentText: "Externe Alternative ist dokumentiert.",
+      missingText: "BATNA fehlt; die beste Alternative ausserhalb dieser Verhandlung ist noch unklar.",
+    },
+    {
+      label: "WAP / Walk-away Point",
+      isPresent: hasWalkAwayPoint,
+      presentText: hasExplicitWalkAwayPoint ? "Walk-away-Grenze ist dokumentiert." : "Walk-away-Hinweis ist ueber ZOPA-Werte erkennbar.",
+      missingText: "WAP fehlt; die minimale akzeptable Grenze ist noch unklar.",
+    },
+    {
+      label: "Konzessionen",
+      isPresent: hasConcessions,
+      presentText: "Tauschlogik ist vorbereitet.",
+      missingText: "Konzessionen fehlen; die Tauschlogik ist noch nicht vorbereitet.",
+    },
+    {
+      label: "Argumente",
+      isPresent: hasArguments,
+      presentText: "Gespraechs- und Ueberzeugungslogik ist vorbereitet.",
+      missingText: "Argumente fehlen; die Gespraechsfuehrung ist noch nicht vorbereitet.",
+    },
+  ];
+  const presentCount = blocks.filter((block) => block.isPresent).length;
+  const criticalCoreReady = hasObjectives && hasZopa && hasBatna && hasWalkAwayPoint;
+  const readinessStatus =
+    criticalCoreReady && hasConcessions && hasArguments
+      ? "Bereit fuer Briefing / Simulation"
+      : hasObjectives && presentCount >= 3
+        ? "Grundlage vorhanden"
+        : "Unvollstaendig";
+  const readinessDetail =
+    readinessStatus === "Bereit fuer Briefing / Simulation"
+      ? "Ziele, Einigungskorridor, Alternative, Walk-away-Grenze, Tauschlogik und Argumentation sind sichtbar genug fuer den naechsten Vorbereitungsschritt."
+      : readinessStatus === "Grundlage vorhanden"
+        ? "Die Strategie hat erste tragfaehige Anker, sollte vor Briefing oder Simulation aber noch gezielt geschlossen werden."
+        : "Vor dem naechsten Workflow-Schritt fehlen noch zentrale Strategieanker.";
+  const warnings = buildReadinessWarnings({ hasZopa, hasBatna, hasWalkAwayPoint, hasConcessions, hasArguments });
+  const positiveHints = blocks.filter((block) => block.isPresent).map((block) => block.presentText);
+  const missingHints = blocks.filter((block) => !block.isPresent).map((block) => block.missingText);
+
+  return (
+    <section className="rounded-md border border-border bg-card p-5">
+      <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <div>
+          <SectionTitle icon={<CheckCircle2 className="size-4" />} title="Completion / Readiness" />
+          <p className="mt-3 text-sm leading-6 text-muted-foreground">
+            Regelbasierte Plausibilitaetsfuehrung aus vorhandenen Strategy-Feldern und Bausteinen. Das ist kein Score, keine Simulation und keine KI-Bewertung.
+          </p>
+          <div className="mt-4 rounded-md border border-border bg-muted/40 p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Readiness-Status</p>
+            <p className="mt-2 text-lg font-semibold">{readinessStatus}</p>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">{readinessDetail}</p>
+          </div>
+        </div>
+        <dl className="grid gap-3 sm:grid-cols-2">
+          {blocks.map((block) => (
+            <div key={block.label} className="rounded-md border border-border p-3">
+              <dt className="flex items-center justify-between gap-3 text-sm font-semibold">
+                <span>{block.label}</span>
+                <span className={block.isPresent ? "text-xs font-medium text-emerald-700" : "text-xs font-medium text-amber-700"}>
+                  {block.isPresent ? "vorhanden" : "offen"}
+                </span>
+              </dt>
+              <dd className="mt-2 text-sm leading-6 text-muted-foreground">{block.isPresent ? block.presentText : block.missingText}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+      <div className="mt-4 grid gap-3 lg:grid-cols-3">
+        <GuidanceList title="Vorhandene Anker" items={positiveHints} emptyText="Noch keine zentralen Strategieanker erkennbar." />
+        <GuidanceList title="Gezielt ergaenzen" items={missingHints} emptyText="Keine offenen Kernbausteine in dieser einfachen Regelpruefung." />
+        <GuidanceList title="Fachliche Warnhinweise" items={warnings} emptyText="Keine fachlichen Warnhinweise aus den aktuellen Bausteinen." />
+      </div>
+    </section>
+  );
+}
+
+function buildReadinessWarnings({
+  hasZopa,
+  hasBatna,
+  hasWalkAwayPoint,
+  hasConcessions,
+  hasArguments,
+}: {
+  hasZopa: boolean;
+  hasBatna: boolean;
+  hasWalkAwayPoint: boolean;
+  hasConcessions: boolean;
+  hasArguments: boolean;
+}) {
+  const warnings: string[] = [];
+
+  if (hasZopa && !hasBatna) {
+    warnings.push("ZOPA ist vorhanden, aber keine BATNA dokumentiert; die externe Alternative fehlt als Vergleichsanker.");
+  }
+  if (!hasWalkAwayPoint) {
+    warnings.push("WAP fehlt; die Walk-away-Grenze ist unklar.");
+  }
+  if (!hasConcessions) {
+    warnings.push("Konzessionen fehlen; Tauschlogik und Gegenleistungen sind noch nicht vorbereitet.");
+  }
+  if (!hasArguments) {
+    warnings.push("Argumente fehlen; Gespraechsfuehrung und Ueberzeugungslogik sind noch nicht vorbereitet.");
+  }
+
+  return warnings;
 }
 
 function StrategyCreatedGuidance({ projectId }: { projectId: string }) {
@@ -884,6 +1044,23 @@ function TradeBox({ title, value }: { title: string; value: string }) {
   );
 }
 
+function GuidanceList({ title, items, emptyText }: { title: string; items: string[]; emptyText: string }) {
+  return (
+    <div className="rounded-md border border-border p-4">
+      <p className="text-sm font-semibold">{title}</p>
+      {items.length ? (
+        <ul className="mt-3 grid gap-2 text-sm leading-6 text-muted-foreground">
+          {items.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      ) : (
+        <p className="mt-3 text-sm leading-6 text-muted-foreground">{emptyText}</p>
+      )}
+    </div>
+  );
+}
+
 function InlineEmpty({ text }: { text: string }) {
   return <p className="rounded-md border border-dashed border-border p-4 text-sm leading-6 text-muted-foreground">{text}</p>;
 }
@@ -980,6 +1157,10 @@ function booleanValue(formData: FormData, key: string) {
 
 function formatMoney(value?: string | null, currency?: string | null) {
   return [value, currency].filter(Boolean).join(" ") || null;
+}
+
+function hasText(value?: string | null) {
+  return Boolean(value?.trim());
 }
 
 function getErrorDescription(error: unknown) {

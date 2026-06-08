@@ -823,3 +823,22 @@ Gepruefte Breite: `390px` Browserbreite mit effektiv `375px` Dokumentbreite.
 
 - Keine Blocker gefunden.
 - Success Guidance wurde nicht erneut durch eine neue Strategieanlage reproduziert, weil auf Staging bereits die D5.6-Strategie fuer das Demo-Projekt existiert. Der Rueckweg `Zum Projekt` wurde sichtbar geprueft.
+
+## 16. D7.1 Lokaler Strategy-Readiness-Smoke-Test
+
+Durchgefuehrt am 2026-06-08 lokal gegen `http://localhost:3000` fuer das Demo-Projekt `01d9d55b-87c3-5a5a-876a-b55a3ce2db33`.
+
+Gesamtergebnis: bestanden ohne Blocker. Die Pruefung nutzte den bereits laufenden lokalen Docker-Stack auf Port `3000` und `8000`. Es wurden keine Daten geaendert, keine Strategie und keine Bausteine angelegt, keine Backendlogik, keine Migration, keine neue Persistenz, keine KI-, Scoring-, Simulations- oder RAG-Logik eingefuehrt.
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| `/strategy?projectId=...` rendert | bestanden | `Strategie bauen` und Projektkontext sichtbar |
+| Completion-/Readiness-Box sichtbar | bestanden | Box `Completion / Readiness` sichtbar |
+| Readiness-Status sichtbar | bestanden | Fuer den lokalen Demo-Datensatz: `Bereit fuer Briefing / Simulation` |
+| Bausteine sichtbar | bestanden | Strategy Objectives, ZOPA, BATNA, WAP / Walk-away Point, Konzessionen und Argumente jeweils als `vorhanden` angezeigt |
+| Positive Hinweise sichtbar | bestanden | Vorhandene Ziele, Einigungskorridor, externe Alternative, Walk-away-Grenze, Tauschlogik und Gespraechslogik wurden als Anker angezeigt |
+| Warnhinweise plausibel | bestanden | Fuer den vollstaendigen Demo-Datensatz keine fachlichen Warnhinweise; Box weist aus, dass keine Warnhinweise aus den aktuellen Bausteinen entstehen |
+| `/strategy` ohne `projectId` | bestanden | Allgemeine Projektauswahl sichtbar; keine projektbezogene `Completion / Readiness`-Box sichtbar |
+| Desktop-Layout | bestanden | Kein horizontaler Overflow bei normalem Browser-Viewport |
+| Mobile Spotcheck | bestanden | Bei `390px` Breite bleibt `Completion / Readiness` sichtbar; kein horizontaler Overflow |
+| Browser-Console | bestanden | Keine Console-Errors beobachtet |

@@ -726,3 +726,100 @@ Gepruefte Breite: `360px`.
 
 - Keine Blocker gefunden.
 - Die lokale synthetische Demo-DB enthaelt nun klar markierte `D6.2 Smoke`-Werte und Bausteine. Das ist fuer den lokalen Browser-Smoke-Test bewusst in Kauf genommen und betrifft keine produktiven Daten.
+
+## 15. D6.3 Staging-Strategy-Field-Guidance-Smoke-Test
+
+Durchgefuehrt am 2026-06-08 auf Hostinger-Staging unter `https://negotiation.tools.hawkins-consulting.de` fuer das Demo-Projekt `01d9d55b-87c3-5a5a-876a-b55a3ce2db33`.
+
+Gesamtergebnis: bestanden ohne Blocker. Staging wurde auf `59e293d Document D6.2 strategy field smoke test` aktualisiert. Es wurden keine Produktcodeaenderungen, keine Backendlogik, keine Migration, keine Seed-Aenderung, keine neue UI-Funktionalitaet, keine KI-, Scoring- oder RAG-Logik eingefuehrt.
+
+### 15.1 Repository- und Staging-Update
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Lokaler Ausgangsstand | bestanden | `main`, `origin/main` und `HEAD` waren sauber und identisch auf `59e293d`; D6.1 `dd24e95` und D6.2 `59e293d` waren enthalten |
+| Offene Issues / PRs | bestanden | Offen: #142 als aktueller Scope, #113 und #55 als Nicht-Blocker; offene PRs: 0 |
+| D6.2-Commit/Push | bestanden | D6.2 war bereits committed und auf `origin/main`; kein Nachcommit erforderlich |
+| Staging-Ausgangsstand | bestanden | `/opt/negotiation-tools` stand vor dem Update sauber auf `46b045f` |
+| Staging-Zielcommit | bestanden | Fast-Forward auf `59e293d Document D6.2 strategy field smoke test` |
+| Update-Schritte | bestanden | `git fetch origin`, `git merge --ff-only origin/main` |
+| Deployment-Schritt | bestanden | `docker compose --env-file .env.staging -f docker-compose.staging.yml up -d --build` |
+| Migrationen | bestanden | Keine Migration angewendet; `alembic current` meldete `2f4b7c8d9e0a (head)` |
+| Seed | bestanden | Kein Seed-Befehl ausgefuehrt |
+
+### 15.2 Health Checks
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Compose-Status | bestanden | `db`, `backend` und `frontend` liefen nach Rebuild/Restart |
+| DB-Health | bestanden | `db` war `healthy`; `pg_isready` meldete `accepting connections` |
+| Backend Health intern | bestanden | `GET http://127.0.0.1:8000/api/health` antwortete `{"status":"ok","service":"negotiation-tools-api"}` |
+| Frontend intern | bestanden | `curl -I http://127.0.0.1:3000/dashboard` antwortete `HTTP/1.1 200 OK` |
+| Alembic current | bestanden | `2f4b7c8d9e0a (head)` |
+| HTTPS extern | bestanden | Unauthentifizierte `curl`-Checks wurden erwartungsgemaess zu Authelia weitergeleitet |
+| Browser-Session | bestanden | Authentifizierte Browser-Session erreichte die Staging-App und die geprueften Routen |
+
+### 15.3 Project Detail und Strategy-Einstieg
+
+Route: `/projects/01d9d55b-87c3-5a5a-876a-b55a3ce2db33`
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Project-Detailseite rendert | bestanden | Seite zeigt `Verhandlung: Praezisions-Servoantrieb RX-42` |
+| Preparation Gaps Card sichtbar | bestanden | `Vorbereitungsluecken` und `Strategie-Snapshot` sichtbar |
+| Strategy-Einstiege sichtbar | bestanden | `Strategie oeffnen`, `Bausteine ergaenzen` und `Strategie vorbereiten` verweisen auf `/strategy?projectId=01d9d55b-87c3-5a5a-876a-b55a3ce2db33` |
+| Rueckweg aus Strategy | bestanden | Auf der Strategy-Seite ist `Zum Projekt` sichtbar und verlinkt zur Project-Detailroute |
+
+### 15.4 Strategy Field Guidance mit Projektkontext
+
+Route: `/strategy?projectId=01d9d55b-87c3-5a5a-876a-b55a3ce2db33`
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Strategy-Seite rendert | bestanden | `Strategie bauen`, Projektkontext und `Strategie-Kopf` sichtbar |
+| D5-Guidance bleibt sichtbar | bestanden | `Strategiebausteine vorbereiten` und keine automatische Baustein-Erzeugung sichtbar |
+| Strategy Objective | bestanden | Hilfetext trennt Erfolgsziel von Abbruchgrenze |
+| Zielergebnis und Minimum | bestanden | Hilfetexte trennen realistisches Zielbild, Mindestpaket und WAP |
+| WAP / Walk-away Point | bestanden | WAP wird als minimale akzeptable Grenze beschrieben, nicht als BATNA |
+| ZOPA-Zusammenfassung | bestanden | ZOPA wird als moeglicher Einigungskorridor beschrieben, nicht als BATNA |
+| BATNA-Zusammenfassung | bestanden | BATNA wird als externe Alternative beschrieben; WAP leitet ab, wann sie vorzuziehen ist |
+| Konzessionsstrategie | bestanden | Placeholder fuehrt zu konditionierter Tauschlogik: `Wenn wir X geben, erwarten wir Y als Gegenleistung.` |
+| Argumentationssummary | bestanden | Placeholder fuehrt zu fakten-, TCO-, risiko-, qualitaets- oder beziehungsbezogenen Argumenten mit Belegen |
+| Risiken und Notizen | bestanden | Hypothesen und offene Datenpunkte bleiben als Arbeitsnotizen eingeordnet |
+
+### 15.5 Strategy-Bausteine, Pflichtfelder und Save-Verhalten
+
+| Bereich | Ergebnis | Notiz |
+|---|---|---|
+| ZOPA | bestanden | Bereich `ZOPA-Dimensionen` sichtbar; `dimension` ist als `required` gesetzt |
+| ZOPA-Pflichtanker | bestanden | Leere `dimension` meldete im Browser `valueMissing`; es wurde kein leerer ZOPA-Baustein angelegt |
+| BATNA | bestanden | Bereich `BATNA-Optionen` sichtbar; Pflichtfeld `title` und Placeholder zu externer Alternative/Impact sichtbar |
+| WAP | bestanden | WAP bleibt im Strategy-Kopf und in der Guidance als manuelle Grenze sichtbar |
+| Konzessionen | bestanden | Bereich `Konzessionen als Tauschobjekte` sichtbar; Hilfetexte fuer `Wir geben / ermoeglichen` und erwartete Gegenleistung sichtbar |
+| Argumente | bestanden | Bereich `Argumentationslinien` sichtbar; Claim- und Evidence-Placeholder sichtbar |
+| Save-Verhalten | bestanden | Unveraenderter Save des Strategy-Kopfs blieb ohne sichtbaren Fehler auf derselben Strategy-Route |
+| Browser-Console | bestanden | Keine Console-Errors beobachtet |
+
+### 15.6 Allgemeiner Strategy Entry
+
+Route: `/strategy`
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Allgemeine Projektauswahl erscheint | bestanden | Seite zeigt vorhandene Projekte als Strategy-Einstiege |
+| Demo-Projekt sichtbar | bestanden | `Verhandlung: Praezisions-Servoantrieb RX-42` ist als Einstieg vorhanden |
+| Keine projektbezogene Guidance faelschlich sichtbar | bestanden | Ohne `projectId` erscheint kein `Strategie-Kopf` und keine projektbezogene Building-Blocks-Guidance |
+| Navigation funktionsfaehig | bestanden | Sidebar und Projektlinks bleiben erreichbar |
+
+### 15.7 Mobile Spotcheck
+
+Gepruefte Breite: `390px` Browserbreite mit effektiv `375px` Dokumentbreite.
+
+| Route | Ergebnis | Notiz |
+|---|---|---|
+| `/strategy?projectId=01d9d55b-87c3-5a5a-876a-b55a3ce2db33` | bestanden | Kein horizontaler Overflow; Strategy-Kopf, ZOPA, BATNA, Konzessionen und Argumentationslinien bleiben sichtbar |
+
+### 15.8 Offene Punkte
+
+- Keine Blocker gefunden.
+- Success Guidance wurde nicht erneut durch eine neue Strategieanlage reproduziert, weil auf Staging bereits die D5.6-Strategie fuer das Demo-Projekt existiert. Der Rueckweg `Zum Projekt` wurde sichtbar geprueft.

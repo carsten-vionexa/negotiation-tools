@@ -74,6 +74,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase D5.6: Hostinger-Staging auf `46b045f` aktualisiert und D5-Strategy-Guidance-Flow browserseitig auf Staging bestanden dokumentiert
 - Phase D6.1: Strategy-Formularfelder, Pflichtfeldsignale, Placeholder und Hilfetexte fuer Strategy Objectives, ZOPA, BATNA, WAP, Konzessionen und Argumente fachlich geschaerft
 - Phase D6.2: Lokaler Browser-Smoke-Test fuer die D6.1-Strategy-Field-Guidance mit laufendem Backend, Frontend und DB bestanden dokumentiert
+- Phase D6.3: Hostinger-Staging auf `59e293d` aktualisiert und D6.1/D6.2-Strategy-Field-Guidance browserseitig auf Staging bestanden dokumentiert
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
@@ -413,6 +414,7 @@ Umgesetzte Schritte:
 10. D5.6: Hostinger-Staging auf aktuellen `origin/main`-Stand gebracht und denselben Strategy-Guidance-Flow dort browserseitig geprueft.
 11. D6.1: Strategy-Felder, Pflichtfeldsignale, Placeholder und Hilfetexte fachlich geschaerft.
 12. D6.2: Lokalen Browser-Smoke-Test fuer die D6.1-Strategy-Field-Guidance mit laufendem Backend, Frontend und DB dokumentiert.
+13. D6.3: Hostinger-Staging auf aktuellen `origin/main`-Stand gebracht und die D6.1/D6.2-Strategy-Field-Guidance dort browserseitig geprueft.
 
 D4.1 macht Vorbereitungsluecken ausschliesslich aus vorhandenen Objekten und bestehenden API-Listen sichtbar: Bedarfskontext, SupplierProfile, Supplier Context, Strategy, Strategiebausteine aus ZOPA/BATNA/Argumentation/Konzession, SimulationScenario und Trainerreview. Die Card bleibt eine ruhige Vorhanden-/Offen-/Spaeter-Sicht mit kurzem naechstem Schritt und fuehrt keine KI-Integration, kein Supplier Scoring, kein RAG, keine automatische Lieferantenanalyse und keine neue Datenstruktur ein.
 
@@ -438,7 +440,9 @@ D6.1 verbessert gezielt die manuelle Strategy-Erfassung im bestehenden `/strateg
 
 D6.2 bestaetigt D6.1 lokal im Browser fuer das Demo-Projekt `01d9d55b-87c3-5a5a-876a-b55a3ce2db33`: Project Detail und Strategy-Einstieg, `/strategy?projectId=...`, `/strategy` ohne Projektkontext, Strategy-Kopf, ZOPA, BATNA, WAP, Konzessionen, Argumente, Pflichtfeldverhalten der ZOPA-Dimension, Placeholder/Hilfetexte, Save-Verhalten, Rueckweg zum Projekt und kleiner Browser-Viewport sind bestanden. Das Ergebnis steht in `docs/browser-smoke-test-plan.md`. Fuer den lokalen Test wurden nur klar markierte `D6.2 Smoke`-Werte in der synthetischen Demo-DB gespeichert; Produktcode, Backend, Migrationen, Seed-Dateien, neue UI-Funktionalitaet, KI, Scoring und RAG blieben unveraendert.
 
-Offene Nicht-Blocker nach D6.2:
+D6.3 aktualisiert Hostinger-Staging in `/opt/negotiation-tools` per Fast-Forward von `46b045f` auf `59e293d` und startet den bestehenden Compose-Stack neu. Healthchecks fuer DB, Backend, Frontend, `pg_isready` und Alembic Head sind bestanden; unauthentifizierte externe Checks fuehren erwartungsgemaess zu Authelia. Browserseitig wurden Project Detail, Strategy-Einstieg, `/strategy?projectId=...`, `/strategy` ohne Projektkontext, Strategy Objectives, ZOPA, BATNA, WAP, Konzessionen, Argumente, ZOPA-Dimension als Pflichtanker, Hilfetexte/Placeholder, unveraendertes Save-Verhalten, Rueckweg zum Projekt, Browser-Console und kleiner Viewport geprueft. Auf Staging existierte bereits die D5.6-Strategie fuer das Demo-Projekt; deshalb wurde keine neue Strategie angelegt und keine Success Guidance erneut reproduziert. Es gibt keine Produktcode-, Backend-, Migrations-, Seed-, KI-, Scoring- oder RAG-Aenderung.
+
+Offene Nicht-Blocker nach D6.3:
 
 - Issue #55: PDF-/Upload-/Parsing-Folgearbeit bleibt offen und blockiert den D4-Preparation-UX-Zwischenstand nicht.
 - Issue #113: Next/PostCSS-audit-Finding bleibt zur Beobachtung offen und blockiert den D5-Strategy-Guidance-Zwischenstand nicht.

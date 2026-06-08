@@ -107,6 +107,7 @@
 - Phase D5.6 umgesetzt: Hostinger-Staging per Fast-Forward auf `46b045f` aktualisiert, Staging-Stack neu gebaut/gestartet und D5-Strategy-Guidance-Flow browserseitig bestanden dokumentiert, ohne Produktcode-, Backend-, Migrations-, Seed-, KI-, Scoring- oder RAG-Aenderung
 - Phase D6.1 umgesetzt: Strategy-Formularfelder, Pflichtfeldsignale, Placeholder und Hilfetexte fuer Strategy Objectives, ZOPA, BATNA, WAP, Konzessionen und Argumente fachlich geschaerft; ZOPA-Dimension wird nun als minimaler Pflichtanker validiert, ohne Backend, Migration, neue Datenstruktur, KI, Scoring, RAG oder automatische Strategieerzeugung
 - Phase D6.2 umgesetzt: Lokaler Browser-Smoke-Test fuer D6.1 mit laufendem Backend, Frontend und DB bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert; Project Detail, `/strategy?projectId=...`, `/strategy`, Pflichtfeldverhalten, Placeholder, Hilfetexte, Save-Verhalten, Rueckweg und Mobile-Spotcheck wurden geprueft, ohne Produktcode, Backend, Migration, neue UI-Funktionalitaet, KI, Scoring oder RAG zu aendern
+- Phase D6.3 umgesetzt: Hostinger-Staging auf `59e293d` aktualisiert und D6.1/D6.2-Strategy-Field-Guidance browserseitig auf Staging bestanden dokumentiert, ohne Produktcode-, Backend-, Migrations-, Seed-, KI-, Scoring- oder RAG-Aenderung
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -328,6 +329,20 @@ Phase D5.6:
 - Auf Staging existierte fuer das Demo-Projekt vor D5.6 noch keine Strategie; deshalb wurde ueber den bestehenden UI-Flow genau ein manueller Strategie-Kopf mit Smoke-Test-Notiz angelegt. Das ist der dokumentierte Nicht-Blocker beziehungsweise Testdateneffekt von D5.6.
 - D5.6 fuehrt keine Produktfunktion, keine Produktcodeaenderung, keine Backend-Aenderung, keine Migration, keine Seed-Aenderung und keine KI-, Scoring- oder RAG-Logik ein.
 
+Phase D6.3:
+
+- D6.3 ist als Staging-Update mit Smoke-Test und Dokumentationsabschluss fuer die D6.1-Strategy-Field-Guidance umgesetzt.
+- Lokal waren `main`, `origin/main` und `HEAD` vor Beginn sauber und identisch auf `59e293d`; D6.1 `dd24e95` und D6.2 `59e293d` waren enthalten.
+- Offene Issues vor Start: #142 als aktueller Scope, #113 und #55 als Nicht-Blocker; offene PRs: 0.
+- D6.2 war bereits committed und auf `origin/main`; kein Nachcommit war erforderlich.
+- Staging stand vor dem Update sauber auf `46b045f` und wurde in `/opt/negotiation-tools` mit `git fetch origin` und `git merge --ff-only origin/main` auf `59e293d` aktualisiert.
+- Der Staging-Stack wurde mit `docker compose --env-file .env.staging -f docker-compose.staging.yml up -d --build` neu gebaut und gestartet.
+- Healthchecks: Compose-Services `db`, `backend` und `frontend` liefen; DB war `healthy`; `pg_isready` meldete `accepting connections`; internes Backend `GET http://127.0.0.1:8000/api/health` antwortete `{"status":"ok","service":"negotiation-tools-api"}`; internes Frontend `/dashboard` antwortete `HTTP/1.1 200 OK`; Alembic `current` stand auf `2f4b7c8d9e0a (head)`.
+- Oeffentliche HTTPS-Checks ohne Browser-Session fuehrten erwartungsgemaess zu Authelia-Redirects; der browserseitige Smoke-Test lief mit authentifizierter Session unter `https://negotiation.tools.hawkins-consulting.de`.
+- Browserseitig geprueft wurden Project Detail, Strategy-Einstieg, `/strategy?projectId=...`, `/strategy` ohne `projectId`, Strategy Objectives, ZOPA, BATNA, WAP, Konzessionen, Argumente, ZOPA-Dimension als Pflichtanker, Hilfetexte/Placeholder, unveraendertes Save-Verhalten, Rueckweg zum Projekt, Browser-Console und kleine Breite.
+- Auf Staging existierte bereits die D5.6-Strategie fuer das Demo-Projekt; deshalb wurde keine neue Strategie angelegt und keine neue Success Guidance reproduziert. Der Rueckweg `Zum Projekt` wurde sichtbar geprueft.
+- D6.3 fuehrt keine Produktfunktion, keine Produktcodeaenderung, keine Backend-Aenderung, keine Migration, keine Seed-Aenderung und keine KI-, Scoring- oder RAG-Logik ein.
+
 Vorgemerkte Folgehinweise aus C15 bis C17:
 
 - Die statischen Mapping-Zielfeldlisten sollten mittelfristig zentralisiert oder aus Backend-/Contract-Metadaten abgeleitet werden, damit Frontend und Backend nicht auseinanderlaufen; C17 fuehrt dieses Refactoring nicht durch.
@@ -444,6 +459,19 @@ Vorgemerkte Folgehinweise aus C15 bis C17:
 - `/strategy` ohne `projectId` pruefen: allgemeine Projektauswahl sichtbar, keine projektbezogene Guidance faelschlich sichtbar.
 - Mobile Spotcheck fuer Project Detail und Strategy mit Projektkontext durchfuehren.
 - Sicherstellen, dass D6.2 keine Produktlogik, keine neue UI-Funktionalitaet, keine Backend-Aenderung, keine Migration, keine Seed-Aenderung ausser idempotenter lokaler Demo-Datensatz-Sicherstellung und keine KI-, Scoring- oder RAG-Logik einfuehrt.
+
+## Manuelle Pruefhilfe D6.3
+
+- Lokal vor Beginn `README.md`, `docs/skills/negotiation-tools-dev-workflow/SKILL.md`, offene Issues/PRs, `docs/roadmap.md` und `docs/codex-tasks.md` pruefen.
+- Lokal `git status --short --branch`, `git log --oneline -5`, `git fetch origin` und Konsistenz von `main`, `origin/main` und `HEAD` pruefen.
+- Sicherstellen, dass D6.1 und D6.2 im Zielstand enthalten sind; falls D6.2 noch nicht committed/gepusht ist, nur die D6.2-Dokumentationsdateien committen und pushen.
+- Auf Staging in `/opt/negotiation-tools` `git status --short --branch` und `git log --oneline -5` pruefen.
+- Staging mit `git fetch origin` und `git merge --ff-only origin/main` auf aktuellen `origin/main` bringen.
+- Staging-Stack mit `docker compose --env-file .env.staging -f docker-compose.staging.yml up -d --build` neu bauen/starten.
+- Healthchecks dokumentieren: `docker compose ... ps`, `pg_isready`, interner Backend-Healthcheck, interne Frontend-Erreichbarkeit, Alembic `current` und erwarteten Authelia-Redirect fuer unauthentifizierte externe Checks.
+- Browser-Smoke-Test auf `https://negotiation.tools.hawkins-consulting.de` mit authentifizierter Session ausfuehren: Project Detail, Strategy-Einstieg, `/strategy?projectId=...`, `/strategy`, Strategy Objectives, ZOPA, BATNA, WAP, Konzessionen, Argumente, Pflichtfeldverhalten der ZOPA-Dimension, Hilfetexte/Placeholder, Save-Verhalten soweit ohne Datenverfaelschung sinnvoll, Rueckweg und kleine Breite.
+- Keine Seed-Aenderung ausfuehren, keine Migration anwenden, sofern Alembic keine echte Abweichung zeigt.
+- Sicherstellen, dass D6.3 keine Produktcodeaenderung, keine Backend-Aenderung, keine Migration, keine Seed-Aenderung und keine KI-, Scoring- oder RAG-Logik einfuehrt.
 
 ## Manuelle Pruefhilfe Phase B7
 

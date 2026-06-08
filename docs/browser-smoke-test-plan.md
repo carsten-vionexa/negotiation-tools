@@ -399,3 +399,82 @@ Diese Punkte blockieren C17 nicht und bleiben Folgearbeiten:
 - Die ImportJob-Liste sollte nach `updated_at DESC` sortieren, damit zuletzt angelegte oder bearbeitete Jobs oben stehen.
 - Der Hinweis im Abschnitt `Zielobjekte erzeugen` ist bei `completed` missverstaendlich; besser waere ein Hinweis, dass Zielobjekte bereits erzeugt wurden und die Zielreferenzen in den ImportRows sichtbar sind.
 - Die ImportJob-Detailseite sollte spaeter als klarer Stepper-Flow geglaettet werden.
+
+## 11. D4-Preparation-UX-Smoke-Test-Plan
+
+Dieser kompakte Smoke-Test dokumentiert den aktuellen D4-Zwischenstand nach D4.1 bis D4.3. Geprueft wird der bestehende Flow:
+
+`Project Detail -> Preparation Gaps Card -> Strategie vorbereiten -> Strategy Empty State -> Strategie manuell anlegen`
+
+Der Test fuehrt keine neuen Produktfunktionen ein. Nicht Bestandteil sind automatische Strategieerzeugung, KI-Analyse, Supplier Scoring, Preparation Score, RAG, neue Datenmodelle, neue APIs, Migrationen, Seed-Aenderungen, Env-/Secret-Werte oder ein Staging-Deployment.
+
+Voraussetzung:
+
+- Eine lokale oder bewusst genutzte externe Testumgebung ist erreichbar.
+- Ein Demo-Projekt mit ID `<demo-project-id>` ist bekannt.
+- Fuer den Empty-State-Test sollte das Projekt noch keine Strategie besitzen.
+- Falls die manuelle Strategieanlage getestet wird, darf die Testumgebung bewusst veraendert werden.
+
+### 11.1 Demo-Projekt oeffnen
+
+Route: `/projects/<demo-project-id>`
+
+Erwartung:
+
+- Die Project-Detailseite rendert ohne Crash.
+- Die Preparation Gaps Card ist sichtbar.
+- Bedarfskontext, Lieferantenprofil und Supplier Context sind als vorhanden erkennbar, sofern Demo-Daten vorhanden sind.
+- Strategie ist als offen eingeordnet, sofern noch keine Strategie angelegt wurde.
+- Der naechste sinnvolle Schritt verweist auf Strategiearbeit.
+- Supplier Context zeigt weiterhin den Demo-Lieferanten.
+
+### 11.2 Strategy Entry oeffnen
+
+Route: `/strategy?projectId=<demo-project-id>`
+
+Erwartung:
+
+- Die Strategy-Seite rendert ohne Crash.
+- Bei einem Projekt ohne Strategie erscheint ein ruhiger projektbezogener Empty State.
+- Es wird keine Strategie automatisch erzeugt.
+- Die manuelle Anlageoption ist sichtbar.
+- ZOPA, BATNA, Argumente und Konzessionen werden als nachgelagerte Schritte eingeordnet.
+
+### 11.3 Strategie manuell anlegen
+
+Diesen Schritt nur ausfuehren, wenn die Testumgebung bewusst fuer schreibende Tests genutzt wird.
+
+Erwartung:
+
+- Die Strategie wird gespeichert.
+- `/strategy?projectId=<demo-project-id>` zeigt danach keinen Empty State mehr.
+- `/projects/<demo-project-id>` beziehungsweise die Preparation Gaps Card erkennt Strategie als vorhanden.
+- Fehlende Strategiebausteine werden als naechster sinnvoller Schritt priorisiert, falls ZOPA, BATNA, Argumente oder Konzessionen noch fehlen.
+
+### 11.4 Allgemeiner Strategy Entry
+
+Route: `/strategy`
+
+Erwartung:
+
+- Die allgemeine Strategieansicht funktioniert weiterhin.
+- Ohne `projectId` erscheint kein projektbezogener Empty State.
+
+### 11.5 Mobile Spotcheck
+
+Routen:
+
+- `/projects/<demo-project-id>`
+- `/strategy?projectId=<demo-project-id>`
+
+Erwartung:
+
+- Keine horizontale Ueberbreite.
+- Preparation Gaps Card ist lesbar.
+- Strategy Empty State ist lesbar.
+- Buttons und Links sind bedienbar.
+
+### 11.6 Offene Nicht-Blocker
+
+- Issue #55 bleibt als spaetere PDF-/Upload-/Parsing-Strecke offen und blockiert den D4-Preparation-UX-Zwischenstand nicht.
+- Issue #113 bleibt als Next/PostCSS-audit-Finding zur Beobachtung offen und blockiert den D4-Preparation-UX-Zwischenstand nicht.

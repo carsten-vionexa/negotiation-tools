@@ -98,6 +98,7 @@
 - Phase D4.1 umgesetzt: Project-Detailseite zeigt eine kompakte Preparation Gaps Card fuer Bedarfskontext, SupplierProfile, Supplier Context, Strategy, Strategiebausteine, SimulationScenario und Trainerreview aus vorhandenen Daten und bestehenden API-Listen, ohne Backend, Migration, KI, Scoring, RAG oder neues Datenmodell
 - Phase D4.2 umgesetzt: Die Preparation Gaps Card fuehrt bei fehlender Strategie klarer zum bestehenden Strategie-Einstieg, stellt Strategiebausteine nachgelagert zur Strategieanlage dar und betont, dass keine Strategie automatisch erzeugt wird
 - Phase D4.3 umgesetzt: Der bestehende Strategy-Einstieg `/strategy?projectId=...` zeigt fuer Projekte ohne Strategie einen klareren projektbezogenen Empty State, nutzt weiter den vorhandenen Strategie-Anlage-Workflow und stellt ZOPA, BATNA, Argumente und Konzessionen als nachgelagerte Schritte dar, ohne automatische Strategieerzeugung, Backend, Migration, neue Route oder Datenmodell-Aenderung
+- Phase D4.4 umgesetzt: D4.1 bis D4.3 als aktueller D4-Preparation-UX-Zwischenstand dokumentiert und kompakten Smoke-Test-Plan fuer Project Detail -> Preparation Gaps Card -> Strategie vorbereiten -> Strategy Empty State -> Strategie manuell anlegen ergaenzt, ohne Produkt-, Frontend-, Backend-, Migrations-, Seed-, Env- oder Staging-Aenderung
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -252,6 +253,20 @@ Phase D4.2:
 - Strategiebausteine werden ohne vorhandene Strategie als nachgelagert dargestellt; bei vorhandener Strategie, aber fehlenden Bausteinen, wandert der naechste sinnvolle Schritt zu ZOPA, BATNA, Argumenten oder Konzessionen.
 - D4.2 erzeugt keine Strategie automatisch, aendert keine Daten, baut keine neue Route und fuehrt keine Backend-, Migrations-, KI-, Scoring- oder RAG-Logik ein.
 
+Phase D4.3:
+
+- D4.3 glaettet den bestehenden Strategy-Einstieg `/strategy?projectId=...` fuer Projekte ohne Strategie.
+- Der Empty State ist projektbezogen, ruhig formuliert und fuehrt weiter zur manuellen Strategieanlage.
+- ZOPA, BATNA, Argumente und Konzessionen werden als nachgelagerte Schritte eingeordnet.
+- D4.3 erzeugt keine Strategie automatisch, aendert keine Daten, baut keine neue Route und fuehrt keine Backend-, Migrations-, KI-, Scoring- oder RAG-Logik ein.
+
+Phase D4.4:
+
+- D4.4 dokumentiert D4.1 bis D4.3 als aktuellen D4-Preparation-UX-Zwischenstand.
+- Der kompakte Smoke-Test-Plan fuer den Flow Project Detail -> Preparation Gaps Card -> Strategie vorbereiten -> Strategy Empty State -> Strategie manuell anlegen ist in `docs/browser-smoke-test-plan.md` ergaenzt.
+- Weiterhin bewusst ausserhalb des Scopes bleiben automatische Strategieerzeugung, KI-Analyse, Scoring, RAG, neue Datenmodelle, neue APIs, Migrationen, Seed-Aenderungen, Env-/Secret-Werte und Staging-Deployment.
+- Issue #55 und Issue #113 bleiben offene Nicht-Blocker fuer diesen D4-Zwischenstand.
+
 Vorgemerkte Folgehinweise aus C15 bis C17:
 
 - Die statischen Mapping-Zielfeldlisten sollten mittelfristig zentralisiert oder aus Backend-/Contract-Metadaten abgeleitet werden, damit Frontend und Backend nicht auseinanderlaufen; C17 fuehrt dieses Refactoring nicht durch.
@@ -309,6 +324,20 @@ Vorgemerkte Folgehinweise aus C15 bis C17:
 - Einen Import mit `target_entity=procurement_history_item` analog pruefen; falls keine Detailroute existiert, darf keine kaputte Verlinkung entstehen.
 - Sicherstellen, dass bei nicht validierten Jobs keine Create-Targets-Aktion sichtbar ist.
 - Sicherstellen, dass keine Backendlogik, keine Migration, keine PDF-/OCR-Logik, kein KI-Mapping und keine automatische Analyse umgesetzt wurden.
+
+## Manuelle Pruefhilfe D4.4
+
+- `/projects/<demo-project-id>` oeffnen und pruefen, ob die Project-Detailseite rendert.
+- Pruefen, ob die Preparation Gaps Card sichtbar ist und Bedarfskontext, Lieferantenprofil und Supplier Context als vorhanden erscheinen, sofern Demo-Daten vorhanden sind.
+- Pruefen, ob Supplier Context weiterhin den Demo-Lieferanten zeigt.
+- Bei einem Projekt ohne Strategie pruefen, ob Strategie als offen eingeordnet wird und der naechste sinnvolle Schritt auf Strategiearbeit verweist.
+- Aus der Preparation Gaps Card den bestehenden Einstieg `Strategie vorbereiten` zu `/strategy?projectId=<demo-project-id>` oeffnen.
+- Pruefen, ob bei Projekt ohne Strategie ein ruhiger projektbezogener Empty State erscheint, keine Strategie automatisch erzeugt wird und die manuelle Anlageoption sichtbar ist.
+- Pruefen, ob ZOPA, BATNA, Argumente und Konzessionen als nachgelagerte Schritte eingeordnet werden.
+- Falls die Testumgebung bewusst dafuer genutzt wird, Strategie manuell anlegen und pruefen, ob `/strategy?projectId=...` danach keinen Empty State mehr zeigt und die Preparation Gaps Card die Strategie als vorhanden erkennt.
+- `/strategy` ohne `projectId` oeffnen und pruefen, ob die allgemeine Strategieansicht weiterhin funktioniert und kein projektbezogener Empty State erscheint.
+- Mobile Spotcheck fuer `/projects/<demo-project-id>` und `/strategy?projectId=<demo-project-id>` durchfuehren: keine horizontale Ueberbreite, Card und Empty State lesbar, Buttons und Links bedienbar.
+- Sicherstellen, dass D4.4 keine Produktfunktion, keine Frontend-/Backend-Codeaenderung, keine Migration, keine Seed-Aenderung, keine Env-/Secret-Werte, keine KI-Integration, kein Supplier Scoring, kein Preparation Score und kein RAG eingefuehrt hat.
 
 ## Manuelle Pruefhilfe Phase B7
 

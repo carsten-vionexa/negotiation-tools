@@ -150,6 +150,7 @@ export default async function StrategyPage({ searchParams }: { searchParams: Pro
         <>
           {showCreatedGuidance ? <StrategyCreatedGuidance projectId={project.id} /> : null}
           <StrategyBuildingBlocksGuidance
+            strategy={strategy}
             zopaItems={zopaItems}
             batnaOptions={batnaOptions}
             argumentationLines={argumentationLines}
@@ -211,38 +212,58 @@ async function ProjectSelection() {
 }
 
 function StrategyBuildingBlocksGuidance({
+  strategy,
   zopaItems,
   batnaOptions,
   argumentationLines,
   concessionItems,
 }: {
+  strategy: StrategyRead;
   zopaItems: ZopaItemRead[];
   batnaOptions: BatnaOptionRead[];
   argumentationLines: ArgumentationLineRead[];
   concessionItems: ConcessionItemRead[];
 }) {
+  const hasWalkAwayPoint = Boolean(
+    strategy.walk_away_point ||
+      strategy.minimum_acceptable_outcome ||
+      zopaItems.some((item) => item.buyer_walk_away_value || item.supplier_estimated_walk_away_value),
+  );
   const blocks = [
-    { label: "ZOPA", count: zopaItems.length, hint: "Einigungskorridore klaeren." },
-    { label: "BATNA", count: batnaOptions.length, hint: "Alternativen beschreiben." },
-    { label: "Argumente", count: argumentationLines.length, hint: "Claims und Belege sammeln." },
-    { label: "Konzessionen", count: concessionItems.length, hint: "Tauschobjekte vorbereiten." },
+    { label: "ZOPA", status: zopaItems.length > 0 ? `${zopaItems.length} vorhanden` : "Noch offen", hint: "Ueberschneidung der Grenzen klaeren." },
+    { label: "WAP", status: hasWalkAwayPoint ? "Hinweis vorhanden" : "Noch offen", hint: "Abbruchgrenze bewusst festlegen." },
+    { label: "BATNA", status: batnaOptions.length > 0 ? `${batnaOptions.length} vorhanden` : "Noch offen", hint: "Beste Alternative beschreiben." },
+    { label: "Argumente", status: argumentationLines.length > 0 ? `${argumentationLines.length} vorhanden` : "Noch offen", hint: "Claims und Belege sammeln." },
+    {
+      label: "Konzessionen",
+      status: concessionItems.length > 0 ? `${concessionItems.length} vorhanden` : "Noch offen",
+      hint: "Tauschobjekte vorbereiten.",
+    },
   ];
 
   return (
     <section className="rounded-md border border-border bg-card p-5">
       <SectionTitle icon={<CheckCircle2 className="size-4" />} title="Strategiebausteine vorbereiten" />
       <p className="mt-3 text-sm leading-6 text-muted-foreground">
-        Der Strategie-Kopf ist vorhanden. ZOPA, BATNA, Argumente und Konzessionen sind die naechsten Vorbereitungselemente.
+        Der Strategie-Kopf ist vorhanden. ZOPA, WAP, BATNA, Argumente und Konzessionen sind die naechsten Vorbereitungselemente.
       </p>
       <p className="mt-2 text-sm leading-6 text-muted-foreground">
         Fehlende Bausteine sind normale naechste Arbeitsschritte. Diese Seite erzeugt nichts automatisch.
       </p>
-      <dl className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-4 rounded-md border border-dashed border-border bg-muted/40 p-4">
+        <p className="text-sm font-medium">WAP / Walk-away Point</p>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">
+          Der WAP ist die Abbruchgrenze, ab der die BATNA sinnvoller ist als ein Abschluss. Leite ihn aus Ziel, Risiko, Kosten/Nutzen und BATNA ab.
+          Konzessionen sind dagegen geplante Tauschobjekte oder Zugestaendnisse. Die ZOPA ergibt sich aus dem moeglichen Ueberschneidungsbereich zwischen
+          eigener Grenze und angenommener Grenze der Gegenseite.
+        </p>
+      </div>
+      <dl className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
         {blocks.map((block) => (
           <div key={block.label} className="rounded-md border border-border p-3">
             <dt className="text-sm font-semibold">{block.label}</dt>
             <dd className="mt-1 text-sm leading-6 text-muted-foreground">
-              {block.count > 0 ? `${block.count} vorhanden` : "Noch offen"} - {block.hint}
+              {block.status} - {block.hint}
             </dd>
           </div>
         ))}
@@ -293,6 +314,9 @@ function StrategyHeadSection({ strategy, projectId }: { strategy: StrategyRead; 
   return (
     <section className="rounded-md border border-border bg-card p-5">
       <SectionTitle icon={<Target className="size-4" />} title="Strategie-Kopf" />
+      <p className="mt-2 text-sm leading-6 text-muted-foreground">
+        Pflege den Walk-away Point als manuelle Abbruchgrenze. Er wird nicht berechnet und ersetzt keine Konzessionsplanung.
+      </p>
       <form action={updateStrategyAction.bind(null, strategy.id, projectId)} className="mt-4 grid gap-3 md:grid-cols-2">
         <Field label="Titel" name="title" defaultValue={strategy.title} required />
         <Field label="Status" name="status" defaultValue={strategy.status} />
@@ -316,7 +340,9 @@ function ZopaSection({ strategyId, projectId, items }: { strategyId: string; pro
   return (
     <section className="rounded-md border border-border bg-card p-5">
       <SectionTitle icon={<Scale className="size-4" />} title="ZOPA-Dimensionen" />
-      <p className="mt-2 text-sm leading-6 text-muted-foreground">Manuell gepflegte Einigungskorridore. Es findet keine automatische ZOPA-Berechnung statt.</p>
+      <p className="mt-2 text-sm leading-6 text-muted-foreground">
+        Manuell gepflegte Einigungskorridore zwischen eigener Grenze und angenommener Grenze der Gegenseite. Es findet keine automatische ZOPA-Berechnung statt.
+      </p>
       <div className="mt-4 grid gap-4">
         {items.length === 0 ? <InlineEmpty text="Noch keine ZOPA-Dimensionen gepflegt." /> : null}
         {items.map((item) => (
@@ -379,7 +405,7 @@ function ConcessionSection({ strategyId, projectId, items }: { strategyId: strin
     <section className="rounded-md border border-border bg-card p-5">
       <SectionTitle icon={<Handshake className="size-4" />} title="Konzessionen als Tauschobjekte" />
       <p className="mt-2 text-sm leading-6 text-muted-foreground">
-        Konzessionen werden als konditioniertes Geben gegen Erhalten gepflegt, nicht als reines Nachgeben.
+        Konzessionen werden als konditioniertes Geben gegen Erhalten gepflegt, nicht als reines Nachgeben und nicht als Walk-away Point.
       </p>
       <div className="mt-4 grid gap-4">
         {items.length === 0 ? <InlineEmpty text="Noch keine Konzessionen gepflegt." /> : null}

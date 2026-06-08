@@ -68,6 +68,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase D4.4: D4.1 bis D4.3 sind als D4-Preparation-UX-Zwischenstand inklusive kompaktem Smoke-Test-Plan dokumentiert
 - Phase D5.1: Nach manueller Strategieanlage aus `/strategy?projectId=...` zeigt der bestehende Strategy-Flow eine Success Guidance mit Rueckweg zum Projekt und ordnet ZOPA, BATNA, Argumente und Konzessionen als nachgelagerte Schritte ein
 - Phase D5.2: Bei vorhandener Strategie zeigt der bestehende Strategy-Flow eine kompakte Building-Blocks-Guidance fuer ZOPA, BATNA, Argumente und Konzessionen mit Status aus vorhandenen Bausteinen, ohne automatische Erzeugung
+- Phase D5.3: Die bestehende Strategy-Guidance ordnet WAP / Walk-away Point als manuelle Abbruchgrenze zwischen BATNA, ZOPA und Konzessionen ein, ohne Berechnung, Backend, Migration oder Datenmodell-Aenderung
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
@@ -410,6 +411,8 @@ D4.3 verbessert denselben bestehenden Strategy-Einstieg fuer Projekte ohne Strat
 D4.4 haelt diesen Zwischenstand als dokumentierten Preparation-UX-Flow fest: Project Detail -> Preparation Gaps Card -> Strategie vorbereiten -> Strategy Empty State -> Strategie manuell anlegen. Der Smoke-Test-Plan steht in `docs/browser-smoke-test-plan.md`. D4 bleibt weiterhin begrenzt auf Orientierung aus vorhandenen Daten; es gibt keine automatische Strategieerzeugung, keine KI-Analyse, kein Scoring, kein RAG, keine neuen Datenmodelle und keine Seed- oder Deployment-Aenderung.
 
 D5.1 nutzt weiterhin den bestehenden Strategy-Create-Flow und die Route `/strategy?projectId=...`. Nach der manuellen Anlage redirectet der Flow auf dieselbe Strategy-Seite mit Success-Hinweis, macht klar, dass die Strategie angelegt wurde, bietet einen Rueckweg zu `/projects/<projectId>` und ordnet ZOPA, BATNA, Argumente und Konzessionen als nachgelagerte naechste Schritte ein. `/strategy` ohne `projectId` bleibt die allgemeine Projektauswahl; es gibt keine neue Route, keine Backend-Aenderung, keine Migration und keine automatische Strategieerzeugung.
+
+D5.3 nutzt die vorhandenen Strategy- und ZOPA-Felder fuer reine Guidance/Microcopy. Der Walk-away Point wird als manuelle Abbruchgrenze erklaert, die aus Ziel, Risiko, Kosten/Nutzen und BATNA abgeleitet wird. ZOPA bleibt der moegliche Ueberschneidungsbereich zwischen eigener Grenze und angenommener Grenze der Gegenseite; Konzessionen bleiben geplante Tauschobjekte oder Zugestaendnisse. Es gibt keine automatische WAP-, ZOPA- oder BATNA-Berechnung und keine neuen Felder.
 
 Offene Nicht-Blocker nach D4.4:
 

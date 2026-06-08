@@ -101,6 +101,7 @@
 - Phase D4.4 umgesetzt: D4.1 bis D4.3 als aktueller D4-Preparation-UX-Zwischenstand dokumentiert und kompakten Smoke-Test-Plan fuer Project Detail -> Preparation Gaps Card -> Strategie vorbereiten -> Strategy Empty State -> Strategie manuell anlegen ergaenzt, ohne Produkt-, Frontend-, Backend-, Migrations-, Seed-, Env- oder Staging-Aenderung
 - Phase D5.1 umgesetzt: Nach manueller Strategieanlage aus `/strategy?projectId=...` zeigt der bestehende Strategy-Flow eine Success Guidance mit Rueckweg zu `/projects/<projectId>` und ordnet ZOPA, BATNA, Argumente und Konzessionen als nachgelagerte Schritte ein, ohne neue Route, Backend, Migration, KI, Scoring oder automatische Strategieerzeugung
 - Phase D5.2 umgesetzt: Bei vorhandener Strategie zeigt `/strategy?projectId=...` eine kompakte Building-Blocks-Guidance fuer ZOPA, BATNA, Argumente und Konzessionen mit Status aus vorhandenen Bausteinen, ohne automatische Baustein-Erzeugung, Backend, Migration, KI, Scoring, RAG, neue Route oder Datenmodell-Aenderung
+- Phase D5.3 umgesetzt: Die bestehende Strategy-Guidance erklaert WAP / Walk-away Point als manuelle Abbruchgrenze aus Ziel, Risiko, Kosten/Nutzen und BATNA und grenzt ihn von Konzessionen und ZOPA ab, ohne automatische Berechnung, Backend, Migration, KI, Scoring, neue Route oder Datenmodell-Aenderung
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 
@@ -284,6 +285,16 @@ Phase D5.2:
 - Die Seite zeigt eine kompakte Building-Blocks-Guidance fuer ZOPA, BATNA, Argumente und Konzessionen.
 - Bereits vorhandene Bausteine werden aus den geladenen Listen als vorhanden angezeigt; leere Kategorien bleiben normale naechste Arbeitsschritte.
 - D5.2 erzeugt keine Bausteine automatisch, baut keine neue Route und fuehrt keine Backend-, Migrations-, KI-, Scoring-, RAG- oder Datenmodell-Aenderung ein.
+
+Phase D5.3:
+
+- D5.3 ergaenzt die bestehende Building-Blocks-Guidance bei vorhandener Strategie um WAP / Walk-away Point.
+- WAP wird als manuelle Abbruchgrenze eingeordnet, ab der die BATNA sinnvoller ist als ein Abschluss.
+- Die Guidance macht klar, dass WAP aus Ziel, Risiko, Kosten/Nutzen und BATNA abgeleitet wird.
+- ZOPA bleibt der moegliche Ueberschneidungsbereich zwischen eigener Grenze und angenommener Grenze der Gegenseite.
+- Konzessionen bleiben geplante Tauschobjekte oder Zugestaendnisse und sind nicht der WAP.
+- D5.3 nutzt vorhandene Strategy- und ZOPA-Felder nur fuer Status/Gewichtung und erzeugt keine automatische WAP-, ZOPA- oder BATNA-Berechnung.
+- D5.3 baut keine neue Route und fuehrt keine Backend-, Migrations-, KI-, Scoring-, RAG- oder Datenmodell-Aenderung ein.
 
 Vorgemerkte Folgehinweise aus C15 bis C17:
 

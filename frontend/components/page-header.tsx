@@ -17,7 +17,7 @@ export function PageHeader({ eyebrow, title, description, actions }: PageHeaderP
         <h1 className="mt-2 text-3xl font-semibold tracking-normal">{title}</h1>
         <p className="mt-3 text-sm leading-6 text-muted-foreground">{description}</p>
       </div>
-      {actions ? <div className="flex shrink-0 items-center gap-2">{actions}</div> : null}
+      {actions ? <div className="flex min-w-0 flex-wrap items-center gap-2 sm:shrink-0 sm:justify-end">{actions}</div> : null}
     </header>
   );
 }

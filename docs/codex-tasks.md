@@ -97,6 +97,7 @@
 - Phase D3.10 umgesetzt: D3 Supplier Context als erster UX-Strang vorlaeufig dokumentarisch abgeschlossen und D4 als moegliche spaetere Project-Preparation-/Preparation-Gaps-Richtung abgegrenzt, ohne Code-, Staging-, Seed-, API-, Migrations- oder Produktfunktionsaenderung
 - Phase D4.1 umgesetzt: Project-Detailseite zeigt eine kompakte Preparation Gaps Card fuer Bedarfskontext, SupplierProfile, Supplier Context, Strategy, Strategiebausteine, SimulationScenario und Trainerreview aus vorhandenen Daten und bestehenden API-Listen, ohne Backend, Migration, KI, Scoring, RAG oder neues Datenmodell
 - Phase D4.2 umgesetzt: Die Preparation Gaps Card fuehrt bei fehlender Strategie klarer zum bestehenden Strategie-Einstieg, stellt Strategiebausteine nachgelagert zur Strategieanlage dar und betont, dass keine Strategie automatisch erzeugt wird
+- Phase D4.3 umgesetzt: Der bestehende Strategy-Einstieg `/strategy?projectId=...` zeigt fuer Projekte ohne Strategie einen klareren projektbezogenen Empty State, nutzt weiter den vorhandenen Strategie-Anlage-Workflow und stellt ZOPA, BATNA, Argumente und Konzessionen als nachgelagerte Schritte dar, ohne automatische Strategieerzeugung, Backend, Migration, neue Route oder Datenmodell-Aenderung
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 

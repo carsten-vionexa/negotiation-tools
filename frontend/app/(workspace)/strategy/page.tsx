@@ -118,10 +118,24 @@ export default async function StrategyPage({ searchParams }: { searchParams: Pro
 
       {!strategy ? (
         <section className="rounded-md border border-border bg-card p-5">
-          <EmptyState
-            title="Noch kein Strategieobjekt vorhanden."
-            description="Lege einen Strategie-Kopf an, um ZOPA, BATNA, Konzessionen und Argumentationslinien strukturiert zu pflegen."
-          />
+          <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+            <div>
+              <SectionTitle icon={<Target className="size-4" />} title="Noch keine Strategie fuer dieses Projekt" />
+              <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                Lege zuerst eine Strategie an oder bereite sie hier manuell vor. Diese Seite erzeugt keine Strategie automatisch und veraendert keine Daten,
+                bevor du das Formular speicherst.
+              </p>
+              <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                Danach kannst du Strategiebausteine wie ZOPA, BATNA, Argumente und Konzessionen ergaenzen.
+              </p>
+            </div>
+            <div className="rounded-md border border-dashed border-border bg-muted/40 p-4">
+              <p className="text-sm font-medium">Naechster Schritt</p>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                Nutze den bestehenden Strategie-Workflow, um den ersten Strategie-Kopf fuer dieses Projekt anzulegen.
+              </p>
+            </div>
+          </div>
           <form action={createStrategyAction.bind(null, project.id, project.company_id)} className="mt-5 grid gap-3 md:grid-cols-2">
             <Field label="Titel" name="title" defaultValue={`${project.title} - Strategie`} required />
             <Field label="Status" name="status" defaultValue="draft" />

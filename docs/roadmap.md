@@ -385,7 +385,7 @@ Offene Nicht-Blocker:
 
 ## 11. Phase D4: Project Preparation / Preparation Gaps
 
-Status: D4.1 und D4.2 umgesetzt.
+Status: D4.1 bis D4.3 umgesetzt.
 
 Ziel: Project-Detail-/Preparation-UX ausbauen, ohne automatische Bewertung oder neue Datenmodelle vorzuziehen.
 
@@ -393,10 +393,13 @@ Umgesetzte Schritte:
 
 1. D4.1: Preparation Gaps Card auf der Project-Detailseite.
 2. D4.2: Strategy Entry Guidance in der Preparation Gaps Card geschaerft.
+3. D4.3: Strategy Entry Page fuer Projekte ohne Strategie geglaettet.
 
 D4.1 macht Vorbereitungsluecken ausschliesslich aus vorhandenen Objekten und bestehenden API-Listen sichtbar: Bedarfskontext, SupplierProfile, Supplier Context, Strategy, Strategiebausteine aus ZOPA/BATNA/Argumentation/Konzession, SimulationScenario und Trainerreview. Die Card bleibt eine ruhige Vorhanden-/Offen-/Spaeter-Sicht mit kurzem naechstem Schritt und fuehrt keine KI-Integration, kein Supplier Scoring, kein RAG, keine automatische Lieferantenanalyse und keine neue Datenstruktur ein.
 
 D4.2 nutzt weiterhin den bestehenden Einstieg `/strategy?projectId=...`. Wenn noch keine Strategie vorhanden ist, verweist der naechste sinnvolle Schritt klar auf Strategiearbeit und stellt ZOPA, BATNA, Argumente und Konzessionen erst nach einer angelegten Strategie dar. Die Aenderung erzeugt keine Strategie automatisch, aendert keine Daten und fuehrt keine neue Route, kein Backend, keine Migration und kein neues Datenmodell ein.
+
+D4.3 verbessert denselben bestehenden Strategy-Einstieg fuer Projekte ohne Strategie. `/strategy?projectId=...` zeigt nun einen ruhigen, projektbezogenen Empty State, erklaert die manuelle Strategieanlage, betont die fehlende automatische Erzeugung und ordnet ZOPA, BATNA, Argumente und Konzessionen als nachgelagerte Schritte ein. Der bestehende Anlage-Workflow bleibt unveraendert; es gibt keine neue Route, keine Backend-Aenderung, keine Migration und keine automatische Datenveraenderung.
 
 ## 12. Phase E: Knowledge Intelligence
 

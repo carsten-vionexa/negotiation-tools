@@ -2,9 +2,7 @@
 
 ## 1. Zweck dieses Dokuments
 
-Dieses Dokument sammelt erste konzeptionelle Leitgedanken zur spaeteren grafischen und interaktiven Gestaltung des Negotiation Tools.
-
-Der aktuelle MVP ist bewusst funktional und fachlich getrieben. Viele Seiten zeigen bereits wichtige Inhalte, wirken aber stellenweise noch ueberladen. Das ist fuer die aktuelle Entwicklungsphase akzeptabel, soll aber nicht das Zielbild fuer eine spaetere Demo-, Test- oder Produktversion bleiben.
+Dieses Dokument sammelt konzeptionelle Leitgedanken zur spaeteren grafischen und interaktiven Gestaltung des Negotiation Tools. Der aktuelle MVP ist bewusst funktional und fachlich getrieben. Viele Seiten zeigen bereits wichtige Inhalte, wirken aber stellenweise noch ueberladen. Das ist fuer die aktuelle Entwicklungsphase akzeptabel, soll aber nicht das Zielbild fuer eine spaetere Demo-, Test- oder Produktversion bleiben.
 
 Dieses Dokument dient als Sammelstelle fuer spaetere Mockups, Wireframes, Designprinzipien und UX-Entscheidungen. Es implementiert nichts und ersetzt keine spaetere UI-Spezifikation.
 
@@ -318,7 +316,7 @@ Moegliche Aufteilung:
 
 - links: Journey / Strategiebausteine
 - mitte: Dialog mit KI-Coach
-- rechts: Daten- und Quellenkontext oder aktuelle Strategie-Summary
+- rechts: Daten- und Quellenkontext oder aktuelle Strategy Summary
 
 Wichtig:
 
@@ -458,7 +456,59 @@ Zu klaeren im Mockup:
 - keine modalen Unterbrechungen ohne Notwendigkeit
 - Tastatur- und Mobile-Nutzbarkeit spaeter mitdenken
 
-## 12. Spaetere Dokumentationserweiterungen
+## 12. Strategy Board Mockups / Concept Direction
+
+Diese Mockups konkretisieren das Strategy-Board-Zielbild visuell. Sie sind keine Umsetzungsanweisung, sondern dienen als Referenz fuer spaetere UI-Issues, Wireframes und Produktentscheidungen.
+
+### 12.1 Desktop: Strategy Overview
+
+![Strategy Board Overview Desktop](assets/strategy-board-mockups/strategy-board-overview-desktop.svg)
+
+Ziel der Desktop-Variante ist eine ruhige Gesamtuebersicht mit Executive Summary, sechs Strategiebausteinen und einem Fokusbereich. Die Seite soll auf einen Blick beantworten:
+
+- Worum geht es in der Verhandlung?
+- Wie weit ist die Strategie vorbereitet?
+- Welche Bausteine sind belastbar?
+- Was ist der naechste sinnvolle Schritt?
+
+### 12.2 Fokusbereich im Gesamtbild
+
+![Strategy Board Fokusbereich](assets/strategy-board-mockups/strategy-board-focus-area.svg)
+
+Der Fokusbereich ist der aktive Arbeitsbereich unterhalb der Strategie-Karten. Er soll nicht wie ein separates Formular wirken, sondern als gefuehrte Vertiefung des aktuell wichtigsten Bausteins.
+
+Empfohlene Struktur:
+
+1. **Aktuelle Alternative** – Was ist die derzeit beste Handlungsalternative?
+2. **Warum das wichtig ist** – Warum verbessert dieser Baustein die Verhandlungsposition?
+3. **Noch offen** – Welche Informationen fehlen?
+4. **Naechste Schritte** – Was muss konkret getan werden?
+
+Der Fokusbereich sollte visuell leicht hervorgehoben sein, aber nicht laut wirken. Eine dezente Kontur, ein ruhiger Hintergrund und klare Karten reichen aus.
+
+### 12.3 Mobile Strategy Overview
+
+![Mobile Strategy Overview](assets/strategy-board-mockups/strategy-board-mobile.svg)
+
+Mobile sollte die Strategy Overview nicht als verkleinertes Desktop-Dashboard zeigen. Stattdessen sollte die Seite vertikal gefuehrt sein:
+
+1. kompakter Header mit Projektname,
+2. Summary Card mit Status und naechstem Schritt,
+3. Liste der Strategiebausteine mit Status,
+4. Fokusbereich fuer den aktuell wichtigsten Baustein,
+5. offene Fragen und Details nach Bedarf.
+
+### 12.4 UX-Entscheidungen aus den Mockups
+
+- Der Fokusbereich ist Bestandteil der Strategy Overview, keine eigene Hauptnavigation.
+- Die aktive Karte bestimmt den Inhalt des Fokusbereichs.
+- Es gibt immer eine dominante Primaeraktion, z. B. `BATNA bearbeiten`.
+- Sekundaeraktionen wie `Offene Frage erfassen` oder `Details anzeigen` treten visuell zurueck.
+- KI-Coaching bleibt spaeterer Zielmodus und darf nicht als generischer Auto-Generate-Button erscheinen.
+- Statuswerte bleiben verbal und handlungsnah, nicht rein numerisch.
+- Mobile wird als gefuehrte Liste umgesetzt, nicht als komprimiertes Desktop-Raster.
+
+## 13. Spaetere Dokumentationserweiterungen
 
 Dieses Dokument kann spaeter erweitert werden um:
 
@@ -471,7 +521,7 @@ Dieses Dokument kann spaeter erweitert werden um:
 - Responsive-Verhalten
 - konkrete UI-Issues fuer Strategy Board, Getting Started und AI Strategy Coach
 
-## 13. Nicht-Ziele dieses Dokuments
+## 14. Nicht-Ziele dieses Dokuments
 
 Dieses Dokument ist kein Umsetzungsauftrag.
 

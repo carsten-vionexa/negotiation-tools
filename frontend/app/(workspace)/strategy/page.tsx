@@ -421,10 +421,10 @@ function StrategyNextActionGuidance({ projectId }: { projectId: string }) {
   const actions = [
     {
       title: "Briefing vorbereiten",
-      status: "Coming next",
+      status: "Projektbezogener Vorbereitungshinweis",
       text: "Nutze die fertigen Strategieanker als Briefing-Grundlage fuer Ziele, Grenzen, Argumente, Tauschlogik und offene Prueffragen.",
-      href: undefined,
-      actionLabel: undefined,
+      href: `/briefing?projectId=${projectId}`,
+      actionLabel: "Briefing-Kontext pruefen",
     },
     {
       title: "Simulation vorbereiten",

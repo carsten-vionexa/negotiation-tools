@@ -20,7 +20,14 @@ const readinessRequirements = [
   "Argumente, Konzessionen, Risiken und offene Fragen sind als Arbeitsgrundlage sichtbar.",
 ];
 
-export default function BriefingPage() {
+type BriefingSearchParams = {
+  projectId?: string;
+};
+
+export default async function BriefingPage({ searchParams }: { searchParams: Promise<BriefingSearchParams> }) {
+  const { projectId } = await searchParams;
+  const hasProjectContext = Boolean(projectId);
+
   return (
     <>
       <PageHeader
@@ -28,6 +35,21 @@ export default function BriefingPage() {
         title="Briefing vorbereiten"
         description="Ruhiger Einstieg fuer den naechsten vorbereitenden Schritt nach einer ausreichend ausgearbeiteten Strategie."
       />
+
+      <section className="rounded-md border border-border bg-card p-5">
+        <SectionTitle icon={<Info className="size-4" />} title={hasProjectContext ? "Projektkontext erkannt" : "Noch kein Projektkontext"} />
+        {hasProjectContext ? (
+          <p className="mt-3 text-sm leading-6 text-muted-foreground">
+            Diese Briefing Preparation ist ueber die URL einem Projektkontext zugeordnet. Der Kontext wird hier bewusst nur eingeordnet; es werden keine
+            Projektdaten nachgeladen und kein Briefing automatisch erzeugt.
+          </p>
+        ) : (
+          <p className="mt-3 text-sm leading-6 text-muted-foreground">
+            Fuer eine konkrete Briefing Preparation braucht es zuerst ein Verhandlungsprojekt und eine vorbereitete Strategy. Ohne `projectId` bleibt diese
+            Seite eine ruhige Workflow-Einordnung und kein startbereites projektbezogenes Briefing.
+          </p>
+        )}
+      </section>
 
       <section className="grid gap-4 lg:grid-cols-[1fr_0.82fr]">
         <div className="rounded-md border border-border bg-card p-5">

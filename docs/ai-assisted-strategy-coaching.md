@@ -370,6 +370,20 @@ Schritte:
 5. D11.6: Erst danach einen begrenzten technischen Prototyp pruefen, weiterhin
    ohne automatische Strategieuebernahme.
 
+### 8.7 D11.2 Kontextvertrag
+
+D11.2 ist als eigener Konzeptschritt in
+`docs/ai-strategy-context-contract.md` dokumentiert. Das Dokument beschreibt
+den fachlichen Kontextvertrag fuer eine spaetere projektbezogene KI-Nutzung:
+Kontextbereiche, zulaessige Datenquellen, Trennung von Fakten,
+Nutzerannahmen, datenbasierten Hinweisen, KI-Hypothesen, offenen Fragen und
+Widerspruechen, Quellen-/Evidenzmarker, Mindestqualitaet sowie ungeeignete
+Kontextbestandteile.
+
+D11.2 bleibt konzeptionell. Es fuehrt keine Produkt-, Backend-, Frontend-,
+KI-, RAG-, API-, Persistenz-, Migrations-, Simulations- oder
+Trainerreview-Logik ein.
+
 ## 9. Technische Voraussetzungen vor Umsetzung
 
 D11 darf erst umgesetzt werden, wenn das Fundament passt.
@@ -410,6 +424,8 @@ D11: AI-assisted Strategy Coaching / Dialogische Strategieentwicklung
 ```
 
 D11.1 dokumentiert nur Preconditions und ist kein Start der Implementierung.
+D11.2 dokumentiert den fachlichen Kontextvertrag und ist ebenfalls keine
+Implementierungsfreigabe.
 D11 ist kein Blocker fuer D9 Briefing Preparation oder D10 User Onboarding.
 D11 soll erst starten, wenn die technischen Grundlagen fuer KI-Kontext,
 RAG/Knowledge, Strategy-Persistenz, Quellen-/Evidenzlogik und Dialogfuehrung

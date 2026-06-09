@@ -124,6 +124,7 @@
 - Issue #158 / D10.3 umgesetzt: Hostinger-Staging aktualisiert und Demo-Flow-Smoke-Test bestanden dokumentiert
 - Issue #159 / D10.4 umgesetzt: D10-Zwischenabschluss dokumentiert; Getting Started, Strategy Overview, lokaler Smoke-Test und Staging-Smoke-Test sind als abgeschlossen eingeordnet, D11 bleibt spaeterer Roadmapblock, offene Nicht-Blocker #55, #113 und #155 bleiben unveraendert offen
 - Issue #160 / D11.1 umgesetzt: Preconditions fuer AI-assisted Strategy Coaching als reiner Konzeptschritt dokumentiert; Fakten, Nutzerannahmen, KI-Hypothesen, offene Fragen, Quellen-/Evidenzlogik, Speicherlogik nach Nutzerbestaetigung, UX-Leitplanken und D11-Folgephasen sind abgegrenzt, ohne Produkt-, Backend-, KI-, RAG-, Simulations-, Trainerreview-, API-, Migrations- oder Persistenzlogik einzufuehren
+- Issue #161 / D11.2 umgesetzt: Kontextvertrag fuer projektbezogene KI-Nutzung als reiner Konzeptschritt in `docs/ai-strategy-context-contract.md` dokumentiert; Kontextbereiche, Datenquellen, Aussagearten, Evidenzmarker, Mindestqualitaet, Missing-Information-Hinweise und ungeeignete Kontextbestandteile sind abgegrenzt, ohne Produkt-, Backend-, Frontend-, KI-, RAG-, API-, Persistenz-, Migrations-, Simulations- oder Trainerreview-Logik einzufuehren
 - Issue #146 umgesetzt: Codex-Kurzmodus in der Projekt-SKILL dokumentiert, kompakte operative `CODEX.md` im Repository-Root ergaenzt und README/Roadmap verlinkt beziehungsweise aktualisiert, ohne Produktdateien, Backend, Frontend, Migrationen, Staging oder Build-/Testskripte zu aendern
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
@@ -678,6 +679,17 @@ Vorgemerkte Folgehinweise aus C15 bis C17:
 - Sicherstellen, dass Fakten, Nutzerannahmen, KI-Hypothesen und offene Fragen getrennt dokumentiert sind.
 - Sicherstellen, dass Quellen-/Evidenzlogik und Speicherung erst nach Nutzerbestaetigung klar beschrieben sind.
 - Sicherstellen, dass der bestehende Strategy Builder als aktueller manueller beziehungsweise regelbasierter Vorbereitungsbereich erhalten bleibt.
+- Sicherstellen, dass #55, #113 und #155 als offene Nicht-Blocker korrekt eingeordnet bleiben.
+- Sicherstellen, dass keine Produktdateien, keine Backendlogik, keine UI, keine Migration, kein Staging-Deployment und keine KI-, Simulation-, Trainerreview-, API-, Persistenz- oder RAG-Logik geaendert wurden.
+
+## Manuelle Pruefhilfe Issue #161
+
+- `docs/ai-strategy-context-contract.md`, `docs/ai-assisted-strategy-coaching.md`, `docs/roadmap.md` und `docs/codex-tasks.md` pruefen.
+- Sicherstellen, dass D11.2 als fachlicher Kontextvertrag beschrieben ist und nicht wie eine finale API-, DTO-, Datenbank- oder Implementierungsspezifikation wirkt.
+- Sicherstellen, dass Kontextbereiche und zulaessige Datenquellen eingeordnet sind.
+- Sicherstellen, dass Fakten, Nutzerannahmen, datenbasierte Hinweise, KI-Hypothesen, offene Fragen und Widersprueche getrennt bleiben.
+- Sicherstellen, dass Quellen-/Evidenzmarker nur konzeptionell beschrieben sind und keine RAG- oder Claim-Extraktion eingefuehrt wird.
+- Sicherstellen, dass Mindestqualitaet, Missing Information, widerspruechliche Kontexte und ungeeignete Kontextbestandteile dokumentiert sind.
 - Sicherstellen, dass #55, #113 und #155 als offene Nicht-Blocker korrekt eingeordnet bleiben.
 - Sicherstellen, dass keine Produktdateien, keine Backendlogik, keine UI, keine Migration, kein Staging-Deployment und keine KI-, Simulation-, Trainerreview-, API-, Persistenz- oder RAG-Logik geaendert wurden.
 

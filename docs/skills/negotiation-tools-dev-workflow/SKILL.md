@@ -14,7 +14,7 @@ Ziel ist ein konsistenter, nachvollziehbarer und risikoarmer Entwicklungsprozess
 * Keine Nebenfeatures, Refactorings oder kosmetischen Zusatzänderungen ohne explizite Entscheidung.
 * Nach jedem abgeschlossenen Schritt den nächsten sinnvollen Schritt benennen, aber nicht automatisch starten.
 * GitHub Issues dienen als zentrale Dokumentation für Aufgaben, Umsetzung, Tests und Abschluss.
-* Codex-Prompts sollen so konkret sein, dass Codex mit möglichst wenig Interpretationsspielraum arbeiten kann.
+* Codex-Prompts sollen so kurz wie möglich und so konkret wie nötig sein.
 
 ## Standardablauf pro Entwicklungsschritt
 
@@ -164,19 +164,14 @@ C19: Kurzer präziser Titel
 
 ### 5. Codex-Prompt erstellen
 
-Nach Anlage des Issues einen klaren Codex-Prompt erstellen.
+Nach Anlage eines vollständig formulierten Issues soll grundsätzlich der Codex-Kurzmodus verwendet werden.
 
-Der Prompt soll enthalten:
+Der ausführliche Prompt ist nur nötig, wenn:
 
-* Repository
-* Issue-Nummer und Titel
-* Ausgangslage
-* konkrete Aufgabe
-* technische Erwartung
-* Nicht-Ziele
-* Akzeptanzkriterien
-* Testanforderungen
-* gewünschtes Abschlussformat
+* noch kein vollständiges Issue existiert,
+* der Scope besonders riskant ist,
+* mehrere technische Interpretationspfade offen sind,
+* der Nutzer ausdrücklich einen ausführlichen Prompt wünscht.
 
 Codex soll am Ende immer berichten:
 
@@ -195,51 +190,26 @@ Wenn sinnvoll, Codex auffordern:
 
 ### 5a. Codex-Kurzmodus
 
-Wenn ein GitHub Issue vollständig formuliert ist, darf der Codex-Prompt bewusst kurz sein.
+Wenn ein GitHub Issue vollständig formuliert ist, wird der Codex-Prompt bewusst kurz gehalten.
 
 In diesem Modus gilt:
 
 * Das GitHub Issue ist die primäre Scope-Quelle.
-* Der Codex-Prompt muss Scope, Nicht-Ziele, Akzeptanzkriterien und Abschlussformat nicht vollständig duplizieren.
-* Der Prompt verweist auf `README.md`, `CODEX.md`, bei Bedarf auf diese Projekt-SKILL und auf das konkrete Issue.
+* Der Codex-Prompt dupliziert Scope, Nicht-Ziele, Akzeptanzkriterien und Abschlussformat nicht.
+* Der Prompt verweist auf `README.md`, `CODEX.md` und das konkrete Issue.
 * Ausführliche Codex-Prompts sind nur nötig, wenn kein vollständiges Issue existiert, der Schritt besonders riskant ist oder mehrere Interpretationspfade offen sind.
 * Die Qualitätssicherung bleibt unverändert: Scope strikt einhalten, nur relevante Dateien ändern, keine Nebenfeatures, passende Checks ausführen und kurz berichten.
 
-Die Rollen sind damit getrennt:
-
-* `docs/skills/negotiation-tools-dev-workflow/SKILL.md` beschreibt die ausführliche Projektsteuerung, Issue-Planung, Review-Logik und Abschlussarbeit.
-* `CODEX.md` beschreibt die kompakte operative Arbeitsanweisung für Codex im Repository.
-
-Minimaler Codex-Prompt bei vollständig formuliertem Issue:
+Bevorzugter Codex-Kurzprompt bei vollständig formuliertem Issue:
 
 ```text
-Bitte bearbeite Issue #XYZ gemäß Issue-Beschreibung.
+Bitte bearbeite Issue #XYZ gemäß Issue-Beschreibung. Lies README.md und CODEX.md. Issue ist Scope-Quelle. Keine Nebenfeatures. Checks ausführen. Kurz berichten.
+```
 
-Repository:
-carsten-vionexa/negotiation-tools
+Beispiel für Issue #156:
 
-Vor Beginn:
-- README.md lesen
-- CODEX.md lesen
-- falls nötig docs/skills/negotiation-tools-dev-workflow/SKILL.md lesen
-- git status prüfen
-
-Regeln:
-- Issue ist die maßgebliche Scope-Quelle.
-- Keine Nebenfeatures.
-- Keine Refactorings außerhalb des Scopes.
-- Keine Secrets committen.
-
-Checks:
-- git diff --check
-- falls Produktcode geändert: passende lint/typecheck/build checks
-
-Abschlussbericht:
-- geänderte Dateien
-- Umsetzung
-- Tests
-- Ergebnis
-- offene Punkte
+```text
+Bitte bearbeite Issue #156 gemäß Issue-Beschreibung. Lies README.md und CODEX.md. Issue ist Scope-Quelle. Keine Nebenfeatures. Checks ausführen. Kurz berichten.
 ```
 
 ### 6. Codex-Ergebnis prüfen
@@ -389,48 +359,18 @@ Was soll nach Umsetzung besser funktionieren?
 
 ## Codex-Prompt
 
-Separater oder eingebetteter Prompt.
+Bei vollständig formulierten Issues bevorzugt nur den Codex-Kurzprompt verwenden.
 ```
 
 ## Standardstruktur für Codex-Prompts
 
+Bei vollständig formulierten Issues ist der Standardprompt:
+
 ```text
-Bitte implementiere Issue #[Nummer] – [Titel].
-
-Repository:
-carsten-vionexa/negotiation-tools
-
-Ausgangslage:
-- Branch: main oder Feature Branch
-- Working Tree soll vor Beginn sauber sein
-- Bei lokalem Codex-Arbeiten entstehen Änderungen zunächst im lokalen Working Tree; sie sind erst nach Commit lokal versioniert und erst nach Push auf GitHub sichtbar.
-- Kurzkontext
-
-Aufgabe:
-1. ...
-2. ...
-3. ...
-
-Technische Erwartung:
-- ...
-
-Nicht-Ziele:
-- ...
-
-Akzeptanzkriterien:
-- ...
-
-Tests:
-- Relevante Tests ausführen
-- Falls Tests nicht ausführbar sind, transparent begründen
-
-Bitte gib am Ende eine kurze Zusammenfassung:
-- geänderte Dateien
-- technische Umsetzung
-- ausgeführte Tests
-- Ergebnis
-- offene Punkte
+Bitte bearbeite Issue #XYZ gemäß Issue-Beschreibung. Lies README.md und CODEX.md. Issue ist Scope-Quelle. Keine Nebenfeatures. Checks ausführen. Kurz berichten.
 ```
+
+Ausführliche Codex-Prompts nur verwenden, wenn kein vollständiges Issue existiert, der Schritt besonders riskant ist oder mehrere Interpretationspfade offen sind.
 
 ## Standardstruktur für Abschlusskommentare
 

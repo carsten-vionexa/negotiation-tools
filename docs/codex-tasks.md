@@ -111,6 +111,7 @@
 - Phase D7.1 umgesetzt: Strategy-Seite zeigt eine regelbasierte Completion-/Readiness-Guidance fuer Strategy Objectives, ZOPA, BATNA, WAP, Konzessionen und Argumente mit verbalem Status und fachlichen Warnhinweisen, ohne Score, KI, Backend, Migration, neue Persistenz oder Staging-Deployment
 - Phase D7.2 umgesetzt: Lokaler Browser-Smoke-Test fuer die D7.1-Strategy-Readiness-Guidance bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert; `/strategy`, `/strategy?projectId=...`, drei Readiness-Zustaende, fachliche Warnhinweise, vorhandene Anker, fehlende Bausteine, Mobile-Spotcheck und Console-Check wurden geprueft, ohne Produktcode, Backend, Migration, Seed-Datei, KI, Scoring, Simulation oder RAG zu aendern
 - Phase D7.3 umgesetzt: Hostinger-Staging auf `7e80fce` aktualisiert und Strategy Readiness Guidance browserseitig auf Staging bestanden dokumentiert; Healthchecks, DB-Health, Alembic `2f4b7c8d9e0a (head)`, `/strategy?projectId=...`, `/strategy`, drei Readiness-Zustaende, D6-Feldfuehrung, Save-Verhalten, Mobile-Spotcheck und Console-Check wurden geprueft, ohne Produktcode, Backend, Migration, Seed-Datei, KI, Scoring, Simulation oder RAG zu aendern
+- Phase D8.1 umgesetzt: Die Strategy-Seite zeigt bei Readiness `Bereit fuer Briefing / Simulation` eine kompakte Next-Action-Guidance fuer Briefing-, Simulations- und Trainerreview-Vorbereitung; vorhandene Simulation-/Trainerreview-Routen werden als Vorbereitungsbereiche verlinkt, die generische Briefing-Placeholder-Route bleibt bewusst unverlinkt, ohne Backend, Migration, KI-Briefing, produktive Simulation oder Trainerreview-Logik
 - Issue #146 umgesetzt: Codex-Kurzmodus in der Projekt-SKILL dokumentiert, kompakte operative `CODEX.md` im Repository-Root ergaenzt und README/Roadmap verlinkt beziehungsweise aktualisiert, ohne Produktdateien, Backend, Frontend, Migrationen, Staging oder Build-/Testskripte zu aendern
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
@@ -357,6 +358,15 @@ Phase D7.1:
 - Fachliche Warnhinweise trennen ZOPA als Einigungskorridor, BATNA als externe Alternative und WAP als Walk-away-Grenze. Fehlende Konzessionen werden als fehlende Tauschlogik und fehlende Argumente als fehlende Gespraechsfuehrung eingeordnet.
 - `/strategy` ohne `projectId` bleibt die allgemeine Projektauswahl und zeigt keine projektbezogene Readiness-Box.
 - D7.1 fuehrt keine automatische Strategieerzeugung, kein numerisches Scoring, keine KI, keine Simulation, keine RAG-Logik, keine Backend-Aenderung, keine Migration, keine neue Persistenz und kein Staging-Deployment ein.
+
+Phase D8.1:
+
+- D8.1 nutzt die bestehende Strategy Readiness Guidance als Uebergang in den naechsten Workflow-Schritt.
+- Bei Status `Bereit fuer Briefing / Simulation` erscheint eine kompakte Next-Action-Guidance mit den Richtungen `Briefing vorbereiten`, `Simulation vorbereiten` und `Trainerreview vorbereiten`.
+- Briefing wird bewusst als Coming-next-Hinweis ohne Zielroute dargestellt, weil derzeit nur eine generische Placeholder-Route und noch keine stabile projektbezogene Briefing-Funktion existiert.
+- Simulation und Trainerreview verlinken nur auf die bestehenden projektbezogenen Vorbereitungsbereiche und werden nicht als produktive Simulation oder automatisches Review suggeriert.
+- Die D6-/D7-Feldfuehrung, die Readiness-Statuslogik, `/strategy?projectId=...` und `/strategy` ohne `projectId` bleiben unveraendert.
+- D8.1 fuehrt keine Backend-Aenderung, keine Migration, keine neue Persistenz, kein KI-Briefing, keine produktive Simulation und keine Trainerreview-Logik ein.
 
 Vorgemerkte Folgehinweise aus C15 bis C17:
 

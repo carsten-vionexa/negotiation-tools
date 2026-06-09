@@ -169,6 +169,7 @@ export default async function StrategyPage({ searchParams }: { searchParams: Pro
             concessionItems={concessionItems}
           />
           <StrategyReadinessGuidance
+            projectId={project.id}
             strategy={strategy}
             zopaItems={zopaItems}
             batnaOptions={batnaOptions}
@@ -299,12 +300,14 @@ type ReadinessBlock = {
 };
 
 function StrategyReadinessGuidance({
+  projectId,
   strategy,
   zopaItems,
   batnaOptions,
   argumentationLines,
   concessionItems,
 }: {
+  projectId: string;
   strategy: StrategyRead;
   zopaItems: ZopaItemRead[];
   batnaOptions: BatnaOptionRead[];
@@ -409,7 +412,63 @@ function StrategyReadinessGuidance({
         <GuidanceList title="Gezielt ergaenzen" items={missingHints} emptyText="Keine offenen Kernbausteine in dieser einfachen Regelpruefung." />
         <GuidanceList title="Fachliche Warnhinweise" items={warnings} emptyText="Keine fachlichen Warnhinweise aus den aktuellen Bausteinen." />
       </div>
+      {readinessStatus === "Bereit fuer Briefing / Simulation" ? <StrategyNextActionGuidance projectId={projectId} /> : null}
     </section>
+  );
+}
+
+function StrategyNextActionGuidance({ projectId }: { projectId: string }) {
+  const actions = [
+    {
+      title: "Briefing vorbereiten",
+      status: "Coming next",
+      text: "Nutze die fertigen Strategieanker als Briefing-Grundlage fuer Ziele, Grenzen, Argumente, Tauschlogik und offene Prueffragen.",
+      href: undefined,
+      actionLabel: undefined,
+    },
+    {
+      title: "Simulation vorbereiten",
+      status: "Bestehender Vorbereitungsbereich",
+      text: "Lege aus der Strategie ein Trainingsszenario mit Rolle, Gespraechsphase, Schwierigkeit, Trainingsziel und Erfolgskriterien an. Das ist noch keine produktive Simulation.",
+      href: `/simulation?projectId=${projectId}`,
+      actionLabel: "Szenario konfigurieren",
+    },
+    {
+      title: "Trainerreview vorbereiten",
+      status: "Nach Szenario-Konfiguration",
+      text: "Trainerreview nutzt vorhandene Szenarien als Anker fuer Kommentare und Lernpunkte. Ohne Szenario bleibt dieser Schritt eine nachgelagerte Vorbereitung.",
+      href: `/trainer-review?projectId=${projectId}`,
+      actionLabel: "Review-Bereich pruefen",
+    },
+  ];
+
+  return (
+    <div className="mt-5 rounded-md border border-dashed border-border bg-muted/40 p-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <p className="text-sm font-semibold">Naechste Workflow-Aktion</p>
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            Die Strategie ist ausreichend vorbereitet, um vom Sammeln der Strategiebausteine in Briefing-, Simulations- und Review-Vorbereitung zu wechseln.
+            Diese Schritte ordnen die vorhandenen Inhalte weiter, erzeugen aber kein KI-Briefing, keine produktive Simulation und kein automatisches Trainerreview.
+          </p>
+        </div>
+        <ActionLink href={`/projects/${projectId}`} label="Zum Projekt" icon={<ArrowLeft className="size-4" />} />
+      </div>
+      <div className="mt-4 grid gap-3 lg:grid-cols-3">
+        {actions.map((action) => (
+          <div key={action.title} className="rounded-md border border-border bg-card p-3">
+            <p className="text-sm font-semibold">{action.title}</p>
+            <p className="mt-1 text-xs font-medium uppercase tracking-[0.14em] text-muted-foreground">{action.status}</p>
+            <p className="mt-2 text-sm leading-6 text-muted-foreground">{action.text}</p>
+            {action.href && action.actionLabel ? (
+              <div className="mt-3">
+                <ActionLink href={action.href} label={action.actionLabel} icon={<ArrowRight className="size-4" />} />
+              </div>
+            ) : null}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 

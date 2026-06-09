@@ -78,6 +78,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase D7.1: Die Strategy-Seite zeigt eine regelbasierte Completion-/Readiness-Guidance fuer Strategy Objectives, ZOPA, BATNA, WAP, Konzessionen und Argumente, ohne Score, KI, Backend, Migration oder neue Persistenz
 - Phase D7.2: Lokaler Browser-Smoke-Test fuer die D7.1-Strategy-Readiness-Guidance mit drei Fuellstaenden, `/strategy`, `/strategy?projectId=...`, Mobile-Spotcheck und Console-Check bestanden dokumentiert
 - Phase D7.3: Hostinger-Staging auf aktuellen `origin/main`-Stand gebracht und die Strategy Readiness Guidance dort browserseitig mit drei Readiness-Zustaenden, Healthchecks, Alembic-Stand, D6-Feldfuehrung, Save-Verhalten, Mobile-Spotcheck und Console-Check bestanden dokumentiert
+- Phase D8.1: Bei Strategy-Readiness `Bereit fuer Briefing / Simulation` zeigt die Strategy-Seite eine kompakte Next-Action-Guidance fuer Briefing-, Simulations- und Trainerreview-Vorbereitung; die generische Briefing-Placeholder-Route bleibt unverlinkt, Simulation und Trainerreview nutzen nur bestehende Vorbereitungsrouten
 - Issue #146: Codex-Arbeitsanweisungen sind getrennt: die ausfuehrliche Projektsteuerung bleibt in `docs/skills/negotiation-tools-dev-workflow/SKILL.md`, die kompakte operative Codex-Anweisung liegt als `CODEX.md` im Repository-Root
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
@@ -237,6 +238,7 @@ Frontend-nutzbar sind derzeit:
 - `/projects/[id]` macht bei verknuepften Anfragepositionen den Ursprung sowie zentrale RequestItem-Bedarfsdaten wie Titel, Artikel, Kategorie, Menge, Liefertermin, Zielpreis, Budgetrahmen, Zielregion, Prioritaet, Beschreibung, Spezifikation und Notizen lesbar sichtbar.
 - `/projects/[id]` zeigt bei verknuepftem SupplierProfile eine kompakte Supplier Context Card mit Lieferant, Land/Region, Branche/Kategorie, Beziehung, Verhandlungssignalen, kulturellem Kontext, vorbereitungsorientierten Readiness-/Missing-Information-Hints sowie einem ruhigen Edit-Guidance-CTA und Link zum vollstaendigen Profil; ohne verknuepftes SupplierProfile erscheint ein ruhiger Empty State.
 - `/projects/[id]` zeigt zusaetzlich eine kompakte Preparation Gaps Card, die Bedarfskontext, Lieferantenprofil, Supplier Context, Strategie, Strategiebausteine, Simulation und Trainerreview als vorhanden, offen oder optional spaeter pruefbar einordnet. Bei fehlender Strategie fuehrt sie zuerst zum bestehenden Strategie-Einstieg und ordnet Strategiebausteine nachgelagert ein.
+- `/strategy?projectId=...` zeigt bei vollstaendiger Readiness eine kompakte Next-Action-Guidance, die Briefing als Coming-next einordnet, die generische Briefing-Placeholder-Route nicht als projektbezogene Funktion suggeriert und die bestehenden Vorbereitungsbereiche fuer Simulation und Trainerreview verlinkt.
 - Projektbezogene Einstiege in Datenbasis, Analyse, Strategie, Simulation und Trainerreview.
 
 Mapping in C23:

@@ -981,3 +981,43 @@ Route: `/strategy?projectId=01d9d55b-87c3-5a5a-876a-b55a3ce2db33`
 - Keine Blocker gefunden.
 - Die Staging-Demo-Strategie enthaelt nun klar markierte `D7.3 Smoke`-Werte fuer ZOPA, BATNA, WAP, Konzessionsstrategie, Argumentationssummary und den Save-Verhalten-Marker.
 - Die Building-Blocks-Guidance zaehlt weiterhin nur konkrete ZOPA-/BATNA-/Konzessions-/Argumentationslisten. Das ist bestehendes Verhalten und kein D7.3-Blocker, weil die D7.1-Readiness-Guidance bewusst auch Strategy-Summary-Felder beruecksichtigt.
+
+## 19. D8.2 Lokaler Browser-Smoke-Test fuer Strategy Next-Action Guidance
+
+Durchgefuehrt am 2026-06-09 lokal gegen `http://localhost:3000` mit laufendem Docker-Stack:
+
+- DB: `negotiation-tools-db`, healthy, Host-Port `5433`
+- Backend: `negotiation-tools-backend`, Port `8000`, `/api/health` mit `{"status":"ok","service":"negotiation-tools-api"}`
+- Frontend: `negotiation-tools-frontend`, Port `3000`, `/strategy` mit `200 OK`
+
+Gesamtergebnis: bestanden ohne Blocker. Es wurden vorhandene lokale D7.2-Smoke-Testdaten genutzt und keine Daten angelegt oder geaendert. Es wurden keine Produktdateien, keine Backendlogik, keine Migrationen, keine Seed-Dateien, keine KI-, Scoring-, Simulations-, Trainerreview- oder RAG-Logik geaendert.
+
+### 19.1 Testdaten
+
+| Zustand | Project ID | Erwarteter Status |
+|---|---|---|
+| leer / stark unvollstaendig | `b4298d16-3212-4d97-8fc6-a245dc94fc2f` | `Unvollstaendig` |
+| teilweise gefuellt | `7edc2c1b-2c07-4613-b4bb-1c38f085c3c0` | `Grundlage vorhanden` |
+| vollstaendig gefuellt | `daaf8090-10d3-4f54-987e-51d1df4e5d2b` | `Bereit fuer Briefing / Simulation` |
+
+### 19.2 Browser-Ergebnis
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| `/strategy` ohne `projectId` | bestanden | Allgemeine Projektauswahl sichtbar; keine projektbezogene Next-Action-Guidance sichtbar |
+| `/strategy?projectId=...` mit `Unvollstaendig` | bestanden | Status sichtbar; `Naechste Workflow-Aktion`, `Briefing vorbereiten`, `Simulation vorbereiten` und `Trainerreview vorbereiten` nicht sichtbar |
+| `/strategy?projectId=...` mit `Grundlage vorhanden` | bestanden | Status sichtbar; Next-Action-Guidance nicht sichtbar |
+| `/strategy?projectId=...` mit `Bereit fuer Briefing / Simulation` | bestanden | Status sichtbar; Next-Action-Guidance mit `Briefing vorbereiten`, `Simulation vorbereiten` und `Trainerreview vorbereiten` sichtbar |
+| Briefing-Grenze | bestanden | `Briefing vorbereiten` wird als `Coming next` erklaert und hat keinen projektbezogenen Briefing-Link; damit wird die generische `/briefing`-Placeholder-Route nicht als fertige projektbezogene Funktion suggeriert |
+| Simulation-Link | bestanden | Next-Action-Link nutzt die stabile projektbezogene Route `/simulation?projectId=daaf8090-10d3-4f54-987e-51d1df4e5d2b` und beschreibt Szenario-Konfiguration als Vorbereitung, nicht als produktive Simulation |
+| Trainerreview-Link | bestanden | Next-Action-Link nutzt die stabile projektbezogene Route `/trainer-review?projectId=daaf8090-10d3-4f54-987e-51d1df4e5d2b`; Zielroute rendert `Trainerreview`, verweist ohne Szenario auf die Simulation-Konfiguration und bietet den Ruecklink zur projektbezogenen Simulation |
+| D6-/D7-Feldfuehrung | bestanden | Strategy-Kopf, ZOPA, BATNA, WAP, Konzessionen, Argumente, Readiness-Box, Placeholder/Hilfen und Save-Controls blieben sichtbar und fachlich unveraendert |
+| Mobile Spotcheck | bestanden | Bei `390px` Breite bleiben Status `Bereit fuer Briefing / Simulation` und Next-Action-Guidance vorhanden; kein horizontaler Overflow und keine Elemente ausserhalb des Viewports beobachtet |
+| Browser-Console | bestanden | Keine relevanten Console-Errors oder Warnings beobachtet |
+| Framework-Overlay | bestanden | Kein Next.js-/Framework-Error-Overlay sichtbar |
+
+### 19.3 Offene Punkte
+
+- Keine Blocker gefunden.
+- Der In-App-Browser-Klick auf den eindeutigen Next-Action-Link `Review-Bereich pruefen` blieb in der Adapter-Interaktion auf derselben URL; der Link-Href wurde im DOM eindeutig verifiziert und die Zielroute wurde anschliessend direkt browserseitig erfolgreich geprueft.
+- Staging-Deployment war ausdruecklich ausserhalb des Scopes.

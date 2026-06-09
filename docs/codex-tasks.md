@@ -112,6 +112,7 @@
 - Phase D7.2 umgesetzt: Lokaler Browser-Smoke-Test fuer die D7.1-Strategy-Readiness-Guidance bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert; `/strategy`, `/strategy?projectId=...`, drei Readiness-Zustaende, fachliche Warnhinweise, vorhandene Anker, fehlende Bausteine, Mobile-Spotcheck und Console-Check wurden geprueft, ohne Produktcode, Backend, Migration, Seed-Datei, KI, Scoring, Simulation oder RAG zu aendern
 - Phase D7.3 umgesetzt: Hostinger-Staging auf `7e80fce` aktualisiert und Strategy Readiness Guidance browserseitig auf Staging bestanden dokumentiert; Healthchecks, DB-Health, Alembic `2f4b7c8d9e0a (head)`, `/strategy?projectId=...`, `/strategy`, drei Readiness-Zustaende, D6-Feldfuehrung, Save-Verhalten, Mobile-Spotcheck und Console-Check wurden geprueft, ohne Produktcode, Backend, Migration, Seed-Datei, KI, Scoring, Simulation oder RAG zu aendern
 - Phase D8.1 umgesetzt: Die Strategy-Seite zeigt bei Readiness `Bereit fuer Briefing / Simulation` eine kompakte Next-Action-Guidance fuer Briefing-, Simulations- und Trainerreview-Vorbereitung; vorhandene Simulation-/Trainerreview-Routen werden als Vorbereitungsbereiche verlinkt, die generische Briefing-Placeholder-Route bleibt bewusst unverlinkt, ohne Backend, Migration, KI-Briefing, produktive Simulation oder Trainerreview-Logik
+- Phase D8.2 umgesetzt: Lokaler Browser-Smoke-Test fuer die D8.1 Strategy Next-Action-Guidance bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert; `/strategy`, `/strategy?projectId=...`, drei Readiness-Zustaende, Briefing-Grenze, projektbezogene Simulation-/Trainerreview-Routen, D6-/D7-Feldfuehrung, Mobile-Spotcheck und Console-Check wurden geprueft, ohne Produktcode, Backend, Migration, Seed-Datei, KI-Briefing, produktive Simulation, Trainerreview-Logik oder RAG zu aendern
 - Issue #146 umgesetzt: Codex-Kurzmodus in der Projekt-SKILL dokumentiert, kompakte operative `CODEX.md` im Repository-Root ergaenzt und README/Roadmap verlinkt beziehungsweise aktualisiert, ohne Produktdateien, Backend, Frontend, Migrationen, Staging oder Build-/Testskripte zu aendern
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
@@ -367,6 +368,14 @@ Phase D8.1:
 - Simulation und Trainerreview verlinken nur auf die bestehenden projektbezogenen Vorbereitungsbereiche und werden nicht als produktive Simulation oder automatisches Review suggeriert.
 - Die D6-/D7-Feldfuehrung, die Readiness-Statuslogik, `/strategy?projectId=...` und `/strategy` ohne `projectId` bleiben unveraendert.
 - D8.1 fuehrt keine Backend-Aenderung, keine Migration, keine neue Persistenz, kein KI-Briefing, keine produktive Simulation und keine Trainerreview-Logik ein.
+
+Phase D8.2:
+
+- D8.2 bestaetigt D8.1 lokal im Browser mit vorhandenen D7.2-Smoke-Testdaten fuer `Unvollstaendig`, `Grundlage vorhanden` und `Bereit fuer Briefing / Simulation`.
+- Die Next-Action-Guidance erscheint nur bei `Bereit fuer Briefing / Simulation`.
+- Briefing bleibt ein Coming-next-Hinweis ohne projektbezogenen Link; Simulation und Trainerreview nutzen bestehende projektbezogene Vorbereitungsrouten.
+- D6-/D7-Feldfuehrung, Readiness-Box, Save-Controls, `/strategy` ohne `projectId`, Mobile-Breite und Browser-Console wurden geprueft.
+- D8.2 fuehrt keine Produktcode-Aenderung, keine Backend-Aenderung, keine Migration, keine Seed-Aenderung, kein KI-Briefing, keine produktive Simulation, keine Trainerreview-Logik und keine RAG-Logik ein.
 
 Vorgemerkte Folgehinweise aus C15 bis C17:
 

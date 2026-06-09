@@ -364,10 +364,12 @@ Schritte:
 1. D11.2: Kontextvertrag fuer projektbezogene KI-Nutzung konzipieren.
 2. D11.3: Quellen-, Claim- und Evidenzmodell fuer Strategie-Coaching
    konkretisieren.
-3. D11.4: Dialogphasen und UX-Vertrag fuer den Strategy Coach spezifizieren.
-4. D11.5: Persistenz- und Reviewmodell fuer Entwuerfe, Bestaetigungen,
+3. D11.4: D11-Konzeptstand konsolidieren und Implementierungsgrenze
+   dokumentieren.
+4. D11.5: Dialogphasen und UX-Vertrag fuer den Strategy Coach spezifizieren.
+5. D11.6: Persistenz- und Reviewmodell fuer Entwuerfe, Bestaetigungen,
    Korrekturen und verworfene Vorschlaege definieren.
-5. D11.6: Erst danach einen begrenzten technischen Prototyp pruefen, weiterhin
+6. D11.7: Erst danach einen begrenzten technischen Prototyp pruefen, weiterhin
    ohne automatische Strategieuebernahme.
 
 ### 8.7 D11.2 Kontextvertrag
@@ -403,6 +405,56 @@ in Strategy-Bausteine ueberfuehren.
 D11.3 bleibt konzeptionell. Es fuehrt keine Produkt-, Backend-, Frontend-,
 KI-, RAG-, API-, Persistenz-, Migrations-, Simulations-, Score- oder
 Trainerreview-Logik ein.
+
+### 8.9 D11.4 Konzeptzwischenstand und Implementierungsgrenze
+
+D11.4 ist der Konsolidierungs- und Zwischenabschluss fuer den bisherigen
+D11-Konzeptblock. D11.1, D11.2 und D11.3 bilden zusammen ein fachliches
+Fundament fuer spaeteres AI-assisted Strategy Coaching, aber noch keine
+Produktfunktion.
+
+Der erledigte Konzeptstand ist:
+
+- D11.1 klaert Preconditions vor einer Umsetzung: stabile manuelle
+  Strategy-Flows, projektbezogener KI-Kontext, Trennung von Fakten,
+  Nutzerannahmen, KI-Hypothesen und offenen Fragen, Quellen-/Evidenzlogik und
+  Speicherung erst nach Nutzerbestaetigung.
+- D11.2 klaert den fachlichen Kontextvertrag fuer spaetere projektbezogene
+  KI-Nutzung: Kontextbereiche, zulaessige Datenquellen, Aussagearten,
+  Missing-Information-Hinweise, Widersprueche und ungeeignete
+  Kontextbestandteile.
+- D11.3 klaert Quellen-, Claim- und Evidenzsemantik: Quellenbegriff,
+  Claim-Begriff, Aussagearten, Evidence-/Confidence-Stufen, Aktualitaet,
+  Herkunft, Widerspruchslogik und zulaessige Nutzung im Coaching.
+
+Massgebliche Dokumente fuer den aktuellen D11-Konzeptstand sind:
+
+- `docs/ai-assisted-strategy-coaching.md`
+- `docs/ai-strategy-context-contract.md`
+- `docs/ai-strategy-evidence-model.md`
+- `docs/roadmap.md`
+- `docs/codex-tasks.md`
+
+D11 bleibt weiterhin kein kurzfristiger Umsetzungsblock. Es gibt im Produkt
+noch keinen AI Strategy Coach, keine RAG- oder Claim-Extraktion, kein
+Persistenzmodell fuer KI-Dialoge, Hypothesen, bestaetigte Vorschlaege oder
+Reviewdaten und keine API-, Backend-, Frontend-, Datenbank- oder UI-Freigabe.
+Der bestehende Strategy Builder bleibt der aktuelle manuelle beziehungsweise
+regelbasierte Vorbereitungsbereich.
+
+Moegliche spaetere D11-Folgeoptionen bleiben getrennt zu priorisieren:
+
+1. D11.5: Dialogphasen und UX-Vertrag fuer den Strategy Coach spezifizieren.
+2. D11.6: Persistenz- und Reviewmodell fuer Entwuerfe, Bestaetigungen,
+   Korrekturen und verworfene Vorschlaege definieren.
+3. D11.7: Erst danach einen begrenzten technischen Prototyp pruefen.
+
+Offene Nicht-Blocker bleiben unveraendert:
+
+- Issue #55: PDF-/Upload-/Parsing-Folgearbeit bleibt offen.
+- Issue #113: Next/PostCSS-audit-Finding bleibt zur Beobachtung offen.
+- Issue #155: D11 / AI-assisted Strategy Coaching bleibt als spaeterer
+  Roadmapblock offen.
 
 ## 9. Technische Voraussetzungen vor Umsetzung
 
@@ -448,6 +500,10 @@ D11.2 dokumentiert den fachlichen Kontextvertrag und ist ebenfalls keine
 Implementierungsfreigabe.
 D11.3 dokumentiert das fachliche Quellen-, Claim- und Evidenzmodell und ist
 ebenfalls keine Implementierungsfreigabe.
+D11.4 konsolidiert diesen Konzeptstand und dokumentiert die
+Implementierungsgrenze; auch daraus entsteht keine Produkt-, API-, Backend-,
+Frontend-, Datenbank-, RAG-, Claim-, Persistenz-, Simulations-, Score-,
+Migrations-, Trainerreview- oder Staging-Freigabe.
 D11 ist kein Blocker fuer D9 Briefing Preparation oder D10 User Onboarding.
 D11 soll erst starten, wenn die technischen Grundlagen fuer KI-Kontext,
 RAG/Knowledge, Strategy-Persistenz, Quellen-/Evidenzlogik und Dialogfuehrung

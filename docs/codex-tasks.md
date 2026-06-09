@@ -126,6 +126,7 @@
 - Issue #160 / D11.1 umgesetzt: Preconditions fuer AI-assisted Strategy Coaching als reiner Konzeptschritt dokumentiert; Fakten, Nutzerannahmen, KI-Hypothesen, offene Fragen, Quellen-/Evidenzlogik, Speicherlogik nach Nutzerbestaetigung, UX-Leitplanken und D11-Folgephasen sind abgegrenzt, ohne Produkt-, Backend-, KI-, RAG-, Simulations-, Trainerreview-, API-, Migrations- oder Persistenzlogik einzufuehren
 - Issue #161 / D11.2 umgesetzt: Kontextvertrag fuer projektbezogene KI-Nutzung als reiner Konzeptschritt in `docs/ai-strategy-context-contract.md` dokumentiert; Kontextbereiche, Datenquellen, Aussagearten, Evidenzmarker, Mindestqualitaet, Missing-Information-Hinweise und ungeeignete Kontextbestandteile sind abgegrenzt, ohne Produkt-, Backend-, Frontend-, KI-, RAG-, API-, Persistenz-, Migrations-, Simulations- oder Trainerreview-Logik einzufuehren
 - Issue #162 / D11.3 umgesetzt: Quellen-, Claim- und Evidenzmodell fuer Strategy Coaching als reiner Konzeptschritt in `docs/ai-strategy-evidence-model.md` dokumentiert; Quellenbegriff, Claim-Begriff, Aussagearten, Evidenz-/Confidence-Stufen, Aktualitaet, Herkunft, Widerspruchslogik, Nutzung im Coaching und ungeeignete Claims beziehungsweise Quellen sind abgegrenzt, ohne Produkt-, Backend-, Frontend-, KI-, RAG-, API-, Persistenz-, Migrations-, Simulations-, Score- oder Trainerreview-Logik einzufuehren
+- Issue #163 / D11.4 umgesetzt: D11-Konzeptzwischenstand und Implementierungsgrenze dokumentiert; D11.1 bis D11.3 sind als erledigtes Konzeptfundament eingeordnet, die massgeblichen Konzeptdokumente sind benannt, spaetere Folgeoptionen bleiben getrennt priorisierbar und #55, #113 sowie #155 bleiben offene Nicht-Blocker, ohne Produkt-, Backend-, Frontend-, KI-, RAG-, Claim-, API-, Persistenz-, Migrations-, Simulations-, Score- oder Staging-Logik einzufuehren
 - Issue #146 umgesetzt: Codex-Kurzmodus in der Projekt-SKILL dokumentiert, kompakte operative `CODEX.md` im Repository-Root ergaenzt und README/Roadmap verlinkt beziehungsweise aktualisiert, ohne Produktdateien, Backend, Frontend, Migrationen, Staging oder Build-/Testskripte zu aendern
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
@@ -705,6 +706,18 @@ Vorgemerkte Folgehinweise aus C15 bis C17:
 - Sicherstellen, dass ungepruefte KI-Ausgaben, Volltextfragmente ohne Aussagekern, Quellen ohne relevante Herkunft oder Datum, technische Logs, Secrets, alte Aussagen ohne Marker und ungepruefte Trainerhinweise nicht als belastbare Claims gelten.
 - Sicherstellen, dass #55, #113 und #155 als offene Nicht-Blocker korrekt eingeordnet bleiben.
 - Sicherstellen, dass keine Produktdateien, keine Backendlogik, keine UI, keine Migration, kein Staging-Deployment und keine KI-, Simulation-, Trainerreview-, API-, Persistenz-, Score- oder RAG-Logik geaendert wurden.
+
+## Manuelle Pruefhilfe Issue #163
+
+- `docs/ai-assisted-strategy-coaching.md`, `docs/ai-strategy-context-contract.md`, `docs/ai-strategy-evidence-model.md`, `docs/roadmap.md` und `docs/codex-tasks.md` pruefen.
+- Sicherstellen, dass D11.4 wie ein Konsolidierungs- und Zwischenabschluss wirkt, nicht wie ein Implementierungsstart.
+- Sicherstellen, dass D11.1, D11.2 und D11.3 als erledigter Konzeptstand zusammenhaengend eingeordnet sind.
+- Sicherstellen, dass die massgeblichen D11-Konzeptdokumente benannt sind.
+- Sicherstellen, dass die Implementierungsgrenze eindeutig bleibt: kein AI Strategy Coach, keine RAG- oder Claim-Extraktion, kein Persistenzmodell fuer KI-Dialoge, Hypothesen, bestaetigte Vorschlaege oder Reviewdaten und keine API-, Backend-, Frontend-, Datenbank- oder UI-Freigabe.
+- Sicherstellen, dass der bestehende Strategy Builder als aktueller manueller beziehungsweise regelbasierter Vorbereitungsbereich abgegrenzt bleibt.
+- Sicherstellen, dass D11.5, D11.6 und D11.7 nur als moegliche spaetere Folgeoptionen dargestellt sind.
+- Sicherstellen, dass #55, #113 und #155 als offene Nicht-Blocker korrekt eingeordnet bleiben.
+- Sicherstellen, dass keine Produktdateien, keine Backendlogik, keine UI, keine Migration, kein Staging-Deployment und keine KI-, RAG-, Claim-, Simulation-, Trainerreview-, API-, Persistenz- oder Score-Logik geaendert wurden.
 
 ## Naechste Schritte
 

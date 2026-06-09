@@ -384,6 +384,26 @@ D11.2 bleibt konzeptionell. Es fuehrt keine Produkt-, Backend-, Frontend-,
 KI-, RAG-, API-, Persistenz-, Migrations-, Simulations- oder
 Trainerreview-Logik ein.
 
+### 8.8 D11.3 Quellen-, Claim- und Evidenzmodell
+
+D11.3 ist als eigener Konzeptschritt in
+`docs/ai-strategy-evidence-model.md` dokumentiert. Das Dokument beschreibt die
+fachliche Semantik fuer Quellen, Claims, Aussagearten, Evidence,
+Confidence, Aktualitaet, Herkunft und Widersprueche im spaeteren Strategy
+Coaching.
+
+Claims werden dort nicht als automatisch wahre Fakten verstanden. Sie sind
+isolierbare fachliche Aussagen mit Ursprung und unterschiedlicher
+Belastbarkeit. Schwache Hinweise, Nutzerannahmen, KI-Hypothesen,
+widerspruechliche Aussagen und veraltete Quellen bleiben markiert. Der
+spaetere Coach darf sie fuer Datenlage, Risiken, offene Fragen,
+Argumentationsideen und Lernchecks nutzen, aber erst nach Nutzerbestaetigung
+in Strategy-Bausteine ueberfuehren.
+
+D11.3 bleibt konzeptionell. Es fuehrt keine Produkt-, Backend-, Frontend-,
+KI-, RAG-, API-, Persistenz-, Migrations-, Simulations-, Score- oder
+Trainerreview-Logik ein.
+
 ## 9. Technische Voraussetzungen vor Umsetzung
 
 D11 darf erst umgesetzt werden, wenn das Fundament passt.
@@ -426,6 +446,8 @@ D11: AI-assisted Strategy Coaching / Dialogische Strategieentwicklung
 D11.1 dokumentiert nur Preconditions und ist kein Start der Implementierung.
 D11.2 dokumentiert den fachlichen Kontextvertrag und ist ebenfalls keine
 Implementierungsfreigabe.
+D11.3 dokumentiert das fachliche Quellen-, Claim- und Evidenzmodell und ist
+ebenfalls keine Implementierungsfreigabe.
 D11 ist kein Blocker fuer D9 Briefing Preparation oder D10 User Onboarding.
 D11 soll erst starten, wenn die technischen Grundlagen fuer KI-Kontext,
 RAG/Knowledge, Strategy-Persistenz, Quellen-/Evidenzlogik und Dialogfuehrung

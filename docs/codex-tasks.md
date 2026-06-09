@@ -125,6 +125,7 @@
 - Issue #159 / D10.4 umgesetzt: D10-Zwischenabschluss dokumentiert; Getting Started, Strategy Overview, lokaler Smoke-Test und Staging-Smoke-Test sind als abgeschlossen eingeordnet, D11 bleibt spaeterer Roadmapblock, offene Nicht-Blocker #55, #113 und #155 bleiben unveraendert offen
 - Issue #160 / D11.1 umgesetzt: Preconditions fuer AI-assisted Strategy Coaching als reiner Konzeptschritt dokumentiert; Fakten, Nutzerannahmen, KI-Hypothesen, offene Fragen, Quellen-/Evidenzlogik, Speicherlogik nach Nutzerbestaetigung, UX-Leitplanken und D11-Folgephasen sind abgegrenzt, ohne Produkt-, Backend-, KI-, RAG-, Simulations-, Trainerreview-, API-, Migrations- oder Persistenzlogik einzufuehren
 - Issue #161 / D11.2 umgesetzt: Kontextvertrag fuer projektbezogene KI-Nutzung als reiner Konzeptschritt in `docs/ai-strategy-context-contract.md` dokumentiert; Kontextbereiche, Datenquellen, Aussagearten, Evidenzmarker, Mindestqualitaet, Missing-Information-Hinweise und ungeeignete Kontextbestandteile sind abgegrenzt, ohne Produkt-, Backend-, Frontend-, KI-, RAG-, API-, Persistenz-, Migrations-, Simulations- oder Trainerreview-Logik einzufuehren
+- Issue #162 / D11.3 umgesetzt: Quellen-, Claim- und Evidenzmodell fuer Strategy Coaching als reiner Konzeptschritt in `docs/ai-strategy-evidence-model.md` dokumentiert; Quellenbegriff, Claim-Begriff, Aussagearten, Evidenz-/Confidence-Stufen, Aktualitaet, Herkunft, Widerspruchslogik, Nutzung im Coaching und ungeeignete Claims beziehungsweise Quellen sind abgegrenzt, ohne Produkt-, Backend-, Frontend-, KI-, RAG-, API-, Persistenz-, Migrations-, Simulations-, Score- oder Trainerreview-Logik einzufuehren
 - Issue #146 umgesetzt: Codex-Kurzmodus in der Projekt-SKILL dokumentiert, kompakte operative `CODEX.md` im Repository-Root ergaenzt und README/Roadmap verlinkt beziehungsweise aktualisiert, ohne Produktdateien, Backend, Frontend, Migrationen, Staging oder Build-/Testskripte zu aendern
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
@@ -692,6 +693,18 @@ Vorgemerkte Folgehinweise aus C15 bis C17:
 - Sicherstellen, dass Mindestqualitaet, Missing Information, widerspruechliche Kontexte und ungeeignete Kontextbestandteile dokumentiert sind.
 - Sicherstellen, dass #55, #113 und #155 als offene Nicht-Blocker korrekt eingeordnet bleiben.
 - Sicherstellen, dass keine Produktdateien, keine Backendlogik, keine UI, keine Migration, kein Staging-Deployment und keine KI-, Simulation-, Trainerreview-, API-, Persistenz- oder RAG-Logik geaendert wurden.
+
+## Manuelle Pruefhilfe Issue #162
+
+- `docs/ai-strategy-evidence-model.md`, `docs/ai-strategy-context-contract.md`, `docs/ai-assisted-strategy-coaching.md`, `docs/roadmap.md` und `docs/codex-tasks.md` pruefen.
+- Sicherstellen, dass D11.3 als fachliches Quellen-, Claim- und Evidenzmodell beschrieben ist und nicht wie ein technisches Datenmodell, eine API-, DTO-, RAG-, Persistenz- oder Score-Spezifikation wirkt.
+- Sicherstellen, dass Quellenbegriff und Claim-Begriff klar abgegrenzt sind.
+- Sicherstellen, dass Aussagearten, Evidenz-/Confidence-Stufen, Aktualitaet, Herkunft und Widersprueche fachlich unterschieden sind.
+- Sicherstellen, dass Claims und Evidence im Strategy Coaching nur als Datenlage, Hinweis, Risiko, offene Frage, Argumentationsidee oder Lerncheck beschrieben sind.
+- Sicherstellen, dass Claims erst nach Nutzerbestaetigung in Strategy-Bausteine ueberfuehrt werden duerfen.
+- Sicherstellen, dass ungepruefte KI-Ausgaben, Volltextfragmente ohne Aussagekern, Quellen ohne relevante Herkunft oder Datum, technische Logs, Secrets, alte Aussagen ohne Marker und ungepruefte Trainerhinweise nicht als belastbare Claims gelten.
+- Sicherstellen, dass #55, #113 und #155 als offene Nicht-Blocker korrekt eingeordnet bleiben.
+- Sicherstellen, dass keine Produktdateien, keine Backendlogik, keine UI, keine Migration, kein Staging-Deployment und keine KI-, Simulation-, Trainerreview-, API-, Persistenz-, Score- oder RAG-Logik geaendert wurden.
 
 ## Naechste Schritte
 

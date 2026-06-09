@@ -182,8 +182,7 @@ ist kein Datenexport aller verfuegbaren Informationen.
 D11.2 klaert nur den fachlichen Kontextvertrag. Daraus entstehen Folgefragen
 fuer spaetere, separate Issues:
 
-- D11.3: Wie sehen Quellen-, Claim- und Evidenzmodelle fachlich und technisch
-  aus?
+- D11.3: Wie sehen Quellen-, Claim- und Evidenzmodelle fachlich aus?
 - Wie werden RAG-Snippets oder KnowledgeClaims erstellt, geprueft und
   aktualisiert?
 - Wie wird entschieden, welche TrainerComments oder Lernpunkte in einen
@@ -195,6 +194,12 @@ fuer spaetere, separate Issues:
 - Welche Audit- oder Reviewinformationen braucht ein spaeterer produktiver
   KI-Dialog?
 
-D11.2 ist keine Implementierungsfreigabe. Produktcode, Backend, Frontend,
-Persistenz, Migrationen, KI-Services, RAG, Claim-Extraktion, Simulation und
-Trainerreview-Logik bleiben unveraendert.
+D11.3 ist als eigener Konzeptschritt in
+`docs/ai-strategy-evidence-model.md` dokumentiert. Dort werden Quellenbegriff,
+Claim-Begriff, Aussagearten, Evidenz-/Confidence-Stufen, Widerspruchslogik,
+Nutzung im Strategy Coaching und ungeeignete Claims beziehungsweise Quellen
+fachlich abgegrenzt.
+
+D11.2 und D11.3 sind keine Implementierungsfreigabe. Produktcode, Backend,
+Frontend, Persistenz, Migrationen, KI-Services, RAG, Claim-Extraktion,
+Simulation und Trainerreview-Logik bleiben unveraendert.

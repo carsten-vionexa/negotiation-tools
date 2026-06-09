@@ -1139,3 +1139,33 @@ Bei `/strategy?projectId=...` erzeugten die Strategy-Overview-Metriken mobil ein
 ### 22.2 Offene Punkte
 
 - Keine Blocker offen.
+
+## 23. D10.3 Staging-Update- und Demo-Flow-Smoke-Test
+
+Durchgefuehrt am 2026-06-09 auf Hostinger-Staging unter `https://negotiation.tools.hawkins-consulting.de` fuer das Demo-Projekt `01d9d55b-87c3-5a5a-876a-b55a3ce2db33`.
+
+Gesamtergebnis: bestanden ohne Blocker. Staging wurde per Fast-Forward von `fd6b145` auf `f2f444b` aktualisiert. Der bestehende Staging-Stack wurde neu gebaut und gestartet. Es wurden keine Produktdateien, keine Backendlogik, keine Migrationen, keine Seed-Dateien, keine KI-, Simulations-, Trainerreview- oder RAG-Logik geaendert.
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Staging-Ausgangsstand | bestanden | `/opt/negotiation-tools` stand sauber auf `fd6b145`; `.env.staging` blieb serverlokal und ungetrackt |
+| Staging-Update | bestanden | `git fetch origin`, `git merge --ff-only origin/main`; Zielstand `f2f444b` |
+| Stack-Rebuild / Restart | bestanden | `docker compose --env-file .env.staging -f docker-compose.staging.yml up -d --build`; Frontend-Build erfolgreich, Container neu gestartet |
+| Containerstatus | bestanden | `db` healthy, `backend` und `frontend` up; Ports weiter nur auf `127.0.0.1:8000` und `127.0.0.1:3000` gebunden |
+| Backend Health | bestanden | Interner Check `http://127.0.0.1:8000/api/health` antwortet mit `{"status":"ok","service":"negotiation-tools-api"}` |
+| Frontend Health | bestanden | Interner Check `http://127.0.0.1:3000/getting-started` antwortet mit `200 OK` |
+| DB Health | bestanden | `pg_isready` meldet `accepting connections` |
+| Alembic Head | bestanden | `alembic current` meldet weiterhin `2f4b7c8d9e0a (head)` |
+| `/getting-started` | bestanden | Seite rendert auf Staging mit H1 `Getting Started`; Demo-/Testpfad und Folgeschritte sind sichtbar |
+| Navigation / Sidebar | bestanden | Getting Started ist in der Cockpit-Navigation sichtbar; Klick aus `/dashboard` fuehrt zu `/getting-started` |
+| `/dashboard` | bestanden | Dashboard rendert mit Workspace-Zaehlern und Navigation |
+| Demo-Projekt | bestanden | `/projects/01d9d55b-87c3-5a5a-876a-b55a3ce2db33` rendert `Verhandlung: Praezisions-Servoantrieb RX-42` |
+| `/strategy?projectId=...` | bestanden | Strategy-Seite rendert im Projektkontext; `Strategy Overview` ist sichtbar |
+| `/briefing?projectId=...` | bestanden | Briefing Preparation bleibt erreichbar und als vorbereitender, noch nicht automatisierter Schritt abgegrenzt |
+| Mobile Breite | bestanden | 375px-Spotcheck fuer `/getting-started`, `/dashboard`, Demo-Projekt, `/strategy?projectId=...` und `/briefing?projectId=...`; keine horizontale Ueberbreite (`scrollWidth` entspricht `clientWidth`) |
+| Browser-Console | bestanden | Keine `error`- oder `warn`-Eintraege auf den geprueften Routen |
+
+### 23.1 Offene Punkte
+
+- Keine Blocker offen.
+- D10.3 war ausschliesslich ein Staging-Update-, Smoke-Test- und Dokumentationsschritt; Produktumfang und Staging-Daten blieben unveraendert.

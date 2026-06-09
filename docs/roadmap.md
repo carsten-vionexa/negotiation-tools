@@ -78,6 +78,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase D7.1: Die Strategy-Seite zeigt eine regelbasierte Completion-/Readiness-Guidance fuer Strategy Objectives, ZOPA, BATNA, WAP, Konzessionen und Argumente, ohne Score, KI, Backend, Migration oder neue Persistenz
 - Phase D7.2: Lokaler Browser-Smoke-Test fuer die D7.1-Strategy-Readiness-Guidance mit drei Fuellstaenden, `/strategy`, `/strategy?projectId=...`, Mobile-Spotcheck und Console-Check bestanden dokumentiert
 - Phase D7.3: Hostinger-Staging auf aktuellen `origin/main`-Stand gebracht und die Strategy Readiness Guidance dort browserseitig mit drei Readiness-Zustaenden, Healthchecks, Alembic-Stand, D6-Feldfuehrung, Save-Verhalten, Mobile-Spotcheck und Console-Check bestanden dokumentiert
+- Issue #146: Codex-Arbeitsanweisungen sind getrennt: die ausfuehrliche Projektsteuerung bleibt in `docs/skills/negotiation-tools-dev-workflow/SKILL.md`, die kompakte operative Codex-Anweisung liegt als `CODEX.md` im Repository-Root
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
 - Frontend-Nutzbarkeitsflow Issue #69: RequestItems sind unter `/request-items` anlegbar und bearbeitbar sowie als strukturierte Anfrageposition in Projekten nutzbar
@@ -96,6 +97,7 @@ Der aktuelle MVP-Workflow lautet:
 - Upload/Import, Knowledge Intelligence und produktive Simulation erst nach sauberer C0-Konsolidierung starten.
 - Phase C Upload/Import schrittweise starten und nicht direkt grosse Importlogik bauen.
 - Supplier Context schrittweise im Project-Detail und anschliessenden Analyse-, Strategie-, Briefing- und Simulationsflows ausbauen, ohne automatische Analyse oder neues Datenmodell vorzuziehen.
+- Vollstaendig formulierte Issues duerfen mit kompakten Codex-Prompts umgesetzt werden; `CODEX.md` ist dafuer die operative Kurzanweisung, waehrend die Projekt-SKILL die ausfuehrliche Steuerungslogik behaelt.
 
 ## 4. Phase A: Produkt- und MVP-Scope
 

@@ -8,6 +8,10 @@ For the project-specific development workflow, see:
 
 `docs/skills/negotiation-tools-dev-workflow/SKILL.md`
 
+For compact Codex execution instructions, see:
+
+`CODEX.md`
+
 
 ## Stack
 

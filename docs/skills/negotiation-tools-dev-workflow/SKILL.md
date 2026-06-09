@@ -193,6 +193,55 @@ Wenn sinnvoll, Codex auffordern:
 * keine größeren Refactorings vorzunehmen
 * keine nicht angeforderten UI- oder Backend-Änderungen einzubauen
 
+### 5a. Codex-Kurzmodus
+
+Wenn ein GitHub Issue vollständig formuliert ist, darf der Codex-Prompt bewusst kurz sein.
+
+In diesem Modus gilt:
+
+* Das GitHub Issue ist die primäre Scope-Quelle.
+* Der Codex-Prompt muss Scope, Nicht-Ziele, Akzeptanzkriterien und Abschlussformat nicht vollständig duplizieren.
+* Der Prompt verweist auf `README.md`, `CODEX.md`, bei Bedarf auf diese Projekt-SKILL und auf das konkrete Issue.
+* Ausführliche Codex-Prompts sind nur nötig, wenn kein vollständiges Issue existiert, der Schritt besonders riskant ist oder mehrere Interpretationspfade offen sind.
+* Die Qualitätssicherung bleibt unverändert: Scope strikt einhalten, nur relevante Dateien ändern, keine Nebenfeatures, passende Checks ausführen und kurz berichten.
+
+Die Rollen sind damit getrennt:
+
+* `docs/skills/negotiation-tools-dev-workflow/SKILL.md` beschreibt die ausführliche Projektsteuerung, Issue-Planung, Review-Logik und Abschlussarbeit.
+* `CODEX.md` beschreibt die kompakte operative Arbeitsanweisung für Codex im Repository.
+
+Minimaler Codex-Prompt bei vollständig formuliertem Issue:
+
+```text
+Bitte bearbeite Issue #XYZ gemäß Issue-Beschreibung.
+
+Repository:
+carsten-vionexa/negotiation-tools
+
+Vor Beginn:
+- README.md lesen
+- CODEX.md lesen
+- falls nötig docs/skills/negotiation-tools-dev-workflow/SKILL.md lesen
+- git status prüfen
+
+Regeln:
+- Issue ist die maßgebliche Scope-Quelle.
+- Keine Nebenfeatures.
+- Keine Refactorings außerhalb des Scopes.
+- Keine Secrets committen.
+
+Checks:
+- git diff --check
+- falls Produktcode geändert: passende lint/typecheck/build checks
+
+Abschlussbericht:
+- geänderte Dateien
+- Umsetzung
+- Tests
+- Ergebnis
+- offene Punkte
+```
+
 ### 6. Codex-Ergebnis prüfen
 
 Wenn der Nutzer das Codex-Ergebnis in den Chat kopiert, prüfen:

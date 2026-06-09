@@ -1068,3 +1068,49 @@ Die Sichtbarkeitslogik der unteren Zustaende bleibt durch den lokalen D8.2-Smoke
 
 - Keine Produkt-Blocker gefunden.
 - Fuer kuenftige Staging-Smoke-Tests mit mehreren Readiness-Zustaenden waeren getrennte, klar markierte Staging-Teststrategien sinnvoll, statt die eine Demo-Strategie fuer Zustandswechsel zu leeren.
+
+## 21. D9.2 Staging-Smoke-Test fuer Briefing Preparation Entry
+
+Durchgefuehrt am 2026-06-09 auf Hostinger-Staging unter `https://negotiation.tools.hawkins-consulting.de/briefing`.
+
+Gesamtergebnis: bestanden ohne Blocker. Staging wurde per Fast-Forward von `2aa47a2` auf `fd6b145` aktualisiert. Es wurden keine Produktdateien, keine Backendlogik, keine Migrationen, keine Seed-Dateien, keine KI-Briefing-Erzeugung, keine Simulation, keine Trainerreview-Logik, kein Scoring, kein RAG und keine PDF-/Import-Verarbeitung geaendert.
+
+### 21.1 Deployment und Health Checks
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Staging-Ausgangsstand | bestanden | `/opt/negotiation-tools` stand sauber auf `2aa47a2`; nach `git fetch origin` war `origin/main` auf `fd6b145` |
+| Staging-Update | bestanden | `git merge --ff-only origin/main`; Zielstand `fd6b145` |
+| Deployment | bestanden | `docker compose --env-file .env.staging -f docker-compose.staging.yml up -d --build`; Frontend-Production-Build erfolgreich |
+| Compose-Status | bestanden | `db`, `backend` und `frontend` liefen nach Rebuild/Restart |
+| DB-Health | bestanden | `db` war `healthy`; `pg_isready` meldete `accepting connections` |
+| Backend Health intern | bestanden | `GET http://127.0.0.1:8000/api/health` antwortete `{"status":"ok","service":"negotiation-tools-api"}` |
+| Frontend `/briefing` intern | bestanden | `GET http://127.0.0.1:3000/briefing` antwortete `HTTP/1.1 200 OK` |
+| Alembic current | bestanden | `2f4b7c8d9e0a (head)` |
+| Seed / Migration | bestanden | Kein Seed-Befehl und keine Migration ausgefuehrt |
+
+### 21.2 Browser-Ergebnis
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| `/briefing` erreichbar | bestanden | Staging-Domain lud `https://negotiation.tools.hawkins-consulting.de/briefing`; H1 `Briefing vorbereiten` sichtbar |
+| Desktop-Darstellung | bestanden | Default-Viewport ca. `1265px`; ruhiger Briefing-Preparation-Einstieg sichtbar, kein sichtbarer Fehlerzustand |
+| Mobile-Darstellung | bestanden | Mobile-Viewport `390px` beziehungsweise effektiv `375px`; `documentElement.scrollWidth` 375, kein horizontaler Overflow |
+| Browser-Console | bestanden | Keine relevanten Console-Errors oder Warnings beobachtet |
+| Framework-Overlay | bestanden | Kein Next.js-/Framework-Error-Overlay sichtbar |
+
+### 21.3 Fachliche Abgrenzung
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Briefing Preparation | bestanden | Seite beschreibt Briefing Preparation als vorbereitenden Schritt nach Strategy Readiness |
+| Spaetere Briefing-Bausteine | bestanden | Bausteine wie Verhandlungsziel, Interessen, BATNA / WAP / ZOPA, Argumentationslinien, Konzessionslogik, Risiken, Agenda und Trainee-Hinweise sind als Orientierung sichtbar |
+| Keine fertige KI-Briefing-Erzeugung | bestanden | Seite formuliert, dass der Einstieg noch keine automatische Briefing-Erzeugung ist und automatische KI-Briefing-Generierung nicht Bestandteil dieses Schritts ist |
+| Keine Simulation oder Trainerreview-Funktion | bestanden | Seite erzeugt keine Simulation, startet kein Trainerreview und grenzt produktive Simulation sowie automatisches Trainerreview sichtbar aus |
+| Keine Backend-, Persistenz- oder KI-Logik | bestanden | Die Route bleibt ein statischer Vorbereitungseinstieg; keine API-Aktion, keine Persistenzaktion und keine KI-Aktion sichtbar |
+| Links / Navigation | bestanden | Sichtbar sind nur die bestehenden App-Shell-Navigationslinks; keine irrefuehrenden Links auf eine fertige projektbezogene Briefing-Folgefunktion |
+
+### 21.4 Offene Punkte
+
+- Keine Blocker gefunden.
+- D9.2 war ausschliesslich ein Staging-Smoke- und Dokumentationsschritt; Produktumfang und Staging-Daten blieben unveraendert.

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="941" height="1672" viewBox="0 0 941 1672" role="img" aria-labelledby="title desc">
+  <title id="title">Mobile Strategy Overview Mockup</title>
+  <desc id="desc">Mobile Darstellung der Strategy Overview mit Summary, Strategiebausteinen und BATNA-Fokus.</desc>
+  <rect width="941" height="1672" fill="#f7f9fc"/>
+  <rect x="46" y="32" width="849" height="1608" rx="72" fill="#0f172a"/>
+  <rect x="68" y="54" width="805" height="1564" rx="54" fill="#ffffff"/>
+  <text x="470" y="140" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" fill="#0f172a">Strategy Overview</text>
+  <text x="470" y="180" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" fill="#64748b">Precision Gearbox Negotiation</text>
+
+  <rect x="112" y="240" width="717" height="270" rx="28" fill="#ffffff" stroke="#e5e7eb"/>
+  <text x="176" y="310" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800" fill="#0f172a">Aurum Motion Systems K.K.</text>
+  <rect x="176" y="330" width="210" height="42" rx="20" fill="#eaf2ff"/>
+  <text x="206" y="358" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" fill="#1d4ed8">Strategie in Arbeit</text>
+  <text x="176" y="425" font-family="Inter, Arial, sans-serif" font-size="24" fill="#0f172a">Naechster Schritt: BATNA konkretisieren</text>
+  <rect x="176" y="455" width="589" height="64" rx="16" fill="#1e3a8a"/>
+  <text x="470" y="496" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="800" fill="#ffffff">Weiter</text>
+
+  <g font-family="Inter, Arial, sans-serif">
+    <rect x="112" y="545" width="717" height="92" rx="20" fill="#ffffff" stroke="#e5e7eb"/><text x="176" y="602" font-size="27" font-weight="800" fill="#0f172a">Ziele</text><rect x="650" y="568" width="120" height="36" rx="18" fill="#dcfce7"/><text x="682" y="592" font-size="17" fill="#166534">Belastbar</text>
+    <rect x="112" y="650" width="717" height="92" rx="20" fill="#ffffff" stroke="#e5e7eb"/><text x="176" y="707" font-size="27" font-weight="800" fill="#0f172a">BATNA</text><rect x="640" y="673" width="130" height="36" rx="18" fill="#dcfce7"/><text x="666" y="697" font-size="17" fill="#166534">Teilweise</text>
+    <rect x="112" y="755" width="717" height="92" rx="20" fill="#ffffff" stroke="#e5e7eb"/><text x="176" y="812" font-size="27" font-weight="800" fill="#0f172a">WAP</text><rect x="635" y="778" width="135" height="36" rx="18" fill="#fef3c7"/><text x="664" y="802" font-size="17" fill="#92400e">Hypothese</text>
+    <rect x="112" y="860" width="717" height="92" rx="20" fill="#ffffff" stroke="#e5e7eb"/><text x="176" y="917" font-size="27" font-weight="800" fill="#0f172a">ZOPA</text><rect x="640" y="883" width="130" height="36" rx="18" fill="#fef3c7"/><text x="666" y="907" font-size="17" fill="#92400e">Teilweise</text>
+    <rect x="112" y="965" width="717" height="92" rx="20" fill="#ffffff" stroke="#e5e7eb"/><text x="176" y="1022" font-size="27" font-weight="800" fill="#0f172a">Konzessionen</text><rect x="667" y="988" width="103" height="36" rx="18" fill="#f1f5f9"/><text x="696" y="1012" font-size="17" fill="#475569">Offen</text>
+    <rect x="112" y="1070" width="717" height="92" rx="20" fill="#ffffff" stroke="#e5e7eb"/><text x="176" y="1127" font-size="27" font-weight="800" fill="#0f172a">Argumente</text><rect x="650" y="1093" width="120" height="36" rx="18" fill="#dcfce7"/><text x="682" y="1117" font-size="17" fill="#166534">Belastbar</text>
+  </g>
+
+  <rect x="112" y="1200" width="717" height="220" rx="24" fill="#f8fbff" stroke="#2563eb" stroke-width="2"/>
+  <text x="176" y="1260" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="800" fill="#1d4ed8">Fokus: BATNA</text>
+  <text x="176" y="1315" font-family="Inter, Arial, sans-serif" font-size="21" fill="#334155">• Alternative Lieferanten in Europa evaluieren</text>
+  <text x="176" y="1350" font-family="Inter, Arial, sans-serif" font-size="21" fill="#334155">• Interne Freigaben und Kosten pruefen</text>
+  <text x="176" y="1385" font-family="Inter, Arial, sans-serif" font-size="21" fill="#334155">• Wechselkosten realistisch abschaetzen</text>
+  <rect x="176" y="1450" width="270" height="62" rx="14" fill="#1e3a8a"/>
+  <text x="311" y="1490" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" fill="#ffffff">Bearbeiten</text>
+  <rect x="480" y="1450" width="270" height="62" rx="14" fill="#ffffff" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="615" y="1490" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" fill="#1e3a8a">Details</text>
+</svg>

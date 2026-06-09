@@ -80,6 +80,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase D7.3: Hostinger-Staging auf aktuellen `origin/main`-Stand gebracht und die Strategy Readiness Guidance dort browserseitig mit drei Readiness-Zustaenden, Healthchecks, Alembic-Stand, D6-Feldfuehrung, Save-Verhalten, Mobile-Spotcheck und Console-Check bestanden dokumentiert
 - Phase D8.1: Bei Strategy-Readiness `Bereit fuer Briefing / Simulation` zeigt die Strategy-Seite eine kompakte Next-Action-Guidance fuer Briefing-, Simulations- und Trainerreview-Vorbereitung; die generische Briefing-Placeholder-Route bleibt unverlinkt, Simulation und Trainerreview nutzen nur bestehende Vorbereitungsrouten
 - Phase D8.2: Lokaler Browser-Smoke-Test fuer die D8.1 Strategy Next-Action-Guidance bestanden dokumentiert; drei Readiness-Zustaende, Briefing-Grenze, projektbezogene Simulation-/Trainerreview-Routen, D6-/D7-Feldfuehrung, Mobile-Breite und Console wurden geprueft
+- Phase D8.3: Hostinger-Staging auf `2aa47a2` aktualisiert und Strategy Next-Action-Guidance dort browserseitig geprueft; vollstaendiger Readiness-Zustand, Briefing-Coming-next-Abgrenzung, projektbezogene Simulation-/Trainerreview-Routen, `/strategy`, Mobile, Console, Healthchecks und Alembic Head sind dokumentiert
 - Issue #146: Codex-Arbeitsanweisungen sind getrennt: die ausfuehrliche Projektsteuerung bleibt in `docs/skills/negotiation-tools-dev-workflow/SKILL.md`, die kompakte operative Codex-Anweisung liegt als `CODEX.md` im Repository-Root
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
@@ -404,7 +405,7 @@ Offene Nicht-Blocker:
 
 ## 11. Phase D4: Project Preparation / Preparation Gaps
 
-Status: D4.1 bis D4.3 umgesetzt; D4.4 dokumentiert den aktuellen Zwischenstand und den manuellen Smoke-Test. D5.1 bis D5.4 sind umgesetzt; D5.5 dokumentiert den bestandenen lokalen Strategy-Guidance-Smoke-Test, D5.6 den bestandenen Staging-Update- und Smoke-Test. D6.1 schaerft die manuelle Strategy-Erfassung mit kleinen UI-/Text-/Validation-Verbesserungen. D6.2 bestaetigt diese Feldfuehrung lokal browserseitig mit laufendem Backend, Frontend und DB. D7.1 ergaenzt eine regelbasierte Strategy-Completion-/Readiness-Guidance. D7.2 bestaetigt diese Guidance lokal browserseitig mit drei Fuellstaenden. D8.1 ergaenzt daraus eine kompakte Next-Action-Guidance; D8.2 bestaetigt diese lokal browserseitig.
+Status: D4.1 bis D4.3 umgesetzt; D4.4 dokumentiert den aktuellen Zwischenstand und den manuellen Smoke-Test. D5.1 bis D5.4 sind umgesetzt; D5.5 dokumentiert den bestandenen lokalen Strategy-Guidance-Smoke-Test, D5.6 den bestandenen Staging-Update- und Smoke-Test. D6.1 schaerft die manuelle Strategy-Erfassung mit kleinen UI-/Text-/Validation-Verbesserungen. D6.2 bestaetigt diese Feldfuehrung lokal browserseitig mit laufendem Backend, Frontend und DB. D7.1 ergaenzt eine regelbasierte Strategy-Completion-/Readiness-Guidance. D7.2 bestaetigt diese Guidance lokal browserseitig mit drei Fuellstaenden. D8.1 ergaenzt daraus eine kompakte Next-Action-Guidance; D8.2 bestaetigt diese lokal browserseitig, D8.3 auf Staging mit dokumentierter Einschraenkung fuer die unteren Staging-Readiness-Zustaende.
 
 Ziel: Project-Detail-/Preparation-UX ausbauen, ohne automatische Bewertung oder neue Datenmodelle vorzuziehen.
 
@@ -428,6 +429,7 @@ Umgesetzte Schritte:
 16. D7.3: Hostinger-Staging-Smoke-Test fuer Strategy Readiness Guidance mit drei Fuellstaenden dokumentiert.
 17. D8.1: Strategy Next-Action-Guidance bei ausreichender Readiness ergaenzt.
 18. D8.2: Lokalen Browser-Smoke-Test fuer Strategy Next-Action-Guidance dokumentiert.
+19. D8.3: Hostinger-Staging-Smoke-Test fuer Strategy Next-Action-Guidance dokumentiert.
 
 D4.1 macht Vorbereitungsluecken ausschliesslich aus vorhandenen Objekten und bestehenden API-Listen sichtbar: Bedarfskontext, SupplierProfile, Supplier Context, Strategy, Strategiebausteine aus ZOPA/BATNA/Argumentation/Konzession, SimulationScenario und Trainerreview. Die Card bleibt eine ruhige Vorhanden-/Offen-/Spaeter-Sicht mit kurzem naechstem Schritt und fuehrt keine KI-Integration, kein Supplier Scoring, kein RAG, keine automatische Lieferantenanalyse und keine neue Datenstruktur ein.
 
@@ -465,7 +467,9 @@ D8.1 zeigt bei Strategy-Readiness `Bereit fuer Briefing / Simulation` eine kompa
 
 D8.2 bestaetigt diese Next-Action-Guidance lokal im Browser mit vorhandenen D7.2-Smoke-Testdaten fuer `Unvollstaendig`, `Grundlage vorhanden` und `Bereit fuer Briefing / Simulation`. Geprueft wurden `/strategy` ohne Projektkontext, `/strategy?projectId=...`, Sichtbarkeit nur im vollstaendigen Readiness-Zustand, Briefing als unverlinkter Coming-next-Hinweis, projektbezogene Simulation-/Trainerreview-Routen, D6-/D7-Feldfuehrung, Mobile-Breite und Browser-Console. Das Ergebnis steht in `docs/browser-smoke-test-plan.md`; es gibt keine Produktcode-, Backend-, Migrations-, Seed-, KI-Briefing-, produktive Simulations-, Trainerreview- oder RAG-Aenderung.
 
-Offene Nicht-Blocker nach D8.2:
+D8.3 aktualisiert Hostinger-Staging in `/opt/negotiation-tools` per Fast-Forward von `7e80fce` auf `2aa47a2` und startet den bestehenden Compose-Stack neu. Healthchecks fuer DB, Backend, Frontend, `pg_isready` und Alembic Head sind bestanden; `alembic current` meldet weiterhin `2f4b7c8d9e0a (head)`. Browserseitig wurden `/strategy?projectId=01d9d55b-87c3-5a5a-876a-b55a3ce2db33`, `/strategy` ohne Projektkontext, `/briefing`, die projektbezogenen Simulation-/Trainerreview-Routen, die Next-Action-Guidance im Zustand `Bereit fuer Briefing / Simulation`, Briefing als Coming-next ohne Link, D6-/D7-Feldfuehrung, Save-Verhalten, Browser-Console und kleiner Viewport geprueft. Auf Staging existiert aktuell nur eine Strategy; die unteren Zustaende `Unvollstaendig` und `Grundlage vorhanden` wurden deshalb als nicht sauber reproduzierbar dokumentiert, weil leere Formularwerte bestehende Felder im PATCH-Flow nicht loeschen und keine neuen Seed-/Testdaten eingefuehrt wurden. Es gibt keine Produktcode-, Backend-, Migrations-, Seed-, KI-Briefing-, produktive Simulations-, Trainerreview- oder RAG-Aenderung.
+
+Offene Nicht-Blocker nach D8.3:
 
 - Issue #55: PDF-/Upload-/Parsing-Folgearbeit bleibt offen und blockiert den D4-Preparation-UX-Zwischenstand nicht.
 - Issue #113: Next/PostCSS-audit-Finding bleibt zur Beobachtung offen und blockiert den D5-Strategy-Guidance-Zwischenstand nicht.

@@ -113,6 +113,7 @@
 - Phase D7.3 umgesetzt: Hostinger-Staging auf `7e80fce` aktualisiert und Strategy Readiness Guidance browserseitig auf Staging bestanden dokumentiert; Healthchecks, DB-Health, Alembic `2f4b7c8d9e0a (head)`, `/strategy?projectId=...`, `/strategy`, drei Readiness-Zustaende, D6-Feldfuehrung, Save-Verhalten, Mobile-Spotcheck und Console-Check wurden geprueft, ohne Produktcode, Backend, Migration, Seed-Datei, KI, Scoring, Simulation oder RAG zu aendern
 - Phase D8.1 umgesetzt: Die Strategy-Seite zeigt bei Readiness `Bereit fuer Briefing / Simulation` eine kompakte Next-Action-Guidance fuer Briefing-, Simulations- und Trainerreview-Vorbereitung; vorhandene Simulation-/Trainerreview-Routen werden als Vorbereitungsbereiche verlinkt, die generische Briefing-Placeholder-Route bleibt bewusst unverlinkt, ohne Backend, Migration, KI-Briefing, produktive Simulation oder Trainerreview-Logik
 - Phase D8.2 umgesetzt: Lokaler Browser-Smoke-Test fuer die D8.1 Strategy Next-Action-Guidance bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert; `/strategy`, `/strategy?projectId=...`, drei Readiness-Zustaende, Briefing-Grenze, projektbezogene Simulation-/Trainerreview-Routen, D6-/D7-Feldfuehrung, Mobile-Spotcheck und Console-Check wurden geprueft, ohne Produktcode, Backend, Migration, Seed-Datei, KI-Briefing, produktive Simulation, Trainerreview-Logik oder RAG zu aendern
+- Phase D8.3 umgesetzt: Hostinger-Staging auf `2aa47a2` aktualisiert und Strategy Next-Action-Guidance browserseitig auf Staging dokumentiert; Healthchecks, Alembic `2f4b7c8d9e0a (head)`, `/strategy?projectId=...`, `/strategy`, `/briefing`, projektbezogene Simulation-/Trainerreview-Routen, vollstaendiger Readiness-Zustand, Mobile und Console wurden geprueft; die unteren Staging-Readiness-Zustaende sind wegen nur einer vorhandenen Strategy und bestehender Leerwert-Save-Semantik als Einschraenkung dokumentiert
 - Issue #146 umgesetzt: Codex-Kurzmodus in der Projekt-SKILL dokumentiert, kompakte operative `CODEX.md` im Repository-Root ergaenzt und README/Roadmap verlinkt beziehungsweise aktualisiert, ohne Produktdateien, Backend, Frontend, Migrationen, Staging oder Build-/Testskripte zu aendern
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
@@ -376,6 +377,16 @@ Phase D8.2:
 - Briefing bleibt ein Coming-next-Hinweis ohne projektbezogenen Link; Simulation und Trainerreview nutzen bestehende projektbezogene Vorbereitungsrouten.
 - D6-/D7-Feldfuehrung, Readiness-Box, Save-Controls, `/strategy` ohne `projectId`, Mobile-Breite und Browser-Console wurden geprueft.
 - D8.2 fuehrt keine Produktcode-Aenderung, keine Backend-Aenderung, keine Migration, keine Seed-Aenderung, kein KI-Briefing, keine produktive Simulation, keine Trainerreview-Logik und keine RAG-Logik ein.
+
+Phase D8.3:
+
+- D8.3 aktualisiert Hostinger-Staging per Fast-Forward auf `2aa47a2` und prueft Backend, Frontend, DB und Alembic Head.
+- Auf Staging ist der vollstaendige Zustand `Bereit fuer Briefing / Simulation` mit Next-Action-Guidance sichtbar.
+- Briefing bleibt ein Coming-next-Hinweis ohne projektbezogenen Link; `/briefing` bleibt generisch vorbereitet.
+- Simulation und Trainerreview wurden ueber `/simulation?projectId=...` und `/trainer-review?projectId=...` geprueft.
+- `/strategy` ohne `projectId`, D6-/D7-Feldfuehrung, Save-Verhalten, Mobile-Breite und Browser-Console wurden geprueft.
+- Die unteren Staging-Zustaende `Unvollstaendig` und `Grundlage vorhanden` sind als Einschraenkung dokumentiert, weil Staging aktuell nur eine Strategy hat und leere Strategy-Head-Felder im bestehenden PATCH-/Form-Flow vorhandene Werte nicht loeschen.
+- D8.3 fuehrt keine Produktcode-Aenderung, keine Backend-Aenderung, keine Migration, keine Seed-Aenderung, kein KI-Briefing, keine produktive Simulation, keine Trainerreview-Logik und keine RAG-Logik ein.
 
 Vorgemerkte Folgehinweise aus C15 bis C17:
 

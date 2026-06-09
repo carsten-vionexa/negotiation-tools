@@ -1021,3 +1021,50 @@ Gesamtergebnis: bestanden ohne Blocker. Es wurden vorhandene lokale D7.2-Smoke-T
 - Keine Blocker gefunden.
 - Der In-App-Browser-Klick auf den eindeutigen Next-Action-Link `Review-Bereich pruefen` blieb in der Adapter-Interaktion auf derselben URL; der Link-Href wurde im DOM eindeutig verifiziert und die Zielroute wurde anschliessend direkt browserseitig erfolgreich geprueft.
 - Staging-Deployment war ausdruecklich ausserhalb des Scopes.
+
+## 20. D8.3 Staging-Smoke-Test fuer Strategy Next-Action Guidance
+
+Durchgefuehrt am 2026-06-09 auf Hostinger-Staging unter `https://negotiation.tools.hawkins-consulting.de` fuer das Demo-Projekt `01d9d55b-87c3-5a5a-876a-b55a3ce2db33`.
+
+Gesamtergebnis: bestanden mit dokumentierter Einschraenkung fuer die unteren Readiness-Zustaende auf Staging. Staging wurde per Fast-Forward von `7e80fce` auf `2aa47a2` aktualisiert. Es wurden keine Produktdateien, keine Backendlogik, keine Migrationen, keine Seed-Dateien, keine KI-, Scoring-, Simulations-, Trainerreview- oder RAG-Logik geaendert. Die vorhandene Staging-Demo-Strategie wurde am Ende wieder in einen klar markierten vollstaendigen `D8.3 Smoke`-Zustand gebracht.
+
+### 20.1 Deployment und Health Checks
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Staging-Ausgangsstand | bestanden | `/opt/negotiation-tools` stand sauber auf `7e80fce`; nach `git fetch origin` war `origin/main` auf `2aa47a2` |
+| Staging-Update | bestanden | `git merge --ff-only origin/main`; Zielstand `2aa47a2` |
+| Deployment | bestanden | `docker compose --env-file .env.staging -f docker-compose.staging.yml up -d --build`; Frontend-Production-Build erfolgreich |
+| Compose-Status | bestanden | `db`, `backend` und `frontend` liefen nach Rebuild/Restart |
+| DB-Health | bestanden | `db` war `healthy`; `pg_isready` meldete `accepting connections` |
+| Backend Health intern | bestanden | `GET http://127.0.0.1:8000/api/health` antwortete `{"status":"ok","service":"negotiation-tools-api"}` |
+| Frontend intern | bestanden | `GET http://127.0.0.1:3000` im Frontend-Container erreichbar |
+| Alembic current | bestanden | `2f4b7c8d9e0a (head)` |
+| Seed / Migration | bestanden | Kein Seed-Befehl und keine Migration ausgefuehrt |
+
+### 20.2 Browser-Ergebnis
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| `/strategy?projectId=...` | bestanden | `Strategie bauen`, Projektkontext, Building-Blocks-Guidance, `Completion / Readiness` und Strategy-Kopf sichtbar |
+| Vollstaendiger Readiness-Zustand | bestanden | Status `Bereit fuer Briefing / Simulation` sichtbar |
+| Next-Action-Guidance | bestanden | `Naechste Workflow-Aktion` mit `Briefing vorbereiten`, `Simulation vorbereiten` und `Trainerreview vorbereiten` sichtbar |
+| Briefing-Grenze | bestanden | `Briefing vorbereiten` ist `Coming next` ohne Link; `/briefing` bleibt eine vorbereitete generische Route und suggeriert keine fertige projektbezogene Funktion |
+| Simulation-Link | bestanden | Next-Action-Link nutzt `/simulation?projectId=01d9d55b-87c3-5a5a-876a-b55a3ce2db33`; Zielroute rendert `Szenario konfigurieren` und beschreibt Vorbereitung ohne produktive Simulation |
+| Trainerreview-Link | bestanden | Next-Action-Link nutzt `/trainer-review?projectId=01d9d55b-87c3-5a5a-876a-b55a3ce2db33`; Zielroute rendert `Trainerreview` und verweist ohne Szenario auf die Simulation-Konfiguration |
+| `/strategy` ohne `projectId` | bestanden | Allgemeine Projektauswahl sichtbar; keine projektbezogene Readiness- oder Next-Action-Guidance sichtbar |
+| D6-/D7-Feldfuehrung | bestanden | Pflichtfeld `title`, ZOPA-Dimension als Pflichtanker, Placeholder/Hilfen fuer WAP, ZOPA, BATNA, Konzessionen und Argumente sowie Readiness-Box sichtbar |
+| Save-Verhalten | bestanden | Strategy-Kopf speicherte den finalen `D8.3 Smoke`-Zustand; Redirect blieb auf `/strategy?projectId=...` |
+| Mobile Spotcheck | bestanden | Bei `390px` Breite / effektiv `375px` Dokumentbreite blieben Readiness und Next-Action-Guidance sichtbar; kein horizontaler Overflow |
+| Browser-Console | bestanden | Keine relevanten Console-Errors oder Warnings beobachtet |
+
+### 20.3 Dokumentierte Einschraenkung
+
+Auf Staging existiert aktuell nur eine Strategy (`f808d4ad-5698-416f-80cb-5754ea9c03f9`) fuer das Demo-Projekt. Die unteren Zustaende `Unvollstaendig` und `Grundlage vorhanden` konnten deshalb nicht sauber reproduziert werden, ohne neue Staging-Testdaten oder direkte Datenbankmanipulation einzufuehren. Der bestehende Strategy-Head-Save-Flow persistiert leere Formularwerte nicht als Leerung: `optionalFormString` liefert fuer leere Felder `null`, und der PATCH-Flow laesst vorhandene Werte dadurch bestehen. Diese bestehende Save-Semantik wurde dokumentiert, aber im Rahmen von D8.3 nicht geaendert.
+
+Die Sichtbarkeitslogik der unteren Zustaende bleibt durch den lokalen D8.2-Smoke-Test mit separaten Testdatensaetzen abgedeckt. Auf Staging wurde der vollstaendige Zielzustand einschliesslich Link-/Coming-next-Abgrenzung, Route-Stabilitaet, Mobile und Console erfolgreich geprueft.
+
+### 20.4 Offene Punkte
+
+- Keine Produkt-Blocker gefunden.
+- Fuer kuenftige Staging-Smoke-Tests mit mehreren Readiness-Zustaenden waeren getrennte, klar markierte Staging-Teststrategien sinnvoll, statt die eine Demo-Strategie fuer Zustandswechsel zu leeren.

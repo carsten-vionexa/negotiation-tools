@@ -110,6 +110,7 @@
 - Phase D6.3 umgesetzt: Hostinger-Staging auf `59e293d` aktualisiert und D6.1/D6.2-Strategy-Field-Guidance browserseitig auf Staging bestanden dokumentiert, ohne Produktcode-, Backend-, Migrations-, Seed-, KI-, Scoring- oder RAG-Aenderung
 - Phase D7.1 umgesetzt: Strategy-Seite zeigt eine regelbasierte Completion-/Readiness-Guidance fuer Strategy Objectives, ZOPA, BATNA, WAP, Konzessionen und Argumente mit verbalem Status und fachlichen Warnhinweisen, ohne Score, KI, Backend, Migration, neue Persistenz oder Staging-Deployment
 - Phase D7.2 umgesetzt: Lokaler Browser-Smoke-Test fuer die D7.1-Strategy-Readiness-Guidance bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert; `/strategy`, `/strategy?projectId=...`, drei Readiness-Zustaende, fachliche Warnhinweise, vorhandene Anker, fehlende Bausteine, Mobile-Spotcheck und Console-Check wurden geprueft, ohne Produktcode, Backend, Migration, Seed-Datei, KI, Scoring, Simulation oder RAG zu aendern
+- Phase D7.3 umgesetzt: Hostinger-Staging auf `7e80fce` aktualisiert und Strategy Readiness Guidance browserseitig auf Staging bestanden dokumentiert; Healthchecks, DB-Health, Alembic `2f4b7c8d9e0a (head)`, `/strategy?projectId=...`, `/strategy`, drei Readiness-Zustaende, D6-Feldfuehrung, Save-Verhalten, Mobile-Spotcheck und Console-Check wurden geprueft, ohne Produktcode, Backend, Migration, Seed-Datei, KI, Scoring, Simulation oder RAG zu aendern
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
 

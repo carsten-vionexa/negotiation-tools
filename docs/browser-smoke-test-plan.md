@@ -896,3 +896,88 @@ Gesamtergebnis: bestanden ohne Blocker. Fuer die drei Readiness-Zustaende wurden
 - Keine Blocker gefunden.
 - Die lokalen D7.2-Smoke-Datensaetze bleiben in der Entwicklungsdatenbank als nachvollziehbare Testdaten stehen.
 - Staging-Deployment war ausdruecklich ausserhalb des Scopes.
+
+## 18. D7.3 Staging-Smoke-Test fuer Strategy Readiness Guidance
+
+Durchgefuehrt am 2026-06-09 auf Hostinger-Staging unter `https://negotiation.tools.hawkins-consulting.de` fuer das Demo-Projekt `01d9d55b-87c3-5a5a-876a-b55a3ce2db33`.
+
+Gesamtergebnis: bestanden ohne Blocker. Staging wurde per Fast-Forward von `c195d0c Document D6.3 staging strategy field smoke test` auf `7e80fce Document D7.2 strategy readiness smoke test` aktualisiert. Es wurden keine Produktdateien, keine Backendlogik, keine Migrationen, keine Seed-Dateien, keine KI-, Scoring-, Simulations- oder RAG-Logik geaendert. Fuer die Readiness-Zustaende wurden ausschliesslich klar markierte `D7.3 Smoke`-Werte in vorhandenen Staging-Strategy-Feldern gepflegt.
+
+### 18.1 Repository- und Issue-Status
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Lokaler Branch | bestanden | `main` |
+| Lokaler Working Tree vor Beginn | bestanden | sauber |
+| Lokaler HEAD / `origin/main` | bestanden | beide auf `7e80fce10c16bfebf43013d0e22bc2948ca146ca` |
+| `git log --oneline -5` | bestanden | `7e80fce`, `26d7414`, `c195d0c`, `59e293d`, `dd24e95` |
+| Offene Issues / PRs | bestanden | Offen: #145 als aktueller Scope, #113 Next/PostCSS-Beobachtung, #55 PDF-Konzept; offene PRs: 0 |
+| Staging-Ausgangsstand | bestanden | `/opt/negotiation-tools` stand sauber auf `c195d0c`; serverseitiges `origin/main` war ebenfalls noch auf `c195d0c` |
+| Staging-Update | bestanden | `git fetch origin main`, `git merge --ff-only origin/main`; Zielstand `7e80fce` |
+| Deployment | bestanden | `docker compose --env-file .env.staging -f docker-compose.staging.yml up -d --build`; Frontend-Build erfolgreich |
+| Seed | bestanden | Kein Seed-Befehl ausgefuehrt; keine Seed-Datei geaendert |
+
+### 18.2 Health Checks
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Compose-Status | bestanden | `db`, `backend` und `frontend` liefen nach Rebuild/Restart |
+| DB-Health | bestanden | `db` war `healthy`; `pg_isready` meldete `accepting connections` |
+| Backend Health intern | bestanden | `GET http://127.0.0.1:8000/api/health` antwortete `{"status":"ok","service":"negotiation-tools-api"}` |
+| Frontend intern | bestanden | `GET http://127.0.0.1:3000/strategy` und `/strategy?projectId=...` antworteten jeweils `200` |
+| Alembic current | bestanden | `2f4b7c8d9e0a (head)`; bekannter Head ist weiterhin aktuell |
+| Browser-Session | bestanden | Authentifizierte Browser-Session erreichte die Staging-App und die geprueften Strategy-Routen |
+
+### 18.3 Browser-Testdaten
+
+Die bestehende Staging-Demo-Strategie `f808d4ad-5698-416f-80cb-5754ea9c03f9` wurde fuer den Smoke-Test schrittweise ueber vorhandene Felder in drei Zustaende gebracht:
+
+| Zustand | Gepruefter Inhalt | Erwarteter Status | Ergebnis |
+|---|---|---|---|
+| leer / stark unvollstaendig | vorhandenes Overall Objective, keine ZOPA-, BATNA-, WAP-, Konzessions- oder Argumentationsdaten | `Unvollstaendig` | bestanden |
+| teilweise gefuellt | zusaetzlich `zopa_summary` und `batna_summary`, bewusst noch ohne WAP/Konzessionen/Argumente | `Grundlage vorhanden` | bestanden |
+| vollstaendig gefuellt | zusaetzlich Minimum, WAP, Konzessionsstrategie und Argumentationssummary | `Bereit fuer Briefing / Simulation` | bestanden |
+
+### 18.4 Strategy Readiness Guidance
+
+Route: `/strategy?projectId=01d9d55b-87c3-5a5a-876a-b55a3ce2db33`
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Strategy-Seite rendert | bestanden | `Strategie bauen`, Projektkontext, Building-Blocks-Guidance und `Completion / Readiness` sichtbar |
+| Zustand `Unvollstaendig` | bestanden | Objectives als vorhandener Anker sichtbar; ZOPA, BATNA, WAP, Konzessionen und Argumente als offen sichtbar |
+| Zustand `Grundlage vorhanden` | bestanden | Objectives, ZOPA und BATNA als vorhandene Anker; WAP, Konzessionen und Argumente bleiben offene Bausteine |
+| Zustand `Bereit fuer Briefing / Simulation` | bestanden | Objectives, ZOPA, BATNA, WAP, Konzessionen und Argumente jeweils als vorhanden sichtbar |
+| Vorhandene Anker | bestanden | Positive Hinweise zeigen Zielrichtung, Einigungskorridor, externe Alternative, Walk-away-Grenze, Tauschlogik und Gespraechslogik, sobald vorhanden |
+| Fehlende Bausteine | bestanden | `Gezielt ergaenzen` listet die jeweils offenen Kernbausteine nachvollziehbar |
+| Fachliche Warnhinweise | bestanden | Unvollstaendiger und teilgefuellter Zustand zeigen WAP-, Konzessions- und Argumentationswarnungen; vollstaendiger Zustand zeigt keine Warnhinweise |
+| ZOPA/BATNA/WAP-Abgrenzung | bestanden | Guidance trennt ZOPA als Einigungskorridor, BATNA als externe Alternative und WAP als Walk-away-Grenze |
+| Konzessionen | bestanden | Konzessionsstrategie wird als Tauschlogik mit Gegenleistung gefuehrt, nicht als einseitiges Nachgeben |
+| Keine Nicht-Ziele sichtbar | bestanden | Keine KI-, Score-, Simulations- oder RAG-Funktion in der Readiness-Guidance sichtbar |
+| Browser-Console | bestanden | Keine Console-Errors beobachtet |
+
+### 18.5 D6-Feldfuehrung und Save-Verhalten
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Strategy-Kopf-Pflichtfeld | bestanden | `title` ist `required`; sichtbarer Button `Strategie-Kopf speichern` |
+| Strategy-Kopf-Placeholder | bestanden | Objective, Zielergebnis, Minimum, WAP, ZOPA, BATNA, Konzessionsstrategie, Argumentationssummary, Risiken und Notizen haben fachliche Placeholder/Hilfen |
+| ZOPA-Pflichtanker | bestanden | Neuer ZOPA-Baustein nutzt `dimension` als `required` |
+| BATNA-Feldfuehrung | bestanden | BATNA-Formular fuehrt externe Alternative, Umsetzbarkeit, Impact und erforderliche Aktionen |
+| Konzessions-Feldfuehrung | bestanden | Placeholder fuehren `Wir geben / ermoeglichen` und erwartete Gegenleistung getrennt |
+| Argumentations-Feldfuehrung | bestanden | Claim- und Evidence-Placeholder fuehren fakten- und belegorientierte Gespraechsfuehrung |
+| Save-Verhalten | bestanden | Strategie-Kopf wurde mit `D7.3 Smoke: Save-Verhalten am 2026-06-09 geprueft.` gespeichert; Redirect blieb auf `/strategy?projectId=...`, Readiness blieb `Bereit fuer Briefing / Simulation` |
+
+### 18.6 Allgemeiner Strategy Entry und Mobile Spotcheck
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| `/strategy` ohne `projectId` | bestanden | Allgemeine Projektauswahl sichtbar; Demo-Projekt als Einstieg vorhanden; keine projektbezogene Readiness-Box sichtbar |
+| Mobile Breite | bestanden | Bei `390px` Browserbreite blieb `Completion / Readiness` sichtbar; `documentElement.scrollWidth` 375, kein horizontaler Overflow |
+| Console nach Mobile-Check | bestanden | Keine Console-Errors beobachtet |
+
+### 18.7 Offene Punkte
+
+- Keine Blocker gefunden.
+- Die Staging-Demo-Strategie enthaelt nun klar markierte `D7.3 Smoke`-Werte fuer ZOPA, BATNA, WAP, Konzessionsstrategie, Argumentationssummary und den Save-Verhalten-Marker.
+- Die Building-Blocks-Guidance zaehlt weiterhin nur konkrete ZOPA-/BATNA-/Konzessions-/Argumentationslisten. Das ist bestehendes Verhalten und kein D7.3-Blocker, weil die D7.1-Readiness-Guidance bewusst auch Strategy-Summary-Felder beruecksichtigt.

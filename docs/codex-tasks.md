@@ -648,6 +648,14 @@ Vorgemerkte Folgehinweise aus C15 bis C17:
 - `/projects/[id]`: Auswahl speichern, nach Reload bestaetigen und den verlinkten Bedarf mit Kernfeldern in der Beziehungsbox pruefen.
 - Sicherstellen, dass keine SupplierProfile-, Import-, Backend-Migrations-, PDF/OCR- oder KI-Logik eingefuehrt wurde.
 
+## Manuelle Pruefhilfe Issue #156
+
+- `/strategy?projectId=<bestehende Projekt-ID>`: Strategy Overview oberhalb der Detailformulare pruefen.
+- Projektfokus, Strategiebelastbarkeit, Arbeitskontext, sechs Bausteinkarten und Fokusbereich sichtbar pruefen.
+- Sicherstellen, dass genau eine dominante Primaeraktion im Overview-Bereich sichtbar ist und die Detailformulare optisch zurueckhaltender bleiben.
+- Kleinen Browser-Viewport pruefen und sicherstellen, dass keine horizontale Ueberbreite entsteht.
+- Sicherstellen, dass keine automatische Strategie-, KI-, Simulations-, Backend- oder Migrationslogik eingefuehrt wurde.
+
 ## Naechste Schritte
 
 1. Naechsten fachlichen Schritt separat priorisieren.

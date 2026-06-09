@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { ArrowLeft, ArrowRight, CheckCircle2, FileText, Handshake, Save, Scale, ShieldCheck, Target } from "lucide-react";
+import { ArrowLeft, ArrowRight, CheckCircle2, CircleDashed, FileText, Handshake, Save, Scale, ShieldCheck, Target } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { EmptyState, ErrorState } from "@/components/state-patterns";
@@ -10,10 +10,10 @@ import { createArgumentationLine, listArgumentationLines, updateArgumentationLin
 import { createBatnaOption, listBatnaOptions, updateBatnaOption, type BatnaOptionRead } from "@/lib/api/batna-options";
 import { getCompany } from "@/lib/api/companies";
 import { createConcessionItem, listConcessionItems, updateConcessionItem, type ConcessionItemRead } from "@/lib/api/concession-items";
-import { getNegotiationProject, listNegotiationProjects } from "@/lib/api/negotiation-projects";
-import { getRequestItem } from "@/lib/api/request-items";
+import { getNegotiationProject, listNegotiationProjects, type NegotiationProjectRead } from "@/lib/api/negotiation-projects";
+import { getRequestItem, type RequestItemRead } from "@/lib/api/request-items";
 import { createStrategy, listStrategies, updateStrategy, type StrategyRead } from "@/lib/api/strategies";
-import { getSupplierProfile } from "@/lib/api/supplier-profiles";
+import { getSupplierProfile, type SupplierProfileRead } from "@/lib/api/supplier-profiles";
 import { createZopaItem, listZopaItems, updateZopaItem, type ZopaItemRead } from "@/lib/api/zopa-items";
 import { optionalFormString, requiredFormString } from "@/lib/form-data";
 
@@ -86,6 +86,18 @@ export default async function StrategyPage({ searchParams }: { searchParams: Pro
     <>
       <StrategyHeader projectId={project.id} projectTitle={project.title} companyName={company.name} />
 
+      <StrategyOverviewPrototype
+        project={project}
+        companyName={company.name}
+        supplier={supplier}
+        requestItem={requestItem}
+        strategy={strategy}
+        zopaItems={zopaItems}
+        batnaOptions={batnaOptions}
+        argumentationLines={argumentationLines}
+        concessionItems={concessionItems}
+      />
+
       <section className="grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
         <div className="rounded-md border border-border bg-card p-5">
           <h2 className="text-base font-semibold">Projekt- und Strategiekontext</h2>
@@ -139,7 +151,7 @@ export default async function StrategyPage({ searchParams }: { searchParams: Pro
               </p>
             </div>
           </div>
-          <form action={createStrategyAction.bind(null, project.id, project.company_id)} className="mt-5 grid gap-3 md:grid-cols-2">
+          <form id="strategy-create-form" action={createStrategyAction.bind(null, project.id, project.company_id)} className="mt-5 grid gap-3 md:grid-cols-2">
             <Field label="Titel" name="title" defaultValue={`${project.title} - Strategie`} required hint="Pflichtfeld: kurzer Name fuer diesen Strategie-Stand." />
             <Field label="Status" name="status" defaultValue="draft" hint="Optional, z. B. draft, reviewed oder active." />
             <TextArea
@@ -155,7 +167,7 @@ export default async function StrategyPage({ searchParams }: { searchParams: Pro
               placeholder="Hypothese: ... / Offene Frage: ..."
               hint="Optional: Annahmen, Datenluecken oder Punkte fuer Analyse und Gespraechsvorbereitung."
             />
-            <SubmitButton label="Strategie-Kopf anlegen" />
+            <SubmitButton label="Strategie-Kopf anlegen" variant="primary" />
           </form>
         </section>
       ) : (
@@ -289,6 +301,184 @@ function StrategyBuildingBlocksGuidance({
         ))}
       </dl>
     </section>
+  );
+}
+
+type StrategyBlockStatus = "present" | "open";
+
+type StrategyOverviewBlock = {
+  label: string;
+  status: StrategyBlockStatus;
+  statusText: string;
+  detail: string;
+  href: string;
+  actionLabel: string;
+};
+
+function StrategyOverviewPrototype({
+  project,
+  companyName,
+  supplier,
+  requestItem,
+  strategy,
+  zopaItems,
+  batnaOptions,
+  argumentationLines,
+  concessionItems,
+}: {
+  project: NegotiationProjectRead;
+  companyName: string;
+  supplier?: SupplierProfileRead | null;
+  requestItem?: RequestItemRead | null;
+  strategy?: StrategyRead;
+  zopaItems: ZopaItemRead[];
+  batnaOptions: BatnaOptionRead[];
+  argumentationLines: ArgumentationLineRead[];
+  concessionItems: ConcessionItemRead[];
+}) {
+  const blocks = buildOverviewBlocks({ strategy, zopaItems, batnaOptions, argumentationLines, concessionItems });
+  const presentCount = blocks.filter((block) => block.status === "present").length;
+  const focusBlock = blocks.find((block) => block.status === "open") ?? blocks[0];
+  const strategyConfidence =
+    !strategy || presentCount <= 1 ? "Noch fragil" : presentCount >= 5 ? "Belastbar vorbereitet" : "In Arbeit";
+  const primaryAction = strategy
+    ? { href: focusBlock.href, label: focusBlock.actionLabel }
+    : { href: "#strategy-create-form", label: "Strategie-Kopf anlegen" };
+
+  return (
+    <section className="rounded-md border border-border bg-card p-5">
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div className="min-w-0">
+          <SectionTitle icon={<Target className="size-4" />} title="Strategy Overview" />
+          <p className="mt-3 text-sm leading-6 text-muted-foreground">
+            Ruhiger Prototypbereich fuer Projektfokus, Belastbarkeit, offene Strategiebausteine und den naechsten manuellen Arbeitsschritt.
+          </p>
+        </div>
+        <PrimaryAnchor href={primaryAction.href} label={primaryAction.label} />
+      </div>
+
+      <div className="mt-4 grid gap-3 md:grid-cols-3">
+        <OverviewMetric label="Projektfokus" value={project.title} detail={`${companyName}${supplier ? ` - ${supplier.name}` : ""}`} />
+        <OverviewMetric label="Strategiebelastbarkeit" value={strategyConfidence} detail={`${presentCount}/6 Strategiebausteine sichtbar`} />
+        <OverviewMetric
+          label="Arbeitskontext"
+          value={project.article_or_service || requestItem?.title || "Noch allgemein"}
+          detail={[project.priority, project.risk_level, project.target_region || requestItem?.target_region].filter(Boolean).join(" - ") || "Keine weiteren Signale gesetzt"}
+        />
+      </div>
+
+      <dl className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-6">
+        {blocks.map((block) => (
+          <div key={block.label} className="rounded-md border border-border bg-background p-3">
+            <dt className="flex items-center justify-between gap-2 text-sm font-semibold">
+              <span>{block.label}</span>
+              {block.status === "present" ? (
+                <CheckCircle2 className="size-4 shrink-0 text-emerald-600" aria-hidden="true" />
+              ) : (
+                <CircleDashed className="size-4 shrink-0 text-amber-600" aria-hidden="true" />
+              )}
+            </dt>
+            <dd className="mt-2 text-xs font-medium text-muted-foreground">{block.statusText}</dd>
+            <dd className="mt-1 text-xs leading-5 text-muted-foreground">{block.detail}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <div className="mt-4 rounded-md border border-dashed border-border bg-muted/30 p-4">
+        <p className="text-sm font-semibold">Fokusbereich: {focusBlock.label}</p>
+        <p className="mt-2 text-sm leading-6 text-muted-foreground">
+          {focusBlock.status === "present"
+            ? `${focusBlock.detail} Pruefe diesen Baustein als aktuellen Arbeitsanker, bevor du in Briefing oder Simulation wechselst.`
+            : `${focusBlock.detail} Dieser Baustein ist der naheliegende manuelle Vertiefungsschritt.`}
+        </p>
+        <p className="mt-2 text-xs leading-5 text-muted-foreground">
+          Der Bereich zeigt vorhandene Daten nur strukturiert an und erzeugt keine Strategie, keine Bewertung und keine KI-Vorschlaege.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+function buildOverviewBlocks({
+  strategy,
+  zopaItems,
+  batnaOptions,
+  argumentationLines,
+  concessionItems,
+}: {
+  strategy?: StrategyRead;
+  zopaItems: ZopaItemRead[];
+  batnaOptions: BatnaOptionRead[];
+  argumentationLines: ArgumentationLineRead[];
+  concessionItems: ConcessionItemRead[];
+}): StrategyOverviewBlock[] {
+  const hasObjectives = hasText(strategy?.overall_objective) || hasText(strategy?.target_outcome);
+  const hasZopa = hasText(strategy?.zopa_summary) || zopaItems.length > 0;
+  const hasBatna = hasText(strategy?.batna_summary) || batnaOptions.length > 0;
+  const hasWalkAwayPoint =
+    hasText(strategy?.walk_away_point) || hasText(strategy?.minimum_acceptable_outcome) || zopaItems.some((item) => hasText(item.buyer_walk_away_value));
+  const hasConcessions = hasText(strategy?.concession_strategy) || concessionItems.length > 0;
+  const hasArguments = hasText(strategy?.argumentation_summary) || argumentationLines.length > 0;
+
+  return [
+    {
+      label: "Ziele",
+      status: hasObjectives ? "present" : "open",
+      statusText: hasObjectives ? "Vorhanden" : "Offen",
+      detail: hasObjectives ? "Strategy Objective oder Zielergebnis ist dokumentiert." : "Zielbild und Erfolgskriterien noch schaerfen.",
+      href: "#strategy-head-section",
+      actionLabel: "Ziele bearbeiten",
+    },
+    {
+      label: "ZOPA",
+      status: hasZopa ? "present" : "open",
+      statusText: hasZopa ? `${zopaItems.length || 1} Anker` : "Offen",
+      detail: hasZopa ? "Einigungskorridor ist sichtbar." : "Moeglichen Einigungskorridor manuell eingrenzen.",
+      href: "#zopa-section",
+      actionLabel: "ZOPA bearbeiten",
+    },
+    {
+      label: "BATNA",
+      status: hasBatna ? "present" : "open",
+      statusText: hasBatna ? `${batnaOptions.length || 1} Anker` : "Offen",
+      detail: hasBatna ? "Alternative ausserhalb der Verhandlung ist sichtbar." : "Beste realistische Alternative beschreiben.",
+      href: "#batna-section",
+      actionLabel: "BATNA bearbeiten",
+    },
+    {
+      label: "WAP",
+      status: hasWalkAwayPoint ? "present" : "open",
+      statusText: hasWalkAwayPoint ? "Vorhanden" : "Offen",
+      detail: hasWalkAwayPoint ? "Walk-away-Grenze oder Grenzwert-Hinweis ist dokumentiert." : "Minimale akzeptable Grenze festlegen.",
+      href: "#strategy-head-section",
+      actionLabel: "WAP festlegen",
+    },
+    {
+      label: "Konzessionen",
+      status: hasConcessions ? "present" : "open",
+      statusText: hasConcessions ? `${concessionItems.length || 1} Anker` : "Offen",
+      detail: hasConcessions ? "Tauschlogik ist vorbereitet." : "Tauschobjekte und Gegenleistungen planen.",
+      href: "#concession-section",
+      actionLabel: "Konzessionen bearbeiten",
+    },
+    {
+      label: "Argumente",
+      status: hasArguments ? "present" : "open",
+      statusText: hasArguments ? `${argumentationLines.length || 1} Anker` : "Offen",
+      detail: hasArguments ? "Gespraechslogik ist sichtbar." : "Claims, Belege und Gegenargumente sammeln.",
+      href: "#argumentation-section",
+      actionLabel: "Argumente bearbeiten",
+    },
+  ];
+}
+
+function OverviewMetric({ label, value, detail }: { label: string; value: string; detail: string }) {
+  return (
+    <div className="rounded-md border border-border bg-background p-3">
+      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
+      <p className="mt-2 truncate text-sm font-semibold">{value}</p>
+      <p className="mt-1 text-xs leading-5 text-muted-foreground">{detail}</p>
+    </div>
   );
 }
 
@@ -543,7 +733,7 @@ function StrategyHeader({ projectId, projectTitle, companyName }: { projectId: s
 
 function StrategyHeadSection({ strategy, projectId }: { strategy: StrategyRead; projectId: string }) {
   return (
-    <section className="rounded-md border border-border bg-card p-5">
+    <section id="strategy-head-section" className="rounded-md border border-border bg-card p-5">
       <SectionTitle icon={<Target className="size-4" />} title="Strategie-Kopf" />
       <p className="mt-2 text-sm leading-6 text-muted-foreground">
         Pflege den Walk-away Point als manuelle Abbruchgrenze. Er wird nicht berechnet und ersetzt keine Konzessionsplanung.
@@ -629,7 +819,7 @@ function StrategyHeadSection({ strategy, projectId }: { strategy: StrategyRead; 
 
 function ZopaSection({ strategyId, projectId, items }: { strategyId: string; projectId: string; items: ZopaItemRead[] }) {
   return (
-    <section className="rounded-md border border-border bg-card p-5">
+    <section id="zopa-section" className="rounded-md border border-border bg-card p-5">
       <SectionTitle icon={<Scale className="size-4" />} title="ZOPA-Dimensionen" />
       <p className="mt-2 text-sm leading-6 text-muted-foreground">
         Manuell gepflegte Einigungskorridore zwischen eigener Grenze und angenommener Grenze der Gegenseite. ZOPA ist nicht die BATNA und nicht der WAP.
@@ -663,7 +853,7 @@ function ZopaSection({ strategyId, projectId, items }: { strategyId: string; pro
 
 function BatnaSection({ strategyId, projectId, items }: { strategyId: string; projectId: string; items: BatnaOptionRead[] }) {
   return (
-    <section className="rounded-md border border-border bg-card p-5">
+    <section id="batna-section" className="rounded-md border border-border bg-card p-5">
       <SectionTitle icon={<ShieldCheck className="size-4" />} title="BATNA-Optionen" />
       <p className="mt-2 text-sm leading-6 text-muted-foreground">
         BATNA beschreibt die beste Alternative ausserhalb dieser Verhandlung. Sie ist nicht der Walk-away Point; der WAP markiert nur, ab wann diese Alternative
@@ -697,7 +887,7 @@ function BatnaSection({ strategyId, projectId, items }: { strategyId: string; pr
 
 function ConcessionSection({ strategyId, projectId, items }: { strategyId: string; projectId: string; items: ConcessionItemRead[] }) {
   return (
-    <section className="rounded-md border border-border bg-card p-5">
+    <section id="concession-section" className="rounded-md border border-border bg-card p-5">
       <SectionTitle icon={<Handshake className="size-4" />} title="Konzessionen als Tauschobjekte" />
       <p className="mt-2 text-sm leading-6 text-muted-foreground">
         Konzessionen werden als konditioniertes Geben gegen Erhalten gepflegt, nicht als reines Nachgeben und nicht als Walk-away Point.
@@ -732,7 +922,7 @@ function ConcessionSection({ strategyId, projectId, items }: { strategyId: strin
 
 function ArgumentationSection({ strategyId, projectId, items }: { strategyId: string; projectId: string; items: ArgumentationLineRead[] }) {
   return (
-    <section className="rounded-md border border-border bg-card p-5">
+    <section id="argumentation-section" className="rounded-md border border-border bg-card p-5">
       <SectionTitle icon={<FileText className="size-4" />} title="Argumentationslinien" />
       <p className="mt-2 text-sm leading-6 text-muted-foreground">
         Argumente sollten moeglichst fakten-, TCO-, risiko-, qualitaets- oder beziehungsbezogen sein und erwartete Gegenargumente mitdenken.
@@ -1032,6 +1222,15 @@ function ActionLink({ href, label, icon }: { href: string; label: string; icon: 
   );
 }
 
+function PrimaryAnchor({ href, label }: { href: string; label: string }) {
+  return (
+    <a href={href} className="inline-flex shrink-0 items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">
+      {label}
+      <ArrowRight className="size-4" aria-hidden="true" />
+    </a>
+  );
+}
+
 function SectionTitle({ icon, title }: { icon: ReactNode; title: string }) {
   return (
     <div className="flex items-center gap-2">
@@ -1194,10 +1393,15 @@ function Checkbox({ label, name, defaultChecked = false }: { label: string; name
   );
 }
 
-function SubmitButton({ label }: { label: string }) {
+function SubmitButton({ label, variant = "secondary" }: { label: string; variant?: "primary" | "secondary" }) {
+  const className =
+    variant === "primary"
+      ? "inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+      : "inline-flex items-center gap-2 rounded-md border border-border px-4 py-2 text-sm font-medium hover:bg-muted";
+
   return (
     <div className="md:col-span-2">
-      <button className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">
+      <button className={className}>
         <Save className="size-4" />
         {label}
       </button>

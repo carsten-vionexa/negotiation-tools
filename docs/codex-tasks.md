@@ -123,6 +123,7 @@
 - Issue #157 / D10.2 umgesetzt: Lokaler Demo-Flow-Smoke-Test nach Getting Started und Strategy Overview bestanden dokumentiert
 - Issue #158 / D10.3 umgesetzt: Hostinger-Staging aktualisiert und Demo-Flow-Smoke-Test bestanden dokumentiert
 - Issue #159 / D10.4 umgesetzt: D10-Zwischenabschluss dokumentiert; Getting Started, Strategy Overview, lokaler Smoke-Test und Staging-Smoke-Test sind als abgeschlossen eingeordnet, D11 bleibt spaeterer Roadmapblock, offene Nicht-Blocker #55, #113 und #155 bleiben unveraendert offen
+- Issue #160 / D11.1 umgesetzt: Preconditions fuer AI-assisted Strategy Coaching als reiner Konzeptschritt dokumentiert; Fakten, Nutzerannahmen, KI-Hypothesen, offene Fragen, Quellen-/Evidenzlogik, Speicherlogik nach Nutzerbestaetigung, UX-Leitplanken und D11-Folgephasen sind abgegrenzt, ohne Produkt-, Backend-, KI-, RAG-, Simulations-, Trainerreview-, API-, Migrations- oder Persistenzlogik einzufuehren
 - Issue #146 umgesetzt: Codex-Kurzmodus in der Projekt-SKILL dokumentiert, kompakte operative `CODEX.md` im Repository-Root ergaenzt und README/Roadmap verlinkt beziehungsweise aktualisiert, ohne Produktdateien, Backend, Frontend, Migrationen, Staging oder Build-/Testskripte zu aendern
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
@@ -669,6 +670,16 @@ Vorgemerkte Folgehinweise aus C15 bis C17:
 - Sicherstellen, dass D11 / Issue #155 weiterhin als spaeterer Roadmapblock abgegrenzt und nicht gestartet ist.
 - Sicherstellen, dass #55, #113 und #155 als offene Nicht-Blocker unveraendert benannt bleiben.
 - Sicherstellen, dass keine Produktdateien, keine Backendlogik, keine UI, keine Migration, kein Staging-Deployment und keine KI-, Simulation-, Trainerreview- oder RAG-Logik geaendert wurden.
+
+## Manuelle Pruefhilfe Issue #160
+
+- `docs/ai-assisted-strategy-coaching.md`, `docs/roadmap.md` und `docs/codex-tasks.md` pruefen.
+- Sicherstellen, dass D11.1 als Konzept-/Preconditions-Schritt beschrieben ist und nicht wie eine Implementierungsfreigabe wirkt.
+- Sicherstellen, dass Fakten, Nutzerannahmen, KI-Hypothesen und offene Fragen getrennt dokumentiert sind.
+- Sicherstellen, dass Quellen-/Evidenzlogik und Speicherung erst nach Nutzerbestaetigung klar beschrieben sind.
+- Sicherstellen, dass der bestehende Strategy Builder als aktueller manueller beziehungsweise regelbasierter Vorbereitungsbereich erhalten bleibt.
+- Sicherstellen, dass #55, #113 und #155 als offene Nicht-Blocker korrekt eingeordnet bleiben.
+- Sicherstellen, dass keine Produktdateien, keine Backendlogik, keine UI, keine Migration, kein Staging-Deployment und keine KI-, Simulation-, Trainerreview-, API-, Persistenz- oder RAG-Logik geaendert wurden.
 
 ## Naechste Schritte
 

@@ -226,7 +226,151 @@ Leitplanken:
 - Lernchecks einbauen.
 - Trainer- oder Expertenreview weiterhin ermoeglichen.
 
-## 8. Technische Voraussetzungen vor Umsetzung
+## 8. D11.1 Preconditions vor Umsetzung
+
+D11.1 ist ein Konzept- und Preconditions-Schritt. Dieser Schritt dokumentiert,
+welche fachlichen, datenbezogenen, dialogischen und technischen Grundlagen vor
+einer spaeteren Implementierung des AI Strategy Coach vorhanden oder geklaert
+sein muessen. D11.1 ist keine Implementierungsfreigabe fuer KI-Logik, RAG,
+Persistenz, Simulation, Trainerreview oder automatische Strategieerzeugung.
+
+### 8.1 Fachliche Preconditions
+
+Vor einer Umsetzung muessen die manuellen und regelbasierten Strategiefluesse
+stabil genug sein, damit der AI Strategy Coach nicht ein unfertiges
+Grundmodell kaschiert. Erforderlich sind:
+
+- stabile Strategy-Objekte und Strategy-CRUD-Flows
+- klare Strategy-Bausteine fuer Ziele, BATNA, WAP, ZOPA, Konzessionen und
+  Argumentationslinien
+- vorhandener Projektkontext mit Company, RequestItem, SupplierProfile und
+  Strategy
+- definierter Umgang mit fehlenden, alten, unklaren oder widerspruechlichen
+  Daten
+- klare Abgrenzung zwischen Coaching, Analyse, Simulation und Trainerreview
+- Nutzer- oder Trainerreview als Pflichtprinzip vor Speicherung kritischer
+  Strategiebausteine
+
+Der bestehende Strategy Builder bleibt bis dahin der aktuelle manuelle
+beziehungsweise regelbasierte Vorbereitungsbereich. Der AI Strategy Coach darf
+ihn spaeter nur ergaenzen, nicht ersetzen.
+
+### 8.2 Daten- und Kontext-Preconditions
+
+Der spaetere KI-Kontext muss als expliziter projektbezogener Kontextvertrag
+modelliert werden. Zulaessige Kontextquellen koennen sein:
+
+- NegotiationProject
+- Company
+- UserProfile
+- RequestItem
+- SupplierProfile
+- ProcurementHistoryItem
+- KnowledgeDocument
+- ImportRows und daraus erzeugte Zielobjekte
+- vorhandene Strategy-Bausteine
+- spaetere KnowledgeClaims oder RAG-Snippets
+
+Vor produktiver KI-Nutzung muss dokumentiert und technisch abbildbar sein,
+welche Informationen als Fakten, Nutzerannahmen, KI-Hypothesen oder offene
+Fragen gelten.
+
+- Fakten stammen aus gespeicherten Projekt-, Stamm-, Import-, Einkaufs- oder
+  Knowledge-Objekten und brauchen bei datenbasierten Aussagen einen
+  nachvollziehbaren Ursprung.
+- Nutzerannahmen sind vom Nutzer eingegebene Einschaetzungen, Grenzen oder
+  Bewertungen und duerfen nicht als externe Evidenz dargestellt werden.
+- KI-Hypothesen sind Vorschlaege oder Ableitungen aus verfuegbarem Kontext und
+  muessen als Hypothese markiert bleiben, bis der Nutzer sie bestaetigt oder
+  korrigiert.
+- Offene Fragen entstehen bei fehlenden, widerspruechlichen oder zu schwach
+  belegten Informationen und muessen als Klaerungsbedarf sichtbar bleiben.
+
+Quellenbasierte Aussagen brauchen eine Evidenzmarkierung. Spaetere
+RAG-Snippets oder KnowledgeClaims muessen Herkunft, Aktualitaet, Aussagekern
+und Belastbarkeit so tragen, dass der Nutzer erkennen kann, worauf sich eine
+KI-Aussage stuetzt. Nicht belegte ZOPA-, BATNA- oder WAP-Ableitungen duerfen
+nicht als Fakten erscheinen.
+
+### 8.3 Dialog- und UX-Preconditions
+
+Der AI Strategy Coach darf nicht als freier Chat ohne Projektkontext starten.
+Der Einstieg muss aus einem konkreten NegotiationProject beziehungsweise einem
+vergleichbar klaren Vorbereitungskontext erfolgen. Der Dialog muss phasenweise
+gefuehrt werden; jede Phase braucht einen erkennbaren Zweck, zum Beispiel
+Ausgangslage klaeren, Datenlage spiegeln, Ziele entwickeln, BATNA pruefen, WAP
+ableiten, ZOPA als Hypothese entwickeln, Konzessionslogik klaeren,
+Argumentationslinien vorbereiten und Lerncheck durchfuehren.
+
+KI-Ausgaben muessen visuell und sprachlich unterscheidbar sein:
+
+- Vorschlag
+- datenbasierte Ableitung
+- Nutzerannahme
+- KI-Hypothese
+- offene Frage
+- bestaetigter Strategiebaustein
+
+Strategiebausteine duerfen erst nach expliziter Nutzerbestaetigung gespeichert
+oder aktualisiert werden. Der Calm-Negotiation-Workspace-Ansatz bleibt
+Leitplanke: ruhig, nachvollziehbar, uebersichtlich, ohne KI-Magie zu
+suggerieren und ohne den Nutzer aus der fachlichen Entscheidung zu nehmen.
+
+### 8.4 Technische Preconditions
+
+Vor Implementierung sind mindestens folgende technische Grundlagen erforderlich:
+
+- stabiler Kontextvertrag fuer projektbezogene KI-Nutzung
+- Modell fuer Quellen-, Claim- und RAG-Kontext
+- Evidenzmarkierung fuer datenbasierte Aussagen
+- Persistenzmodell fuer Dialogentwuerfe, bestaetigte Strategiebausteine,
+  offene Fragen, verworfene Vorschlaege und Nutzerkorrekturen
+- klare Regeln, welche KI-Ausgaben niemals direkt als Fakten gespeichert
+  werden
+- Fehler- und Unsicherheitsmodell fuer fehlende Daten, widerspruechliche Daten,
+  zu geringe Evidenz, alte oder unklare Quellen und nicht belastbare ZOPA-,
+  BATNA- oder WAP-Annahmen
+- Review- und Korrekturmoeglichkeit durch Nutzer beziehungsweise Trainer
+
+Die Speicherlogik muss strikt bleiben:
+
+```text
+KI-Ausgabe -> Entwurf / Vorschlag -> Nutzerpruefung -> Bestaetigung -> Speicherung
+```
+
+Ohne Bestaetigung bleibt eine KI-Aussage ein Entwurf, eine Hypothese oder eine
+offene Frage. Sie darf keine bestehende Strategy ueberschreiben und nicht als
+gesicherter Strategiebaustein gelten.
+
+### 8.5 Risiken einer zu fruehen Implementierung
+
+Eine verfruehte Umsetzung wuerde zentrale Produktrisiken erzeugen:
+
+- automatisch wirkende Strategieerzeugung ohne echtes Nutzerverstaendnis
+- Vermischung von Fakten, Annahmen und KI-Hypothesen
+- scheinbar praezise ZOPA-, BATNA- oder WAP-Aussagen ohne belastbare Evidenz
+- Speicherung ungepruefter KI-Ausgaben als Strategie
+- freier Chat ohne Projektanker und ohne fachlichen Lernpfad
+- Umgehung des bestehenden Strategy Builders
+- unklare Haftungs-, Trainings- und Review-Erwartungen
+- spaetere RAG- oder Claim-Nacharbeit gegen bereits etablierte falsche
+  Produktannahmen
+
+### 8.6 Sinnvolle D11-Folgephasen
+
+Aus D11.1 ableitbare Folgephasen bleiben separate, spaeter zu priorisierende
+Schritte:
+
+1. D11.2: Kontextvertrag fuer projektbezogene KI-Nutzung konzipieren.
+2. D11.3: Quellen-, Claim- und Evidenzmodell fuer Strategie-Coaching
+   konkretisieren.
+3. D11.4: Dialogphasen und UX-Vertrag fuer den Strategy Coach spezifizieren.
+4. D11.5: Persistenz- und Reviewmodell fuer Entwuerfe, Bestaetigungen,
+   Korrekturen und verworfene Vorschlaege definieren.
+5. D11.6: Erst danach einen begrenzten technischen Prototyp pruefen, weiterhin
+   ohne automatische Strategieuebernahme.
+
+## 9. Technische Voraussetzungen vor Umsetzung
 
 D11 darf erst umgesetzt werden, wenn das Fundament passt.
 
@@ -242,7 +386,7 @@ Vorbedingungen:
 - Persistenzkonzept fuer Zwischenergebnisse, Bestaetigungen und gespeicherte Strategiebausteine
 - Review- oder Korrekturmoeglichkeit durch Nutzer beziehungsweise Trainer
 
-## 9. Nicht-Ziele fuer die fruehe Umsetzung
+## 10. Nicht-Ziele fuer die fruehe Umsetzung
 
 D11 soll nicht als schneller KI-Button umgesetzt werden.
 
@@ -257,7 +401,7 @@ Nicht-Ziele:
 - keine Umgehung des bestehenden Strategy Builders
 - kein Ersatz fuer Trainerreview in Trainingskontexten
 
-## 10. Roadmap-Einordnung
+## 11. Roadmap-Einordnung
 
 Dieser Block wird als spaeterer Roadmap-Block D11 vorgemerkt:
 
@@ -265,6 +409,10 @@ Dieser Block wird als spaeterer Roadmap-Block D11 vorgemerkt:
 D11: AI-assisted Strategy Coaching / Dialogische Strategieentwicklung
 ```
 
-D11 ist kein Blocker fuer D9 Briefing Preparation oder D10 User Onboarding. D11 soll erst starten, wenn die technischen Grundlagen fuer KI-Kontext, RAG/Knowledge, Strategy-Persistenz und Dialogfuehrung tragfaehig sind.
+D11.1 dokumentiert nur Preconditions und ist kein Start der Implementierung.
+D11 ist kein Blocker fuer D9 Briefing Preparation oder D10 User Onboarding.
+D11 soll erst starten, wenn die technischen Grundlagen fuer KI-Kontext,
+RAG/Knowledge, Strategy-Persistenz, Quellen-/Evidenzlogik und Dialogfuehrung
+tragfaehig sind.
 
 Bis dahin bleibt der bestehende Strategy Builder ein manueller beziehungsweise regelbasiert gefuehrter Vorbereitungsbereich. D11 beschreibt das Zielbild fuer den spaeteren Live-Betrieb.

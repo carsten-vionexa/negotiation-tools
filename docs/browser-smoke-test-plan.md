@@ -1114,3 +1114,28 @@ Gesamtergebnis: bestanden ohne Blocker. Staging wurde per Fast-Forward von `2aa4
 
 - Keine Blocker gefunden.
 - D9.2 war ausschliesslich ein Staging-Smoke- und Dokumentationsschritt; Produktumfang und Staging-Daten blieben unveraendert.
+
+## 22. D10.2-Demo-Flow-Smoke-Test-Ergebnis
+
+Durchgefuehrt am 2026-06-09 lokal gegen `http://localhost:3000` und `http://localhost:8000` fuer das Demo-Projekt `01d9d55b-87c3-5a5a-876a-b55a3ce2db33`.
+
+Gesamtergebnis: bestanden nach kleiner UI-Korrektur ohne weitere Blocker. Es wurden keine Backendlogik, keine Migration, keine KI-, Simulation-, Trainerreview- oder RAG-Logik geaendert.
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| `/getting-started` | bestanden | Seite rendert als Guided Introduction; Briefing Preparation, Simulation Preparation und Trainerreview sind als Folgeschritte sichtbar |
+| Navigation / Sidebar | bestanden | Getting Started ist in der Cockpit-Navigation auffindbar; Klick aus `/dashboard` fuehrt zu `/getting-started` |
+| `/dashboard` | bestanden | Dashboard rendert mit Workspace-Zaehlern und Screen-Gruppen |
+| Demo-Projekt | bestanden | `/projects/01d9d55b-87c3-5a5a-876a-b55a3ce2db33` rendert die Project-Detailseite fuer `Verhandlung: Praezisions-Servoantrieb RX-42` |
+| `/strategy?projectId=...` | bestanden | Strategy-Seite rendert im Projektkontext; `Strategy Overview` ist sichtbar |
+| `/briefing?projectId=...` | bestanden | Briefing Preparation bleibt erreichbar und ist bewusst als einordnender Vorbereitungsschritt abgegrenzt |
+| Browser-Console | bestanden | Keine neuen `error`- oder `warn`-Eintraege auf den geprueften Routen |
+| Mobile Breite | bestanden | Nach Korrektur keine horizontale Ueberbreite bei 375px-Testbreite; `scrollWidth` entspricht `clientWidth` |
+
+### 22.1 Gefundener und behobener Blocker
+
+Bei `/strategy?projectId=...` erzeugten die Strategy-Overview-Metriken mobil eine kleine horizontale Ueberbreite. Ursache war die automatische Mindestbreite der Grid-Kacheln bei langen Projekttiteln. Behoben durch `min-w-0` auf der Metrik-Kachel und `break-words` fuer Detailtext in `frontend/app/(workspace)/strategy/page.tsx`.
+
+### 22.2 Offene Punkte
+
+- Keine Blocker offen.

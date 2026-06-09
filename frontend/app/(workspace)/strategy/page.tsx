@@ -474,10 +474,10 @@ function buildOverviewBlocks({
 
 function OverviewMetric({ label, value, detail }: { label: string; value: string; detail: string }) {
   return (
-    <div className="rounded-md border border-border bg-background p-3">
+    <div className="min-w-0 rounded-md border border-border bg-background p-3">
       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
       <p className="mt-2 truncate text-sm font-semibold">{value}</p>
-      <p className="mt-1 text-xs leading-5 text-muted-foreground">{detail}</p>
+      <p className="mt-1 break-words text-xs leading-5 text-muted-foreground">{detail}</p>
     </div>
   );
 }

@@ -118,6 +118,11 @@
 - Phase D9.1 umgesetzt: `/briefing` als ruhigen Briefing-Preparation-Einstieg fachlich geglaettet; die Seite ordnet den Schritt nach Strategy Readiness ein, nennt spaetere Briefing-Bausteine und grenzt automatische KI-Briefing-Erzeugung, Simulation und Trainerreview klar aus, ohne Backend, Migration, Persistenz oder neue Folgeprozesslogik
 - Phase D9.2 umgesetzt: Hostinger-Staging auf `fd6b145` aktualisiert und `/briefing` als Briefing-Preparation-Einstieg browserseitig auf Staging bestanden dokumentiert; Healthchecks, DB-Health, Alembic `2f4b7c8d9e0a (head)`, Desktop, Mobile, Console, Briefing-Preparation-Abgrenzung, fehlende KI-Briefing-Erzeugung sowie fehlende Simulation-/Trainerreview-Funktion wurden geprueft, ohne Produktcode, Backend, Migration, Seed, KI, Scoring, Simulation, Trainerreview, RAG oder PDF-/Import-Verarbeitung zu aendern
 - Phase D9.3 umgesetzt: `/briefing` ordnet `projectId` aus Search Params ruhig als Projektkontext ein und erklaert ohne `projectId`, dass ein Projekt beziehungsweise eine vorbereitete Strategy fuer konkrete Briefing Preparation benoetigt wird; die Strategy-Next-Action-Guidance erhaelt den Projektkontext im Link zu `/briefing?projectId=...`, ohne Backend, Migration, Persistenz, neue API-Aufrufe, KI-Briefing, Simulation oder Trainerreview-Logik
+- Issue #154 / D10 umgesetzt: Getting Started / Guided Introduction fuer Demo- und Testnutzer bereitgestellt
+- Issue #156 / D10.1 umgesetzt: Strategy Overview / Strategy Board UI-Prototyp unter `/strategy?projectId=...` vorbereitet
+- Issue #157 / D10.2 umgesetzt: Lokaler Demo-Flow-Smoke-Test nach Getting Started und Strategy Overview bestanden dokumentiert
+- Issue #158 / D10.3 umgesetzt: Hostinger-Staging aktualisiert und Demo-Flow-Smoke-Test bestanden dokumentiert
+- Issue #159 / D10.4 umgesetzt: D10-Zwischenabschluss dokumentiert; Getting Started, Strategy Overview, lokaler Smoke-Test und Staging-Smoke-Test sind als abgeschlossen eingeordnet, D11 bleibt spaeterer Roadmapblock, offene Nicht-Blocker #55, #113 und #155 bleiben unveraendert offen
 - Issue #146 umgesetzt: Codex-Kurzmodus in der Projekt-SKILL dokumentiert, kompakte operative `CODEX.md` im Repository-Root ergaenzt und README/Roadmap verlinkt beziehungsweise aktualisiert, ohne Produktdateien, Backend, Frontend, Migrationen, Staging oder Build-/Testskripte zu aendern
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
@@ -655,6 +660,15 @@ Vorgemerkte Folgehinweise aus C15 bis C17:
 - Sicherstellen, dass genau eine dominante Primaeraktion im Overview-Bereich sichtbar ist und die Detailformulare optisch zurueckhaltender bleiben.
 - Kleinen Browser-Viewport pruefen und sicherstellen, dass keine horizontale Ueberbreite entsteht.
 - Sicherstellen, dass keine automatische Strategie-, KI-, Simulations-, Backend- oder Migrationslogik eingefuehrt wurde.
+
+## Manuelle Pruefhilfe Issue #159
+
+- `docs/roadmap.md` und `docs/codex-tasks.md` pruefen.
+- Sicherstellen, dass #154, #156, #157 und #158 als abgeschlossen eingeordnet sind.
+- Sicherstellen, dass Getting Started, Strategy Overview, lokaler Smoke-Test und Staging-Smoke-Test als D10-Zwischenstand nachvollziehbar sind.
+- Sicherstellen, dass D11 / Issue #155 weiterhin als spaeterer Roadmapblock abgegrenzt und nicht gestartet ist.
+- Sicherstellen, dass #55, #113 und #155 als offene Nicht-Blocker unveraendert benannt bleiben.
+- Sicherstellen, dass keine Produktdateien, keine Backendlogik, keine UI, keine Migration, kein Staging-Deployment und keine KI-, Simulation-, Trainerreview- oder RAG-Logik geaendert wurden.
 
 ## Naechste Schritte
 

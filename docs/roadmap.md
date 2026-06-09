@@ -85,7 +85,11 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Phase D9.1: `/briefing` ist als Briefing-Preparation-Einstieg fachlich geglaettet; der Schritt wird nach Strategy Readiness eingeordnet, spaetere Briefing-Bausteine sind sichtbar und KI-Briefing, Simulation sowie Trainerreview bleiben klar nicht implementiert
 - Phase D9.2: Hostinger-Staging auf `fd6b145` aktualisiert und `/briefing` dort browserseitig geprueft; Healthchecks, Alembic Head, Desktop, Mobile, Console, Briefing-Preparation-Abgrenzung und fehlende KI-Briefing-/Simulation-/Trainerreview-Funktion sind dokumentiert
 - Phase D9.3: `/briefing` ordnet vorhandenes `projectId` als Projektkontext ein und zeigt ohne `projectId` eine ruhige Workflow-Einordnung; die Strategy-Next-Action-Guidance erhaelt den Projektkontext im Briefing-Link, ohne Backend, Migration, Persistenz, neue API-Aufrufe, KI-Briefing, Simulation oder Trainerreview-Logik
+- Issue #154 / D10: Getting Started / Guided Introduction fuer Demo- und Testnutzer ist umgesetzt
 - Issue #156 / D10.1: `/strategy?projectId=...` zeigt einen ruhigen Strategy-Overview-Prototyp mit Projektfokus, Belastbarkeit, sechs Strategiebausteinen, Fokusbereich und genau einer dominanten naechsten Aktion, ohne Backend, Migration, KI, neue Strategie-Logik oder Datenmodell-Aenderung
+- Issue #157 / D10.2: Lokaler Demo-Flow-Smoke-Test fuer Getting Started, Dashboard, Demo-Projekt, Strategy Overview und Briefing Preparation ist bestanden und dokumentiert
+- Issue #158 / D10.3: Hostinger-Staging wurde aktualisiert und derselbe Demo-/Testerfuehrungsflow dort browserseitig bestanden dokumentiert
+- Issue #159 / D10.4: D10 ist als vorlaeufig runder Demo-/Testerfuehrungsblock dokumentarisch abgeschlossen; D11 bleibt als spaeterer AI-assisted-Strategy-Coaching-Block abgegrenzt
 - Issue #146: Codex-Arbeitsanweisungen sind getrennt: die ausfuehrliche Projektsteuerung bleibt in `docs/skills/negotiation-tools-dev-workflow/SKILL.md`, die kompakte operative Codex-Anweisung liegt als `CODEX.md` im Repository-Root
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
@@ -410,7 +414,7 @@ Offene Nicht-Blocker:
 
 ## 11. Phase D4: Project Preparation / Preparation Gaps
 
-Status: D4.1 bis D4.3 umgesetzt; D4.4 dokumentiert den aktuellen Zwischenstand und den manuellen Smoke-Test. D5.1 bis D5.4 sind umgesetzt; D5.5 dokumentiert den bestandenen lokalen Strategy-Guidance-Smoke-Test, D5.6 den bestandenen Staging-Update- und Smoke-Test. D6.1 schaerft die manuelle Strategy-Erfassung mit kleinen UI-/Text-/Validation-Verbesserungen. D6.2 bestaetigt diese Feldfuehrung lokal browserseitig mit laufendem Backend, Frontend und DB. D7.1 ergaenzt eine regelbasierte Strategy-Completion-/Readiness-Guidance. D7.2 bestaetigt diese Guidance lokal browserseitig mit drei Fuellstaenden. D8.1 ergaenzt daraus eine kompakte Next-Action-Guidance; D8.2 bestaetigt diese lokal browserseitig, D8.3 auf Staging mit dokumentierter Einschraenkung fuer die unteren Staging-Readiness-Zustaende. D8.4 schliesst D8 dokumentarisch ab und grenzt D9 `Briefing Preparation` als naechsten moeglichen kleinen Produktblock ab. D9.1 glaettet den bestehenden `/briefing`-Einstieg fachlich, D9.3 ordnet `projectId` als Projektkontext fuer Briefing Preparation ein, ohne KI-Briefing- oder Folgeprozesslogik einzufuehren.
+Status: D4.1 bis D4.3 umgesetzt; D4.4 dokumentiert den aktuellen Zwischenstand und den manuellen Smoke-Test. D5.1 bis D5.4 sind umgesetzt; D5.5 dokumentiert den bestandenen lokalen Strategy-Guidance-Smoke-Test, D5.6 den bestandenen Staging-Update- und Smoke-Test. D6.1 schaerft die manuelle Strategy-Erfassung mit kleinen UI-/Text-/Validation-Verbesserungen. D6.2 bestaetigt diese Feldfuehrung lokal browserseitig mit laufendem Backend, Frontend und DB. D7.1 ergaenzt eine regelbasierte Strategy-Completion-/Readiness-Guidance. D7.2 bestaetigt diese Guidance lokal browserseitig mit drei Fuellstaenden. D8.1 ergaenzt daraus eine kompakte Next-Action-Guidance; D8.2 bestaetigt diese lokal browserseitig, D8.3 auf Staging mit dokumentierter Einschraenkung fuer die unteren Staging-Readiness-Zustaende. D8.4 schliesst D8 dokumentarisch ab und grenzt D9 `Briefing Preparation` als naechsten moeglichen kleinen Produktblock ab. D9.1 glaettet den bestehenden `/briefing`-Einstieg fachlich, D9.3 ordnet `projectId` als Projektkontext fuer Briefing Preparation ein, ohne KI-Briefing- oder Folgeprozesslogik einzufuehren. D10.1 bis D10.3 beziehungsweise Issues #154, #156, #157 und #158 sind fuer den aktuellen Demo- und Testnutzerstand abgeschlossen; D10.4 dokumentiert diesen vorlaeufig runden Zwischenabschluss.
 
 Ziel: Project-Detail-/Preparation-UX ausbauen, ohne automatische Bewertung oder neue Datenmodelle vorzuziehen.
 
@@ -438,6 +442,11 @@ Umgesetzte Schritte:
 20. D8.4: D8-Zwischenabschluss und D9-Abgrenzung dokumentiert.
 21. D9.1: Briefing-Preparation-Einstieg unter `/briefing` fachlich geglaettet.
 22. D9.3: Projektkontext fuer `/briefing?projectId=...` ruhig eingeordnet.
+23. D10 / #154: Getting Started / Guided Introduction fuer Demo- und Testnutzer umgesetzt.
+24. D10.1 / #156: Strategy Overview / Strategy Board UI-Prototyp unter `/strategy?projectId=...` vorbereitet.
+25. D10.2 / #157: Lokaler Demo-Flow-Smoke-Test nach Getting Started und Strategy Overview bestanden dokumentiert.
+26. D10.3 / #158: Hostinger-Staging-Update und Demo-Flow-Smoke-Test bestanden dokumentiert.
+27. D10.4 / #159: D10-Zwischenabschluss dokumentiert.
 
 D4.1 macht Vorbereitungsluecken ausschliesslich aus vorhandenen Objekten und bestehenden API-Listen sichtbar: Bedarfskontext, SupplierProfile, Supplier Context, Strategy, Strategiebausteine aus ZOPA/BATNA/Argumentation/Konzession, SimulationScenario und Trainerreview. Die Card bleibt eine ruhige Vorhanden-/Offen-/Spaeter-Sicht mit kurzem naechstem Schritt und fuehrt keine KI-Integration, kein Supplier Scoring, kein RAG, keine automatische Lieferantenanalyse und keine neue Datenstruktur ein.
 
@@ -485,10 +494,15 @@ D9.2 bestaetigt diesen Briefing-Preparation-Einstieg auf Hostinger-Staging: `/br
 
 D9.3 ergaenzt fuer `/briefing` eine ruhige Projektkontext-Einordnung aus vorhandenen Search Params. Mit `projectId` macht die Seite sichtbar, dass Briefing Preparation projektbezogen gedacht ist, ohne Projektdaten nachzuladen oder neue API-Aufrufe einzufuehren. Ohne `projectId` erklaert sie, dass fuer konkrete Briefing Preparation zuerst ein Projekt beziehungsweise eine vorbereitete Strategy benoetigt wird. Die Strategy-Next-Action-Guidance erhaelt den Projektkontext im Link zu `/briefing?projectId=...`. Es gibt weiterhin keine automatische KI-Briefing-Erzeugung, keine Simulation, kein Trainerreview, keine Backendlogik, keine Persistenz und keine Migration.
 
-Offene Nicht-Blocker nach D8.4:
+D10 ist fuer den aktuellen Demo- und Testnutzerstand als vorlaeufig runder User-Onboarding- und Testerfuehrungsblock abgeschlossen. Abgeschlossen eingeordnet sind Getting Started / Guided Introduction (#154), Strategy Overview / Strategy Board UI-Prototyp (#156), lokaler Demo-Flow-Smoke-Test (#157) und Staging-Update mit Demo-Flow-Smoke-Test (#158). Der dokumentierte Stand fuehrt Demo- und Testnutzer von Getting Started ueber Dashboard, Demo-Projekt, Strategy Overview und Briefing Preparation, ohne neue Backendlogik, Migrationen, Staging-Daten, KI-, Simulations-, Trainerreview- oder RAG-Logik einzufuehren.
 
-- Issue #55: PDF-/Upload-/Parsing-Folgearbeit bleibt offen und blockiert D8 oder den D9-Einstieg nicht.
-- Issue #113: Next/PostCSS-audit-Finding bleibt zur Beobachtung offen und blockiert D8 oder den D9-Einstieg nicht.
+D11 / Issue #155 bleibt klar als spaeterer Roadmapblock `AI-assisted Strategy Coaching / Dialogische Strategieentwicklung` abgegrenzt und ist durch D10 nicht gestartet. D11 setzt weiterhin tragfaehige Grundlagen fuer KI-Kontext, RAG/Knowledge, Strategy-Persistenz und Dialogfuehrung voraus.
+
+Offene Nicht-Blocker nach D10.4:
+
+- Issue #55: PDF-/Upload-/Parsing-Folgearbeit bleibt offen und blockiert D10 nicht.
+- Issue #113: Next/PostCSS-audit-Finding bleibt zur Beobachtung offen und blockiert D10 nicht.
+- Issue #155: D11 / AI-assisted Strategy Coaching bleibt als spaeterer Roadmapblock offen und ist kein D10-Bestandteil.
 
 ## 12. Phase E: Knowledge Intelligence
 

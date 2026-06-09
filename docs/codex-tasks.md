@@ -115,6 +115,7 @@
 - Phase D8.2 umgesetzt: Lokaler Browser-Smoke-Test fuer die D8.1 Strategy Next-Action-Guidance bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert; `/strategy`, `/strategy?projectId=...`, drei Readiness-Zustaende, Briefing-Grenze, projektbezogene Simulation-/Trainerreview-Routen, D6-/D7-Feldfuehrung, Mobile-Spotcheck und Console-Check wurden geprueft, ohne Produktcode, Backend, Migration, Seed-Datei, KI-Briefing, produktive Simulation, Trainerreview-Logik oder RAG zu aendern
 - Phase D8.3 umgesetzt: Hostinger-Staging auf `2aa47a2` aktualisiert und Strategy Next-Action-Guidance browserseitig auf Staging dokumentiert; Healthchecks, Alembic `2f4b7c8d9e0a (head)`, `/strategy?projectId=...`, `/strategy`, `/briefing`, projektbezogene Simulation-/Trainerreview-Routen, vollstaendiger Readiness-Zustand, Mobile und Console wurden geprueft; die unteren Staging-Readiness-Zustaende sind wegen nur einer vorhandenen Strategy und bestehender Leerwert-Save-Semantik als Einschraenkung dokumentiert
 - Phase D8.4 umgesetzt: D8 als kleiner Strategy-Readiness-zu-Next-Action-Uebergangsblock dokumentarisch abgeschlossen und D9 als moeglicher naechster kleiner Produktblock `Briefing Preparation` abgegrenzt, ohne Produktcode, Frontend, Backend, Migration, Seed, Env, Staging-Deployment, KI-Briefing, Simulation, Trainerreview-Logik, Scoring, RAG oder PDF-/Import-Implementierung zu aendern
+- Phase D9.1 umgesetzt: `/briefing` als ruhigen Briefing-Preparation-Einstieg fachlich geglaettet; die Seite ordnet den Schritt nach Strategy Readiness ein, nennt spaetere Briefing-Bausteine und grenzt automatische KI-Briefing-Erzeugung, Simulation und Trainerreview klar aus, ohne Backend, Migration, Persistenz oder neue Folgeprozesslogik
 - Issue #146 umgesetzt: Codex-Kurzmodus in der Projekt-SKILL dokumentiert, kompakte operative `CODEX.md` im Repository-Root ergaenzt und README/Roadmap verlinkt beziehungsweise aktualisiert, ohne Produktdateien, Backend, Frontend, Migrationen, Staging oder Build-/Testskripte zu aendern
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
@@ -399,13 +400,13 @@ Phase D8.4:
 - Issue #55 bleibt als spaetere PDF-/Upload-/Parsing-Strecke offen und blockiert D8 nicht.
 - Issue #113 bleibt als Next/PostCSS-audit-Finding zur Beobachtung offen und blockiert D8 nicht.
 
-Phase D9 Ausblick:
+Phase D9.1:
 
-- D9 ist als moeglicher naechster kleiner Produktblock `Briefing Preparation` abgegrenzt.
-- D9 soll nicht mit grosser KI-Briefing-Erzeugung starten, sondern kontrolliert an die bestehende D8-Next-Action-Guidance anschliessen.
-- Ein sinnvoller erster Schritt ist `D9.1: Briefing Preparation Entry / Placeholder fachlich glaetten`.
-- D9.1 sollte die vorhandene Briefing-Route beziehungsweise den Einstieg fachlich einordnen, Projektbezug und Erwartungshaltung sauberer fuehren und klar machen, welche Informationen fuer ein spaeteres Briefing vorbereitet werden.
-- D9.1 soll noch keine KI-Briefing-Generierung, keine automatische Briefing-Erzeugung, keine neue Simulation, keine Trainerreview-Logik, kein Scoring, kein RAG, keine Backendlogik, keine Migration und keine neue Folgeprozessautomatisierung einfuehren.
+- D9 ist als kleiner Produktblock `Briefing Preparation` gestartet.
+- D9.1 glaettet den bestehenden `/briefing`-Einstieg fachlich und schliesst kontrolliert an die bestehende D8-Next-Action-Guidance an.
+- Die Seite ordnet Briefing Preparation als vorbereitenden Schritt nach ausreichender Strategy Readiness ein.
+- Spaetere Briefing-Bausteine sind sichtbar: Ziel und Ausgangslage, Interessen und Druckpunkte, BATNA / WAP / ZOPA, Argumente, Konzessionen, Risiken, Agenda und Trainee-Hinweise.
+- D9.1 fuehrt keine KI-Briefing-Generierung, keine automatische Briefing-Erzeugung, keine neue Simulation, keine Trainerreview-Logik, kein Scoring, kein RAG, keine Backendlogik, keine Migration und keine neue Folgeprozessautomatisierung ein.
 
 Vorgemerkte Folgehinweise aus C15 bis C17:
 

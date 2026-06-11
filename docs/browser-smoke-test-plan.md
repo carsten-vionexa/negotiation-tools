@@ -46,6 +46,13 @@ Empfohlene Testdaten:
 - ein SimulationScenario,
 - ein TrainerComment.
 
+Fuer spaetere reproduzierbare Strategy-Readiness- und Preparation-Smoke-Tests
+beschreibt `docs/demo-test-data-matrix.md` die fachliche Testdatenmatrix.
+`docs/demo-seed-plan.md` ordnet als D12.2-Plan ein, welche dieser Zustaende
+spaeter idempotent als lokale beziehungsweise Staging-Demo-Daten bereitgestellt
+werden koennten. Bis zu einer separaten D12.3-Seed-Implementierung bleiben diese
+Zustaende Planungsgrundlage und keine vorausgesetzten Seed-Daten.
+
 ## 4. Ergebnislegende
 
 | Status | Bedeutung |
@@ -326,11 +333,11 @@ Gesamtergebnis:
 
 Offene Punkte:
 
-- 
+-
 
 Blocker:
 
-- 
+-
 
 ## 9. Nicht Bestandteil dieses Smoke-Tests
 

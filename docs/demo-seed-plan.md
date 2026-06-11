@@ -1,0 +1,398 @@
+# Demo-Seed-Plan fuer reproduzierbare Readiness-Testfaelle
+
+## 1. Zweck
+
+D12.2 leitet aus der D12.1-Testdatenmatrix einen technischen Plan fuer spaetere
+Demo-Seed-Erweiterungen ab. Der Plan beschreibt, welche synthetischen
+Demo-Zustaende lokal und spaeter auf Staging reproduzierbar vorhanden sein
+sollten, ohne bereits Seed-Daten, Produktdaten, Datenbankmigrationen,
+Produktlogik oder Staging-Konfiguration zu aendern.
+
+Der Plan ist bewusst eine technische Vorarbeit fuer ein moegliches spaeteres
+D12.3-Issue. Er ersetzt keine Seed-Implementierung und fuehrt keine neue
+Produktfunktion ein.
+
+## 2. Bestehender Demo-Stand
+
+Der aktuelle technische Demo-Anker ist der idempotente Staging-Demo-Seed in
+`backend/app/seeds/staging_demo.py`, dokumentiert in
+`docs/deployment/staging-demo-data.md`.
+
+| Objekt | Bestehender Demo-Stand | Einordnung fuer D12.2 |
+| --- | --- | --- |
+| Company | `Rheinwerk Robotics GmbH` mit fester Demo-UUID und Demo-Markern | Weiterverwenden als gemeinsamer synthetischer Kundenkontext |
+| RequestItem | Strategische Beschaffung von `Praezisions-Servoantrieb RX-42` | Weiterverwenden fuer Bedarfskontext, Preparation Gaps und Briefing Preparation |
+| SupplierProfile | `Aurum Motion Systems K.K.` mit Region, Beziehung, Verhandlungssignalen und kulturellem Kontext | Weiterverwenden fuer gepflegten Supplier Context |
+| NegotiationProject | `Verhandlung: Praezisions-Servoantrieb RX-42`, verknuepft mit RequestItem und SupplierProfile | Als bestehendes vorfuehrbares Hauptprojekt erhalten, nicht mit allen Testzustaenden ueberladen |
+
+Aktuell nicht durch den Seed angelegt werden:
+
+- `Strategy`
+- `ZopaItem`
+- `BatnaOption`
+- `ConcessionItem`
+- `ArgumentationLine`
+- `SimulationScenario`
+- `TrainerComment`
+- mehrere parallele Project-Zustaende fuer Empty, Partial und Ready Readiness
+
+Der bestehende Rheinwerk-/Aurum-Fall enthaelt in `NegotiationProject.strategy_data`
+und `simulation_data` nur Demo-Notizen beziehungsweise Readiness-Hinweise. Das
+sind keine echten `Strategy`-, Simulation- oder Trainerreview-Objekte und
+reichen nicht fuer reproduzierbare Readiness-Zustandspruefungen.
+
+## 3. Planungsprinzipien
+
+- Mehrere getrennte Demo-Projekte sind robuster als ein einziges Projekt, das
+  fuer jeden Testlauf manuell in einen anderen Zustand gebracht wird.
+- Der bestehende Rheinwerk-/Aurum-Fall bleibt als stabile Demo-Story erkennbar.
+- Zusatzzustaende sollen synthetische Namen, feste IDs und klare Demo-Marker
+  erhalten.
+- Lokale Seeds duerfen mehr Varianten enthalten als Staging.
+- Staging sollte nur vorfuehrbare, stabile und produktdatenfreie Zustaende
+  enthalten.
+- Testdaten duerfen keine neue Produktfunktion suggerieren. Sie machen nur
+  vorhandene UI- und API-Zustaende reproduzierbar.
+- D11 bleibt nicht zur Umsetzung freigegeben. AI Strategy Coach, RAG,
+  Claim-Extraktion und KI-gestuetzte Vorschlaege bleiben separate spaetere
+  Themen.
+
+## 4. Empfohlene Demo-Projektstruktur
+
+Der spaetere Seed sollte auf einer gemeinsamen synthetischen Rheinwerk-Company
+aufbauen und mehrere klar benannte Projekte erzeugen. Die genaue Benennung kann
+in D12.3 finalisiert werden; fachlich sinnvoll ist diese Struktur:
+
+| Geplanter Zustand | Zweck | Umgebung | Empfehlung |
+| --- | --- | --- | --- |
+| D12-Empty-Strategy | Project mit RequestItem und SupplierProfile, aber ohne Strategy | lokal und Staging | Als stabile Empty-State-Referenz anlegen |
+| D12-Partial-Strategy | Project mit unvollstaendiger Strategy und ersten Bausteinen | lokal und Staging | Als `Grundlage vorhanden`-Referenz anlegen |
+| D12-Ready-Strategy | Project mit vollstaendiger Strategy und Bausteinen | lokal und Staging | Auf Basis der Rheinwerk-/Aurum-Story oder als separates Ready-Projekt anlegen |
+| D12-No-Supplier | Project mit RequestItem, aber ohne SupplierProfile | lokal und Staging | Fuer Supplier-Empty-State klein halten |
+| D12-Weak-Supplier | Project mit SupplierProfile, aber schwach gepflegtem Supplier Context | lokal | Fuer Missing-Information-Hints lokal ausreichend |
+| D12-Rich-Supplier | Project mit gepflegtem Supplier Context | lokal und Staging | Bestehenden Aurum-Kontext weiterverwenden |
+| D12-Simulation-Review | Project mit Strategy und optional SimulationScenario/TrainerComment | lokal, spaeter optional Staging | Erst ergaenzen, wenn Simulation/Trainerreview-Demo priorisiert ist |
+
+Der bestehende Seed sollte nicht einfach zu einem Alles-in-einem-Projekt
+ausgebaut werden. Ein ueberladenes Demo-Projekt wuerde Empty States,
+unvollstaendige Strategy-Zustaende und vollstaendige Readiness gegenseitig
+verdecken. Fuer Browser-Smoke-Tests waere dann unklar, welcher Test den
+aktuellen Zustand veraendert oder voraussetzt.
+
+## 5. Technische Zielzustaende
+
+### 5.1 Empty Strategy
+
+Ziel:
+
+- pruefbarer Zustand fuer `/strategy?projectId=...` ohne vorhandene Strategy
+- Preparation Gaps erkennt Strategy als offen
+- Supplier Context und RequestItem duerfen vorhanden sein, damit nur die
+  Strategy-Luecke isoliert sichtbar wird
+
+Betroffene Entitaeten:
+
+- `Company`
+- `RequestItem`
+- `SupplierProfile`
+- `NegotiationProject`
+
+Nicht anlegen:
+
+- `Strategy`
+- Strategy-Bausteine
+- `SimulationScenario`
+- `TrainerComment`
+
+Erwartete UI-Zustaende:
+
+- Strategy-Seite zeigt projektbezogenen Empty State und manuelle Anlage.
+- Project Preparation fuehrt zum bestehenden Strategy-Einstieg.
+- Keine automatische Strategieerzeugung wird suggeriert.
+
+### 5.2 Partial Strategy / Grundlage vorhanden
+
+Ziel:
+
+- pruefbarer Zustand fuer eine teilweise belastbare Strategy
+- Readiness soll wie `Grundlage vorhanden` wirken, nicht wie fertig
+- fehlende Bausteine bleiben sichtbar
+
+Betroffene Entitaeten:
+
+- `Company`
+- `RequestItem`
+- `SupplierProfile`
+- `NegotiationProject`
+- `Strategy`
+- optional ein `ZopaItem` oder eine `ArgumentationLine`
+
+Mindestfelder:
+
+- `Strategy.title`
+- `Strategy.company_id`
+- `Strategy.negotiation_project_id`
+- `Strategy.overall_objective` oder `target_outcome`
+- mindestens ein fachlicher Anker, zum Beispiel `zopa_summary` oder ein
+  `ZopaItem.dimension`
+
+Bewusst unvollstaendig lassen:
+
+- `batna_summary` oder `BatnaOption`
+- `walk_away_point`
+- `concession_strategy` oder `ConcessionItem`
+- vollstaendige Argumentations- und Risikoabdeckung
+
+Erwartete UI-Zustaende:
+
+- Readiness bleibt unterhalb von `Bereit fuer Briefing / Simulation`.
+- fehlende BATNA-, WAP-, Konzessions- oder Argumentationsbausteine werden
+  nachvollziehbar angezeigt.
+- Next-Action-Guidance fuer fertige Folgeprozesse erscheint noch nicht als
+  Vollstaendigkeitsversprechen.
+
+### 5.3 Ready Strategy / Bereit fuer Briefing und Simulation
+
+Ziel:
+
+- stabiler Demo-Zustand fuer vollstaendige Strategy Readiness
+- pruefbarer Einstieg in Briefing Preparation, Simulation Preparation und
+  Trainerreview-Vorbereitung
+
+Betroffene Entitaeten:
+
+- `Company`
+- `RequestItem`
+- `SupplierProfile`
+- `NegotiationProject`
+- `Strategy`
+- mindestens je ein `ZopaItem`, `BatnaOption`, `ConcessionItem` und
+  `ArgumentationLine`
+
+Mindestfelder:
+
+- Strategy-Ziel: `overall_objective`, `target_outcome`,
+  `minimum_acceptable_outcome`
+- Grenzen: `walk_away_point`, `zopa_summary`, mindestens ein ZOPA-Datensatz
+- Alternative: `batna_summary`, mindestens eine bevorzugte `BatnaOption`
+- Tauschlogik: `concession_strategy`, mindestens ein `ConcessionItem`
+- Argumentation: `argumentation_summary`, mindestens eine
+  `ArgumentationLine`
+
+Erwartete UI-Zustaende:
+
+- Readiness wirkt vollstaendig.
+- Next-Action-Guidance fuer Briefing-/Simulation-/Trainerreview-Vorbereitung ist
+  sichtbar.
+- Briefing bleibt Vorbereitung und erzeugt kein KI-Briefing automatisch.
+- Simulation und Trainerreview bleiben vorhandene Vorbereitungsbereiche, keine
+  produktive Simulation.
+
+### 5.4 Kein SupplierProfile
+
+Ziel:
+
+- isolierter Empty State fuer Supplier Context Card und Preparation Gaps
+
+Betroffene Entitaeten:
+
+- `Company`
+- optional `RequestItem`
+- `NegotiationProject` ohne `supplier_profile_id`
+
+Erwartete UI-Zustaende:
+
+- Supplier Context Card zeigt Empty State.
+- Preparation Gaps markiert Lieferantenprofil oder Supplier Context als offen.
+- Es entsteht kein fehlerhafter Link zu einem nicht vorhandenen SupplierProfile.
+
+### 5.5 Schwacher Supplier Context
+
+Ziel:
+
+- pruefbarer Zustand fuer Missing-Information-Hints ohne kompletten
+  Lieferantenkontext
+
+Betroffene Entitaeten:
+
+- `Company`
+- `SupplierProfile` mit Name und Company, aber wenigen Kontextfeldern
+- `NegotiationProject` mit `supplier_profile_id`
+
+Bewusst leer oder schwach halten:
+
+- `region`
+- `relationship_status`
+- `cultural_context`
+- `interests_json`
+- `likely_tactics_json`
+- `constraints_json`
+
+Erwartete UI-Zustaende:
+
+- Supplier Context Card zeigt Basisdaten.
+- Readiness-/Missing-Information-Hints fuehren zur Nachpflege.
+- Keine automatische Bewertung, kein Supplier Scoring, keine KI-Analyse.
+
+### 5.6 Gepflegter Supplier Context
+
+Ziel:
+
+- stabiler Nicht-Empty-State fuer Supplier Context Card
+- vorfuehrbare Rheinwerk-/Aurum-Story erhalten
+
+Betroffene Entitaeten:
+
+- bestehende Rheinwerk-Company
+- bestehendes Aurum-SupplierProfile
+- bestehendes oder separates NegotiationProject
+
+Erwartete UI-Zustaende:
+
+- Supplier Context Card zeigt Region, Kategorie, Beziehung, Signale und
+  kulturellen Kontext.
+- Edit-Guidance fuehrt zum bestehenden SupplierProfile.
+- Daten wirken synthetisch und nicht wie echte Kunden- oder Personendaten.
+
+### 5.7 Simulation- und Trainerreview-Kontext
+
+Ziel:
+
+- spaetere optionale Pruefung von Simulation Preparation und Trainerreview
+
+Betroffene Entitaeten:
+
+- `Company`
+- `RequestItem`
+- `SupplierProfile`
+- `NegotiationProject`
+- `Strategy`
+- optional `SimulationScenario`
+- optional `TrainerComment`
+
+Abgrenzung:
+
+- fuer D12.3 nur aufnehmen, wenn Simulation-/Trainerreview-Demo explizit
+  priorisiert wird
+- kein Chat, kein Voice, keine produktive Simulation, keine automatische
+  Bewertung
+
+## 6. Idempotenz und Wartbarkeit
+
+Ein spaeterer D12.3-Seed sollte als Ensure-/Upsert-Mechanismus geplant werden:
+
+- feste UUIDs pro Demo-Objekt oder stabile natuerliche Schluessel in
+  `metadata_json`
+- gemeinsamer `demo_seed`-Marker, zum Beispiel ein neuer D12-spezifischer Tag
+- `demo_scope` getrennt nach `local` und `staging`, falls lokale Varianten
+  umfangreicher sind
+- keine unkontrollierte Duplikation bei wiederholter Ausfuehrung
+- keine Loesch- oder Reset-Logik als Standardpfad
+- keine echten Personen-, Kunden-, Lieferanten-, Preis- oder Geheimdaten
+- `.example.invalid` oder vergleichbare nicht-produktive Kontakt- und Webdaten
+- keine Veraenderung manueller Nicht-Demo-Daten
+- klare Trennung zwischen bestehendem Rheinwerk-/Aurum-Hauptfall und
+  zusaetzlichen D12-Testfaellen
+
+Schreibende Browser-Smoke-Tests duerfen die Seed-Zustaende nicht dauerhaft
+beschaedigen. Wenn Tests Daten veraendern muessen, sollte D12.3 entweder
+separate lokale Spielwiesen-Projekte vorsehen oder dokumentieren, dass der Seed
+vor einem Testlauf erneut ausgefuehrt wird.
+
+## 7. Lokale und spaetere Staging-Verfuegbarkeit
+
+Lokal empfohlen:
+
+- alle Empty-, Partial-, Ready- und Supplier-Kontext-Zustaende
+- zusaetzliche Varianten fuer fehlende BATNA, fehlenden WAP und fehlende
+  Konzessionslogik
+- optional SimulationScenario und TrainerComment, wenn die lokalen
+  Vorbereitungsrouten gezielt geprueft werden
+
+Staging empfohlen:
+
+- Empty Strategy
+- Partial Strategy
+- Ready Strategy
+- No Supplier
+- gepflegter Supplier Context auf Basis Rheinwerk/Aurum
+
+Staging vorerst nicht zwingend:
+
+- alle feingranularen Readiness-Untervarianten
+- schwacher Supplier Context, sofern er fuer Demos eher irritiert als hilft
+- SimulationScenario und TrainerComment, solange Simulation und Trainerreview
+  nicht als vorfuehrbarer Demo-Strang priorisiert sind
+
+## 8. Risiko bei Ueberladung des bestehenden Demo-Projekts
+
+Das bestehende Rheinwerk-/Aurum-Projekt ist als vorfuehrbarer Hauptfall
+wertvoll. Es sollte nicht gleichzeitig Empty Strategy, Partial Strategy, Ready
+Strategy, No Supplier, Weak Supplier und Simulation-Review abbilden muessen.
+
+Risiken einer Ueberladung:
+
+- Smoke-Tests muessen denselben Datensatz vor jedem Test mutieren.
+- Readiness-Zustaende ueberschreiben sich gegenseitig.
+- Empty States sind nicht mehr pruefbar, sobald das Hauptprojekt vollstaendig
+  gepflegt ist.
+- Staging-Demos werden schwer erklaerbar, weil absichtlich fehlende Daten wie
+  Produktluecken wirken koennen.
+- Manuelle Tests koennen den vorfuehrbaren Demo-Zustand beschaedigen.
+
+Empfehlung:
+
+- Rheinwerk/Aurum als Hauptstory weiterverwenden.
+- Zusatzzustaende als kleine, klar benannte D12-Demo-Projekte anlegen.
+- Lokale Sonderfaelle umfangreicher halten als Staging-Sonderfaelle.
+
+## 9. D12.3-Zuschnitt
+
+Ein moegliches D12.3-Issue sollte erst nach Review dieses Plans gestartet
+werden. Sinnvoller Zuschnitt:
+
+1. Nur Seed-Implementierung fuer den kleinsten D12-Demo-Satz.
+2. Bestehendes Seed-Modul erweitern oder ein getrenntes D12-Demo-Seed-Modul
+   anlegen.
+3. Feste Demo-IDs, Demo-Marker und Idempotenz dokumentieren.
+4. Zunaechst Company, RequestItem, SupplierProfile, NegotiationProject,
+   Strategy und Strategy-Bausteine anlegen.
+5. SimulationScenario und TrainerComment nur aufnehmen, wenn sie explizit
+   freigegeben werden.
+6. Keine Migration, keine Produktlogik, keine UI-Aenderung, kein Staging-
+   Deployment und keine KI-/RAG-/Claim-Implementierung.
+
+Vor D12.3 offen zu entscheiden:
+
+- ob `D12-Ready-Strategy` das bestehende Rheinwerk-/Aurum-Projekt erweitert oder
+  als separates Projekt angelegt wird
+- ob lokale und Staging-Seeds getrennte Befehle oder einen gemeinsamen Befehl
+  mit Scope-Option bekommen
+- ob Simulation-/Trainerreview-Kontext Teil des ersten Seed-Zuschnitts ist
+
+## 10. Offene Nicht-Blocker
+
+- Issue #55 bleibt als PDF-/Upload-/Parsing-Folgearbeit offen und blockiert
+  D12.2 nicht.
+- Issue #113 bleibt als Next/PostCSS-audit-Finding zur Beobachtung offen und
+  blockiert D12.2 nicht.
+- Issue #155 bleibt als D11 / AI-assisted Strategy Coaching offen. D12.2 ist
+  nur ein Seed-Plan und keine Implementierungsfreigabe fuer KI, RAG,
+  Claim-Extraktion, Kontextvertrag, Strategy Coach, Simulation oder
+  Trainerreview-Logik.
+
+## 11. Explizite Nicht-Ziele
+
+D12.2 fuehrt nicht ein:
+
+- Produktcode
+- Frontend- oder Backend-Aenderungen
+- Datenbankmigrationen
+- Seed-Implementierung oder Seed-Aenderung
+- Staging-Deployment
+- neue API-Endpunkte
+- neue Models oder Tabellen
+- neue Strategy-, Readiness-, Simulation- oder Trainerreview-Logik
+- automatische Strategieerzeugung
+- KI-, RAG-, Claim- oder Evidence-Implementierung
+- PDF-Verarbeitung

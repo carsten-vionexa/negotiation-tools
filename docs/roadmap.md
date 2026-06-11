@@ -95,6 +95,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Issue #162 / D11.3: Das Quellen-, Claim- und Evidenzmodell fuer spaeteres Strategy Coaching ist in `docs/ai-strategy-evidence-model.md` dokumentiert; Quellenbegriff, Claim-Begriff, Aussagearten, Evidenz-/Confidence-Stufen, Aktualitaet, Herkunft, Widerspruchslogik, Nutzung im Coaching und ungeeignete Claims beziehungsweise Quellen sind konzeptionell beschrieben, ohne Produkt-, Backend-, Frontend-, KI-, RAG-, API-, Persistenz-, Migrations-, Simulations-, Score- oder Trainerreview-Logik einzufuehren
 - Issue #163 / D11.4: Der D11-Konzeptzwischenstand ist konsolidiert; D11.1 bis D11.3, die massgeblichen D11-Konzeptdokumente, die fortbestehende Implementierungsgrenze, spaetere Folgeoptionen und offene Nicht-Blocker sind dokumentiert, ohne Produkt-, Backend-, Frontend-, KI-, RAG-, Claim-, API-, Persistenz-, Migrations-, Simulations-, Score- oder Staging-Logik einzufuehren
 - Issue #164 / D12.1: Die Demo-/Testdatenmatrix fuer Strategy Readiness und Preparation Flow ist in `docs/demo-test-data-matrix.md` als reiner Konzeptschritt dokumentiert; benoetigte Readiness- und Preparation-Zustaende, bestehende Rheinwerk-/Aurum-Demo-Daten, lokale und spaetere Staging-Reproduzierbarkeit sowie offene Nicht-Blocker sind eingeordnet, ohne Produkt-, Backend-, Frontend-, Seed-, Migrations-, KI-, RAG-, Simulations-, Trainerreview- oder Staging-Logik einzufuehren
+- Issue #165 / D12.2: Der technische Demo-Seed-Plan in `docs/demo-seed-plan.md` leitet aus D12.1 konkrete spaetere Seed-Zielzustaende fuer Empty Strategy, Partial Strategy, Ready Strategy, Supplier-Empty-State und Supplier-Context-Varianten ab; bestehende Rheinwerk-/Aurum-Demo-Daten, Idempotenz, lokale/Staging-Verfuegbarkeit, Ueberladungsrisiken und ein moeglicher D12.3-Zuschnitt sind dokumentiert, ohne Produkt-, Backend-, Frontend-, Seed-, Migrations-, KI-, RAG-, Simulations-, Trainerreview- oder Staging-Logik einzufuehren
 - Issue #146: Codex-Arbeitsanweisungen sind getrennt: die ausfuehrliche Projektsteuerung bleibt in `docs/skills/negotiation-tools-dev-workflow/SKILL.md`, die kompakte operative Codex-Anweisung liegt als `CODEX.md` im Repository-Root
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
@@ -535,11 +536,23 @@ Demo-Datensatzes. D12.1 empfiehlt mehrere getrennte Demo-Projekte fuer stabile
 Readiness- und Preparation-Varianten, legt aber keine Seeds an und aendert keine
 Demo-Daten.
 
-Offene Nicht-Blocker nach D12.1:
+D12.2 / Issue #165 fuehrt diese Matrix in einen technischen Demo-Seed-Plan in
+`docs/demo-seed-plan.md` ueber. Der Plan ordnet den bestehenden
+Rheinwerk-/Aurum-Demo-Seed ein, empfiehlt mehrere getrennte Demo-Projekte fuer
+Empty Strategy, Partial Strategy, Ready Strategy, Supplier-Empty-State sowie
+schwachen beziehungsweise gepflegten Supplier Context und beschreibt fuer diese
+Zustaende betroffene Entitaeten, erwartete UI-Zustaende, Idempotenz,
+lokale/Staging-Verfuegbarkeit und Risiken eines ueberladenen Hauptprojekts.
+D12.2 bleibt ein reiner Planungs- und Dokumentationsschritt ohne Seed-,
+Produkt-, Backend-, Frontend-, Migrations-, KI-, RAG-, Simulations-,
+Trainerreview- oder Staging-Aenderung. Eine D12.3-Seed-Implementierung bleibt
+eine separate spaetere Entscheidung nach Review des Plans.
 
-- Issue #55: PDF-/Upload-/Parsing-Folgearbeit bleibt offen und blockiert D12.1 nicht.
-- Issue #113: Next/PostCSS-audit-Finding bleibt zur Beobachtung offen und blockiert D12.1 nicht.
-- Issue #155: D11 / AI-assisted Strategy Coaching bleibt als spaeterer Roadmapblock offen; D12.1 beschreibt nur Testdatenzustaende und aktiviert keine KI-, RAG-, Claim-, Kontextvertrags-, Strategy-Coach-, Simulations- oder Trainerreview-Implementierung.
+Offene Nicht-Blocker nach D12.2:
+
+- Issue #55: PDF-/Upload-/Parsing-Folgearbeit bleibt offen und blockiert D12.2 nicht.
+- Issue #113: Next/PostCSS-audit-Finding bleibt zur Beobachtung offen und blockiert D12.2 nicht.
+- Issue #155: D11 / AI-assisted Strategy Coaching bleibt als spaeterer Roadmapblock offen; D12.2 beschreibt nur einen Seed-Plan und aktiviert keine KI-, RAG-, Claim-, Kontextvertrags-, Strategy-Coach-, Simulations- oder Trainerreview-Implementierung.
 
 ## 12. Phase E: Knowledge Intelligence
 

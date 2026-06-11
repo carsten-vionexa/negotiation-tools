@@ -128,6 +128,7 @@
 - Issue #162 / D11.3 umgesetzt: Quellen-, Claim- und Evidenzmodell fuer Strategy Coaching als reiner Konzeptschritt in `docs/ai-strategy-evidence-model.md` dokumentiert; Quellenbegriff, Claim-Begriff, Aussagearten, Evidenz-/Confidence-Stufen, Aktualitaet, Herkunft, Widerspruchslogik, Nutzung im Coaching und ungeeignete Claims beziehungsweise Quellen sind abgegrenzt, ohne Produkt-, Backend-, Frontend-, KI-, RAG-, API-, Persistenz-, Migrations-, Simulations-, Score- oder Trainerreview-Logik einzufuehren
 - Issue #163 / D11.4 umgesetzt: D11-Konzeptzwischenstand und Implementierungsgrenze dokumentiert; D11.1 bis D11.3 sind als erledigtes Konzeptfundament eingeordnet, die massgeblichen Konzeptdokumente sind benannt, spaetere Folgeoptionen bleiben getrennt priorisierbar und #55, #113 sowie #155 bleiben offene Nicht-Blocker, ohne Produkt-, Backend-, Frontend-, KI-, RAG-, Claim-, API-, Persistenz-, Migrations-, Simulations-, Score- oder Staging-Logik einzufuehren
 - Issue #164 / D12.1 umgesetzt: Demo-/Testdatenmatrix fuer Strategy Readiness und Preparation Flow als reiner Konzeptschritt in `docs/demo-test-data-matrix.md` dokumentiert; bestehende Rheinwerk-/Aurum-Demo-Daten, benoetigte Strategy-Readiness- und Preparation-Flow-Zustaende, lokale und spaetere Staging-Reproduzierbarkeit, Smoke-Test-Nutzung und offene Nicht-Blocker sind eingeordnet, ohne Produkt-, Backend-, Frontend-, Seed-, Migrations-, KI-, RAG-, API-, Persistenz-, Simulations-, Trainerreview- oder Staging-Logik einzufuehren
+- Issue #165 / D12.2 umgesetzt: Technischen Demo-Seed-Plan in `docs/demo-seed-plan.md` dokumentiert; bestehende Rheinwerk-/Aurum-Demo-Daten, empfohlene getrennte Demo-Projekte, technische Zielzustaende, betroffene Entitaeten, erwartete UI-Zustaende, Idempotenz, lokale/Staging-Verfuegbarkeit, Ueberladungsrisiken und ein moeglicher D12.3-Zuschnitt sind eingeordnet, ohne Produkt-, Backend-, Frontend-, Seed-, Migrations-, KI-, RAG-, API-, Persistenz-, Simulations-, Trainerreview- oder Staging-Logik einzufuehren
 - Issue #146 umgesetzt: Codex-Kurzmodus in der Projekt-SKILL dokumentiert, kompakte operative `CODEX.md` im Repository-Root ergaenzt und README/Roadmap verlinkt beziehungsweise aktualisiert, ohne Produktdateien, Backend, Frontend, Migrationen, Staging oder Build-/Testskripte zu aendern
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
@@ -719,6 +720,17 @@ Vorgemerkte Folgehinweise aus C15 bis C17:
 - Sicherstellen, dass D11.5, D11.6 und D11.7 nur als moegliche spaetere Folgeoptionen dargestellt sind.
 - Sicherstellen, dass #55, #113 und #155 als offene Nicht-Blocker korrekt eingeordnet bleiben.
 - Sicherstellen, dass keine Produktdateien, keine Backendlogik, keine UI, keine Migration, kein Staging-Deployment und keine KI-, RAG-, Claim-, Simulation-, Trainerreview-, API-, Persistenz- oder Score-Logik geaendert wurden.
+
+## Manuelle Pruefhilfe Issue #165
+
+- `docs/demo-seed-plan.md`, `docs/demo-test-data-matrix.md`, `docs/roadmap.md`, `docs/codex-tasks.md` und `docs/browser-smoke-test-plan.md` pruefen.
+- Sicherstellen, dass D12.2 wie ein technischer Seed-Plan wirkt, nicht wie eine Seed-Implementierung.
+- Sicherstellen, dass bestehende Rheinwerk-/Aurum-Demo-Daten eingeordnet und nicht zur Alles-in-einem-Teststory ueberladen werden.
+- Sicherstellen, dass mehrere Demo-/Readiness-Zustaende mit betroffenen Entitaeten, erwarteten UI-Zustaenden und lokaler beziehungsweise spaeterer Staging-Verfuegbarkeit beschrieben sind.
+- Sicherstellen, dass Idempotenz, Demo-Marker, stabile IDs beziehungsweise natuerliche Schluessel und Schutz vor echten oder geheimen Daten dokumentiert sind.
+- Sicherstellen, dass D12.3 nur als spaetere separate Seed-Implementierung abgegrenzt ist.
+- Sicherstellen, dass #55, #113 und #155 als offene Nicht-Blocker korrekt eingeordnet bleiben.
+- Sicherstellen, dass keine Produktdateien, keine Backendlogik, keine UI, keine Migration, keine Seed-Datei, kein Staging-Deployment und keine KI-, RAG-, Claim-, Simulation-, Trainerreview-, API- oder Persistenzlogik geaendert wurden.
 
 ## Naechste Schritte
 

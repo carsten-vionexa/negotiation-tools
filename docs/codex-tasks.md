@@ -129,6 +129,7 @@
 - Issue #163 / D11.4 umgesetzt: D11-Konzeptzwischenstand und Implementierungsgrenze dokumentiert; D11.1 bis D11.3 sind als erledigtes Konzeptfundament eingeordnet, die massgeblichen Konzeptdokumente sind benannt, spaetere Folgeoptionen bleiben getrennt priorisierbar und #55, #113 sowie #155 bleiben offene Nicht-Blocker, ohne Produkt-, Backend-, Frontend-, KI-, RAG-, Claim-, API-, Persistenz-, Migrations-, Simulations-, Score- oder Staging-Logik einzufuehren
 - Issue #164 / D12.1 umgesetzt: Demo-/Testdatenmatrix fuer Strategy Readiness und Preparation Flow als reiner Konzeptschritt in `docs/demo-test-data-matrix.md` dokumentiert; bestehende Rheinwerk-/Aurum-Demo-Daten, benoetigte Strategy-Readiness- und Preparation-Flow-Zustaende, lokale und spaetere Staging-Reproduzierbarkeit, Smoke-Test-Nutzung und offene Nicht-Blocker sind eingeordnet, ohne Produkt-, Backend-, Frontend-, Seed-, Migrations-, KI-, RAG-, API-, Persistenz-, Simulations-, Trainerreview- oder Staging-Logik einzufuehren
 - Issue #165 / D12.2 umgesetzt: Technischen Demo-Seed-Plan in `docs/demo-seed-plan.md` dokumentiert; bestehende Rheinwerk-/Aurum-Demo-Daten, empfohlene getrennte Demo-Projekte, technische Zielzustaende, betroffene Entitaeten, erwartete UI-Zustaende, Idempotenz, lokale/Staging-Verfuegbarkeit, Ueberladungsrisiken und ein moeglicher D12.3-Zuschnitt sind eingeordnet, ohne Produkt-, Backend-, Frontend-, Seed-, Migrations-, KI-, RAG-, API-, Persistenz-, Simulations-, Trainerreview- oder Staging-Logik einzufuehren
+- Issue #166 / D12.3 umgesetzt: Der bestehende idempotente Demo-Seed legt zentrale Readiness-Testfaelle fuer Empty Strategy, unvollstaendige Strategy, `Grundlage vorhanden`, `Bereit fuer Briefing / Simulation` und kein SupplierProfile an; Demo-IDs und Smoke-Test-Routen sind in `docs/demo-seed-plan.md`, `docs/demo-test-data-matrix.md` und `docs/browser-smoke-test-plan.md` dokumentiert, ohne Produktlogik, Frontend-UI, Backend-API, Migration, Staging-Deployment, KI, RAG, Claim-Extraktion, Simulation oder Trainerreview einzufuehren
 - Issue #146 umgesetzt: Codex-Kurzmodus in der Projekt-SKILL dokumentiert, kompakte operative `CODEX.md` im Repository-Root ergaenzt und README/Roadmap verlinkt beziehungsweise aktualisiert, ohne Produktdateien, Backend, Frontend, Migrationen, Staging oder Build-/Testskripte zu aendern
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
@@ -728,9 +729,18 @@ Vorgemerkte Folgehinweise aus C15 bis C17:
 - Sicherstellen, dass bestehende Rheinwerk-/Aurum-Demo-Daten eingeordnet und nicht zur Alles-in-einem-Teststory ueberladen werden.
 - Sicherstellen, dass mehrere Demo-/Readiness-Zustaende mit betroffenen Entitaeten, erwarteten UI-Zustaenden und lokaler beziehungsweise spaeterer Staging-Verfuegbarkeit beschrieben sind.
 - Sicherstellen, dass Idempotenz, Demo-Marker, stabile IDs beziehungsweise natuerliche Schluessel und Schutz vor echten oder geheimen Daten dokumentiert sind.
-- Sicherstellen, dass D12.3 nur als spaetere separate Seed-Implementierung abgegrenzt ist.
+- Historisch fuer Issue #165 sicherstellen, dass D12.3 dort nur als spaetere separate Seed-Implementierung abgegrenzt war; D12.3 ist inzwischen in Issue #166 umgesetzt.
 - Sicherstellen, dass #55, #113 und #155 als offene Nicht-Blocker korrekt eingeordnet bleiben.
 - Sicherstellen, dass keine Produktdateien, keine Backendlogik, keine UI, keine Migration, keine Seed-Datei, kein Staging-Deployment und keine KI-, RAG-, Claim-, Simulation-, Trainerreview-, API- oder Persistenzlogik geaendert wurden.
+
+## Manuelle Pruefhilfe Issue #166
+
+- `backend/app/seeds/staging_demo.py` pruefen: D12.3-Demo-Datensaetze muessen feste IDs, Demo-Marker und Upsert-Verhalten nutzen.
+- Demo A bis E muessen im Seed nachvollziehbar abgebildet sein: Empty Strategy, unvollstaendige Strategy, `Grundlage vorhanden`, `Bereit fuer Briefing / Simulation`, kein SupplierProfile.
+- `docs/demo-seed-plan.md`, `docs/demo-test-data-matrix.md`, `docs/browser-smoke-test-plan.md`, `docs/roadmap.md` und `docs/codex-tasks.md` muessen IDs, Auffindbarkeit und Scope-Grenzen nennen.
+- Sicherstellen, dass der bestehende Rheinwerk-/Aurum-Hauptfall erhalten bleibt und nicht zur Alles-in-einem-Teststory ueberladen wird.
+- Sicherstellen, dass #55, #113 und #155 als offene Nicht-Blocker korrekt eingeordnet bleiben.
+- Sicherstellen, dass keine Produktlogik, keine Frontend-UI, keine Backend-API, keine Migration, kein Staging-Deployment und keine KI-, RAG-, Claim-, Simulation- oder Trainerreview-Logik eingefuehrt wurde.
 
 ## Naechste Schritte
 

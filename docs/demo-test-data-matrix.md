@@ -72,6 +72,15 @@ Empfehlung: SR-01, SR-03 und SR-04 sollten mittelfristig auf Staging stabil
 verfuegbar sein. SR-02, SR-05, SR-06 und SR-07 reichen zunaechst lokal, weil sie
 vor allem Regressionen in der Readiness-Logik und Microcopy absichern.
 
+D12.3 setzt den zentralen Satz im bestehenden Demo-Seed um:
+
+| Matrix-ID | D12.3-Demo | Project-ID | Strategy-ID | Route |
+| --- | --- | --- | --- | --- |
+| SR-01 / PF-07 | A: Empty Strategy | `f06a85a1-5d41-5a47-8d14-52af0493b606` | keine Seed-Strategy | `/strategy?projectId=f06a85a1-5d41-5a47-8d14-52af0493b606` |
+| SR-02 | B: Unvollstaendige Strategy | `63154d03-dee6-5fc9-a1b4-d8eaeeed0de4` | `b7c21e7e-3e8a-5377-97b4-8c265c2db05d` | `/strategy?projectId=63154d03-dee6-5fc9-a1b4-d8eaeeed0de4` |
+| SR-03 | C: Grundlage vorhanden | `0ca3270b-b999-5564-9756-265eddb5c835` | `ebfe2953-7bc1-5573-b86c-f94117efd525` | `/strategy?projectId=0ca3270b-b999-5564-9756-265eddb5c835` |
+| SR-04 / PF-06 | D: Bereit fuer Briefing / Simulation | `6a6f7d66-7fad-5a2b-93b5-4cfcdb7c4200` | `9182fa82-6b5e-525b-a34c-b35cf361412c` | `/strategy?projectId=6a6f7d66-7fad-5a2b-93b5-4cfcdb7c4200` |
+
 ## 5. Preparation-Flow-Testfaelle
 
 | ID | Zustand | Benoetigte Daten | Erwartete Pruefung | Lokal | Spaeter Staging |
@@ -90,6 +99,16 @@ Empfehlung: PF-01, PF-03, PF-04, PF-06 und PF-07 bilden den kleinsten
 stagingtauglichen Preparation-Satz. PF-02, PF-05, PF-08 und PF-09 koennen lokal
 bleiben, bis Simulation Preparation und Trainerreview als Demo-Strecke stabiler
 priorisiert werden.
+
+D12.3 ergaenzt fuer PF-01 ein eigenes Projekt ohne `supplier_profile_id`:
+
+| Matrix-ID | D12.3-Demo | Project-ID | Erwartete Route | Erwarteter Zustand |
+| --- | --- | --- | --- | --- |
+| PF-01 | E: Kein SupplierProfile | `b0be8f1b-e08e-5def-bdbf-5cbca5123290` | `/projects/b0be8f1b-e08e-5def-bdbf-5cbca5123290` | Supplier Context Empty State; kein Link zu einem nicht vorhandenen SupplierProfile |
+
+D12.3 fuehrt kein Staging-Deployment aus und aktiviert D11 weiterhin nicht.
+AI Strategy Coach, RAG, Claim-Extraktion, Simulation und Trainerreview bleiben
+getrennte Folgearbeit.
 
 ## 6. Vorgeschlagene Demo-Projektstruktur
 

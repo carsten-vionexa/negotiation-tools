@@ -24,12 +24,19 @@ D3.4 ergaenzt denselben reproduzierbaren Datensatz um:
 - ein Demo-SupplierProfile: `Aurum Motion Systems K.K.`
 - eine direkte Verknuepfung des Demo-NegotiationProject mit diesem SupplierProfile
 
+D12.3 ergaenzt denselben Seed um separate Readiness-Testprojekte:
+
+- Demo A: RequestItem + SupplierProfile, keine Seed-Strategy
+- Demo B: unvollstaendige Strategy
+- Demo C: teilweise gefuellte Strategy / `Grundlage vorhanden`
+- Demo D: vollstaendige Strategy / `Bereit fuer Briefing / Simulation`
+- Demo E: Projekt ohne SupplierProfile
+
 Bewusst noch nicht enthalten sind:
 
 - UserProfile/Trainee
 - ProcurementHistoryItems
 - KnowledgeDocuments, DocumentChunks oder KnowledgeClaims
-- Strategien, BATNA-/ZOPA-/Concession-Detailobjekte
 - Simulationsszenarien oder Trainerkommentare
 
 Diese Objekte koennen spaeter gezielt ergaenzt werden, sobald der Demo-Ablauf mehr
@@ -49,11 +56,22 @@ Aktuelle D1.5-IDs:
 | SupplierProfile | `d5470daa-5772-4c10-bd77-b7aaef3f4a1d` |
 | NegotiationProject | `01d9d55b-87c3-5a5a-876a-b55a3ce2db33` |
 
+Aktuelle D12.3-Readiness-IDs:
+
+| Demo | Project-ID | Strategy-ID |
+| --- | --- | --- |
+| A: Empty Strategy | `f06a85a1-5d41-5a47-8d14-52af0493b606` | keine Seed-Strategy |
+| B: Unvollstaendige Strategy | `63154d03-dee6-5fc9-a1b4-d8eaeeed0de4` | `b7c21e7e-3e8a-5377-97b4-8c265c2db05d` |
+| C: Grundlage vorhanden | `0ca3270b-b999-5564-9756-265eddb5c835` | `ebfe2953-7bc1-5573-b86c-f94117efd525` |
+| D: Bereit fuer Briefing / Simulation | `6a6f7d66-7fad-5a2b-93b5-4cfcdb7c4200` | `9182fa82-6b5e-525b-a34c-b35cf361412c` |
+| E: Kein SupplierProfile | `b0be8f1b-e08e-5def-bdbf-5cbca5123290` | keine Seed-Strategy |
+
 Demo-Marker:
 
 - `demo_seed`: `staging-demo-rheinwerk-robotics-v1`
 - `demo_scope`: `staging`
 - `synthetic`: `true`
+- D12.3-Datensaetze ergaenzen `demo_phase: D12.3` und `demo_case`
 
 Die aus dem ersten manuellen Staging-Test bekannten IDs bleiben nur historische
 Referenzen und werden vom Seed nicht weiterverwendet:
@@ -70,6 +88,7 @@ Der Seed ist ein idempotenter Ensure-Mechanismus:
   Demo-Stand aktualisiert
 - fehlende Demo-Datensaetze werden angelegt
 - das Demo-NegotiationProject wird mit dem Demo-SupplierProfile verknuepft
+- D12.3-Projekte und ihre Strategy-Bausteine werden idempotent aktualisiert
 - der Seed loescht nichts
 - der Seed setzt keine Datenbank zurueck
 - der Seed greift nicht in Auth, Caddy, Authelia oder Docker-Gateway ein
@@ -107,6 +126,11 @@ D3.4 dient ausschliesslich der Demo-Readiness fuer die bereits vorhandene Suppli
 Context Card. Der Seed nutzt nur bestehende SupplierProfile- und
 NegotiationProject-Felder, erzeugt keine Migration und fuehrt keine neue
 Produktfunktion ein.
+
+D12.3 dient ausschliesslich reproduzierbaren Readiness- und Preparation-Smoke-
+Testzustaenden. Es gibt kein Staging-Deployment, keine Produktlogik, keine neue
+Frontend-UI, keine Backend-API, keine Migration und keine KI-, RAG-, Claim-,
+Simulations- oder Trainerreview-Implementierung.
 
 Wenn spaeter groessere Demo-Szenarien noetig werden, sollte ein Folge-Issue die
 Erweiterung auf optionale Demo-Objekte definieren, insbesondere:

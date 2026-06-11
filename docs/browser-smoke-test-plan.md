@@ -377,6 +377,23 @@ Trainerreview.
 Die Matrix ist kein Smoke-Test-Ergebnis und keine Seed-Implementierung. Sie
 beschreibt nur, welche Zustaende spaeter stabil vorhanden sein sollten.
 
+D12.3 setzt den zentralen Readiness-Satz im idempotenten Demo-Seed um. Fuer
+lokale oder spaetere Staging-Smoke-Tests sind nach Seed-Ausfuehrung diese Routen
+die direkten Einstiegspunkte:
+
+| D12.3-Demo | Route | Erwartung |
+| --- | --- | --- |
+| A: Empty Strategy | `/projects/f06a85a1-5d41-5a47-8d14-52af0493b606`, `/strategy?projectId=f06a85a1-5d41-5a47-8d14-52af0493b606` | RequestItem und SupplierProfile vorhanden, Strategy Empty State sichtbar |
+| B: Unvollstaendige Strategy | `/strategy?projectId=63154d03-dee6-5fc9-a1b4-d8eaeeed0de4` | Readiness `Unvollstaendig`, keine Next-Action-Guidance |
+| C: Grundlage vorhanden | `/strategy?projectId=0ca3270b-b999-5564-9756-265eddb5c835` | Readiness `Grundlage vorhanden`, fehlende BATNA-, WAP- und Argumentationsbausteine sichtbar |
+| D: Bereit fuer Briefing / Simulation | `/strategy?projectId=6a6f7d66-7fad-5a2b-93b5-4cfcdb7c4200`, `/briefing?projectId=6a6f7d66-7fad-5a2b-93b5-4cfcdb7c4200` | vollstaendige Readiness und Next-Action-Guidance sichtbar |
+| E: Kein SupplierProfile | `/projects/b0be8f1b-e08e-5def-bdbf-5cbca5123290` | Supplier Context Empty State und Preparation Gap fuer Lieferantenkontext |
+
+D12.3 selbst dokumentiert keinen lokalen oder Staging-Browser-Smoke-Test. Der
+Seed ist wiederholbar ausfuehrbar und fuehrt keine Produktlogik, kein
+Staging-Deployment, keine KI-, RAG-, Claim-, Simulations- oder Trainerreview-
+Funktion ein.
+
 ## 10. C17-Browser-Smoke-Test-Ergebnis
 
 Durchgefuehrt nach den Infrastruktur-Fixes aus Issues #88 und #90.

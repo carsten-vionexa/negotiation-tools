@@ -132,6 +132,7 @@
 - Issue #166 / D12.3 umgesetzt: Der bestehende idempotente Demo-Seed legt zentrale Readiness-Testfaelle fuer Empty Strategy, unvollstaendige Strategy, `Grundlage vorhanden`, `Bereit fuer Briefing / Simulation` und kein SupplierProfile an; Demo-IDs und Smoke-Test-Routen sind in `docs/demo-seed-plan.md`, `docs/demo-test-data-matrix.md` und `docs/browser-smoke-test-plan.md` dokumentiert, ohne Produktlogik, Frontend-UI, Backend-API, Migration, Staging-Deployment, KI, RAG, Claim-Extraktion, Simulation oder Trainerreview einzufuehren
 - Issue #167 / D12.4 umgesetzt: Lokaler Browser-Smoke-Test fuer die D12.3-Demo-Readiness-Zustaende bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert; Project Detail, Preparation Gaps, Supplier Context, Strategy Empty State, `Unvollstaendig`, `Grundlage vorhanden`, `Bereit fuer Briefing / Simulation`, Next-Action-Guidance, `/briefing?projectId=...`, Mobile und Console wurden geprueft, ohne Produktcode, Frontend-UI, Backend-API, Migration, Seed-Aenderung, Staging-Deployment, KI, RAG, Claim-Extraktion, Simulation oder Trainerreview einzufuehren
 - Issue #168 / D12.5 umgesetzt: Hostinger-Staging auf `d598988` aktualisiert, Stack neu gebaut/gestartet, Alembic Head und idempotenter Demo-Seed geprueft und die D12.3-Demo-Readiness-Zustaende browserseitig auf Staging bestanden dokumentiert; Project Detail A-E, Preparation Gaps, Supplier Context vorhanden/offen, Strategy Empty State, `Unvollstaendig`, `Grundlage vorhanden`, `Bereit fuer Briefing / Simulation`, Next-Action-Guidance, `/briefing?projectId=...`, Mobile und Console wurden geprueft, ohne Produktcode, Frontend-UI, Backend-API, Migration, Seed-Logik, KI, RAG, Claim-Extraktion, Simulation oder Trainerreview einzufuehren
+- Issue #169 / D12.6 umgesetzt: D12 als abgeschlossenen Demo-Readiness-Block dokumentiert; D12.1 bis D12.5, lokal und auf Staging demonstrierbare Readiness-/Preparation-Zustaende, Alembic Head, idempotenter Demo-Seed, Nicht-Ziele, offene Nicht-Blocker und ein sinnvoller naechster Produktblock sind eingeordnet, ohne Produktdateien, Frontend-UI, Backend-API, Migration, Seed-Aenderung, Staging-Aenderung, KI, RAG, Claim-Logik, Simulation oder Trainerreview einzufuehren
 - Issue #146 umgesetzt: Codex-Kurzmodus in der Projekt-SKILL dokumentiert, kompakte operative `CODEX.md` im Repository-Root ergaenzt und README/Roadmap verlinkt beziehungsweise aktualisiert, ohne Produktdateien, Backend, Frontend, Migrationen, Staging oder Build-/Testskripte zu aendern
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
@@ -768,7 +769,17 @@ Vorgemerkte Folgehinweise aus C15 bis C17:
 - Ergebnis in `docs/browser-smoke-test-plan.md` dokumentieren und `docs/roadmap.md` sowie `docs/codex-tasks.md` gemaess Definition of Done aktualisieren oder bewusst begruenden.
 - Sicherstellen, dass keine Produktlogik, Frontend-UI, Backend-API, Migration, Seed-Logik, KI-, RAG-, Claim-, Simulation- oder Trainerreview-Logik eingefuehrt wurde.
 
+## Manuelle Pruefhilfe Issue #169
+
+- `docs/roadmap.md` und `docs/codex-tasks.md` pruefen.
+- Sicherstellen, dass D12.1 bis D12.5 als abgeschlossener Demo-Readiness-Block zusammengefasst sind.
+- Sicherstellen, dass Empty Strategy, unvollstaendige Strategy, `Grundlage vorhanden`, `Bereit fuer Briefing / Simulation`, Supplier Context vorhanden/offen, Preparation Gaps Card, Next-Action-Guidance und `/briefing?projectId=...` als lokal und auf Staging demonstrierbar eingeordnet sind.
+- Sicherstellen, dass lokaler Smoke-Test D12.4, Staging-Smoke-Test D12.5, Alembic Head und idempotenter Demo-Seed genannt sind.
+- Sicherstellen, dass keine Produktdateien, Frontend-UI, Backend-API, Migration, Seed-Aenderung, Staging-Aenderung, KI-, RAG-, Claim-, Simulation- oder Trainerreview-Logik eingefuehrt wurde.
+- Sicherstellen, dass #55, #113 und #155 als offene Nicht-Blocker korrekt eingeordnet bleiben.
+- Sicherstellen, dass ein naechster Produktblock nur benannt und nicht gestartet ist.
+
 ## Naechste Schritte
 
-1. Naechsten fachlichen Schritt separat priorisieren.
+1. Naechsten fachlichen Schritt separat priorisieren; fachlich naheliegend ist ein kleiner D13-Block fuer manuelle `Briefing Preparation` nach Strategy Readiness, ohne ihn durch D12.6 zu starten.
 2. Weitere Zielobjekt-Erzeugung bleibt getrennten Issues vorbehalten; PDF-Verarbeitung bleibt separat in Issue #55 vorgemerkt.

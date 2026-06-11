@@ -131,6 +131,7 @@
 - Issue #165 / D12.2 umgesetzt: Technischen Demo-Seed-Plan in `docs/demo-seed-plan.md` dokumentiert; bestehende Rheinwerk-/Aurum-Demo-Daten, empfohlene getrennte Demo-Projekte, technische Zielzustaende, betroffene Entitaeten, erwartete UI-Zustaende, Idempotenz, lokale/Staging-Verfuegbarkeit, Ueberladungsrisiken und ein moeglicher D12.3-Zuschnitt sind eingeordnet, ohne Produkt-, Backend-, Frontend-, Seed-, Migrations-, KI-, RAG-, API-, Persistenz-, Simulations-, Trainerreview- oder Staging-Logik einzufuehren
 - Issue #166 / D12.3 umgesetzt: Der bestehende idempotente Demo-Seed legt zentrale Readiness-Testfaelle fuer Empty Strategy, unvollstaendige Strategy, `Grundlage vorhanden`, `Bereit fuer Briefing / Simulation` und kein SupplierProfile an; Demo-IDs und Smoke-Test-Routen sind in `docs/demo-seed-plan.md`, `docs/demo-test-data-matrix.md` und `docs/browser-smoke-test-plan.md` dokumentiert, ohne Produktlogik, Frontend-UI, Backend-API, Migration, Staging-Deployment, KI, RAG, Claim-Extraktion, Simulation oder Trainerreview einzufuehren
 - Issue #167 / D12.4 umgesetzt: Lokaler Browser-Smoke-Test fuer die D12.3-Demo-Readiness-Zustaende bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert; Project Detail, Preparation Gaps, Supplier Context, Strategy Empty State, `Unvollstaendig`, `Grundlage vorhanden`, `Bereit fuer Briefing / Simulation`, Next-Action-Guidance, `/briefing?projectId=...`, Mobile und Console wurden geprueft, ohne Produktcode, Frontend-UI, Backend-API, Migration, Seed-Aenderung, Staging-Deployment, KI, RAG, Claim-Extraktion, Simulation oder Trainerreview einzufuehren
+- Issue #168 / D12.5 umgesetzt: Hostinger-Staging auf `d598988` aktualisiert, Stack neu gebaut/gestartet, Alembic Head und idempotenter Demo-Seed geprueft und die D12.3-Demo-Readiness-Zustaende browserseitig auf Staging bestanden dokumentiert; Project Detail A-E, Preparation Gaps, Supplier Context vorhanden/offen, Strategy Empty State, `Unvollstaendig`, `Grundlage vorhanden`, `Bereit fuer Briefing / Simulation`, Next-Action-Guidance, `/briefing?projectId=...`, Mobile und Console wurden geprueft, ohne Produktcode, Frontend-UI, Backend-API, Migration, Seed-Logik, KI, RAG, Claim-Extraktion, Simulation oder Trainerreview einzufuehren
 - Issue #146 umgesetzt: Codex-Kurzmodus in der Projekt-SKILL dokumentiert, kompakte operative `CODEX.md` im Repository-Root ergaenzt und README/Roadmap verlinkt beziehungsweise aktualisiert, ohne Produktdateien, Backend, Frontend, Migrationen, Staging oder Build-/Testskripte zu aendern
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
@@ -753,6 +754,19 @@ Vorgemerkte Folgehinweise aus C15 bis C17:
 - Mobile-Breite und Browser-Console pruefen.
 - Ergebnis in `docs/browser-smoke-test-plan.md` dokumentieren und `docs/roadmap.md` sowie `docs/codex-tasks.md` gemaess Definition of Done aktualisieren oder bewusst begruenden.
 - Sicherstellen, dass kein Staging veraendert wurde und keine Produktlogik, Frontend-UI, Backend-API, Migration, Seed-Aenderung, KI-, RAG-, Claim-, Simulation- oder Trainerreview-Logik eingefuehrt wurde.
+
+## Manuelle Pruefhilfe Issue #168
+
+- Staging-Repository in `/opt/negotiation-tools` auf aktuellen `origin/main`-Stand bringen.
+- Staging-Stack mit `docker compose --env-file .env.staging -f docker-compose.staging.yml up -d --build` neu bauen/starten.
+- Backend Health, Frontend-Erreichbarkeit, Containerstatus und Alembic Head pruefen.
+- Idempotenten Demo-Seed auf Staging ausfuehren und bestaetigen, dass die D12.3-Demo-Projekte A-E vorhanden sind.
+- Project-Detailseiten A bis E auf Staging pruefen: Preparation Gaps, RequestItem-Kontext, Supplier Context vorhanden/offen und Strategy-Snapshot.
+- Strategy-Routen A bis D auf Staging pruefen: Empty State, `Unvollstaendig`, `Grundlage vorhanden`, `Bereit fuer Briefing / Simulation` und Next-Action-Guidance nur beim vollstaendigen Zustand.
+- `/briefing?projectId=...` fuer das vollstaendige Strategy-Projekt pruefen.
+- Mobile-Breite und Browser-Console pruefen.
+- Ergebnis in `docs/browser-smoke-test-plan.md` dokumentieren und `docs/roadmap.md` sowie `docs/codex-tasks.md` gemaess Definition of Done aktualisieren oder bewusst begruenden.
+- Sicherstellen, dass keine Produktlogik, Frontend-UI, Backend-API, Migration, Seed-Logik, KI-, RAG-, Claim-, Simulation- oder Trainerreview-Logik eingefuehrt wurde.
 
 ## Naechste Schritte
 

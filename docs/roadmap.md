@@ -98,6 +98,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Issue #165 / D12.2: Der technische Demo-Seed-Plan in `docs/demo-seed-plan.md` leitet aus D12.1 konkrete spaetere Seed-Zielzustaende fuer Empty Strategy, Partial Strategy, Ready Strategy, Supplier-Empty-State und Supplier-Context-Varianten ab; bestehende Rheinwerk-/Aurum-Demo-Daten, Idempotenz, lokale/Staging-Verfuegbarkeit, Ueberladungsrisiken und ein moeglicher D12.3-Zuschnitt sind dokumentiert, ohne Produkt-, Backend-, Frontend-, Seed-, Migrations-, KI-, RAG-, Simulations-, Trainerreview- oder Staging-Logik einzufuehren
 - Issue #166 / D12.3: Der bestehende idempotente Demo-Seed legt separate D12.3-Projekte fuer Empty Strategy, unvollstaendige Strategy, `Grundlage vorhanden`, `Bereit fuer Briefing / Simulation` und kein SupplierProfile an; feste IDs und Smoke-Test-Routen sind in Demo-Seed-Plan, Testdatenmatrix und Browser-Smoke-Plan dokumentiert, ohne Produktlogik, Frontend-UI, Backend-API, Migration, Staging-Deployment, KI, RAG, Claim-Extraktion, Simulation oder Trainerreview einzufuehren
 - Issue #167 / D12.4: Lokaler Browser-Smoke-Test fuer die D12.3-Demo-Readiness-Zustaende bestanden dokumentiert; Project Detail, Preparation Gaps, Supplier Context, Strategy Empty State, `Unvollstaendig`, `Grundlage vorhanden`, `Bereit fuer Briefing / Simulation`, Next-Action-Guidance, `/briefing?projectId=...`, Mobile und Console wurden geprueft, ohne Produktcode, Frontend-UI, Backend-API, Migration, Seed-Aenderung, Staging-Deployment, KI, RAG, Claim-Extraktion, Simulation oder Trainerreview einzufuehren
+- Issue #168 / D12.5: Hostinger-Staging wurde auf `d598988` aktualisiert, der Stack neu gebaut/gestartet, Alembic Head und idempotenter Demo-Seed geprueft und die D12.3-Demo-Readiness-Zustaende browserseitig auf Staging bestanden dokumentiert; Project Detail A-E, Preparation Gaps, Supplier Context vorhanden/offen, Strategy Empty State, `Unvollstaendig`, `Grundlage vorhanden`, `Bereit fuer Briefing / Simulation`, Next-Action-Guidance, `/briefing?projectId=...`, Mobile und Console wurden geprueft, ohne Produktcode, Frontend-UI, Backend-API, Migration, Seed-Logik, KI, RAG, Claim-Extraktion, Simulation oder Trainerreview einzufuehren
 - Issue #146: Codex-Arbeitsanweisungen sind getrennt: die ausfuehrliche Projektsteuerung bleibt in `docs/skills/negotiation-tools-dev-workflow/SKILL.md`, die kompakte operative Codex-Anweisung liegt als `CODEX.md` im Repository-Root
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
@@ -569,14 +570,26 @@ Simulation`, Next-Action-Guidance nur beim vollstaendigen Zustand,
 steht in `docs/browser-smoke-test-plan.md`. D12.4 fuehrt kein
 Staging-Deployment, keine Produktlogik, keine Frontend-UI, keine Backend-API,
 keine Migration und keine KI-, RAG-, Claim-, Simulations- oder
-Trainerreview-Logik ein. D12.5 kann als separater Staging-Update-/Smoke-Test
-sinnvoll gestartet werden.
+Trainerreview-Logik ein.
 
-Offene Nicht-Blocker nach D12.4:
+D12.5 / Issue #168 bestaetigt dieselben D12.3-Demo-Zustaende auf
+Hostinger-Staging. Staging wurde per Fast-Forward von `f2f444b` auf `d598988`
+gebracht, der Stack neu gebaut und gestartet, Alembic `2f4b7c8d9e0a (head)`
+geprueft und der idempotente Demo-Seed ausgefuehrt. Browserseitig wurden
+Project Detail A-E, Preparation Gaps Card, Supplier Context vorhanden
+beziehungsweise offen, Strategy Empty State, Readiness `Unvollstaendig`,
+`Grundlage vorhanden` und `Bereit fuer Briefing / Simulation`,
+Next-Action-Guidance, `/briefing?projectId=...`, Mobile-Darstellung und
+Browser-Console bestanden geprueft. Das Ergebnis steht in
+`docs/browser-smoke-test-plan.md`. D12.5 fuehrt keine Produktlogik, keine
+Frontend-UI, keine Backend-API, keine Migration, keine Seed-Logik und keine
+KI-, RAG-, Claim-, Simulations- oder Trainerreview-Logik ein.
 
-- Issue #55: PDF-/Upload-/Parsing-Folgearbeit bleibt offen und blockiert D12.4 nicht.
-- Issue #113: Next/PostCSS-audit-Finding bleibt zur Beobachtung offen und blockiert D12.4 nicht.
-- Issue #155: D11 / AI-assisted Strategy Coaching bleibt als spaeterer Roadmapblock offen; D12.4 prueft nur synthetische Demo-Seed-Zustaende und aktiviert keine KI-, RAG-, Claim-, Kontextvertrags-, Strategy-Coach-, Simulations- oder Trainerreview-Implementierung.
+Offene Nicht-Blocker nach D12.5:
+
+- Issue #55: PDF-/Upload-/Parsing-Folgearbeit bleibt offen und blockiert D12.5 nicht.
+- Issue #113: Next/PostCSS-audit-Finding bleibt zur Beobachtung offen und blockiert D12.5 nicht.
+- Issue #155: D11 / AI-assisted Strategy Coaching bleibt als spaeterer Roadmapblock offen; D12.5 prueft nur synthetische Demo-Seed-Zustaende und aktiviert keine KI-, RAG-, Claim-, Kontextvertrags-, Strategy-Coach-, Simulations- oder Trainerreview-Implementierung.
 
 ## 12. Phase E: Knowledge Intelligence
 

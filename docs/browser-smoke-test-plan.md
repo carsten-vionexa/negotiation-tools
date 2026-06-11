@@ -1263,3 +1263,63 @@ Trainerreview-Logik geaendert.
 D12.5 kann als separater Staging-Update-/Smoke-Test-Schritt sinnvoll gestartet
 werden. D12.4 war ausschliesslich ein lokaler Browser-Smoke-Test und eine
 Dokumentation des Ergebnisses; Staging blieb unveraendert.
+
+## 25. D12.5 Staging-Update- und Browser-Smoke-Test fuer D12.3 Demo Readiness States
+
+Durchgefuehrt am 2026-06-11 auf Hostinger-Staging gegen
+`https://negotiation.tools.hawkins-consulting.de`.
+
+Gesamtergebnis: bestanden ohne Blocker. Staging wurde in
+`/opt/negotiation-tools` per Fast-Forward von `f2f444b` auf `d598988`
+aktualisiert. Der Staging-Stack wurde mit
+`docker compose --env-file .env.staging -f docker-compose.staging.yml up -d --build`
+neu gebaut und gestartet. Es wurden keine Produktdateien, keine Frontend-UI,
+keine Backend-API, keine Migration, keine Seed-Logik und keine KI-, RAG-,
+Claim-, Simulations- oder Trainerreview-Logik geaendert.
+
+### 25.1 Infrastruktur und Seed
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Staging-Stand | bestanden | Server-Repository steht sauber auf `main...origin/main` bei `d598988` |
+| Stack-Rebuild / Restart | bestanden | Frontend- und Backend-Images wurden erfolgreich gebaut; `db`, `backend` und `frontend` laufen |
+| Backend Health | bestanden | Intern antwortete `GET http://127.0.0.1:8000/api/health` mit `{"status":"ok","service":"negotiation-tools-api"}`; extern leitet Authelia unauthentifizierte Health-Aufrufe erwartungsgemaess um |
+| Frontend erreichbar | bestanden | Intern antwortete `GET http://127.0.0.1:3000` mit Redirect auf die App |
+| Alembic current | bestanden | `2f4b7c8d9e0a (head)` |
+| Demo-Seed | bestanden | `python -m app.seeds.staging_demo --confirm-staging-demo` bestaetigte alle D12.3-Projekt-IDs idempotent |
+| Datenzustand A-E | bestanden | A und E ohne Strategy; B, C und D mit je einer Strategy; A-D mit SupplierProfile; E ohne SupplierProfile; alle mit RequestItem |
+
+### 25.2 Project-Detail-Ergebnis
+
+| Demo | Ergebnis | Notiz |
+|---|---|---|
+| A: Empty Strategy | bestanden | `/projects/f06a85a1-5d41-5a47-8d14-52af0493b606` zeigte Project Detail mit RequestItem-Kontext, Supplier Context, Vorbereitungsluecken und Strategie-Snapshot |
+| B: Unvollstaendige Strategy | bestanden | `/projects/63154d03-dee6-5fc9-a1b4-d8eaeeed0de4` zeigte Project Detail mit RequestItem-Kontext, Supplier Context, Vorbereitungsluecken und Strategie-Snapshot |
+| C: Grundlage vorhanden | bestanden | `/projects/0ca3270b-b999-5564-9756-265eddb5c835` zeigte Project Detail mit RequestItem-Kontext, Supplier Context, Vorbereitungsluecken und Strategie-Snapshot |
+| D: Bereit fuer Briefing / Simulation | bestanden | `/projects/6a6f7d66-7fad-5a2b-93b5-4cfcdb7c4200` zeigte Project Detail mit RequestItem-Kontext, Supplier Context, Vorbereitungsluecken und Strategie-Snapshot |
+| E: Kein SupplierProfile | bestanden | `/projects/b0be8f1b-e08e-5def-bdbf-5cbca5123290` zeigte Project Detail mit RequestItem-Kontext, Supplier Context Empty State und Vorbereitungsluecken fuer Lieferantenkontext |
+
+### 25.3 Strategy- und Briefing-Ergebnis
+
+| Route | Ergebnis | Notiz |
+|---|---|---|
+| `/strategy?projectId=f06a85a1-5d41-5a47-8d14-52af0493b606` | bestanden | Strategy Empty State `Noch keine Strategie` und Einstieg `Strategie-Kopf anlegen` sichtbar |
+| `/strategy?projectId=63154d03-dee6-5fc9-a1b4-d8eaeeed0de4` | bestanden | Readiness `Unvollstaendig` sichtbar; keine Next-Action-Guidance |
+| `/strategy?projectId=0ca3270b-b999-5564-9756-265eddb5c835` | bestanden | Readiness `Grundlage vorhanden` sichtbar; BATNA und WAP bleiben als offene Bausteine erkennbar; keine Next-Action-Guidance |
+| `/strategy?projectId=6a6f7d66-7fad-5a2b-93b5-4cfcdb7c4200` | bestanden | Readiness `Bereit fuer Briefing / Simulation`, Briefing-CTA und Simulation-/Review-Folgepfade sichtbar |
+| `/briefing?projectId=6a6f7d66-7fad-5a2b-93b5-4cfcdb7c4200` | bestanden | Route stabil erreichbar; `Briefing vorbereiten`, `Projektkontext erkannt` und `Noch nicht implementiert` sichtbar |
+
+### 25.4 Mobile und Console
+
+| Pruefpunkt | Ergebnis | Notiz |
+|---|---|---|
+| Desktop-Breite | bestanden | Gepruefte Project-, Strategy- und Briefing-Routen ohne horizontalen Overflow |
+| Mobile Spotcheck | bestanden | `390px`-Viewport fuer Project E, Strategy D und Briefing D; effektiv `clientWidth` 375 und `scrollWidth` 375, kein horizontaler Overflow |
+| Browser-Console | bestanden | Keine `error`-Eintraege auf den geprueften Desktop- und Mobile-Routen |
+
+### 25.5 Einordnung
+
+D12.5 war ausschliesslich ein Staging-Update-, Seed- und Browser-Smoke-Test.
+Die lokal in D12.4 dokumentierten Demo-Zustaende sind auf Staging
+reproduzierbar. Es gibt keine Staging-Blocker fuer den naechsten fachlichen
+Schritt.

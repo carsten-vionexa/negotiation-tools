@@ -101,6 +101,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Issue #168 / D12.5: Hostinger-Staging wurde auf `d598988` aktualisiert, der Stack neu gebaut/gestartet, Alembic Head und idempotenter Demo-Seed geprueft und die D12.3-Demo-Readiness-Zustaende browserseitig auf Staging bestanden dokumentiert; Project Detail A-E, Preparation Gaps, Supplier Context vorhanden/offen, Strategy Empty State, `Unvollstaendig`, `Grundlage vorhanden`, `Bereit fuer Briefing / Simulation`, Next-Action-Guidance, `/briefing?projectId=...`, Mobile und Console wurden geprueft, ohne Produktcode, Frontend-UI, Backend-API, Migration, Seed-Logik, KI, RAG, Claim-Extraktion, Simulation oder Trainerreview einzufuehren
 - Issue #169 / D12.6: D12 ist als abgeschlossener Demo-Readiness-Block dokumentiert; D12.1 bis D12.5, lokal und auf Staging demonstrierbare Readiness-/Preparation-Zustaende, technische Grenzen, offene Nicht-Blocker und der naechste sinnvolle Produktblock sind eingeordnet, ohne Produktdateien, Seed, Backend, Frontend, Migration, Staging, KI, RAG, Claim-Logik, Simulation oder Trainerreview zu aendern
 - Issue #170 / D13.1: Die naechste Produktkante ist als reiner Konzept-/Scope-Schritt zugeschnitten; D13 startet mit `Strategy -> Briefing Preparation`, Simulation Preparation bleibt spaeterer Folgeblock, erste Briefing-Bausteine, zulaessige vorhandene Datenquellen, Nicht-Ziele und Folgeissue-Vorschlaege sind in `docs/briefing-preparation-scope.md` dokumentiert, ohne Produktdateien, Backend, Frontend, Seed, Migration, KI, RAG, Simulation, Trainerreview oder Staging zu aendern
+- Issue #171 / D13.2: `/briefing?projectId=...` zeigt eine kompakte Briefing Preparation Scope Card aus vorhandenen Project-, RequestItem-, SupplierProfile-, Strategy-, ZOPA-, BATNA-, Concession- und Argumentationsdaten; offene Grundlagen, Briefing-Bausteine, naechste Aktion und Grenzen zu KI-Briefing und Simulation werden sichtbar, ohne Backend, Migration, Seed, Persistenz, KI, RAG, Simulation oder Score-Logik einzufuehren
 - Issue #146: Codex-Arbeitsanweisungen sind getrennt: die ausfuehrliche Projektsteuerung bleibt in `docs/skills/negotiation-tools-dev-workflow/SKILL.md`, die kompakte operative Codex-Anweisung liegt als `CODEX.md` im Repository-Root
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
@@ -640,10 +641,25 @@ Staging-Deployment, keine KI-Briefing-Erzeugung, kein RAG, keine
 Claim-Extraktion, keine Simulation, keine automatische Auswertung, keine
 Score-Engine, keinen Trainerreview-Ausbau und keine neue Persistenz ein.
 
-Sinnvolle Folgeissues nach D13.1 sind eine Informationsarchitektur fuer
-`/briefing?projectId=...`, ein spaeterer minimaler read-only
-Briefing-Preparation-Prototyp aus vorhandenen Daten und ein danach passender
-lokaler Browser-Smoke-Test.
+D13.2 / Issue #171 setzt den ersten kleinen read-only UI-Schritt auf
+`/briefing?projectId=...` um. Die Briefing Preparation Scope Card nutzt
+ausschliesslich vorhandene Project-, RequestItem-, SupplierProfile-, Strategy-,
+ZOPA-, BATNA-, Concession- und Argumentationsdaten aus bestehenden
+Frontend-API-Helpern. Sie zeigt Projektkontext, vorhandene und offene
+Strategiegrundlagen, daraus ableitbare Briefing-Bausteine und eine ruhige
+naechste Aktion. Ohne `projectId` bleibt `/briefing` weiterhin ein allgemeiner
+Briefing-Preparation-Einstieg.
+
+D13.2 bleibt bewusst read-only und nicht-generativ. Nicht Teil sind
+Backend-Aenderungen, Migrationen, Seeds, neue Persistenz, KI-Briefing, RAG,
+Claim-Extraktion, automatische Strategieerzeugung, Simulation Preparation,
+produktive Simulation, automatische Auswertung, Score-Engine,
+Trainerreview-Ausbau oder Staging-Arbeit.
+
+Sinnvolle Folgeissues nach D13.2 sind ein lokaler Browser-Smoke-Test fuer die
+neue Scope Card mit den D12-Demo-Readiness-Zustaenden und danach eine gezielte
+fachliche Schaerfung einzelner Briefing-Bausteine, weiterhin ohne KI-Briefing,
+Simulation, neue Persistenz oder Backendmodell.
 
 ## 12. Phase E: Knowledge Intelligence
 

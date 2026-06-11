@@ -117,8 +117,38 @@ Aus D13.1 lassen sich kleine, getrennte Folgeissues ableiten:
 3. D13.4: Lokalen Browser-Smoke-Test fuer den read-only Briefing-Preparation-
    Flow dokumentieren, falls D13.3 umgesetzt wird.
 
+## D13.2 Umsetzung
+
+D13.2 setzt den ersten kleinen read-only UI-Schritt direkt auf der bestehenden
+Route `/briefing?projectId=...` um.
+
+Die Briefing Preparation Scope Card nutzt ausschliesslich vorhandene Daten aus
+bestehenden Frontend-API-Helpern:
+
+- `NegotiationProject`
+- `RequestItem`
+- `SupplierProfile`
+- `Strategy`
+- `ZopaItem`
+- `BatnaOption`
+- `ConcessionItem`
+- `ArgumentationLine`
+
+Die Card ordnet Projektkontext, Strategiegrundlagen, Briefing-Bausteine,
+offene Informationen und naechste Aktion sichtbar ein. Bei fehlender Strategy
+fuehrt sie zur Strategy Preparation zurueck; bei vorhandener Strategy benennt
+sie offene Bausteine oder bestaetigt, dass die Briefing-Struktur geprueft
+werden kann.
+
+D13.2 bleibt nicht-generativ und read-only. Es werden keine Backend-API, keine
+Migration, keine Seeds, keine neue Persistenz, kein KI-Briefing, kein RAG,
+keine Claim-Extraktion, keine automatische Strategy-Erzeugung, keine Simulation
+und keine Score- oder Trainerreview-Logik eingefuehrt.
+
 ## Ergebnis
 
 D13.1 priorisiert `Strategy -> Briefing Preparation` als naechste Produktkante.
-Simulation Preparation bleibt spaeter moeglich, wird aber erst nach einem
-sauberen Briefing-Zwischenschritt fachlich erneut bewertet.
+D13.2 macht diesen Zwischenschritt erstmals auf `/briefing?projectId=...`
+kompakt aus vorhandenen Daten sichtbar. Simulation Preparation bleibt spaeter
+moeglich, wird aber erst nach einem sauberen Briefing-Zwischenschritt fachlich
+erneut bewertet.

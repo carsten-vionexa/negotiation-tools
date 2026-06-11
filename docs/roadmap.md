@@ -94,6 +94,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Issue #161 / D11.2: Der fachliche Kontextvertrag fuer projektbezogene KI-Nutzung ist in `docs/ai-strategy-context-contract.md` dokumentiert; Kontextbereiche, zulaessige Datenquellen, getrennte Aussagearten, Quellen-/Evidenzmarker, Mindestqualitaet, Missing-Information-Hinweise und ungeeignete Kontextbestandteile sind konzeptionell beschrieben, ohne Produkt-, Backend-, Frontend-, KI-, RAG-, API-, Persistenz-, Migrations-, Simulations- oder Trainerreview-Logik einzufuehren
 - Issue #162 / D11.3: Das Quellen-, Claim- und Evidenzmodell fuer spaeteres Strategy Coaching ist in `docs/ai-strategy-evidence-model.md` dokumentiert; Quellenbegriff, Claim-Begriff, Aussagearten, Evidenz-/Confidence-Stufen, Aktualitaet, Herkunft, Widerspruchslogik, Nutzung im Coaching und ungeeignete Claims beziehungsweise Quellen sind konzeptionell beschrieben, ohne Produkt-, Backend-, Frontend-, KI-, RAG-, API-, Persistenz-, Migrations-, Simulations-, Score- oder Trainerreview-Logik einzufuehren
 - Issue #163 / D11.4: Der D11-Konzeptzwischenstand ist konsolidiert; D11.1 bis D11.3, die massgeblichen D11-Konzeptdokumente, die fortbestehende Implementierungsgrenze, spaetere Folgeoptionen und offene Nicht-Blocker sind dokumentiert, ohne Produkt-, Backend-, Frontend-, KI-, RAG-, Claim-, API-, Persistenz-, Migrations-, Simulations-, Score- oder Staging-Logik einzufuehren
+- Issue #164 / D12.1: Die Demo-/Testdatenmatrix fuer Strategy Readiness und Preparation Flow ist in `docs/demo-test-data-matrix.md` als reiner Konzeptschritt dokumentiert; benoetigte Readiness- und Preparation-Zustaende, bestehende Rheinwerk-/Aurum-Demo-Daten, lokale und spaetere Staging-Reproduzierbarkeit sowie offene Nicht-Blocker sind eingeordnet, ohne Produkt-, Backend-, Frontend-, Seed-, Migrations-, KI-, RAG-, Simulations-, Trainerreview- oder Staging-Logik einzufuehren
 - Issue #146: Codex-Arbeitsanweisungen sind getrennt: die ausfuehrliche Projektsteuerung bleibt in `docs/skills/negotiation-tools-dev-workflow/SKILL.md`, die kompakte operative Codex-Anweisung liegt als `CODEX.md` im Repository-Root
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
@@ -455,6 +456,7 @@ Umgesetzte Schritte:
 29. D11.2 / #161: Kontextvertrag fuer projektbezogene KI-Nutzung dokumentiert.
 30. D11.3 / #162: Quellen-, Claim- und Evidenzmodell fuer Strategy Coaching dokumentiert.
 31. D11.4 / #163: D11-Konzeptzwischenstand und Implementierungsgrenze dokumentiert.
+32. D12.1 / #164: Demo-/Testdatenmatrix fuer Strategy Readiness und Preparation Flow konzipiert.
 
 D4.1 macht Vorbereitungsluecken ausschliesslich aus vorhandenen Objekten und bestehenden API-Listen sichtbar: Bedarfskontext, SupplierProfile, Supplier Context, Strategy, Strategiebausteine aus ZOPA/BATNA/Argumentation/Konzession, SimulationScenario und Trainerreview. Die Card bleibt eine ruhige Vorhanden-/Offen-/Spaeter-Sicht mit kurzem naechstem Schritt und fuehrt keine KI-Integration, kein Supplier Scoring, kein RAG, keine automatische Lieferantenanalyse und keine neue Datenstruktur ein.
 
@@ -521,6 +523,23 @@ Offene Nicht-Blocker nach D11.4:
 - Issue #55: PDF-/Upload-/Parsing-Folgearbeit bleibt offen und blockiert D11.4 nicht.
 - Issue #113: Next/PostCSS-audit-Finding bleibt zur Beobachtung offen und blockiert D11.4 nicht.
 - Issue #155: D11 / AI-assisted Strategy Coaching bleibt als spaeterer Roadmapblock offen; D11.1 bis D11.4 dokumentieren nur Preconditions, Kontextvertrag, Quellen-/Claim-/Evidenzsemantik und den Konzeptzwischenstand mit Implementierungsgrenze.
+
+D12.1 / Issue #164 startet nach dem D11-Konzeptzwischenstand keinen neuen
+Produktblock, sondern klaert die Demo-/Testdatenzustaende fuer reproduzierbare
+lokale und spaetere Staging-Smoke-Tests. Die Matrix in
+`docs/demo-test-data-matrix.md` beschreibt Strategy-Readiness-Zustaende von
+Projekt ohne Strategy bis vollstaendiger Strategy, Preparation-Flow-Zustaende
+mit und ohne SupplierProfile, RequestItem, Strategy, Simulation Preparation und
+Trainerreview-Kontext sowie die Nutzung des bestehenden Rheinwerk-/Aurum-
+Demo-Datensatzes. D12.1 empfiehlt mehrere getrennte Demo-Projekte fuer stabile
+Readiness- und Preparation-Varianten, legt aber keine Seeds an und aendert keine
+Demo-Daten.
+
+Offene Nicht-Blocker nach D12.1:
+
+- Issue #55: PDF-/Upload-/Parsing-Folgearbeit bleibt offen und blockiert D12.1 nicht.
+- Issue #113: Next/PostCSS-audit-Finding bleibt zur Beobachtung offen und blockiert D12.1 nicht.
+- Issue #155: D11 / AI-assisted Strategy Coaching bleibt als spaeterer Roadmapblock offen; D12.1 beschreibt nur Testdatenzustaende und aktiviert keine KI-, RAG-, Claim-, Kontextvertrags-, Strategy-Coach-, Simulations- oder Trainerreview-Implementierung.
 
 ## 12. Phase E: Knowledge Intelligence
 

@@ -357,6 +357,19 @@ Nicht Bestandteil dieses Plans sind:
 
 Diese Punkte bleiben Folge- oder Zielbildthemen und duerfen in diesem Smoke-Test nicht als fehlgeschlagene MVP-Funktion bewertet werden.
 
+## 9a. Demo-/Testdatenmatrix fuer spaetere Smoke-Tests
+
+D12.1 dokumentiert in `docs/demo-test-data-matrix.md`, welche synthetischen
+Demo- und Testdatenzustaende fuer reproduzierbare lokale und spaetere
+Staging-Smoke-Tests benoetigt werden. Die Matrix dient als Datenzustandsanker
+fuer Strategy Readiness Guidance, Strategy Next-Action Guidance, Strategy
+Overview / Strategy Board, Briefing Preparation, Project Preparation /
+Preparation Gaps, Supplier Context Card, Simulation Preparation und
+Trainerreview.
+
+Die Matrix ist kein Smoke-Test-Ergebnis und keine Seed-Implementierung. Sie
+beschreibt nur, welche Zustaende spaeter stabil vorhanden sein sollten.
+
 ## 10. C17-Browser-Smoke-Test-Ergebnis
 
 Durchgefuehrt nach den Infrastruktur-Fixes aus Issues #88 und #90.

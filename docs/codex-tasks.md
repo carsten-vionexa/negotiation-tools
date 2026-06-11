@@ -133,6 +133,7 @@
 - Issue #167 / D12.4 umgesetzt: Lokaler Browser-Smoke-Test fuer die D12.3-Demo-Readiness-Zustaende bestanden und in `docs/browser-smoke-test-plan.md` dokumentiert; Project Detail, Preparation Gaps, Supplier Context, Strategy Empty State, `Unvollstaendig`, `Grundlage vorhanden`, `Bereit fuer Briefing / Simulation`, Next-Action-Guidance, `/briefing?projectId=...`, Mobile und Console wurden geprueft, ohne Produktcode, Frontend-UI, Backend-API, Migration, Seed-Aenderung, Staging-Deployment, KI, RAG, Claim-Extraktion, Simulation oder Trainerreview einzufuehren
 - Issue #168 / D12.5 umgesetzt: Hostinger-Staging auf `d598988` aktualisiert, Stack neu gebaut/gestartet, Alembic Head und idempotenter Demo-Seed geprueft und die D12.3-Demo-Readiness-Zustaende browserseitig auf Staging bestanden dokumentiert; Project Detail A-E, Preparation Gaps, Supplier Context vorhanden/offen, Strategy Empty State, `Unvollstaendig`, `Grundlage vorhanden`, `Bereit fuer Briefing / Simulation`, Next-Action-Guidance, `/briefing?projectId=...`, Mobile und Console wurden geprueft, ohne Produktcode, Frontend-UI, Backend-API, Migration, Seed-Logik, KI, RAG, Claim-Extraktion, Simulation oder Trainerreview einzufuehren
 - Issue #169 / D12.6 umgesetzt: D12 als abgeschlossenen Demo-Readiness-Block dokumentiert; D12.1 bis D12.5, lokal und auf Staging demonstrierbare Readiness-/Preparation-Zustaende, Alembic Head, idempotenter Demo-Seed, Nicht-Ziele, offene Nicht-Blocker und ein sinnvoller naechster Produktblock sind eingeordnet, ohne Produktdateien, Frontend-UI, Backend-API, Migration, Seed-Aenderung, Staging-Aenderung, KI, RAG, Claim-Logik, Simulation oder Trainerreview einzufuehren
+- Issue #170 / D13.1 umgesetzt: Produktkante `Strategy -> Briefing Preparation` als reiner Konzept-/Scope-Schritt in `docs/briefing-preparation-scope.md` dokumentiert; Simulation Preparation bleibt spaeterer Folgeblock, erste Briefing-Bausteine, zulaessige vorhandene Datenquellen, Nicht-Ziele und Folgeissue-Vorschlaege sind benannt, ohne Produktdateien, Frontend-UI, Backend-API, Migration, Seed-Aenderung, Staging-Aenderung, KI, RAG, Claim-Logik, Simulation oder Trainerreview einzufuehren
 - Issue #146 umgesetzt: Codex-Kurzmodus in der Projekt-SKILL dokumentiert, kompakte operative `CODEX.md` im Repository-Root ergaenzt und README/Roadmap verlinkt beziehungsweise aktualisiert, ohne Produktdateien, Backend, Frontend, Migrationen, Staging oder Build-/Testskripte zu aendern
 
 ## Phase C0: MVP-Konsolidierung nach Phase B
@@ -569,6 +570,17 @@ Vorgemerkte Folgehinweise aus C15 bis C17:
 - Ergebnis in `docs/browser-smoke-test-plan.md`, `docs/codex-tasks.md` und bei Bedarf `docs/roadmap.md` dokumentieren.
 - Sicherstellen, dass D7.2 keine Produktlogik, keine UI-Funktionalitaet, keine Backend-Aenderung, keine Migration, keine Seed-Datei und keine KI-, Scoring-, Simulations- oder RAG-Logik einfuehrt.
 
+Phase D13.1:
+
+- D13.1 ist als reiner Konzept-/Scope-Schritt umgesetzt.
+- Die naechste Produktkante ist in `docs/briefing-preparation-scope.md` dokumentiert.
+- D13 startet mit `Strategy -> Briefing Preparation`; Simulation Preparation bleibt als spaeterer Folgeblock moeglich, wird aber nicht vorgezogen.
+- Die Entscheidung ist ueber vorhandenen Briefing-Einstieg, Strategy-Readiness-Guidance, D12-Demo-Readiness und die fachliche Naehe zu vorhandenen Strategy-, Projekt-, Bedarfs- und Lieferantendaten begruendet.
+- Erste Briefing-Bausteine sind Ausgangslage, Zielbild, Strategy Objectives, ZOPA, BATNA, WAP, Konzessionslogik, Argumentationslinien, Lieferantenkontext, Bedarfskontext, optionale UserProfile-Hinweise, offene Informationsluecken und empfohlene naechste Vorbereitungsschritte.
+- Zulaessige Datenquellen sind nur vorhandene Objekte: `NegotiationProject`, `RequestItem`, `SupplierProfile`, `Strategy`, `ZopaItem`, `BatnaOption`, `ConcessionItem`, `ArgumentationLine`, optional `UserProfile` und vorhandene Readiness-/Preparation-Guidance.
+- D13.1 fuehrt keine Produktdateien, keine Frontend-UI, keine Backend-API, keine Migration, keine Seed-Aenderung, kein Staging-Deployment, keine KI-Briefing-Erzeugung, kein RAG, keine Claim-Extraktion, keine automatische Strategy-Erzeugung, keine Simulation, keine automatische Auswertung, keine Score-Engine, keinen Trainerreview-Ausbau und keine neue Persistenz ein.
+- Sinnvolle Folgeissues sind eine Informationsarchitektur fuer `/briefing?projectId=...`, ein spaeterer minimaler read-only Briefing-Preparation-Prototyp aus vorhandenen Daten und ein danach passender lokaler Browser-Smoke-Test.
+
 ## Manuelle Pruefhilfe Phase B7
 
 - `/dashboard`: Zaehler fuer Projekte, Companies und Profile pruefen.
@@ -779,7 +791,17 @@ Vorgemerkte Folgehinweise aus C15 bis C17:
 - Sicherstellen, dass #55, #113 und #155 als offene Nicht-Blocker korrekt eingeordnet bleiben.
 - Sicherstellen, dass ein naechster Produktblock nur benannt und nicht gestartet ist.
 
+## Manuelle Pruefhilfe Issue #170
+
+- `docs/briefing-preparation-scope.md`, `docs/roadmap.md` und `docs/codex-tasks.md` pruefen.
+- Sicherstellen, dass D13.1 als reiner Konzept-/Scope-Schritt beschrieben ist.
+- Sicherstellen, dass D13 mit `Strategy -> Briefing Preparation` startet und Simulation Preparation nur als spaeterer Folgeblock eingeordnet ist.
+- Sicherstellen, dass die Entscheidung fachlich begruendet ist.
+- Sicherstellen, dass erste Briefing-Bausteine, zulaessige vorhandene Datenquellen und Nicht-Ziele klar benannt sind.
+- Sicherstellen, dass mindestens ein sinnvoller Folgeissue-Vorschlag enthalten ist.
+- Sicherstellen, dass keine Produktdateien, Frontend-UI, Backend-API, Migration, Seed-Aenderung, Staging-Aenderung, KI-, RAG-, Claim-, Simulations-, Score-, Trainerreview- oder Persistenzlogik eingefuehrt wurde.
+
 ## Naechste Schritte
 
-1. Naechsten fachlichen Schritt separat priorisieren; fachlich naheliegend ist ein kleiner D13-Block fuer manuelle `Briefing Preparation` nach Strategy Readiness, ohne ihn durch D12.6 zu starten.
+1. D13.2 separat zuschneiden: Informationsarchitektur fuer `/briefing?projectId=...` auf Basis von `docs/briefing-preparation-scope.md`, weiterhin ohne KI-Briefing, Simulation, neue Persistenz oder Backendmodell.
 2. Weitere Zielobjekt-Erzeugung bleibt getrennten Issues vorbehalten; PDF-Verarbeitung bleibt separat in Issue #55 vorgemerkt.

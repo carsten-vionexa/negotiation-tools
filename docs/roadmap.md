@@ -100,6 +100,7 @@ Abgeschlossen beziehungsweise vorbereitet:
 - Issue #167 / D12.4: Lokaler Browser-Smoke-Test fuer die D12.3-Demo-Readiness-Zustaende bestanden dokumentiert; Project Detail, Preparation Gaps, Supplier Context, Strategy Empty State, `Unvollstaendig`, `Grundlage vorhanden`, `Bereit fuer Briefing / Simulation`, Next-Action-Guidance, `/briefing?projectId=...`, Mobile und Console wurden geprueft, ohne Produktcode, Frontend-UI, Backend-API, Migration, Seed-Aenderung, Staging-Deployment, KI, RAG, Claim-Extraktion, Simulation oder Trainerreview einzufuehren
 - Issue #168 / D12.5: Hostinger-Staging wurde auf `d598988` aktualisiert, der Stack neu gebaut/gestartet, Alembic Head und idempotenter Demo-Seed geprueft und die D12.3-Demo-Readiness-Zustaende browserseitig auf Staging bestanden dokumentiert; Project Detail A-E, Preparation Gaps, Supplier Context vorhanden/offen, Strategy Empty State, `Unvollstaendig`, `Grundlage vorhanden`, `Bereit fuer Briefing / Simulation`, Next-Action-Guidance, `/briefing?projectId=...`, Mobile und Console wurden geprueft, ohne Produktcode, Frontend-UI, Backend-API, Migration, Seed-Logik, KI, RAG, Claim-Extraktion, Simulation oder Trainerreview einzufuehren
 - Issue #169 / D12.6: D12 ist als abgeschlossener Demo-Readiness-Block dokumentiert; D12.1 bis D12.5, lokal und auf Staging demonstrierbare Readiness-/Preparation-Zustaende, technische Grenzen, offene Nicht-Blocker und der naechste sinnvolle Produktblock sind eingeordnet, ohne Produktdateien, Seed, Backend, Frontend, Migration, Staging, KI, RAG, Claim-Logik, Simulation oder Trainerreview zu aendern
+- Issue #170 / D13.1: Die naechste Produktkante ist als reiner Konzept-/Scope-Schritt zugeschnitten; D13 startet mit `Strategy -> Briefing Preparation`, Simulation Preparation bleibt spaeterer Folgeblock, erste Briefing-Bausteine, zulaessige vorhandene Datenquellen, Nicht-Ziele und Folgeissue-Vorschlaege sind in `docs/briefing-preparation-scope.md` dokumentiert, ohne Produktdateien, Backend, Frontend, Seed, Migration, KI, RAG, Simulation, Trainerreview oder Staging zu aendern
 - Issue #146: Codex-Arbeitsanweisungen sind getrennt: die ausfuehrliche Projektsteuerung bleibt in `docs/skills/negotiation-tools-dev-workflow/SKILL.md`, die kompakte operative Codex-Anweisung liegt als `CODEX.md` im Repository-Root
 - C17-Browser-Smoke-Test in `docs/browser-smoke-test-plan.md` dokumentiert: bestanden fuer `request_item` und `procurement_history_item`, ohne Blocker
 - Frontend-Nutzbarkeitsflow Issue #66: SupplierProfiles sind unter `/suppliers` anlegbar und bearbeitbar sowie als strukturierter Lieferantenbezug in Projekten nutzbar
@@ -424,7 +425,7 @@ Offene Nicht-Blocker:
 
 ## 11. Phase D4: Project Preparation / Preparation Gaps
 
-Status: D4.1 bis D4.3 umgesetzt; D4.4 dokumentiert den aktuellen Zwischenstand und den manuellen Smoke-Test. D5.1 bis D5.4 sind umgesetzt; D5.5 dokumentiert den bestandenen lokalen Strategy-Guidance-Smoke-Test, D5.6 den bestandenen Staging-Update- und Smoke-Test. D6.1 schaerft die manuelle Strategy-Erfassung mit kleinen UI-/Text-/Validation-Verbesserungen. D6.2 bestaetigt diese Feldfuehrung lokal browserseitig mit laufendem Backend, Frontend und DB. D7.1 ergaenzt eine regelbasierte Strategy-Completion-/Readiness-Guidance. D7.2 bestaetigt diese Guidance lokal browserseitig mit drei Fuellstaenden. D8.1 ergaenzt daraus eine kompakte Next-Action-Guidance; D8.2 bestaetigt diese lokal browserseitig, D8.3 auf Staging mit dokumentierter Einschraenkung fuer die unteren Staging-Readiness-Zustaende. D8.4 schliesst D8 dokumentarisch ab und grenzt D9 `Briefing Preparation` als naechsten moeglichen kleinen Produktblock ab. D9.1 glaettet den bestehenden `/briefing`-Einstieg fachlich, D9.3 ordnet `projectId` als Projektkontext fuer Briefing Preparation ein, ohne KI-Briefing- oder Folgeprozesslogik einzufuehren. D10.1 bis D10.3 beziehungsweise Issues #154, #156, #157 und #158 sind fuer den aktuellen Demo- und Testnutzerstand abgeschlossen; D10.4 dokumentiert diesen vorlaeufig runden Zwischenabschluss. D11.1 ist als reiner Konzept-/Preconditions-Schritt dokumentiert und startet keine AI-Coach-Implementierung. D11.2 dokumentiert den fachlichen Kontextvertrag fuer spaetere projektbezogene KI-Nutzung. D11.3 dokumentiert das Quellen-, Claim- und Evidenzmodell fuer spaeteres Strategy Coaching. D11.4 konsolidiert diesen Konzeptstand und dokumentiert die fortbestehende Implementierungsgrenze. D11.1 bis D11.4 bleiben reine Konzept- beziehungsweise Dokumentationsarbeit. D12.1 bis D12.5 haben Testdatenmatrix, technischen Seed-Plan, idempotente Demo-Seed-Erweiterung, lokalen Browser-Smoke-Test und Staging-Smoke-Test fuer Strategy Readiness und Preparation Flow abgeschlossen. D12.6 ordnet diesen Demo-Readiness-Block dokumentarisch als abgeschlossen ein.
+Status: D4.1 bis D4.3 umgesetzt; D4.4 dokumentiert den aktuellen Zwischenstand und den manuellen Smoke-Test. D5.1 bis D5.4 sind umgesetzt; D5.5 dokumentiert den bestandenen lokalen Strategy-Guidance-Smoke-Test, D5.6 den bestandenen Staging-Update- und Smoke-Test. D6.1 schaerft die manuelle Strategy-Erfassung mit kleinen UI-/Text-/Validation-Verbesserungen. D6.2 bestaetigt diese Feldfuehrung lokal browserseitig mit laufendem Backend, Frontend und DB. D7.1 ergaenzt eine regelbasierte Strategy-Completion-/Readiness-Guidance. D7.2 bestaetigt diese Guidance lokal browserseitig mit drei Fuellstaenden. D8.1 ergaenzt daraus eine kompakte Next-Action-Guidance; D8.2 bestaetigt diese lokal browserseitig, D8.3 auf Staging mit dokumentierter Einschraenkung fuer die unteren Staging-Readiness-Zustaende. D8.4 schliesst D8 dokumentarisch ab und grenzt D9 `Briefing Preparation` als naechsten moeglichen kleinen Produktblock ab. D9.1 glaettet den bestehenden `/briefing`-Einstieg fachlich, D9.3 ordnet `projectId` als Projektkontext fuer Briefing Preparation ein, ohne KI-Briefing- oder Folgeprozesslogik einzufuehren. D10.1 bis D10.3 beziehungsweise Issues #154, #156, #157 und #158 sind fuer den aktuellen Demo- und Testnutzerstand abgeschlossen; D10.4 dokumentiert diesen vorlaeufig runden Zwischenabschluss. D11.1 ist als reiner Konzept-/Preconditions-Schritt dokumentiert und startet keine AI-Coach-Implementierung. D11.2 dokumentiert den fachlichen Kontextvertrag fuer spaetere projektbezogene KI-Nutzung. D11.3 dokumentiert das Quellen-, Claim- und Evidenzmodell fuer spaeteres Strategy Coaching. D11.4 konsolidiert diesen Konzeptstand und dokumentiert die fortbestehende Implementierungsgrenze. D11.1 bis D11.4 bleiben reine Konzept- beziehungsweise Dokumentationsarbeit. D12.1 bis D12.5 haben Testdatenmatrix, technischen Seed-Plan, idempotente Demo-Seed-Erweiterung, lokalen Browser-Smoke-Test und Staging-Smoke-Test fuer Strategy Readiness und Preparation Flow abgeschlossen. D12.6 ordnet diesen Demo-Readiness-Block dokumentarisch als abgeschlossen ein. D13.1 schneidet als reiner Konzept-/Scope-Schritt die naechste Produktkante zu und priorisiert `Strategy -> Briefing Preparation` vor Simulation Preparation.
 
 Ziel: Project-Detail-/Preparation-UX ausbauen, ohne automatische Bewertung oder neue Datenmodelle vorzuziehen.
 
@@ -467,6 +468,7 @@ Umgesetzte Schritte:
 35. D12.4 / #167: Lokalen Browser-Smoke-Test fuer die D12.3-Demo-Readiness-Zustaende bestanden dokumentiert.
 36. D12.5 / #168: Hostinger-Staging-Update und Browser-Smoke-Test fuer dieselben D12.3-Zustaende bestanden dokumentiert.
 37. D12.6 / #169: D12-Zwischenabschluss und naechste Produktkante dokumentiert.
+38. D13.1 / #170: Produktkante `Strategy -> Briefing Preparation` fachlich zugeschnitten und Simulation Preparation als spaeteren Folgeblock abgegrenzt.
 
 D4.1 macht Vorbereitungsluecken ausschliesslich aus vorhandenen Objekten und bestehenden API-Listen sichtbar: Bedarfskontext, SupplierProfile, Supplier Context, Strategy, Strategiebausteine aus ZOPA/BATNA/Argumentation/Konzession, SimulationScenario und Trainerreview. Die Card bleibt eine ruhige Vorhanden-/Offen-/Spaeter-Sicht mit kurzem naechstem Schritt und fuehrt keine KI-Integration, kein Supplier Scoring, kein RAG, keine automatische Lieferantenanalyse und keine neue Datenstruktur ein.
 
@@ -615,6 +617,33 @@ Offene Nicht-Blocker nach D12.6:
 - Issue #55: PDF-/Upload-/Parsing-Folgearbeit bleibt offen und blockiert D12.6 nicht.
 - Issue #113: Next/PostCSS-audit-Finding bleibt zur Beobachtung offen und blockiert D12.6 nicht.
 - Issue #155: D11 / AI-assisted Strategy Coaching bleibt als spaeterer Konzept-/Produktblock offen; D12.6 prueft und dokumentiert nur synthetische Demo-Readiness-Zustaende und aktiviert keine KI-, RAG-, Claim-, Kontextvertrags-, Strategy-Coach-, Simulations- oder Trainerreview-Implementierung.
+
+D13.1 / Issue #170 entscheidet als reiner Konzept- und Scope-Schritt, dass D13
+zuerst `Strategy -> Briefing Preparation` staerkt. Simulation Preparation
+bleibt fachlich sinnvoll, wird aber nicht vorgezogen, weil sie staerker auf
+spaetere Simulationslogik, Rollenverhalten, Gespraechsdynamik und Auswertung
+aufsetzt. Der Briefing-Zwischenschritt kann dagegen direkt an vorhandene
+Strategy Readiness, Preparation Gaps, Supplier Context und
+`/briefing?projectId=...` anschliessen.
+
+Der Scope ist in `docs/briefing-preparation-scope.md` dokumentiert. Als erste
+Briefing-Bausteine sind Ausgangslage, Zielbild, Strategy Objectives, ZOPA,
+BATNA, WAP, Konzessionslogik, Argumentationslinien, Lieferantenkontext,
+Bedarfskontext aus `RequestItem`, optionale Hinweise aus `UserProfile`, offene
+Informationsluecken und naechste Vorbereitungsschritte vorgesehen. Zulaessige
+Datenquellen bleiben vorhandene Objekte: `NegotiationProject`, `RequestItem`,
+`SupplierProfile`, `Strategy`, `ZopaItem`, `BatnaOption`, `ConcessionItem`,
+`ArgumentationLine`, optional `UserProfile` sowie bestehende Readiness- und
+Preparation-Guidance. D13.1 fuehrt keine Produktdateien, keine Frontend-UI,
+keine Backend-API, keine Migration, keine Seed-Aenderung, kein
+Staging-Deployment, keine KI-Briefing-Erzeugung, kein RAG, keine
+Claim-Extraktion, keine Simulation, keine automatische Auswertung, keine
+Score-Engine, keinen Trainerreview-Ausbau und keine neue Persistenz ein.
+
+Sinnvolle Folgeissues nach D13.1 sind eine Informationsarchitektur fuer
+`/briefing?projectId=...`, ein spaeterer minimaler read-only
+Briefing-Preparation-Prototyp aus vorhandenen Daten und ein danach passender
+lokaler Browser-Smoke-Test.
 
 ## 12. Phase E: Knowledge Intelligence
 
